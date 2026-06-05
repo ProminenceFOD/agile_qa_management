@@ -1,0 +1,592 @@
+[StoryForm] All tags loaded: []
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [StoryForm] Selected tags: []
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [StoryForm] Available in dropdown: []
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [StoryForm] Original story props: {id: 'US-104', qaSignOff: false, pmApproval: false, acceptanceCriteria: false}
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [StoryForm] Form data before save: {id: 'US-104', qaSignOff: false, pmApproval: false, acceptanceCriteria: false}
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [StoryForm] Cleaned data to be saved: {id: 'US-104', qaSignOff: false, pmApproval: false, acceptanceCriteria: false}
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [CriteriaValidator] handleSaveStory called for: US-104 {qaSignOff: false, pmApproval: false, acceptanceCriteria: false, assignedQAReviewer: 'Damilola Ogunlade (Head of QA)'}
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [CriteriaValidator] Story updated and saved to localStorage
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [CriteriaValidator] Changing view mode to list
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [CriteriaValidator] Saving stories to localStorage, count: 6
+JSON.parse(localStorage.getItem('aqms_stories')).find(s => s.id === 'US-104')
+
+VM65780:1 Uncaught TypeError: Cannot read properties of null (reading 'find')
+    at <anonymous>:1:49
+(anonymous) @ VM65780:1Understand this error
+record-api.js:169 root:4
+record-api.js:30 Received from "root:4" in "root"
+record-api.js:66 Received locators in 'root:4' ['css=div:nth-of-type(6) > iframe']
+record-api.js:71 FrameLocation updated to {location: 'root:4', locators: Array(1)}
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [vite] server connection lost. Polling for restart...
+vendor-core-34edd2c749031eb9.min.js.br:54 [Livegraph] Connection closed. Code: 1006, reason: 
+record-api.js:169 root:2
+record-api.js:30 Received from "root:2" in "root"
+vendor-core-34edd2c749031eb9.min.js.br:54 [MultiplayerSession] connecting to wss://www.figma.com/api/multiplayer/ttN2MpD30oN0ZJPFjXVfPA?role=editor&tracking_session_id=fPouHW62vNuHe0Eq&version=151&recentReload=0&file-load-streaming-compression=&user-id=1630248545708257584&client_release=29244711f25109c85ce9dbbe4291938e16e94ea0&previousLoadMode=full&reconnect-key=c3a0aa84-889e-40ef-8258-97f1457bb88f&reconnect-sequence-number=496&initialFileVersion=106&previousLoadMode=full&incremental-loading-validation=0&force-dpl-journaled-reconnect=1
+record-api.js:66 Received locators in 'root:2' ['css=iframe.x1bpp3o7.xh8yej3.x5yr21d.x1s85apg']
+record-api.js:71 FrameLocation updated to {location: 'root:2', locators: Array(1)}
+content-script.js:194 Content Script re-injected or page loaded
+vendor-core-34edd2c749031eb9.min.js.br:54 [MultiplayerSession] Joining file version 106 (full reconnect)
+/make/ttN2MpD30oN0ZJPFjXVfPA/Quality-Assurance-Management-System?p=f&t=6VH8vXSZtDNvNRBH-0:1 Access to image at 'https://www.gravatar.com/avatar/d621a996fa23a61fb2e09461533a7c6c?size=240&default=https%3A%2F%2Fs3-alpha.figma.com%2Fstatic%2Fuser_p_v2.png?c=1' from origin 'https://www.figma.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+www.gravatar.com/avatar/d621a996fa23a61fb2e09461533a7c6c?size=240&default=https%3A%2F%2Fs3-alpha.figma.com%2Fstatic%2Fuser_p_v2.png?c=1:1  GET https://www.gravatar.com/avatar/d621a996fa23a61fb2e09461533a7c6c?size=240&default=https%3A%2F%2Fs3-alpha.figma.com%2Fstatic%2Fuser_p_v2.png?c=1 net::ERR_FAILED 302 (Found)
+Image
+(anonymous) @ figma_app-572b6953ac501540.min.js.br:50
+U @ figma_app-572b6953ac501540.min.js.br:50
+g @ figma_app-572b6953ac501540.min.js.br:194
+(anonymous) @ figma_app-572b6953ac501540.min.js.br:194
+(anonymous) @ figma_app-572b6953ac501540.min.js.br:194
+aB @ vendor-core-34edd2c749031eb9.min.js.br:11
+oD @ vendor-core-34edd2c749031eb9.min.js.br:11
+(anonymous) @ vendor-core-34edd2c749031eb9.min.js.br:11
+oB @ vendor-core-34edd2c749031eb9.min.js.br:11
+oP @ vendor-core-34edd2c749031eb9.min.js.br:11
+t5 @ vendor-core-34edd2c749031eb9.min.js.br:11
+(anonymous) @ vendor-core-34edd2c749031eb9.min.js.br:11
+requestAnimationFrame
+(anonymous) @ vendor-core-34edd2c749031eb9.min.js.br:63
+_R @ 8469-f47411c60eb019a8.min.js.br:183
+s @ 8469-f47411c60eb019a8.min.js.br:349
+requestAnimationFrame @ 8469-f47411c60eb019a8.min.js.br:186
+_Async_requestAnimationFrame @ compiled_wasm.js.br:2
+$wasm-function[1924] @ compiled_wasm.wasm.br:0x41793
+$wasm-function[30689] @ compiled_wasm.wasm.br:0x1b0e639
+$wasm-function[16368] @ compiled_wasm.wasm.br:0xd946c4
+$wasm-function[16829] @ compiled_wasm.wasm.br:0xe15333
+$wasm-function[25913] @ compiled_wasm.wasm.br:0x17f203d
+$wasm-function[16831] @ compiled_wasm.wasm.br:0xe178ed
+$wasm-function[24407] @ compiled_wasm.wasm.br:0x1651997
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf67352
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2
+Promise.then
+_JsValue_call @ compiled_wasm.js.br:2
+$wasm-function[7172] @ compiled_wasm.wasm.br:0x4a70d3
+$wasm-function[2988] @ compiled_wasm.wasm.br:0xd0b32
+$wasm-function[27048] @ compiled_wasm.wasm.br:0x1954504
+$wasm-function[5104] @ compiled_wasm.wasm.br:0x29daf5
+$wasm-function[17656] @ compiled_wasm.wasm.br:0xf672f2
+$wasm-function[17657] @ compiled_wasm.wasm.br:0xf67441
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[28453] @ compiled_wasm.wasm.br:0x1a52105
+$wasm-function[9095] @ compiled_wasm.wasm.br:0x6703e0
+$wasm-function[2803] @ compiled_wasm.wasm.br:0xa6f4f
+$wasm-function[42795] @ compiled_wasm.wasm.br:0x232e6f0
+$wasm-function[24864] @ compiled_wasm.wasm.br:0x16d2a27
+$wasm-function[38933] @ compiled_wasm.wasm.br:0x1f934da
+_tryCallback @ compiled_wasm.js.br:2
+(anonymous) @ compiled_wasm.js.br:2Understand this error
+code_components_preview_iframe-8d75d7a8602f83ab.min.js.br:106 [CriteriaValidator] Saving stories to localStorage, count: 6
+localStorage.getItem('aqms_stories')
+
+null
+Object.keys(localStorage)
+
+(30) ['aws_waf_token_challenge_attempts', 'figment:userId', 'mouse-scroll-wheel-zoom', 'right-click-drag-to-pan', 'last-used-editor-type', 'statsig.stable_id.501823423', 'figmake_selected_model_per_file', 'react-resizable-panels:figmake-comments-panels', 'react-resizable-panels:figmake-figmascope-panels', 'use-realms-for-plugin-dev', 'dev-handoff-preferences', 'desktop_local_fonts_modified_timestamp', 'aws_waf_referrer', 'dev-handoff-code-language', 'active-text-review-plugin', 'use-local-related-link-plugin', 'frecencyHistory', 'last-used-left-panel-tab', 'statsig.session_id.184042872', 'awswaf_token_refresh_timestamp', 'hot-reload-plugin-dev', 'STATSIG_LOCAL_STORAGE_STABLE_ID', 'figma.reporting', 'statsig.session_id.501823423', 'statsig.stable_id.184042872', 'figma.reporting.timestamp', 'figmake-active-canvas-pixel-preview', 'last-used-design-editor-type', 'figment:traits:1630248545708257584', 'active-canvas-pixel-preview']0: "aws_waf_token_challenge_attempts"1: "figment:userId"2: "mouse-scroll-wheel-zoom"3: "right-click-drag-to-pan"4: "last-used-editor-type"5: "statsig.stable_id.501823423"6: "figmake_selected_model_per_file"7: "react-resizable-panels:figmake-comments-panels"8: "react-resizable-panels:figmake-figmascope-panels"9: "use-realms-for-plugin-dev"10: "dev-handoff-preferences"11: "desktop_local_fonts_modified_timestamp"12: "aws_waf_referrer"13: "dev-handoff-code-language"14: "active-text-review-plugin"15: "use-local-related-link-plugin"16: "frecencyHistory"17: "last-used-left-panel-tab"18: "statsig.session_id.184042872"19: "awswaf_token_refresh_timestamp"20: "hot-reload-plugin-dev"21: "STATSIG_LOCAL_STORAGE_STABLE_ID"22: "figma.reporting"23: "statsig.session_id.501823423"24: "statsig.stable_id.184042872"25: "figma.reporting.timestamp"26: "figmake-active-canvas-pixel-preview"27: "last-used-design-editor-type"28: "figment:traits:1630248545708257584"29: "active-canvas-pixel-preview"length: 30[[Prototype]]: Array(0)
+2content-script.js:194 Content Script re-injected or page loaded
+record-api.js:169 root:4
+record-api.js:30 Received from "root:4" in "root"
+record-api.js:66 Received locators in 'root:4' ['css=div:nth-of-type(6) > iframe']
+record-api.js:71 FrameLocation updated to {location: 'root:4', locators: Array(1)}
+localStorage.setItem('test', 'hello'); localStorage.getItem('test')
+
+'hello'

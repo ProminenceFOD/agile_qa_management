@@ -1,0 +1,1634 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0\fswiss\fcharset0 Arial;}}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\f0\fs22
+\fs36\b AQMS - Agile Quality Management System\b0\fs22\par\par
+\fs32\b Comprehensive User Documentation\b0\fs22\par\par
+\par
+\\b Version:\\b0 1.0  \par
+\\b Last Updated:\\b0 May 7, 2026\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Table of Contents\b0\fs22\par\par
+\par
+\tab 1. [Overview](#overview)\par
+\tab 2. [Getting Started](#getting-started)\par
+\tab 3. [User Roles & Permissions](#user-roles--permissions)\par
+\tab 4. [Navigation & Interface](#navigation--interface)\par
+\tab 5. [Core Features](#core-features)\par
+\tab 6. [Detailed Feature Documentation](#detailed-feature-documentation)\par
+\tab 7. [AI-Powered Features](#ai-powered-features)\par
+\tab 8. [Data Management](#data-management)\par
+\tab 9. [Workflows & Best Practices](#workflows--best-practices)\par
+\tab 10. [Keyboard Shortcuts](#keyboard-shortcuts)\par
+\tab 11. [Troubleshooting](#troubleshooting)\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Overview\b0\fs22\par\par
+\par
+AQMS (Agile Quality Management System) is a comprehensive quality assurance and project management platform designed for agile teams. It provides end-to-end test management, bug tracking, sprint planning, and quality analytics.\par
+\par
+\fs28\b Key Capabilities\b0\fs22\par
+\tab\bullet **Story Management** - Define, track, and validate user stories with acceptance criteria\par
+\tab\bullet **Test Management** - Create, execute, and track test cases\par
+\tab\bullet **Bug Tracking** - Report, assign, and resolve defects\par
+\tab\bullet **Risk Assessment** - Identify and manage high-risk modules\par
+\tab\bullet **Sprint Planning** - Plan and track sprint progress\par
+\tab\bullet **Analytics & Reporting** - Comprehensive quality metrics and dashboards\par
+\tab\bullet **AI Recommendations** - Automated test recommendations based on project analysis\par
+\tab\bullet **Traceability** - Link stories, tests, and bugs for complete visibility\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Getting Started\b0\fs22\par\par
+\par
+\fs28\b Login\b0\fs22\par
+\tab 1. Navigate to the AQMS login page\par
+\tab 2. Enter your email and password\par
+\tab 3. Check "Remember Me" to stay logged in for 7 days\par
+\tab 4. Click "Login"\par
+\par
+\\b Demo Accounts:\\b0\par
+\tab\bullet QA Engineer: `qa@aqms.com` / `password123`\par
+\tab\bullet Product Manager: `pm@aqms.com` / `password123`\par
+\tab\bullet Scrum Master: `sm@aqms.com` / `password123`\par
+\par
+\fs28\b First-Time Setup\b0\fs22\par
+After logging in, you'll see the Dashboard which provides an overview of:\par
+\tab\bullet Total stories, bugs, and test cases\par
+\tab\bullet Test coverage statistics\par
+\tab\bullet Risk assessment summary\par
+\tab\bullet Recent activity\par
+\tab\bullet Sprint breakdown\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b User Roles & Permissions\b0\fs22\par\par
+\par
+\fs28\b QA Engineer\b0\fs22\par
+\\b Permissions:\\b0\par
+\tab\bullet Create, edit, and execute test cases\par
+\tab\bullet Report and track bugs\par
+\tab\bullet Sign off on story quality (QA Sign-Off)\par
+\tab\bullet View all quality metrics\par
+\tab\bullet Access AI test recommendations\par
+\par
+\\b Key Responsibilities:\\b0\par
+\tab\bullet Ensure acceptance criteria are testable\par
+\tab\bullet Execute test plans\par
+\tab\bullet Validate bug fixes\par
+\tab\bullet Maintain test coverage\par
+\par
+\fs28\b Product Manager\b0\fs22\par
+\\b Permissions:\\b0\par
+\tab\bullet Create and edit user stories\par
+\tab\bullet Approve stories (PM Approval)\par
+\tab\bullet View quality metrics\par
+\tab\bullet Prioritize backlog\par
+\tab\bullet Review sprint readiness\par
+\par
+\\b Key Responsibilities:\\b0\par
+\tab\bullet Define acceptance criteria\par
+\tab\bullet Approve stories for development\par
+\tab\bullet Review test coverage\par
+\tab\bullet Validate features meet requirements\par
+\par
+\fs28\b Scrum Master\b0\fs22\par
+\\b Permissions:\\b0\par
+\tab\bullet Create and manage sprints\par
+\tab\bullet View team performance metrics\par
+\tab\bullet Access all dashboards\par
+\tab\bullet Manage team assignments\par
+\par
+\\b Key Responsibilities:\\b0\par
+\tab\bullet Facilitate sprint planning\par
+\tab\bullet Track velocity and burndown\par
+\tab\bullet Remove blockers\par
+\tab\bullet Monitor team capacity\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Navigation & Interface\b0\fs22\par\par
+\par
+\fs28\b Sidebar Navigation\b0\fs22\par
+The left sidebar provides access to all AQMS features. Click the \\b « / »\\b0 button in the top-right of the sidebar to collapse/expand for more screen space.\par
+\par
+\\b Sections:\\b0\par
+\tab\bullet **Overview** - Dashboard, Kanban Board\par
+\tab\bullet **Quality Management** - Stories, Test Cases, Bugs, Risk Matrix, Burn-Down\par
+\tab\bullet **Analytics & Reports** - Analytics, Reports, Test History, Team Performance\par
+\tab\bullet **Planning & Workflow** - Sprints, Traceability, Release Readiness, AI Recommendations\par
+\tab\bullet **Administration** - Audit Trail, Bulk Operations, Data Management, Users\par
+\par
+\fs28\b Quick Features\b0\fs22\par
+\tab\bullet **Search Pages** - Use the search box at the top of the sidebar\par
+\tab\bullet **Quick Create** - Click the "Quick Create" button for fast story/bug/test creation\par
+\tab\bullet **Favorites** - Star pages for quick access (click star icon on menu items)\par
+\tab\bullet **Recent Pages** - Last 3 visited pages appear at the top\par
+\par
+\fs28\b Header\b0\fs22\par
+\tab\bullet **Page Title** - Shows current active page\par
+\tab\bullet **Theme Toggle** - Switch between light/dark mode (Ctrl+Shift+D)\par
+\tab\bullet **User Menu** - Access profile and logout\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Core Features\b0\fs22\par\par
+\par
+\fs28\b 1. Dashboard\b0\fs22\par
+\\b Purpose:\\b0 High-level overview of project health and quality metrics\par
+\par
+\\b What You See:\\b0\par
+\tab\bullet **Quality Metrics Cards:**\par
+  - Total Stories: All user stories in the system\par
+  - Total Bugs: All reported defects\par
+  - Total Test Cases: All test cases created\par
+  - Test Coverage: Percentage of stories with linked tests\par
+  - Test Pass Rate: Percentage of tests passing\par
+\par
+\tab\bullet **Risk Assessment Summary:**\par
+  - High Risk Modules: Critical areas requiring attention\par
+  - Medium Risk Modules: Moderate concern areas\par
+  - Low Risk Modules: Stable areas\par
+\par
+\tab\bullet **Sprint Breakdown Table:**\par
+  - Sprint name and goal\par
+  - Status (Planning, Active, Completed, Cancelled)\par
+  - Duration and dates\par
+  - Total stories and completion percentage\par
+  - Actions: View sprint details\par
+\par
+\\b How to Use:\\b0\par
+\tab\bullet Review daily for project health overview\par
+\tab\bullet Click on any metric card to drill down\par
+\tab\bullet Monitor test coverage to ensure quality standards\par
+\tab\bullet Track sprint progress\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 2. Kanban Board\b0\fs22\par
+\\b Purpose:\\b0 Visual workflow management for stories, bugs, and tasks\par
+\par
+\\b Columns:\\b0\par
+\tab\bullet **Backlog** - Items not yet started\par
+\tab\bullet **In Progress** - Active work\par
+\tab\bullet **In Testing** - Items under QA review\par
+\tab\bullet **Done** - Completed items\par
+\par
+\\b Features:\\b0\par
+\tab\bullet **Drag & Drop** - Move cards between columns to update status\par
+\tab\bullet **Card Details:**\par
+  - ID and title\par
+  - Priority badge (Critical, High, Medium, Low)\par
+  - Assignee initials\par
+  - Story points\par
+  - Linked bugs/tests indicators\par
+\par
+\\b Buttons & Actions:\\b0\par
+\tab\bullet **View All** - See all items in a column\par
+\tab\bullet **Create New** - Add story, bug, or task\par
+\tab\bullet **Card Click** - Open detailed view\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Filter by type: Stories, Bugs, All\par
+\tab\bullet Search by title or ID\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 3. Stories (Criteria Validator)\b0\fs22\par
+\\b Purpose:\\b0 Manage user stories and acceptance criteria\par
+\par
+\fs24\b Story List View\b0\fs22\par
+\\b Columns:\\b0\par
+\tab\bullet ID - Story identifier\par
+\tab\bullet Title - Story name\par
+\tab\bullet Priority - Critical/High/Medium/Low\par
+\tab\bullet Story Points - Effort estimate\par
+\tab\bullet Sprint - Associated sprint\par
+\tab\bullet QA Reviewer - Assigned QA engineer\par
+\tab\bullet Developer - Assigned developer\par
+\tab\bullet Tester - Assigned tester\par
+\tab\bullet Actions - View, Edit, Delete\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Search by title or ID\par
+\tab\bullet Filter by priority\par
+\tab\bullet Filter by sprint\par
+\tab\bullet Filter by status (Ready/Locked)\par
+\par
+\\b Items Per Page Dropdown:\\b0\par
+\tab\bullet Choose 10, 25, 50, or 100 stories per page\par
+\tab\bullet Located at top-left above the table\par
+\par
+\\b Status Indicators:\\b0\par
+\tab\bullet **Green Row** - Story is ready for development (has QA sign-off and PM approval)\par
+\tab\bullet **Red Row** - Story is locked/not ready (missing sign-offs)\par
+\tab\bullet **🔒 Lock Icon** - Developer/Tester fields are locked until story is approved\par
+\par
+\fs24\b Story Detail View\b0\fs22\par
+Click "View" on any story to see:\par
+\par
+\\b Header Section:\\b0\par
+\tab\bullet Story ID and title\par
+\tab\bullet Priority badge\par
+\tab\bullet Status indicators (✅ Acceptance Criteria, QA Sign-Off, PM Approval)\par
+\par
+\\b Acceptance Criteria:\\b0\par
+\tab\bullet Full criteria details\par
+\tab\bullet Given/When/Then format\par
+\par
+\\b Buttons:\\b0\par
+\tab\bullet **QA Sign-Off** (QA Engineers only) - Approve story quality\par
+\tab\bullet **PM Approval** (Product Managers only) - Approve story for development\par
+\tab\bullet **Edit** - Modify story details\par
+\tab\bullet **Back** - Return to list view\par
+\par
+\\b Assignments Section:\\b0\par
+\tab\bullet **QA Reviewer** - Assign QA engineer\par
+\tab\bullet **Developer** - Assign developer (unlocked after approvals)\par
+\tab\bullet **Tester** - Assign tester (unlocked after approvals)\par
+\tab\bullet Click "Assign" or "Change" to select from dropdown\par
+\par
+\\b Additional Information:\\b0\par
+\tab\bullet Story points\par
+\tab\bullet Sprint\par
+\tab\bullet Tags\par
+\tab\bullet Dependencies\par
+\tab\bullet Created/Updated dates\par
+\par
+\\b Linked Items:\\b0\par
+\tab\bullet **Linked Bugs:**\par
+  - Click bug ID to navigate to bug details\par
+  - Click "+ Link Bug" to associate existing bugs\par
+  - Click "Unlink" to remove association\par
+\par
+\tab\bullet **Linked Test Cases:**\par
+  - Click test case ID to navigate to test details\par
+  - Shows test status (Pass/Fail/Blocked/Not Run)\par
+  - Click "+ Link Test" to associate test cases\par
+  - Click "Unlink" to remove association\par
+\par
+\\b Comments & Activity:\\b0\par
+\tab\bullet Add comments for collaboration\par
+\tab\bullet View activity log of all changes\par
+\par
+\fs24\b Create/Edit Story\b0\fs22\par
+\\b Required Fields:\\b0\par
+\tab\bullet Title\par
+\tab\bullet Description\par
+\tab\bullet Acceptance Criteria (checkbox)\par
+\par
+\\b Optional Fields:\\b0\par
+\tab\bullet Priority (default: Medium)\par
+\tab\bullet Story Points\par
+\tab\bullet Sprint\par
+\tab\bullet Tags\par
+\tab\bullet Dependencies\par
+\par
+\\b Buttons:\\b0\par
+\tab\bullet **Save** - Create or update story\par
+\tab\bullet **Cancel** - Discard changes\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 4. Test Cases\b0\fs22\par
+\\b Purpose:\\b0 Create, manage, and execute test cases\par
+\par
+\fs24\b Test Cases List View\b0\fs22\par
+\\b Statistics Cards:\\b0\par
+\tab\bullet Total Tests\par
+\tab\bullet Pass (green)\par
+\tab\bullet Fail (red)\par
+\tab\bullet Blocked (orange)\par
+\tab\bullet Not Run (gray)\par
+\tab\bullet Pass Rate percentage\par
+\par
+\\b Table Columns:\\b0\par
+\tab\bullet Test ID\par
+\tab\bullet Title\par
+\tab\bullet Type (Functional, Regression, Integration, Smoke, Performance)\par
+\tab\bullet Priority (High, Medium, Low)\par
+\tab\bullet Status (Pass, Fail, Blocked, Not Run)\par
+\tab\bullet Assigned - Tester initials\par
+\tab\bullet Story - Linked story ID\par
+\tab\bullet Last Run - Date of last execution\par
+\tab\bullet Actions - Run, View, Edit\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Search by title or ID\par
+\tab\bullet Filter by status\par
+\tab\bullet Filter by type\par
+\tab\bullet Items per page: 10, 25, 50, 100\par
+\par
+\\b Action Buttons:\\b0\par
+\tab\bullet **Run** (Green) - Execute test case\par
+\tab\bullet **View** (Blue) - See test details\par
+\tab\bullet **Edit** (Gray) - Modify test case\par
+\par
+\fs24\b Create Test Case\b0\fs22\par
+\\b Button:\\b0 Green "Create Test Case" button at top-right\par
+\par
+\\b Required Fields:\\b0\par
+\tab\bullet Title\par
+\tab\bullet Description\par
+\tab\bullet Type (Functional, Regression, etc.)\par
+\tab\bullet Test Steps (add multiple steps)\par
+\tab\bullet Expected Results (for each step)\par
+\par
+\\b Optional Fields:\\b0\par
+\tab\bullet Priority\par
+\tab\bullet Linked Story\par
+\tab\bullet Assigned To\par
+\par
+\fs24\b Execute Test Case\b0\fs22\par
+Click "Run" to execute a test:\par
+\par
+\\b Execution Screen:\\b0\par
+\tab\bullet Test case details\par
+\tab\bullet Step-by-step execution\par
+\tab\bullet For each step:\par
+  - Mark as Pass/Fail/Blocked\par
+  - Add notes\par
+\tab\bullet Overall result selection\par
+\tab\bullet **Complete** - Finish execution\par
+\tab\bullet **Report Bug** - Create bug if test fails\par
+\tab\bullet **Cancel** - Stop without saving\par
+\par
+\fs24\b Test Case Details\b0\fs22\par
+Click "View" to see:\par
+\tab\bullet Full test case information\par
+\tab\bullet Execution history\par
+\tab\bullet Linked story\par
+\tab\bullet Assigned tester\par
+\tab\bullet All test steps and expected results\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 5. Bugs (Bug Tracker)\b0\fs22\par
+\\b Purpose:\\b0 Report, track, and resolve defects\par
+\par
+\fs24\b Bug List View\b0\fs22\par
+\\b Statistics Cards:\\b0\par
+\tab\bullet Total Bugs\par
+\tab\bullet Open\par
+\tab\bullet In Progress\par
+\tab\bullet Fixed\par
+\tab\bullet Critical Severity count\par
+\tab\bullet Average Resolution Time\par
+\par
+\\b Table Columns:\\b0\par
+\tab\bullet Bug ID\par
+\tab\bullet Title\par
+\tab\bullet Severity (Critical, High, Medium, Low)\par
+\tab\bullet Status (Open, In Progress, Fixed, Verified, Closed, Reopened)\par
+\tab\bullet Story - Linked story ID\par
+\tab\bullet Assignee - Developer/Tester\par
+\tab\bullet Age - Days since reported\par
+\tab\bullet Actions - View, Edit\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Search by title or ID\par
+\tab\bullet Filter by severity\par
+\tab\bullet Filter by status\par
+\tab\bullet Filter by linked story\par
+\tab\bullet Items per page: 10, 25, 50, 100\par
+\par
+\\b Color Coding:\\b0\par
+\tab\bullet Red badge - Critical\par
+\tab\bullet Orange badge - High\par
+\tab\bullet Yellow badge - Medium\par
+\tab\bullet Blue badge - Low\par
+\par
+\fs24\b Report Bug\b0\fs22\par
+\\b Button:\\b0 Green "Report Bug" button at top-right\par
+\par
+\\b Required Fields:\\b0\par
+\tab\bullet Title\par
+\tab\bullet Description\par
+\tab\bullet Severity\par
+\tab\bullet Steps to Reproduce (multiple steps)\par
+\tab\bullet Expected Behavior\par
+\tab\bullet Actual Behavior\par
+\par
+\\b Optional Fields:\\b0\par
+\tab\bullet Linked Story\par
+\tab\bullet Environment (browser, OS, etc.)\par
+\tab\bullet Assignee\par
+\tab\bullet Attachments\par
+\par
+\\b Auto-Fill from Test:\\b0\par
+When reporting from a failed test execution, pre-fills:\par
+\tab\bullet Test case information\par
+\tab\bullet Execution notes\par
+\tab\bullet Linked story\par
+\par
+\fs24\b Bug Detail View\b0\fs22\par
+Click "View" to see:\par
+\tab\bullet Bug ID and title\par
+\tab\bullet Severity and status badges\par
+\tab\bullet Full description\par
+\tab\bullet Reproduction steps\par
+\tab\bullet Expected vs Actual behavior\par
+\tab\bullet Environment details\par
+\tab\bullet Assignee information\par
+\tab\bullet Resolution details (if fixed)\par
+\tab\bullet Created/Resolved dates\par
+\tab\bullet Comments and activity log\par
+\par
+\\b Actions:\\b0\par
+\tab\bullet **Edit** - Update bug details\par
+\tab\bullet **Change Status** - Move through workflow\par
+\tab\bullet **Assign** - Assign to developer/tester\par
+\tab\bullet **Link to Story** - Associate with user story\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 6. Risk Matrix\b0\fs22\par
+\\b Purpose:\\b0 Identify and assess module risk levels\par
+\par
+\fs24\b Matrix View (Default)\b0\fs22\par
+\\b Visual Scatter Plot:\\b0\par
+\tab\bullet X-axis: Defect Frequency (0-10)\par
+\tab\bullet Y-axis: Business Impact (0-10)\par
+\tab\bullet Each dot represents a module\par
+\par
+\\b Risk Quadrants:\\b0\par
+\tab\bullet Top-Right (Red): High Risk - High defects + High impact\par
+\tab\bullet Top-Left (Yellow): Medium Risk - Low defects + High impact\par
+\tab\bullet Bottom-Right (Orange): Medium Risk - High defects + Low impact\par
+\tab\bullet Bottom-Left (Green): Low Risk - Low defects + Low impact\par
+\par
+\\b Hover over dots to see:\\b0\par
+\tab\bullet Module name\par
+\tab\bullet Risk level\par
+\tab\bullet Testing protocol\par
+\par
+\\b Click dot to view module details\\b0\par
+\par
+\fs24\b Table View\b0\fs22\par
+Click "List View" button to switch to table format\par
+\par
+\\b Columns:\\b0\par
+\tab\bullet Module ID\par
+\tab\bullet Module Name\par
+\tab\bullet Description\par
+\tab\bullet Defect Frequency (with bar chart)\par
+\tab\bullet Business Impact (with bar chart)\par
+\tab\bullet Risk Level (badge)\par
+\tab\bullet Testing Protocol\par
+\tab\bullet Actions - View, Edit\par
+\par
+\\b Testing Protocols:\\b0\par
+\tab\bullet **Full Regression** - High risk modules\par
+\tab\bullet **Focused Functional** - Medium risk\par
+\tab\bullet **Visual/Smoke Check** - Low risk\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Sort by: Risk, Defect Frequency, Business Impact\par
+\tab\bullet Filter by risk level\par
+\par
+\fs24\b Create/Edit Module\b0\fs22\par
+\\b Button:\\b0 "+ Add Module" button at top-right\par
+\par
+\\b Required Fields:\\b0\par
+\tab\bullet Module Name\par
+\tab\bullet Description\par
+\tab\bullet Defect Frequency (0-10 scale)\par
+\tab\bullet Business Impact (0-10 scale)\par
+\par
+\\b Auto-Calculated:\\b0\par
+\tab\bullet Risk Level (based on frequency + impact)\par
+\tab\bullet Testing Protocol (based on risk level)\par
+\par
+\\b Buttons:\\b0\par
+\tab\bullet **Save** - Create or update module\par
+\tab\bullet **Cancel** - Discard changes\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 7. Burn-Down Chart\b0\fs22\par
+\\b Purpose:\\b0 Track quality progress over time\par
+\par
+\\b Chart Display:\\b0\par
+\tab\bullet X-axis: Time (sprint days or dates)\par
+\tab\bullet Y-axis: Work remaining\par
+\tab\bullet Blue line: Ideal burn-down\par
+\tab\bullet Red line: Actual progress\par
+\par
+\\b Quality States:\\b0\par
+\tab\bullet **Not Ready** - Missing acceptance criteria, sign-offs\par
+\tab\bullet **Ready** - Approved and ready for dev\par
+\tab\bullet **In Development** - Being worked on\par
+\tab\bullet **In Testing** - Under QA review\par
+\tab\bullet **Done** - Completed\par
+\par
+\\b Story Table:\\b0\par
+Shows all stories with:\par
+\tab\bullet Story ID and title\par
+\tab\bullet Current quality state (color-coded badge)\par
+\tab\bullet Actions to move states\par
+\par
+\\b How It Works:\\b0\par
+\tab\bullet Stories move through quality states\par
+\tab\bullet Chart shows reduction in "not ready" items\par
+\tab\bullet Goal: All stories reach "Done" state by sprint end\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 8. Analytics Dashboard\b0\fs22\par
+\\b Purpose:\\b0 Comprehensive quality metrics and trends\par
+\par
+\\b Available Charts:\\b0\par
+\par
+\tab 1. **Test Execution Trends**\par
+   - Line chart showing Pass/Fail/Blocked over time\par
+   - Daily or sprint-based views\par
+\par
+\tab 2. **Bug Severity Distribution**\par
+   - Pie chart of Critical/High/Medium/Low bugs\par
+   - Click slices to filter\par
+\par
+\tab 3. **Test Coverage by Module**\par
+   - Bar chart showing coverage percentage per module\par
+   - Identify gaps\par
+\par
+\tab 4. **Defect Density**\par
+   - Shows bugs per module\par
+   - Helps prioritize testing\par
+\par
+\tab 5. **Sprint Performance Metrics Table**\par
+   - Planned vs actual velocity\par
+   - Test pass rate per sprint\par
+   - Bug discovery rate\par
+   - Completion percentage\par
+\par
+\\b Date Range Filters:\\b0\par
+\tab\bullet Last 7 days\par
+\tab\bullet Last 30 days\par
+\tab\bullet Last 90 days\par
+\tab\bullet Custom range\par
+\par
+\\b Export Options:\\b0\par
+\tab\bullet Download as CSV\par
+\tab\bullet Download as PDF\par
+\tab\bullet Print report\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 9. Sprints Management\b0\fs22\par
+\\b Purpose:\\b0 Plan and track sprint execution\par
+\par
+\fs24\b Sprint List View\b0\fs22\par
+\\b Columns:\\b0\par
+\tab\bullet Sprint name\par
+\tab\bullet Goal/description\par
+\tab\bullet Status (Planning, Active, Completed, Cancelled)\par
+\tab\bullet Duration (start and end dates)\par
+\tab\bullet Total stories\par
+\tab\bullet Completed stories\par
+\tab\bullet Completion percentage\par
+\tab\bullet Actions - View, Edit, Delete\par
+\par
+\\b Sprint Status Colors:\\b0\par
+\tab\bullet Blue - Planning\par
+\tab\bullet Green - Active\par
+\tab\bullet Gray - Completed\par
+\tab\bullet Red - Cancelled\par
+\par
+\fs24\b Create Sprint\b0\fs22\par
+\\b Button:\\b0 "+ Create Sprint" at top-right\par
+\par
+\\b Required Fields:\\b0\par
+\tab\bullet Sprint Name (e.g., "Sprint 12")\par
+\tab\bullet Sprint Goal\par
+\tab\bullet Start Date\par
+\tab\bullet End Date\par
+\par
+\\b Optional Fields:\\b0\par
+\tab\bullet Team capacity\par
+\tab\bullet Story assignments\par
+\par
+\fs24\b Sprint Detail View\b0\fs22\par
+Click "View" on a sprint to see:\par
+\par
+\\b Summary:\\b0\par
+\tab\bullet Sprint goal\par
+\tab\bullet Dates and duration\par
+\tab\bullet Status\par
+\tab\bullet Velocity metrics\par
+\par
+\\b Stories in Sprint:\\b0\par
+\tab\bullet All assigned stories\par
+\tab\bullet Status of each story\par
+\tab\bullet Story points\par
+\tab\bullet Progress indicators\par
+\par
+\\b Burndown Chart:\\b0\par
+\tab\bullet Daily progress tracking\par
+\tab\bullet Ideal vs actual lines\par
+\par
+\\b Actions:\\b0\par
+\tab\bullet **Start Sprint** - Activate sprint\par
+\tab\bullet **Complete Sprint** - Mark as done\par
+\tab\bullet **Add Stories** - Assign stories to sprint\par
+\tab\bullet **Edit** - Modify sprint details\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 10. Test Execution History\b0\fs22\par
+\\b Purpose:\\b0 View past test executions and results\par
+\par
+\\b Table Columns:\\b0\par
+\tab\bullet Execution Date/Time\par
+\tab\bullet Test Case ID and Title\par
+\tab\bullet Executed By (tester name)\par
+\tab\bullet Result (Pass/Fail/Blocked)\par
+\tab\bullet Duration (execution time in minutes)\par
+\tab\bullet Notes/Comments\par
+\tab\bullet Linked Bug (if test failed)\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Date range\par
+\tab\bullet Test case\par
+\tab\bullet Executed by\par
+\tab\bullet Result status\par
+\par
+\\b Features:\\b0\par
+\tab\bullet See complete execution history\par
+\tab\bullet Track test stability over time\par
+\tab\bullet Identify flaky tests\par
+\tab\bullet Review execution notes\par
+\par
+\\b Click on execution to see:\\b0\par
+\tab\bullet Full test case details\par
+\tab\bullet Step-by-step results\par
+\tab\bullet Screenshots/attachments\par
+\tab\bullet Related bugs\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 11. Traceability Matrix\b0\fs22\par
+\\b Purpose:\\b0 Map relationships between requirements, tests, and bugs\par
+\par
+\\b Matrix View:\\b0\par
+Rows = User Stories\par
+Columns = Test Cases\par
+Cells = Linked (✓) or Not Linked (-)\par
+\par
+\\b Features:\\b0\par
+\tab\bullet **Quick Linking** - Click cell to link/unlink\par
+\tab\bullet **Coverage View** - See which stories lack tests\par
+\tab\bullet **Gap Analysis** - Identify untested requirements\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Filter by sprint\par
+\tab\bullet Filter by priority\par
+\tab\bullet Show only gaps\par
+\par
+\\b Color Coding:\\b0\par
+\tab\bullet Green row - Full coverage (all tests linked)\par
+\tab\bullet Yellow row - Partial coverage\par
+\tab\bullet Red row - No coverage\par
+\par
+\\b Export:\\b0\par
+\tab\bullet Download complete traceability report\par
+\tab\bullet Includes all linkages and gaps\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 12. Release Readiness\b0\fs22\par
+\\b Purpose:\\b0 Assess readiness for production release\par
+\par
+\\b Readiness Checks:\\b0\par
+\par
+\tab 1. **Story Completion**\par
+   - % of stories in "Done" state\par
+   - Outstanding stories\par
+   - Blocked stories\par
+\par
+\tab 2. **Test Coverage**\par
+   - % of stories with tests\par
+   - Coverage by priority\par
+   - Gap analysis\par
+\par
+\tab 3. **Test Execution**\par
+   - % tests executed\par
+   - Pass rate\par
+   - Critical test status\par
+\par
+\tab 4. **Bug Status**\par
+   - Open critical bugs\par
+   - Open high bugs\par
+   - Unresolved blockers\par
+\par
+\tab 5. **Sign-Offs**\par
+   - QA sign-off completion\par
+   - PM approval status\par
+   - Stakeholder approvals\par
+\par
+\\b Overall Readiness Score:\\b0\par
+\tab\bullet 0-60%: Not Ready (Red)\par
+\tab\bullet 61-85%: At Risk (Yellow)\par
+\tab\bullet 86-100%: Ready (Green)\par
+\par
+\\b Blockers Section:\\b0\par
+Lists all items preventing release:\par
+\tab\bullet Critical bugs\par
+\tab\bullet Missing test coverage\par
+\tab\bullet Pending approvals\par
+\tab\bullet Failed tests\par
+\par
+\\b Actions:\\b0\par
+\tab\bullet **Generate Report** - Create release report\par
+\tab\bullet **Export** - Download as PDF\par
+\tab\bullet **Mark Ready** - Approve for release\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 13. Team Performance\b0\fs22\par
+\\b Purpose:\\b0 Track individual and team metrics\par
+\par
+\\b Individual Metrics:\\b0\par
+\tab\bullet Tests executed\par
+\tab\bullet Bugs found\par
+\tab\bullet Stories completed\par
+\tab\bullet Average quality score\par
+\par
+\\b Team Metrics:\\b0\par
+\tab\bullet Total velocity\par
+\tab\bullet Test coverage trend\par
+\tab\bullet Bug discovery rate\par
+\tab\bullet Resolution time\par
+\par
+\\b Quality Metrics Comparison Table:\\b0\par
+Shows for each team member:\par
+\tab\bullet Tests created\par
+\tab\bullet Tests executed\par
+\tab\bullet Bugs reported\par
+\tab\bullet Test pass rate\par
+\tab\bullet Average defect age\par
+\par
+\\b Productivity Metrics Table:\\b0\par
+\tab\bullet Stories completed\par
+\tab\bullet Story points delivered\par
+\tab\bullet Average cycle time\par
+\tab\bullet Throughput\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Date range\par
+\tab\bullet Team member\par
+\tab\bullet Sprint\par
+\par
+\\b Charts:\\b0\par
+\tab\bullet Velocity trend\par
+\tab\bullet Quality score over time\par
+\tab\bullet Workload distribution\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 14. AI Test Recommendations\b0\fs22\par
+\\b Purpose:\\b0 Get automated test suggestions based on project analysis\par
+\par
+\fs24\b How It Works\b0\fs22\par
+The AI analyzes your project data every time you open the page:\par
+\tab\bullet **Stories** without test cases\par
+\tab\bullet **Modules** with high risk or defect frequency\par
+\tab\bullet **Bugs** indicating test gaps\par
+\tab\bullet **Test coverage** patterns\par
+\par
+\fs24\b Recommendation Types\b0\fs22\par
+\par
+\tab 1. **Coverage Gap**\par
+   - \\b What:\\b0 Stories without any linked test cases\par
+   - \\b Priority:\\b0 High (if story in "In Testing") or Medium\par
+   - \\b Why:\\b0 Untested features pose quality risks\par
+   - \\b Suggested Tests:\\b0 3-4 specific test cases\par
+\par
+\tab 2. **Risk-Based Testing**\par
+   - \\b What:\\b0 High-risk modules need regression tests\par
+   - \\b Priority:\\b0 Critical\par
+   - \\b Why:\\b0 High defect frequency + high business impact\par
+   - \\b Suggested Tests:\\b0 Comprehensive regression suite\par
+\par
+\tab 3. **Bug Pattern Analysis**\par
+   - \\b What:\\b0 Stories with 2+ bugs indicate test gaps\par
+   - \\b Priority:\\b0 Critical (if bugs are critical) or High\par
+   - \\b Why:\\b0 Pattern suggests insufficient testing\par
+   - \\b Suggested Tests:\\b0 Negative tests, edge cases, exploratory tests\par
+\par
+\tab 4. **Regression Testing**\par
+   - \\b What:\\b0 Recently resolved bugs need regression tests\par
+   - \\b Priority:\\b0 High\par
+   - \\b Why:\\b0 Prevent bug regression\par
+   - \\b Suggested Tests:\\b0 Bug reproduction tests\par
+\par
+\tab 5. **New Feature Testing**\par
+   - \\b What:\\b0 Stories in "Ready for Dev" or "In Testing"\par
+   - \\b Priority:\\b0 High\par
+   - \\b Why:\\b0 New features need immediate test coverage\par
+   - \\b Suggested Tests:\\b0 Feature-specific test cases\par
+\par
+\tab 6. **Smoke Testing**\par
+   - \\b What:\\b0 Critical modules (business impact ≥ 8/10)\par
+   - \\b Priority:\\b0 High\par
+   - \\b Why:\\b0 Fast validation of critical paths\par
+   - \\b Suggested Tests:\\b0 Basic health checks\par
+\par
+\fs24\b Recommendation Card\b0\fs22\par
+Each recommendation shows:\par
+\tab\bullet **Recommendation ID** (e.g., REC-001)\par
+\tab\bullet **Priority Badge** (Critical/High/Medium/Low)\par
+\tab\bullet **Type Badge** (Coverage Gap, Risk-Based, etc.)\par
+\tab\bullet **🤖 AI Generated** badge\par
+\tab\bullet **Linked Story/Module** (clickable to navigate)\par
+\tab\bullet **Reason** - Why this recommendation exists\par
+\tab\bullet **Suggested Test Cases** - 3-4 specific tests to create\par
+\tab\bullet **Estimated Effort** - Time to complete (e.g., "2-4 hours")\par
+\par
+\fs24\b Actions\b0\fs22\par
+\par
+\\b Create Test Cases Button:\\b0\par
+\tab\bullet Automatically creates test cases from all suggested tests\par
+\tab\bullet Sets appropriate type (Functional, Regression, Integration)\par
+\tab\bullet Links to the associated story\par
+\tab\bullet Creates as "Draft" status\par
+\tab\bullet Shows success toast with count\par
+\par
+\\b View Details Button:\\b0\par
+\tab\bullet Expands to show:\par
+  - Recommendation ID\par
+  - Auto-generated status\par
+  - Linked story/module IDs\par
+  - Number of test cases to create\par
+\tab\bullet Click again to collapse\par
+\par
+\\b Dismiss Button:\\b0\par
+\tab\bullet Removes recommendation from current view\par
+\tab\bullet Toast confirmation shown\par
+\tab\bullet Recommendation returns after page refresh\par
+\par
+\fs24\b Filters\b0\fs22\par
+\par
+\\b Priority Filter:\\b0\par
+\tab\bullet All Priorities\par
+\tab\bullet Critical only\par
+\tab\bullet High only\par
+\tab\bullet Medium only\par
+\tab\bullet Low only\par
+\par
+\\b Type Filter:\\b0\par
+\tab\bullet All Types\par
+\tab\bullet Coverage Gaps\par
+\tab\bullet Risk-Based\par
+\tab\bullet Regression\par
+\tab\bullet New Features\par
+\tab\bullet Bug Patterns\par
+\par
+\\b Auto-Generated Only Checkbox:\\b0\par
+\tab\bullet When checked: Shows only AI-generated recommendations\par
+\tab\bullet When unchecked: Shows all (currently all are AI-generated)\par
+\par
+\\b Result Count:\\b0\par
+Shows "Showing X of Y recommendations"\par
+\par
+\fs24\b Best Practices\b0\fs22\par
+\tab\bullet Review recommendations daily\par
+\tab\bullet Prioritize Critical and High recommendations\par
+\tab\bullet Click linked stories/modules to understand context\par
+\tab\bullet Create test cases in batches\par
+\tab\bullet Dismiss only after addressing the recommendation\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 15. Audit Trail\b0\fs22\par
+\\b Purpose:\\b0 Track all system changes for compliance and debugging\par
+\par
+\\b Log Entries Show:\\b0\par
+\tab\bullet Timestamp (date and time)\par
+\tab\bullet User who made the change\par
+\tab\bullet Action type (Create, Update, Delete, Execute, etc.)\par
+\tab\bullet Entity affected (Story, Bug, Test Case, etc.)\par
+\tab\bullet Entity ID\par
+\tab\bullet Change details\par
+\tab\bullet IP address (optional)\par
+\par
+\\b Filters:\\b0\par
+\tab\bullet Date range\par
+\tab\bullet User\par
+\tab\bullet Action type\par
+\tab\bullet Entity type\par
+\tab\bullet Search by entity ID\par
+\par
+\\b Use Cases:\\b0\par
+\tab\bullet Track who changed what and when\par
+\tab\bullet Compliance auditing\par
+\tab\bullet Debug data issues\par
+\tab\bullet Review user activity\par
+\par
+\\b Export:\\b0\par
+\tab\bullet Download audit log as CSV\par
+\tab\bullet Includes all filtered entries\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 16. Bulk Operations\b0\fs22\par
+\\b Purpose:\\b0 Perform actions on multiple items simultaneously\par
+\par
+\\b Supported Operations:\\b0\par
+\par
+\tab 1. **Bulk Status Update**\par
+   - Select multiple stories/bugs/tests\par
+   - Change status for all at once\par
+\par
+\tab 2. **Bulk Assignment**\par
+   - Assign multiple items to same person\par
+   - Reassign work quickly\par
+\par
+\tab 3. **Bulk Link**\par
+   - Link multiple tests to a story\par
+   - Link multiple bugs to a story\par
+\par
+\tab 4. **Bulk Delete**\par
+   - Delete multiple items (with confirmation)\par
+   - Clean up test data\par
+\par
+\tab 5. **Bulk Tag**\par
+   - Add tags to multiple items\par
+   - Organize by category\par
+\par
+\tab 6. **Bulk Export**\par
+   - Export selected items to CSV/Excel\par
+   - Create custom reports\par
+\par
+\\b How to Use:\\b0\par
+\tab 1. Select item type (Stories, Bugs, or Tests)\par
+\tab 2. Use checkboxes to select items\par
+\tab 3. Choose operation from dropdown\par
+\tab 4. Configure operation parameters\par
+\tab 5. Click "Execute" to perform\par
+\tab 6. Review confirmation and results\par
+\par
+\\b Safety Features:\\b0\par
+\tab\bullet Confirmation dialog for destructive operations\par
+\tab\bullet Preview changes before applying\par
+\tab\bullet Undo option (where supported)\par
+\tab\bullet Audit trail of all bulk operations\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 17. Data Management\b0\fs22\par
+\\b Purpose:\\b0 Import, export, and manage system data\par
+\par
+\\b Features:\\b0\par
+\par
+\tab 1. **Import Data**\par
+   - Upload CSV files\par
+   - Supported: Stories, Bugs, Test Cases\par
+   - Template download available\par
+   - Validation before import\par
+   - Error report for failed rows\par
+\par
+\tab 2. **Export Data**\par
+   - Download all data as CSV/Excel\par
+   - Select entities to export\par
+   - Include relationships\par
+   - Schedule recurring exports\par
+\par
+\tab 3. **Backup/Restore**\par
+   - Create full system backup\par
+   - Restore from backup file\par
+   - Point-in-time recovery\par
+\par
+\tab 4. **Data Cleanup**\par
+   - Delete old/archived data\par
+   - Remove orphaned records\par
+   - Optimize database\par
+\par
+\\b Import Process:\\b0\par
+\tab 1. Download template\par
+\tab 2. Fill in data\par
+\tab 3. Upload file\par
+\tab 4. Review validation results\par
+\tab 5. Confirm import\par
+\tab 6. Review import log\par
+\par
+\\b Export Process:\\b0\par
+\tab 1. Select entities\par
+\tab 2. Choose format (CSV/Excel/JSON)\par
+\tab 3. Apply filters (optional)\par
+\tab 4. Download file\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 18. User Management\b0\fs22\par
+\\b Purpose:\\b0 Manage team members and permissions\par
+\par
+\fs24\b Users Tab\b0\fs22\par
+\\b Table Columns:\\b0\par
+\tab\bullet User name and email\par
+\tab\bullet Role (QA Engineer, Product Manager, Scrum Master)\par
+\tab\bullet Title/Position\par
+\tab\bullet Authority level (Can sign off QA/PM)\par
+\tab\bullet Status (Active/Inactive)\par
+\tab\bullet Join Date\par
+\tab\bullet Actions - Edit, Deactivate\par
+\par
+\\b Add User:\\b0\par
+\tab 1. Click "+ Invite User"\par
+\tab 2. Enter email\par
+\tab 3. Select role\par
+\tab 4. Set permissions\par
+\tab 5. Send invitation\par
+\par
+\\b Edit User:\\b0\par
+\tab\bullet Update role\par
+\tab\bullet Change permissions\par
+\tab\bullet Modify authority levels\par
+\tab\bullet Deactivate account\par
+\par
+\fs24\b Invitations Tab\b0\fs22\par
+\\b Pending Invitations:\\b0\par
+\tab\bullet Email address\par
+\tab\bullet Role\par
+\tab\bullet Sent by\par
+\tab\bullet Status (Pending/Accepted/Expired)\par
+\tab\bullet Sent date\par
+\tab\bullet Actions - Resend, Revoke\par
+\par
+\\b Invitation Process:\\b0\par
+\tab 1. User receives email\par
+\tab 2. Clicks invitation link\par
+\tab 3. Sets password\par
+\tab 4. Account activated\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs28\b 19. Reports\b0\fs22\par
+\\b Purpose:\\b0 Generate custom quality reports\par
+\par
+\\b Available Reports:\\b0\par
+\par
+\tab 1. **Test Coverage Report**\par
+   - Coverage by story\par
+   - Coverage by module\par
+   - Coverage by priority\par
+   - Gap analysis\par
+\par
+\tab 2. **Bug Report**\par
+   - Open bugs by severity\par
+   - Resolution time analysis\par
+   - Bug trends\par
+   - Top bug producers/fixers\par
+\par
+\tab 3. **Sprint Report**\par
+   - Velocity tracking\par
+   - Burndown analysis\par
+   - Completion rate\par
+   - Quality metrics\par
+\par
+\tab 4. **Quality Summary**\par
+   - Overall quality score\par
+   - Test pass rate\par
+   - Bug density\par
+   - Risk assessment\par
+\par
+\tab 5. **Custom Report Builder**\par
+   - Select metrics\par
+   - Choose date range\par
+   - Apply filters\par
+   - Save templates\par
+\par
+\\b Report Features:\\b0\par
+\tab\bullet Interactive charts\par
+\tab\bullet Drill-down capability\par
+\tab\bullet Export to PDF/Excel\par
+\tab\bullet Schedule email delivery\par
+\tab\bullet Share with stakeholders\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b AI-Powered Features\b0\fs22\par\par
+\par
+\fs28\b AI Test Recommendations\b0\fs22\par
+\\b Technology:\\b0 Pattern recognition and risk analysis algorithms\par
+\par
+\\b Data Sources:\\b0\par
+\tab\bullet Story status and metadata\par
+\tab\bullet Test case coverage\par
+\tab\bullet Bug history and patterns\par
+\tab\bullet Module risk scores\par
+\tab\bullet Sprint progress\par
+\par
+\\b Analysis Process:\\b0\par
+\tab 1. **Coverage Analysis**\par
+   - Identifies stories without tests\par
+   - Calculates coverage gaps by priority\par
+\par
+\tab 2. **Risk Assessment**\par
+   - Analyzes module defect frequency\par
+   - Weighs business impact\par
+   - Recommends regression testing\par
+\par
+\tab 3. **Pattern Detection**\par
+   - Finds stories with multiple bugs\par
+   - Identifies testing weaknesses\par
+   - Suggests targeted tests\par
+\par
+\tab 4. **Regression Planning**\par
+   - Tracks resolved bugs\par
+   - Recommends regression tests\par
+   - Prevents bug recurrence\par
+\par
+\tab 5. **Feature Analysis**\par
+   - Monitors new features\par
+   - Suggests appropriate test types\par
+   - Estimates effort\par
+\par
+\tab 6. **Critical Path Testing**\par
+   - Identifies critical modules\par
+   - Recommends smoke tests\par
+   - Ensures rapid validation\par
+\par
+\\b Recommendation Quality:\\b0\par
+\tab\bullet Updates in real-time as data changes\par
+\tab\bullet Learns from your test patterns\par
+\tab\bullet Prioritizes based on risk\par
+\tab\bullet Provides specific, actionable suggestions\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Data Management\b0\fs22\par\par
+\par
+\fs28\b Data Storage\b0\fs22\par
+\\b Backend:\\b0 Supabase (PostgreSQL database)\par
+\\b Local Caching:\\b0 Browser localStorage for performance\par
+\\b Session Management:\\b0 Cookie-based with 7-day expiry\par
+\par
+\fs28\b Key-Value Store\b0\fs22\par
+\\b Table:\\b0 `kv_store_5a760dac`\par
+\\b Structure:\\b0\par
+\tab\bullet Key: Unique identifier (e.g., "aqms_stories")\par
+\tab\bullet Value: JSON data\par
+\tab\bullet Updated: Timestamp\par
+\par
+\\b Stored Data:\\b0\par
+\tab\bullet `aqms_stories` - User stories\par
+\tab\bullet `aqms_bugs` - Bug reports\par
+\tab\bullet `aqms_test_cases` - Test cases\par
+\tab\bullet `aqms_modules` - Risk modules\par
+\tab\bullet `aqms_users` - User accounts\par
+\tab\bullet `aqms_sprints` - Sprint data\par
+\par
+\fs28\b Data Synchronization\b0\fs22\par
+\\b How It Works:\\b0\par
+\tab 1. Browser loads data from Supabase on page load\par
+\tab 2. Local cache stores copy for fast access\par
+\tab 3. Changes saved to both cache and Supabase\par
+\tab 4. Cache expires after timeout or page refresh\par
+\tab 5. Multi-user updates sync via polling (2-second interval)\par
+\par
+\\b Offline Mode:\\b0\par
+\tab\bullet Reads from cache when server unavailable\par
+\tab\bullet Shows toast warning: "Cannot reach server"\par
+\tab\bullet Writes queued until connection restored\par
+\par
+\\b Session Persistence:\\b0\par
+\tab\bullet Login state cached for 7 days\par
+\tab\bullet Session validated on each page load\par
+\tab\bullet Expired sessions redirect to login\par
+\par
+\fs28\b Data Backup\b0\fs22\par
+\\b Automatic:\\b0\par
+\tab\bullet Supabase performs daily backups\par
+\tab\bullet Point-in-time recovery available\par
+\par
+\\b Manual:\\b0\par
+\tab\bullet Export all data via Data Management page\par
+\tab\bullet Download as CSV/JSON\par
+\tab\bullet Store backups externally\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Workflows & Best Practices\b0\fs22\par\par
+\par
+\fs28\b Story Development Workflow\b0\fs22\par
+\par
+\tab 1. **Product Manager Creates Story**\par
+   - Write clear title and description\par
+   - Define acceptance criteria\par
+   - Set priority and story points\par
+   - Add to sprint (optional)\par
+\par
+\tab 2. **QA Engineer Reviews**\par
+   - Verify acceptance criteria are testable\par
+   - Request clarifications if needed\par
+   - Provide QA Sign-Off when satisfied\par
+\par
+\tab 3. **Product Manager Approves**\par
+   - Review finalized story\par
+   - Provide PM Approval\par
+   - Story unlocks for development\par
+\par
+\tab 4. **Assignments Made**\par
+   - Assign developer\par
+   - Assign tester\par
+   - Set due dates\par
+\par
+\tab 5. **Development**\par
+   - Developer implements feature\par
+   - Updates story status\par
+   - Links commits/PRs\par
+\par
+\tab 6. **Testing**\par
+   - Tester executes test cases\par
+   - Reports bugs if found\par
+   - Validates acceptance criteria\par
+\par
+\tab 7. **Completion**\par
+   - All tests pass\par
+   - No open bugs\par
+   - Story marked "Done"\par
+\par
+\fs28\b Test Case Creation Workflow\b0\fs22\par
+\par
+\tab 1. **Review Story**\par
+   - Read acceptance criteria\par
+   - Understand requirements\par
+   - Identify test scenarios\par
+\par
+\tab 2. **Create Test Case**\par
+   - Write descriptive title\par
+   - Select appropriate type\par
+   - Define clear steps\par
+   - Specify expected results\par
+   - Link to story\par
+\par
+\tab 3. **Review Test Case**\par
+   - Peer review for completeness\par
+   - Validate against criteria\par
+   - Ensure reproducibility\par
+\par
+\tab 4. **Execute Test**\par
+   - Follow steps exactly\par
+   - Record actual results\par
+   - Note any deviations\par
+   - Report bugs if needed\par
+\par
+\tab 5. **Maintain Tests**\par
+   - Update when requirements change\par
+   - Retire obsolete tests\par
+   - Refactor for clarity\par
+\par
+\fs28\b Bug Reporting Workflow\b0\fs22\par
+\par
+\tab 1. **Discover Bug**\par
+   - During test execution or ad-hoc testing\par
+   - Document immediately\par
+\par
+\tab 2. **Report Bug**\par
+   - Clear, specific title\par
+   - Detailed description\par
+   - Exact reproduction steps\par
+   - Expected vs actual behavior\par
+   - Environment details\par
+   - Screenshots/logs\par
+\par
+\tab 3. **Triage**\par
+   - Assign severity\par
+   - Link to story\par
+   - Assign to developer\par
+   - Set priority\par
+\par
+\tab 4. **Development**\par
+   - Developer reproduces\par
+   - Fixes issue\par
+   - Updates status to "Fixed"\par
+   - Links commit\par
+\par
+\tab 5. **Verification**\par
+   - Tester re-executes test\par
+   - Confirms fix\par
+   - Marks "Verified"\par
+\par
+\tab 6. **Closure**\par
+   - Final review\par
+   - Mark "Closed"\par
+   - Document in release notes\par
+\par
+\fs28\b Sprint Planning Workflow\b0\fs22\par
+\par
+\tab 1. **Pre-Planning**\par
+   - Review backlog\par
+   - Groom stories\par
+   - Estimate story points\par
+\par
+\tab 2. **Sprint Creation**\par
+   - Create sprint\par
+   - Set goal and dates\par
+   - Set team capacity\par
+\par
+\tab 3. **Story Selection**\par
+   - Choose high-priority stories\par
+   - Ensure total points ≤ capacity\par
+   - Verify all stories approved\par
+\par
+\tab 4. **Test Planning**\par
+   - Review AI test recommendations\par
+   - Create necessary test cases\par
+   - Assign testers\par
+\par
+\tab 5. **Sprint Execution**\par
+   - Daily standup\par
+   - Update progress\par
+   - Monitor burndown\par
+\par
+\tab 6. **Sprint Closure**\par
+   - Complete remaining tests\par
+   - Verify all done items\par
+   - Generate sprint report\par
+   - Hold retrospective\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Keyboard Shortcuts\b0\fs22\par\par
+\par
+\\b Navigation:\\b0\par
+\tab\bullet `Ctrl + 1` - Dashboard\par
+\tab\bullet `Ctrl + 2` - Kanban Board\par
+\tab\bullet `Ctrl + 3` - Stories\par
+\tab\bullet `Ctrl + 4` - Risk Matrix\par
+\tab\bullet `Ctrl + 5` - Burn-Down Chart\par
+\tab\bullet `Ctrl + 6` - Test Cases\par
+\tab\bullet `Ctrl + 7` - Bugs\par
+\tab\bullet `Ctrl + 8` - Analytics\par
+\tab\bullet `Ctrl + 9` - Sprints\par
+\tab\bullet `Ctrl + 0` - Users\par
+\par
+\\b Additional Pages:\\b0\par
+\tab\bullet `Ctrl + O` - Reports\par
+\tab\bullet `Ctrl + U` - Test History\par
+\tab\bullet `Ctrl + M` - Team Performance\par
+\tab\bullet `Ctrl + G` - Traceability Matrix\par
+\tab\bullet `Ctrl + K` - Release Readiness\par
+\tab\bullet `Ctrl + I` - AI Recommendations\par
+\tab\bullet `Ctrl + A` - Audit Trail\par
+\tab\bullet `Ctrl + B` - Bulk Operations\par
+\tab\bullet `Ctrl + E` - Data Management\par
+\par
+\\b System:\\b0\par
+\tab\bullet `Ctrl + Shift + D` - Toggle Dark Mode\par
+\tab\bullet `Ctrl + /` - Show Keyboard Shortcuts\par
+\par
+\\b Tips:\\b0\par
+\tab\bullet Shortcuts work from any page\par
+\tab\bullet Combine with sidebar collapse for maximum efficiency\par
+\tab\bullet All shortcuts shown in tooltip on hover\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Troubleshooting\b0\fs22\par\par
+\par
+\fs28\b Login Issues\b0\fs22\par
+\par
+\\b Problem:\\b0 Can't log in\par
+\\b Solutions:\\b0\par
+\tab 1. Verify email and password are correct\par
+\tab 2. Check Caps Lock is off\par
+\tab 3. Clear browser cache and cookies\par
+\tab 4. Try different browser\par
+\tab 5. Contact admin for password reset\par
+\par
+\\b Problem:\\b0 Session expires too quickly\par
+\\b Solutions:\\b0\par
+\tab 1. Check "Remember Me" on login\par
+\tab 2. Verify cookies are enabled\par
+\tab 3. Check browser privacy settings\par
+\tab 4. Session lasts 7 days with Remember Me\par
+\par
+\fs28\b Data Not Loading\b0\fs22\par
+\par
+\\b Problem:\\b0 Tables show "No data" or loading spinner\par
+\\b Solutions:\\b0\par
+\tab 1. Refresh page\par
+\tab 2. Check internet connection\par
+\tab 3. Check browser console for errors\par
+\tab 4. Clear localStorage and reload\par
+\tab 5. Try different browser\par
+\par
+\\b Problem:\\b0 Changes not saving\par
+\\b Solutions:\\b0\par
+\tab 1. Check internet connection\par
+\tab 2. Wait for "Saved" toast notification\par
+\tab 3. Verify permissions for that action\par
+\tab 4. Check browser console for errors\par
+\tab 5. Try again or refresh page\par
+\par
+\fs28\b Performance Issues\b0\fs22\par
+\par
+\\b Problem:\\b0 Page is slow\par
+\\b Solutions:\\b0\par
+\tab 1. Collapse sidebar for more space\par
+\tab 2. Reduce items per page (use 10 or 25)\par
+\tab 3. Apply filters to reduce data\par
+\tab 4. Clear browser cache\par
+\tab 5. Close unused browser tabs\par
+\tab 6. Check internet speed\par
+\par
+\\b Problem:\\b0 Table scrolling is laggy\par
+\\b Solutions:\\b0\par
+\tab 1. Reduce items per page\par
+\tab 2. Apply filters to show less data\par
+\tab 3. Update browser to latest version\par
+\tab 4. Disable browser extensions\par
+\tab 5. Try different browser\par
+\par
+\fs28\b Feature Issues\b0\fs22\par
+\par
+\\b Problem:\\b0 Can't sign off story (QA/PM)\par
+\\b Solutions:\\b0\par
+\tab 1. Verify you have correct role\par
+\tab 2. Check story has acceptance criteria\par
+\tab 3. Refresh page\par
+\tab 4. Contact admin if role is incorrect\par
+\par
+\\b Problem:\\b0 Can't assign developer/tester to story\par
+\\b Solutions:\\b0\par
+\tab 1. Story must have QA sign-off and PM approval first\par
+\tab 2. Verify story status is "Ready"\par
+\tab 3. Unlock happens after both approvals\par
+\par
+\\b Problem:\\b0 Test recommendations not showing\par
+\\b Solutions:\\b0\par
+\tab 1. Ensure you have stories and test cases\par
+\tab 2. Create some stories without tests\par
+\tab 3. Add modules with risk scores\par
+\tab 4. Recommendations generate automatically on page load\par
+\par
+\\b Problem:\\b0 Action buttons not visible in tables\par
+\\b Solutions:\\b0\par
+\tab 1. Scroll table horizontally (horizontal scrollbar appears if needed)\par
+\tab 2. Expand browser window\par
+\tab 3. Collapse sidebar for more space\par
+\tab 4. Reduce browser zoom (Ctrl + 0)\par
+\par
+\fs28\b Browser Compatibility\b0\fs22\par
+\par
+\\b Supported Browsers:\\b0\par
+\tab\bullet Chrome 90+\par
+\tab\bullet Firefox 88+\par
+\tab\bullet Safari 14+\par
+\tab\bullet Edge 90+\par
+\par
+\\b Not Supported:\\b0\par
+\tab\bullet Internet Explorer (any version)\par
+\tab\bullet Browsers with JavaScript disabled\par
+\tab\bullet Very old browser versions\par
+\par
+\\b Mobile Support:\\b0\par
+\tab\bullet Responsive design works on tablets\par
+\tab\bullet Some features limited on phones\par
+\tab\bullet Recommend desktop for full experience\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Tips & Tricks\b0\fs22\par\par
+\par
+\fs28\b Productivity Tips\b0\fs22\par
+\par
+\tab 1. **Use Favorites**\par
+   - Star frequently used pages\par
+   - Appears at top of sidebar\par
+   - Quick access to main workflow\par
+\par
+\tab 2. **Collapse Sidebar**\par
+   - Click « button for more screen space\par
+   - Great for wide tables\par
+   - Sidebar still accessible\par
+\par
+\tab 3. **Keyboard Shortcuts**\par
+   - Learn top 5 pages you use\par
+   - Navigate without mouse\par
+   - Much faster than clicking\par
+\par
+\tab 4. **Quick Create**\par
+   - Use Quick Create button in sidebar\par
+   - Faster than navigating to page\par
+   - Creates story, bug, test, or sprint\par
+\par
+\tab 5. **Search Pages**\par
+   - Use search box in sidebar\par
+   - Find page quickly\par
+   - Filters as you type\par
+\par
+\fs28\b Quality Best Practices\b0\fs22\par
+\par
+\tab 1. **Write Testable Criteria**\par
+   - Use Given/When/Then format\par
+   - Be specific and measurable\par
+   - Avoid ambiguous language\par
+\par
+\tab 2. **Link Everything**\par
+   - Link tests to stories\par
+   - Link bugs to stories\par
+   - Link bugs to tests\par
+   - Enables traceability\par
+\par
+\tab 3. **Prioritize Critical Tests**\par
+   - High-risk modules get regression tests\par
+   - Critical bugs get priority\par
+   - Focus on business impact\par
+\par
+\tab 4. **Review AI Recommendations Daily**\par
+   - Catches coverage gaps early\par
+   - Prevents last-minute test creation\par
+   - Improves overall quality\par
+\par
+\tab 5. **Use Risk Matrix**\par
+   - Identify high-risk modules\par
+   - Allocate testing resources\par
+   - Focus on what matters most\par
+\par
+\fs28\b Team Collaboration\b0\fs22\par
+\par
+\tab 1. **Add Comments**\par
+   - Use story/bug comments for discussion\par
+   - Document decisions\par
+   - @mention team members\par
+\par
+\tab 2. **Update Status Regularly**\par
+   - Keep Kanban board current\par
+   - Update test execution results\par
+   - Change bug status as work progresses\par
+\par
+\tab 3. **Review Team Performance**\par
+   - Check Team Performance page weekly\par
+   - Identify bottlenecks\par
+   - Balance workload\par
+\par
+\tab 4. **Use Sprints**\par
+   - Plan in sprints even if not scrum\par
+   - Provides structure\par
+   - Enables velocity tracking\par
+\par
+\tab 5. **Regular Reports**\par
+   - Generate sprint reports\par
+   - Share with stakeholders\par
+   - Track quality trends\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Glossary\b0\fs22\par\par
+\par
+\\b Acceptance Criteria\\b0 - Specific conditions that must be met for a story to be considered complete\par
+\par
+\\b Burn-Down Chart\\b0 - Graph showing work remaining over time\par
+\par
+\\b Coverage\\b0 - Percentage of requirements/code that have tests\par
+\par
+\\b Defect Density\\b0 - Number of bugs per module or per line of code\par
+\par
+\\b KPI\\b0 - Key Performance Indicator, measurable value showing effectiveness\par
+\par
+\\b QA Sign-Off\\b0 - QA engineer approval that acceptance criteria are testable\par
+\par
+\\b PM Approval\\b0 - Product manager approval that story is ready for development\par
+\par
+\\b Regression Test\\b0 - Test to ensure previously working functionality still works\par
+\par
+\\b Risk Level\\b0 - Assessment of potential impact and likelihood of issues\par
+\par
+\\b Severity\\b0 - Degree of impact a bug has on the system\par
+\par
+\\b Smoke Test\\b0 - Basic test to verify critical functionality works\par
+\par
+\\b Sprint\\b0 - Fixed time period (usually 2 weeks) for completing work\par
+\par
+\\b Story Points\\b0 - Relative measure of effort/complexity\par
+\par
+\\b Traceability\\b0 - Ability to link requirements to tests to bugs\par
+\par
+\\b Velocity\\b0 - Amount of work completed in a sprint\par
+\par
+\par\qc________________________________________\qj\par
+\par
+\fs32\b Support & Contact\b0\fs22\par\par
+\par
+\\b Documentation:\\b0 This file (AQMS_Documentation.md)\par
+\par
+\\b In-App Help:\\b0 Click "?" icon or press Ctrl+/ for keyboard shortcuts\par
+\par
+\\b Report Issues:\\b0 Use feedback form in app or contact admin\par
+\par
+\\b Feature Requests:\\b0 Submit via in-app feedback or to product team\par
+\par
+\\b Training:\\b0 Contact admin for team training sessions\par
+\par
+\\b Version:\\b0 1.0 (May 2026)\par
+\par
+\par\qc________________________________________\qj\par
+\par
+*This documentation covers all features as of version 1.0. Some features may be added or changed in future versions.*\par
+\par
+}

@@ -1,0 +1,116 @@
+REVISED SECTION 3.4.1 - COPY THIS INTO YOUR THESIS
+===========================================================
+
+3.4.1 Database Design (Entity Relationship Model)
+
+The persistence tier of the AQMS is structured as a relational database schema designed to enforce data integrity and track multi-state sprint variables. The model comprises three core entities that map user identity access levels to user stories, and link those stories to modular system risks.
+
+Table 3.1 presents the Entity Relationship Constraint Matrix, documenting the structural relationships, primary keys, foreign keys, and unique constraints between the core database entities. Figure 3.2 provides the corresponding Entity Relationship Diagram with visual representations of cardinality and referential integrity constraints.
+
+
+Table 3.1: Entity Relationship Constraint Matrix
+
++----------------+------------------+---------------------+------------------+
+| Entity         | Primary Key      | Foreign Keys        | Unique           |
+|                |                  |                     | Constraints      |
++----------------+------------------+---------------------+------------------+
+| USER_ROLES     | id (PK)          | None                | email            |
+|                |                  |                     |                  |
++----------------+------------------+---------------------+------------------+
+| USER_STORIES   | id (PK)          | module_id →         | None             |
+|                |                  | MODULE_RISKS.id     |                  |
+|                |                  |                     |                  |
++----------------+------------------+---------------------+------------------+
+| MODULE_RISKS   | id (PK)          | None                | module_name      |
+|                |                  |                     |                  |
++----------------+------------------+---------------------+------------------+
+
+Key: PK = Primary Key, FK = Foreign Key, → = References
+
+
+The constraint matrix demonstrates three critical architectural decisions:
+
+1. USER_ROLES maintains a one-to-many relationship with USER_STORIES through the email unique constraint, enabling role-based story evaluation tracking. Each user role can evaluate multiple stories, but each story's evaluation is tied to a single user identity.
+
+2. USER_STORIES references MODULE_RISKS through the module_id foreign key, establishing a many-to-one relationship that links each story to its associated risk module. Multiple stories can be associated with the same risk module, enabling aggregate risk analysis across related features.
+
+3. MODULE_RISKS serves as the parent entity for risk aggregation, with each module tracking bug_frequency and impact_multiplier metrics across multiple linked stories. This design allows the system to calculate cumulative risk scores based on historical defect patterns within specific system modules.
+
+
+[INSERT YOUR ER DIAGRAM IMAGE HERE AS FIGURE 3.2]
+
+Figure 3.2: Entity Relationship Diagram - Visual Schema Representation
+
+
+This dual representation approach (constraint matrix followed by visual diagram) provides both tabular analysis of database constraints and visual comprehension of data flow patterns, ensuring the schema design is comprehensible to both technical implementers and non-technical stakeholders.
+
+===========================================================
+
+ALTERNATE VERSION (if your university prefers more formal academic tone):
+===========================================================
+
+3.4.1 Database Design (Entity Relationship Model)
+
+The persistence layer of the AQMS employs a normalized relational database schema architected to enforce referential integrity constraints and maintain multi-state sprint telemetry data. The data model consists of three principal entities: USER_ROLES, USER_STORIES, and MODULE_RISKS, which collectively implement the system's quality assurance workflow tracking mechanism.
+
+Table 3.1 formalizes the Entity Relationship Constraint Matrix, specifying primary key definitions, foreign key relationships, and unique constraint declarations for each entity within the schema. This tabular representation provides a structured reference for database implementation and integrity validation procedures.
+
+
+Table 3.1: Entity Relationship Constraint Matrix
+
++----------------+------------------+---------------------+------------------+
+| Entity         | Primary Key      | Foreign Keys        | Unique           |
+|                |                  |                     | Constraints      |
++----------------+------------------+---------------------+------------------+
+| USER_ROLES     | id (PK)          | None                | email            |
+|                |                  |                     |                  |
++----------------+------------------+---------------------+------------------+
+| USER_STORIES   | id (PK)          | module_id →         | None             |
+|                |                  | MODULE_RISKS.id     |                  |
+|                |                  |                     |                  |
++----------------+------------------+---------------------+------------------+
+| MODULE_RISKS   | id (PK)          | None                | module_name      |
+|                |                  |                     |                  |
++----------------+------------------+---------------------+------------------+
+
+Key: PK = Primary Key, FK = Foreign Key, → = References
+
+
+The constraint matrix encodes three architectural invariants:
+
+First, the USER_ROLES entity establishes a one-to-many cardinality relationship with USER_STORIES through role-based evaluation semantics, wherein each authenticated user may assess multiple user stories while maintaining unique email identification constraints to prevent identity collision.
+
+Second, the USER_STORIES entity declares a mandatory foreign key dependency on MODULE_RISKS via the module_id attribute, implementing a many-to-one relationship that enables risk aggregation across functionally related story groupings.
+
+Third, the MODULE_RISKS entity functions as the hierarchical parent for risk metric computation, maintaining bug_frequency and impact_multiplier measurements that reflect cumulative defect patterns observed across associated user stories. This normalized design pattern supports historical trend analysis while preventing update anomalies in aggregate risk calculations.
+
+Figure 3.2 presents the corresponding Entity Relationship Diagram, translating the constraint matrix into graphical notation with explicit cardinality indicators and relationship direction markers.
+
+
+[INSERT YOUR ER DIAGRAM IMAGE HERE AS FIGURE 3.2]
+
+Figure 3.2: Entity Relationship Diagram - Graphical Schema Representation
+
+
+The complementary deployment of matrix and diagram representations addresses dual pedagogical objectives: the matrix facilitates precise technical specification for database implementation, while the diagram enables intuitive comprehension of data flow semantics for stakeholder communication.
+
+===========================================================
+
+NOTES FOR IMPLEMENTATION:
+
+1. Copy EITHER the first version (clearer, more readable) OR the second version (more formal academic tone) into your thesis document
+
+2. Format Table 3.1 properly in your word processor:
+   - Use actual table borders (not ASCII characters)
+   - Center-align column headers
+   - Left-align entity names and constraint text
+
+3. Insert your ER diagram image as Figure 3.2 right after the text that says "[INSERT YOUR ER DIAGRAM IMAGE HERE AS FIGURE 3.2]"
+
+4. Update any cross-references in other sections that point to "Figure 3.2"
+
+5. Make sure your List of Tables includes "Table 3.1: Entity Relationship Constraint Matrix"
+
+6. Make sure your List of Figures includes "Figure 3.2: Entity Relationship Diagram - Visual/Graphical Schema Representation"
+
+===========================================================
