@@ -50,8 +50,25 @@ export function useSupabaseData<T>(key: string, initialValue: T) {
 
     loadData();
 
+    // Listen for storage updates across tabs for instant sync
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === key && e.newValue && mounted) {
+        try {
+          setDataState(JSON.parse(e.newValue));
+        } catch (err) {
+          // Ignore parsing errors
+        }
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+
+    // Poll for changes every 10 seconds
+    const interval = setInterval(loadData, 10000);
+
     return () => {
       mounted = false;
+      window.removeEventListener('storage', handleStorage);
+      clearInterval(interval);
     };
   }, [key]);
 
