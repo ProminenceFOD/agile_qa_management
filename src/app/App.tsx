@@ -33,7 +33,7 @@ import { DocumentationViewer } from './components/DocumentationViewer';
 import { Sidebar } from './components/Sidebar';
 import './utils/fixServerUsers'; // Load server fix utility
 import { overrideRolePermissions, loadUserOverrides } from './utils/permissions';
-import { getData } from './utils/supabaseStorage';
+import { getData, setData } from './utils/supabaseStorage';
 
 // Suppress findDOMNode deprecation warning from third-party libraries
 const originalError = console.error;
@@ -180,6 +180,38 @@ function AppDashboard() {
     const interval = setInterval(updateCounts, 2000);
     return () => clearInterval(interval);
   }, []);
+
+  // Update lastActive timestamp in user list on login / session restore
+  useEffect(() => {
+    if (user?.email) {
+      const updateLastActive = async () => {
+        try {
+          const users = await getData('aqms_users');
+          if (users && Array.isArray(users)) {
+            const updatedUsers = users.map((u: any) => {
+              if (u.email === user.email) {
+                return {
+                  ...u,
+                  lastActive: new Date().toISOString(),
+                  isActive: true
+                };
+              }
+              return u;
+            });
+            await setData('aqms_users', updatedUsers);
+            console.log('[App] Updated lastActive for', user.email);
+          }
+        } catch (err) {
+          console.warn('[App] Failed to update user lastActive:', err);
+        }
+      };
+
+      updateLastActive();
+      // Periodically update every 2 minutes while active
+      const interval = setInterval(updateLastActive, 120000);
+      return () => clearInterval(interval);
+    }
+  }, [user?.email]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
