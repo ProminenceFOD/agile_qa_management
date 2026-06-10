@@ -27,3 +27,14 @@ pnpm-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Thesis defense slides, reports, and compiler scripts
+*AQMS_Presentation*
+*AQMS_Project_Report_Draft*
+*QA_KPI_May_Report*
+compile-report.ts
+compile-slides.ts
+extract-speaker-notes.ts
+*.pdf
+*.docx
+*.pptx
