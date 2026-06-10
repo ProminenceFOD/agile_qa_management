@@ -438,7 +438,7 @@ export function RiskMatrix({ highlightedItemId }: RiskMatrixProps) {
                   return (
                     <div
                       key={module.id}
-                      className="absolute group cursor-pointer transition-transform hover:scale-110 z-20"
+                      className="absolute group cursor-pointer transition-transform hover:scale-110 z-20 w-3.5 h-3.5"
                       style={{
                         left: `${x}%`,
                         top: `${y}%`,

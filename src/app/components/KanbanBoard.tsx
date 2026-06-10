@@ -39,6 +39,14 @@ interface Story {
   tags?: string[];
 }
 
+interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  timestamp: Date | string;
+  edited?: boolean;
+}
+
 interface Bug {
   id: string;
   title: string;
@@ -57,6 +65,7 @@ interface Bug {
   actualBehavior: string;
   environment?: string;
   tags?: string[];
+  comments?: Comment[];
 }
 
 const ItemTypes = {
@@ -1214,6 +1223,29 @@ export function KanbanBoard() {
     }
   };
 
+  const handleUpdateStoryComments = (storyId: string, updatedComments: any[], updatedActivities: any[]) => {
+    if (selectedItem && isStory(selectedItem) && selectedItem.id === storyId) {
+      const updatedStory = {
+        ...selectedItem,
+        comments: updatedComments,
+        activityLog: updatedActivities,
+      };
+      setStories(stories.map(s => s.id === storyId ? updatedStory : s));
+      setSelectedItem(updatedStory);
+    }
+  };
+
+  const handleUpdateBugComments = (bugId: string, updatedComments: any[]) => {
+    if (selectedItem && !isStory(selectedItem) && selectedItem.id === bugId) {
+      const updatedBug = {
+        ...selectedItem,
+        comments: updatedComments,
+      };
+      setBugs(bugs.map(b => b.id === bugId ? updatedBug : b));
+      setSelectedItem(updatedBug);
+    }
+  };
+
   // Story View
   if (viewMode === 'storyView' && selectedItem && isStory(selectedItem)) {
     return (
@@ -1227,6 +1259,7 @@ export function KanbanBoard() {
         onUnlinkBug={handleUnlinkBug}
         onLinkTestCase={handleLinkTestCase}
         onUnlinkTestCase={handleUnlinkTestCase}
+        onUpdateComments={handleUpdateStoryComments}
       />
     );
   }
@@ -1240,6 +1273,7 @@ export function KanbanBoard() {
         onEdit={handleEditBug}
         onAssignDeveloper={handleAssignBugDeveloper}
         onAssignTester={handleAssignBugTester}
+        onUpdateComments={handleUpdateBugComments}
       />
     );
   }

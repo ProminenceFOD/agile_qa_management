@@ -1,5 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Edit3, ArrowLeft, X } from 'lucide-react';
+import { CommentsSection } from './CommentsSection';
+import { useAuth } from '../contexts/AuthContext';
+
+interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  timestamp: Date | string;
+  edited?: boolean;
+}
 
 interface Bug {
   id: string;
@@ -20,6 +30,7 @@ interface Bug {
   environment?: string;
   attachments?: string[];
   tags?: string[];
+  comments?: Comment[];
 }
 
 interface BugViewProps {
@@ -28,11 +39,50 @@ interface BugViewProps {
   onEdit?: () => void;
   onAssignDeveloper?: (developer: string) => void;
   onAssignTester?: (tester: string) => void;
+  onUpdateComments?: (bugId: string, comments: Comment[]) => void;
 }
 
-export function BugView({ bug, onBack, onEdit, onAssignDeveloper, onAssignTester }: BugViewProps) {
+export function BugView({ bug, onBack, onEdit, onAssignDeveloper, onAssignTester, onUpdateComments }: BugViewProps) {
+  const { user } = useAuth();
   const [showDeveloperDropdown, setShowDeveloperDropdown] = useState(false);
   const [showTesterDropdown, setShowTesterDropdown] = useState(false);
+  const [comments, setComments] = useState<Comment[]>(bug.comments || []);
+
+  useEffect(() => {
+    setComments(bug.comments || []);
+  }, [bug.id, bug.comments]);
+
+  const handleAddComment = (text: string) => {
+    const newComment: Comment = {
+      id: `comment-${Date.now()}`,
+      author: user?.name || 'Unknown',
+      text,
+      timestamp: new Date(),
+    };
+    const updated = [...comments, newComment];
+    setComments(updated);
+    if (onUpdateComments) {
+      onUpdateComments(bug.id, updated);
+    }
+  };
+
+  const handleEditComment = (id: string, text: string) => {
+    const updated = comments.map(c =>
+      c.id === id ? { ...c, text, edited: true } : c
+    );
+    setComments(updated);
+    if (onUpdateComments) {
+      onUpdateComments(bug.id, updated);
+    }
+  };
+
+  const handleDeleteComment = (id: string) => {
+    const updated = comments.filter(c => c.id !== id);
+    setComments(updated);
+    if (onUpdateComments) {
+      onUpdateComments(bug.id, updated);
+    }
+  };
 
   const developers = ['James Martinez', 'David Martinez', 'Emily Chen', 'Maria Rodriguez', 'Robert Taylor'];
   const testers = ['Linda Thompson', 'Emily Chen', 'Jessica Williams', 'Michael Brown'];
@@ -393,6 +443,16 @@ export function BugView({ bug, onBack, onEdit, onAssignDeveloper, onAssignTester
                 <p className="text-gray-700">{new Date(bug.resolvedAt).toLocaleString()}</p>
               </div>
             )}
+          </div>
+
+          {/* Comments Section */}
+          <div className="pt-6 border-t border-gray-200 mt-6">
+            <CommentsSection
+              comments={comments}
+              onAddComment={handleAddComment}
+              onEditComment={handleEditComment}
+              onDeleteComment={handleDeleteComment}
+            />
           </div>
         </div>
       </div>

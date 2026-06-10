@@ -91,8 +91,8 @@ The prototype contains configured credentials matching the case study roles:
 ---
 
 ## 📚 Key Reference Citations
-* **Amna, A. & Poels, G. (2022).** Risk-based testing in Agile software development: A systematic mapping study.
-* **Ekechi, O. et al. (2024).** Quality assurance governance frameworks in emerging SaaS market sectors.
-* **Forsgren, N., Humble, J. & Kim, G. (2021).** Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations.
-* **Kasauli, R. et al. (2021).** Requirements engineering challenges in Agile software development.
-* **Soares, M. et al. (2022).** Beyond task status: Surfacing quality state telemetry on Agile boards.
+* **Amna, A. R. & Poels, G. (2022).** Systematic literature mapping of user story research. *IEEE Access*, 10, 51723–51746.
+* **Ekechi, C. C. et al. (2024).** Enhancing agile product development with Scrum methodologies: A detailed exploration of implementation practices and benefits. *Engineering Science & Technology Journal*, 5(5), 1542–1570.
+* **Forsgren, N., Humble, J. & Kim, G. (2021).** Accelerate: State of DevOps 2021 report. DORA / Google Cloud.
+* **Kasauli, R. et al. (2021).** Requirements engineering challenges and practices in large-scale Agile organisations. *Journal of Systems and Software*, 172, 110851.
+* **Soares, E. et al. (2022).** The effects of continuous integration on software development: A systematic literature review. *Empirical Software Engineering*, 27(3), 78.

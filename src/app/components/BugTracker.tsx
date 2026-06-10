@@ -13,6 +13,14 @@ import { Pagination } from './Pagination';
 type BugSeverity = 'Critical' | 'High' | 'Medium' | 'Low';
 type BugStatus = 'Open' | 'In Progress' | 'Fixed' | 'Verified' | 'Closed' | 'Reopened';
 
+interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  timestamp: Date | string;
+  edited?: boolean;
+}
+
 interface Bug {
   id: string;
   title: string;
@@ -31,6 +39,7 @@ interface Bug {
   actualBehavior: string;
   environment?: string;
   attachments?: string[];
+  comments?: Comment[];
 }
 
 interface BugTrackerProps {
@@ -276,6 +285,13 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
     setBugs(bugs.map(b => b.id === bugId ? { ...b, assignedTester: tester || undefined } : b));
     if (selectedBug && selectedBug.id === bugId) {
       setSelectedBug({ ...selectedBug, assignedTester: tester || undefined });
+    }
+  };
+
+  const handleUpdateComments = (bugId: string, updatedComments: Comment[]) => {
+    setBugs(bugs.map(b => b.id === bugId ? { ...b, comments: updatedComments } : b));
+    if (selectedBug && selectedBug.id === bugId) {
+      setSelectedBug({ ...selectedBug, comments: updatedComments });
     }
   };
 
@@ -530,6 +546,7 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
                 onEdit={() => setViewMode('edit')}
                 onAssignDeveloper={(developer) => handleAssignDeveloper(selectedBug.id, developer)}
                 onAssignTester={(tester) => handleAssignTester(selectedBug.id, tester)}
+                onUpdateComments={handleUpdateComments}
               />
             </div>
           </div>

@@ -60,9 +60,10 @@ interface StoryViewProps {
   onLinkTestCase?: (testCaseId: string) => void;
   onUnlinkTestCase?: (testCaseId: string) => void;
   onNavigate?: (tab: string, itemId?: string) => void;
+  onUpdateComments?: (storyId: string, comments: Comment[], activities: ActivityLogEntry[]) => void;
 }
 
-export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAssignDeveloper, onAssignTester, onLinkBug, onUnlinkBug, onLinkTestCase, onUnlinkTestCase, onNavigate }: StoryViewProps) {
+export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAssignDeveloper, onAssignTester, onLinkBug, onUnlinkBug, onLinkTestCase, onUnlinkTestCase, onNavigate, onUpdateComments }: StoryViewProps) {
   const { user } = useAuth();
   const [comments, setComments] = useState<Comment[]>(story.comments || []);
   const [activities, setActivities] = useState<ActivityLogEntry[]>(story.activityLog || []);
@@ -73,6 +74,12 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
   const [availableBugs, setAvailableBugs] = useState<any[]>([]);
   const [availableTestCases, setAvailableTestCases] = useState<any[]>([]);
   const [linkedTestCases, setLinkedTestCases] = useState<any[]>([]);
+
+  // Sync state when story changes
+  useEffect(() => {
+    setComments(story.comments || []);
+    setActivities(story.activityLog || []);
+  }, [story.id]);
 
   const developers = ['James Martinez', 'David Martinez', 'Emily Chen', 'Maria Rodriguez', 'Robert Taylor'];
   const testers = ['Linda Thompson', 'Emily Chen', 'Jessica Williams', 'Michael Brown'];
@@ -106,7 +113,8 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
       text,
       timestamp: new Date(),
     };
-    setComments([...comments, newComment]);
+    const updatedComments = [...comments, newComment];
+    setComments(updatedComments);
 
     // Add to activity log
     const activity: ActivityLogEntry = {
@@ -115,17 +123,30 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
       user: user?.name || 'Unknown',
       timestamp: new Date(),
     };
-    setActivities([activity, ...activities]);
+    const updatedActivities = [activity, ...activities];
+    setActivities(updatedActivities);
+
+    if (onUpdateComments) {
+      onUpdateComments(story.id, updatedComments, updatedActivities);
+    }
   };
 
   const handleEditComment = (id: string, text: string) => {
-    setComments(comments.map(c =>
+    const updatedComments = comments.map(c =>
       c.id === id ? { ...c, text, edited: true } : c
-    ));
+    );
+    setComments(updatedComments);
+    if (onUpdateComments) {
+      onUpdateComments(story.id, updatedComments, activities);
+    }
   };
 
   const handleDeleteComment = (id: string) => {
-    setComments(comments.filter(c => c.id !== id));
+    const updatedComments = comments.filter(c => c.id !== id);
+    setComments(updatedComments);
+    if (onUpdateComments) {
+      onUpdateComments(story.id, updatedComments, activities);
+    }
   };
 
   const getPriorityColor = (priority: Priority) => {
