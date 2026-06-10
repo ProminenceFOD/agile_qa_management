@@ -118,8 +118,8 @@ export function BugView({ bug, onBack, onEdit, onAssignDeveloper, onAssignTester
   };
 
   return (
-    <div className="w-full">
-      <div className="p-4 md:p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-3 sticky top-0 bg-white rounded-t-lg">
+    <div className="w-full flex flex-col h-full overflow-hidden">
+      <div className="p-4 md:p-6 border-b border-gray-200 dark:border-gray-700 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-indigo-500 hover:text-indigo-600 text-sm md:text-base"
@@ -139,14 +139,14 @@ export function BugView({ bug, onBack, onEdit, onAssignDeveloper, onAssignTester
           )}
           <button
             onClick={onBack}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
       </div>
 
-      <div className="p-4 md:p-8">
+      <div className="p-4 md:p-8 flex-1 overflow-y-auto custom-scrollbar">
         <div className="mb-6 pb-6 border-b border-gray-200">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div className="flex-1">

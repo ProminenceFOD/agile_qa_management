@@ -251,18 +251,22 @@
 /* Table System */
 .table-modern {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .table-modern thead {
-  background-color: rgb(249 250 251);
-  border-bottom: 1px solid rgb(229 231 235);
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
 .table-modern thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: rgb(249 250 251);
+  border-bottom: 2px solid rgb(229 231 235);
   padding: 1rem 1.5rem;
   text-align: left;
   font-weight: 500;
@@ -273,10 +277,6 @@
   background-color: white;
 }
 
-.table-modern tbody tr {
-  border-bottom: 1px solid rgb(229 231 235);
-}
-
 .table-modern tbody tr:hover {
   background-color: rgb(249 250 251);
 }
@@ -284,23 +284,17 @@
 .table-modern tbody td {
   padding: 1rem 1.5rem;
   color: rgb(55 65 81);
-}
-
-.dark .table-modern thead {
-  background-color: rgb(31 41 55);
-  border-bottom-color: rgb(55 65 81);
+  border-bottom: 1px solid rgb(229 231 235);
 }
 
 .dark .table-modern thead th {
+  background-color: rgb(31 41 55);
+  border-bottom-color: rgb(55 65 81);
   color: rgb(229 231 235);
 }
 
 .dark .table-modern tbody {
   background-color: rgb(17 24 39);
-}
-
-.dark .table-modern tbody tr {
-  border-bottom-color: rgb(55 65 81);
 }
 
 .dark .table-modern tbody tr:hover {
@@ -309,6 +303,7 @@
 
 .dark .table-modern tbody td {
   color: rgb(229 231 235);
+  border-bottom: 1px solid rgb(55 65 81);
 }
 
 /* Divide Utilities */

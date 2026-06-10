@@ -744,7 +744,7 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
         </div>
       </div>
 
-      <div className="card overflow-x-auto">
+      <div className="card overflow-auto max-h-[600px] custom-scrollbar">
         <table className="table-modern">
           <thead>
             <tr>

@@ -441,7 +441,7 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
       </div>
 
       {/* Bugs Table */}
-      <div className="card overflow-x-auto">
+      <div className="card overflow-auto max-h-[600px] custom-scrollbar">
         <table className="table-modern w-full">
           <thead>
             <tr>
@@ -538,8 +538,8 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={handleBackToList}
           ></div>
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full my-8">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
               <BugView
                 bug={selectedBug}
                 onBack={handleBackToList}

@@ -492,7 +492,7 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
       </div>
 
       {/* Test Cases Table */}
-      <div className="card overflow-x-auto">
+      <div className="card overflow-auto max-h-[600px] custom-scrollbar">
         <table className="table-modern w-full">
           <thead>
             <tr>
@@ -684,23 +684,22 @@ function BugReportFormWithPreFill({
   };
 }) {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 z-10">
-          <div className="flex items-center justify-between">
+    <>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-[60]" onClick={onClose}></div>
+      <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
             <div>
-              <h2 className="text-2xl text-gray-900 mb-1">Create Bug from Failed Test</h2>
-              <p className="text-sm text-gray-600">Pre-filled with test case information</p>
+              <h2 className="text-2xl text-gray-900 dark:text-white mb-1">Create Bug from Failed Test</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Pre-filled with test case information</p>
             </div>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-2xl"
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl flex-shrink-0"
             >
               ×
             </button>
           </div>
-        </div>
-        <div className="p-6">
           <BugReportFormContent
             onClose={onClose}
             onSubmit={onSubmit}
@@ -709,7 +708,7 @@ function BugReportFormWithPreFill({
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -754,169 +753,171 @@ function BugReportFormContent({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-        <p className="text-sm text-indigo-800">
-          <strong>Note:</strong> This form has been pre-filled with information from the failed test case.
-          You can edit any field before submitting.
-        </p>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Bug Title <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Description <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          rows={5}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Severity <span className="text-red-500">*</span>
-          </label>
-          <select
-            value={formData.severity}
-            onChange={(e) => setFormData({ ...formData, severity: e.target.value as any })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-            required
-          >
-            <option value="Critical">Critical</option>
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
-          </select>
+    <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+      <div className="p-6 space-y-6 flex-1 overflow-y-auto custom-scrollbar">
+        <div className="bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-900/40 rounded-lg p-4">
+          <p className="text-sm text-indigo-800 dark:text-indigo-200">
+            <strong>Note:</strong> This form has been pre-filled with information from the failed test case.
+            You can edit any field before submitting.
+          </p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Linked Story
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Bug Title <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            value={formData.linkedStory}
-            onChange={(e) => setFormData({ ...formData, linkedStory: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="US-XXX"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
           />
         </div>
-      </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Steps to Reproduce <span className="text-red-500">*</span>
-        </label>
-        <div className="space-y-2">
-          {steps.map((step, index) => (
-            <div key={index} className="flex gap-2">
-              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm">
-                {index + 1}
-              </span>
-              <input
-                type="text"
-                value={step}
-                onChange={(e) => {
-                  const newSteps = [...steps];
-                  newSteps[index] = e.target.value;
-                  setSteps(newSteps);
-                }}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                required
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Expected Behavior <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          value={formData.expectedBehavior}
-          onChange={(e) => setFormData({ ...formData, expectedBehavior: e.target.value })}
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Actual Behavior <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          value={formData.actualBehavior}
-          onChange={(e) => setFormData({ ...formData, actualBehavior: e.target.value })}
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Assign Developer
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Description <span className="text-red-500">*</span>
           </label>
-          <select
-            value={formData.assignedDeveloper}
-            onChange={(e) => setFormData({ ...formData, assignedDeveloper: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-          >
-            <option value="">Unassigned</option>
-            <option value="James Anderson">James Anderson</option>
-            <option value="David Martinez">David Martinez</option>
-            <option value="Robert Taylor">Robert Taylor</option>
-          </select>
+          <textarea
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            rows={5}
+            className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Severity <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={formData.severity}
+              onChange={(e) => setFormData({ ...formData, severity: e.target.value as any })}
+              className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            >
+              <option value="Critical">Critical</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Linked Story
+            </label>
+            <input
+              type="text"
+              value={formData.linkedStory}
+              onChange={(e) => setFormData({ ...formData, linkedStory: e.target.value })}
+              className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="US-XXX"
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Environment
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Steps to Reproduce <span className="text-red-500">*</span>
           </label>
-          <select
-            value={formData.environment}
-            onChange={(e) => setFormData({ ...formData, environment: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-          >
-            <option value="Development">Development</option>
-            <option value="Testing">Testing</option>
-            <option value="Staging">Staging</option>
-            <option value="Production">Production</option>
-          </select>
+          <div className="space-y-2">
+            {steps.map((step, index) => (
+              <div key={index} className="flex gap-2">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm font-bold">
+                  {index + 1}
+                </span>
+                <input
+                  type="text"
+                  value={step}
+                  onChange={(e) => {
+                    const newSteps = [...steps];
+                    newSteps[index] = e.target.value;
+                    setSteps(newSteps);
+                  }}
+                  className="flex-1 px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  required
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Expected Behavior <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={formData.expectedBehavior}
+            onChange={(e) => setFormData({ ...formData, expectedBehavior: e.target.value })}
+            rows={3}
+            className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Actual Behavior <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={formData.actualBehavior}
+            onChange={(e) => setFormData({ ...formData, actualBehavior: e.target.value })}
+            rows={3}
+            className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Assign Developer
+            </label>
+            <select
+              value={formData.assignedDeveloper}
+              onChange={(e) => setFormData({ ...formData, assignedDeveloper: e.target.value })}
+              className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="">Unassigned</option>
+              <option value="James Anderson">James Anderson</option>
+              <option value="David Martinez">David Martinez</option>
+              <option value="Robert Taylor">Robert Taylor</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Environment
+            </label>
+            <select
+              value={formData.environment}
+              onChange={(e) => setFormData({ ...formData, environment: e.target.value })}
+              className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="Development">Development</option>
+              <option value="Testing">Testing</option>
+              <option value="Staging">Staging</option>
+              <option value="Production">Production</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+      <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3 bg-white dark:bg-gray-800 rounded-b-lg flex-shrink-0">
         <button
           type="button"
           onClick={onClose}
-          className="px-6 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+          className="px-6 py-2 text-gray-700 bg-gray-100 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+          className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
         >
           Create Bug
         </button>

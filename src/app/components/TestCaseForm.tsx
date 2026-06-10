@@ -136,21 +136,22 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
         className="fixed inset-0 bg-black bg-opacity-50 z-[60]"
         onClick={onClose}
       ></div>
-      <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 overflow-y-auto">
-        <div className="bg-white rounded-lg shadow-2xl max-w-3xl w-full my-8">
-          <div className="p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white rounded-t-lg">
-            <h2 className="text-2xl text-gray-900">
+      <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
+            <h2 className="text-2xl text-gray-900 dark:text-white">
               {testCase ? 'Edit Test Case' : 'Create Test Case'}
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-2xl"
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
             >
               ×
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+            <div className="p-6 space-y-6 flex-1 overflow-y-auto custom-scrollbar">
             {/* Title */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -332,12 +333,14 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
               <strong>Note:</strong> Test cases can be executed from the test case list. Execution time and last run date will be tracked automatically.
             </div>
 
+            </div>
+
             {/* Form Actions */}
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+            <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3 bg-white dark:bg-gray-800 rounded-b-lg flex-shrink-0">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                className="px-6 py-2 text-gray-700 bg-gray-100 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 Cancel
               </button>

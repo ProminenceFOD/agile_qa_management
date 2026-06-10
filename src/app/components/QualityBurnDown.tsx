@@ -422,7 +422,7 @@ export function QualityBurnDown() {
         </div>
       </div>
 
-      <div className="card overflow-x-auto mb-6">
+      <div className="card overflow-auto max-h-[600px] custom-scrollbar mb-6">
         <table className="table-modern w-full">
           <thead>
             <tr>
