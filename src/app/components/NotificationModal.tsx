@@ -50,19 +50,19 @@ export function NotificationModal({ isOpen, onClose, title, message, type = 'inf
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full border border-gray-200 dark:border-gray-700">
         <div className="p-6">
           <div className="flex items-start gap-4">
             <div className={`flex-shrink-0 w-10 h-10 ${styles.iconBg} rounded-full flex items-center justify-center text-white text-xl`}>
               {styles.icon}
             </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-medium text-gray-900 mb-2">{title}</h3>
-              <p className="text-sm text-gray-700">{message}</p>
+            <div className="flex-grow">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{title}</h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300">{message}</p>
             </div>
           </div>
         </div>
-        <div className="bg-gray-50 px-6 py-4 flex justify-end rounded-b-lg">
+        <div className="bg-gray-50 dark:bg-gray-900/50 px-6 py-4 flex justify-end border-t border-gray-200 dark:border-gray-700 rounded-b-lg">
           <button
             onClick={onClose}
             className="px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"

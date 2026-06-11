@@ -1597,26 +1597,41 @@ export function KanbanBoard() {
 
       {/* Create/Edit Story Modal */}
       {showCreateModal === 'story' && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[95vh] md:max-h-[90vh] overflow-y-auto">
-            <div className="p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
-              <h2 className="text-xl md:text-2xl">{editingItem && isStory(editingItem) ? 'Edit User Story' : 'Create New User Story'}</h2>
-              <button
-                onClick={() => {
-                  setShowCreateModal(null);
-                  setEditingItem(null);
-                  setSelectedTags([]);
-                  setTagInput('');
-                  setShowNewSprintInput(false);
-                  setNewSprintName('');
-                  setShowNewStoryFromBug(false);
-                }}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-            <div className="p-4 md:p-6">
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => {
+              setShowCreateModal(null);
+              setEditingItem(null);
+              setSelectedTags([]);
+              setTagInput('');
+              setShowNewSprintInput(false);
+              setNewSprintName('');
+              setShowNewStoryFromBug(false);
+            }}
+          ></div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+              <div className="p-4 md:p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
+                <h2 className="text-xl md:text-2xl text-gray-900 dark:text-white font-semibold">
+                  {editingItem && isStory(editingItem) ? 'Edit User Story' : 'Create New User Story'}
+                </h2>
+                <button
+                  onClick={() => {
+                    setShowCreateModal(null);
+                    setEditingItem(null);
+                    setSelectedTags([]);
+                    setTagInput('');
+                    setShowNewSprintInput(false);
+                    setNewSprintName('');
+                    setShowNewStoryFromBug(false);
+                  }}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -1681,179 +1696,176 @@ export function KanbanBoard() {
                   setNewSprintName('');
                   setShowNewStoryFromBug(false);
                 }}
-                className="space-y-4"
+                className="flex flex-col flex-1 overflow-hidden"
               >
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Title *</label>
-                  <input
-                    type="text"
-                    name="title"
-                    required
-                    defaultValue={editingItem && isStory(editingItem) ? editingItem.title : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="User story title"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Description *</label>
-                  <textarea
-                    name="description"
-                    required
-                    rows={3}
-                    defaultValue={editingItem && isStory(editingItem) ? editingItem.description : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="As a user, I want to..."
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Acceptance Criteria</label>
-                  <textarea
-                    name="criteria"
-                    rows={3}
-                    defaultValue={editingItem && isStory(editingItem) ? editingItem.criteriaDetails : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="Given... When... Then..."
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 md:p-6 space-y-4 flex-grow overflow-y-auto custom-scrollbar">
                   <div>
-                    <label className="block text-gray-700 mb-2 text-sm md:text-base">Priority *</label>
-                    <select
-                      name="priority"
-                      required
-                      defaultValue={editingItem && isStory(editingItem) ? editingItem.priority : 'Medium'}
-                      className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    >
-                      <option value="Low">Low</option>
-                      <option value="Medium">Medium</option>
-                      <option value="High">High</option>
-                      <option value="Critical">Critical</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 mb-2 text-sm md:text-base">Story Points</label>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Title *</label>
                     <input
-                      type="number"
-                      name="points"
-                      min="0"
-                      defaultValue={editingItem && isStory(editingItem) ? editingItem.storyPoints : 0}
-                      className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                      placeholder="0"
+                      type="text"
+                      name="title"
+                      required
+                      defaultValue={editingItem && isStory(editingItem) ? editingItem.title : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="User story title"
                     />
                   </div>
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Sprint</label>
-                  {!showNewSprintInput ? (
-                    <div className="flex gap-2">
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Description *</label>
+                    <textarea
+                      name="description"
+                      required
+                      rows={3}
+                      defaultValue={editingItem && isStory(editingItem) ? editingItem.description : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="As a user, I want to..."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Acceptance Criteria</label>
+                    <textarea
+                      name="criteria"
+                      rows={3}
+                      defaultValue={editingItem && isStory(editingItem) ? editingItem.criteriaDetails : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="Given... When... Then..."
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Priority *</label>
                       <select
-                        name="sprint"
-                        defaultValue={editingItem && isStory(editingItem) ? editingItem.sprint : 'Backlog'}
-                        className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base bg-white"
+                        name="priority"
+                        required
+                        defaultValue={editingItem && isStory(editingItem) ? editingItem.priority : 'Medium'}
+                        className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
                       >
-                        {allSprints.map(sprint => (
-                          <option key={sprint} value={sprint}>{sprint}</option>
-                        ))}
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
                       </select>
-                      <button
-                        type="button"
-                        onClick={() => setShowNewSprintInput(true)}
-                        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm whitespace-nowrap"
-                      >
-                        + New Sprint
-                      </button>
                     </div>
-                  ) : (
-                    <div className="flex gap-2">
+                    <div>
+                      <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Story Points</label>
                       <input
-                        type="text"
-                        name="sprint"
-                        value={newSprintName}
-                        onChange={(e) => setNewSprintName(e.target.value)}
-                        className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                        placeholder="e.g., Sprint 14"
-                        autoFocus
+                        type="number"
+                        name="points"
+                        min="0"
+                        defaultValue={editingItem && isStory(editingItem) ? editingItem.storyPoints : 0}
+                        className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                        placeholder="0"
                       />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowNewSprintInput(false);
-                          setNewSprintName('');
-                        }}
-                        className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 text-sm"
-                      >
-                        Cancel
-                      </button>
                     </div>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Tags</label>
-
-                  {/* Selected Tags */}
-                  {selectedTags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {selectedTags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800 border border-indigo-200"
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Sprint</label>
+                    {!showNewSprintInput ? (
+                      <div className="flex gap-2">
+                        <select
+                          name="sprint"
+                          defaultValue={editingItem && isStory(editingItem) ? editingItem.sprint : 'Backlog'}
+                          className="flex-1 px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
-                          🏷️ {tag}
-                          <button
-                            type="button"
-                            onClick={() => setSelectedTags(selectedTags.filter((_, i) => i !== idx))}
-                            className="ml-1 text-indigo-600 hover:text-indigo-800"
-                          >
-                            ×
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                          {allSprints.map(sprint => (
+                            <option key={sprint} value={sprint}>{sprint}</option>
+                          ))}
+                        </select>
+                        <button
+                          type="button"
+                          onClick={() => setShowNewSprintInput(true)}
+                          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm whitespace-nowrap"
+                        >
+                          + New Sprint
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          name="sprint"
+                          value={newSprintName}
+                          onChange={(e) => setNewSprintName(e.target.value)}
+                          className="flex-1 px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                          placeholder="e.g., Sprint 14"
+                          autoFocus
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowNewSprintInput(false);
+                            setNewSprintName('');
+                          }}
+                          className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 text-sm"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Tags</label>
 
-                  {/* Tag Input */}
-                  <div className="flex gap-2">
-                    <div className="flex-1">
-                      <input
-                        type="text"
-                        value={tagInput}
-                        onChange={(e) => setTagInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            if (tagInput.trim() && !selectedTags.includes(tagInput.trim())) {
-                              setSelectedTags([...selectedTags, tagInput.trim()]);
-                              setTagInput('');
+                    {/* Selected Tags */}
+                    {selectedTags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {selectedTags.map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800 dark:bg-indigo-950/30 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-900"
+                          >
+                            🏷️ {tag}
+                            <button
+                              type="button"
+                              onClick={() => setSelectedTags(selectedTags.filter((_, i) => i !== idx))}
+                              className="ml-1 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200"
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Tag Input */}
+                    <div className="flex gap-2">
+                      <div className="flex-1">
+                        <input
+                          type="text"
+                          value={tagInput}
+                          onChange={(e) => setTagInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              if (tagInput.trim() && !selectedTags.includes(tagInput.trim())) {
+                                setSelectedTags([...selectedTags, tagInput.trim()]);
+                                setTagInput('');
+                              }
                             }
+                          }}
+                          className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                          placeholder="Type new tag and press Enter"
+                        />
+                      </div>
+                      <select
+                        value=""
+                        onChange={(e) => {
+                          if (e.target.value && !selectedTags.includes(e.target.value)) {
+                            setSelectedTags([...selectedTags, e.target.value]);
                           }
                         }}
-                        className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                        placeholder="Type new tag and press Enter"
-                      />
+                        className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      >
+                        <option value="">Select existing...</option>
+                        {allTags.filter(tag => !selectedTags.includes(tag)).map(tag => (
+                          <option key={tag} value={tag}>{tag}</option>
+                        ))}
+                      </select>
                     </div>
-                    <select
-                      value=""
-                      onChange={(e) => {
-                        if (e.target.value && !selectedTags.includes(e.target.value)) {
-                          setSelectedTags([...selectedTags, e.target.value]);
-                        }
-                      }}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    >
-                      <option value="">Select existing...</option>
-                      {allTags.filter(tag => !selectedTags.includes(tag)).map(tag => (
-                        <option key={tag} value={tag}>{tag}</option>
-                      ))}
-                    </select>
                   </div>
                 </div>
-                <div className="flex flex-col md:flex-row gap-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 px-4 md:px-6 py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors text-sm md:text-base"
-                  >
-                    {editingItem && isStory(editingItem) ? 'Update Story' : 'Create Story'}
-                  </button>
+
+                <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3 bg-gray-50 dark:bg-gray-900/50 rounded-b-lg flex-shrink-0">
                   <button
                     type="button"
                     onClick={() => {
@@ -1861,40 +1873,64 @@ export function KanbanBoard() {
                       setEditingItem(null);
                       setSelectedTags([]);
                       setTagInput('');
+                      setShowNewSprintInput(false);
+                      setNewSprintName('');
+                      setShowNewStoryFromBug(false);
                     }}
-                    className="px-4 md:px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm md:text-base"
+                    className="px-4 py-2 text-gray-750 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm md:text-base"
                   >
                     Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors text-sm md:text-base font-semibold"
+                  >
+                    {editingItem && isStory(editingItem) ? 'Update Story' : 'Create Story'}
                   </button>
                 </div>
               </form>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Create/Edit Bug Modal */}
       {showCreateModal === 'bug' && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[95vh] md:max-h-[90vh] overflow-y-auto">
-            <div className="p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
-              <h2 className="text-xl md:text-2xl">{editingItem && !isStory(editingItem) ? 'Edit Bug Report' : 'Create New Bug Report'}</h2>
-              <button
-                onClick={() => {
-                  setShowCreateModal(null);
-                  setEditingItem(null);
-                  setSelectedTags([]);
-                  setTagInput('');
-                  setShowNewSprintInput(false);
-                  setNewSprintName('');
-                  setShowNewStoryFromBug(false);
-                }}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-            <div className="p-4 md:p-6">
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => {
+              setShowCreateModal(null);
+              setEditingItem(null);
+              setSelectedTags([]);
+              setTagInput('');
+              setShowNewSprintInput(false);
+              setNewSprintName('');
+              setShowNewStoryFromBug(false);
+            }}
+          ></div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+              <div className="p-4 md:p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
+                <h2 className="text-xl md:text-2xl text-gray-900 dark:text-white font-semibold">
+                  {editingItem && !isStory(editingItem) ? 'Edit Bug Report' : 'Create New Bug Report'}
+                </h2>
+                <button
+                  onClick={() => {
+                    setShowCreateModal(null);
+                    setEditingItem(null);
+                    setSelectedTags([]);
+                    setTagInput('');
+                    setShowNewSprintInput(false);
+                    setNewSprintName('');
+                    setShowNewStoryFromBug(false);
+                  }}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -1955,195 +1991,191 @@ export function KanbanBoard() {
                   setNewSprintName('');
                   setShowNewStoryFromBug(false);
                 }}
-                className="space-y-4"
+                className="flex flex-col flex-1 overflow-hidden"
               >
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Title *</label>
-                  <input
-                    type="text"
-                    name="title"
-                    required
-                    defaultValue={editingItem && !isStory(editingItem) ? editingItem.title : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="Brief bug description"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Description *</label>
-                  <textarea
-                    name="description"
-                    required
-                    rows={3}
-                    defaultValue={editingItem && !isStory(editingItem) ? editingItem.description : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="Detailed bug description"
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 md:p-6 space-y-4 flex-grow overflow-y-auto custom-scrollbar">
                   <div>
-                    <label className="block text-gray-700 mb-2 text-sm md:text-base">Severity *</label>
-                    <select
-                      name="severity"
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Title *</label>
+                    <input
+                      type="text"
+                      name="title"
                       required
-                      defaultValue={editingItem && !isStory(editingItem) ? editingItem.severity : 'Medium'}
-                      className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    >
-                      <option value="Low">Low</option>
-                      <option value="Medium">Medium</option>
-                      <option value="High">High</option>
-                      <option value="Critical">Critical</option>
-                    </select>
+                      defaultValue={editingItem && !isStory(editingItem) ? editingItem.title : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="Brief bug description"
+                    />
                   </div>
                   <div>
-                    <label className="block text-gray-700 mb-2 text-sm md:text-base">Linked Story</label>
-                    {!showNewStoryFromBug ? (
-                      <div className="flex gap-2">
-                        <select
-                          name="linkedStory"
-                          defaultValue={editingItem && !isStory(editingItem) ? editingItem.linkedStory : ''}
-                          className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base bg-white"
-                        >
-                          <option value="">-- No Story Linked --</option>
-                          {stories.filter(s => s.qaSignOff && s.pmApproval).map(story => (
-                            <option key={story.id} value={story.id}>
-                              {story.id} - {story.title}
-                            </option>
-                          ))}
-                        </select>
-                        <button
-                          type="button"
-                          onClick={() => setShowNewStoryFromBug(true)}
-                          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm whitespace-nowrap"
-                        >
-                          + New Story
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
-                        <p className="text-sm text-indigo-800 mb-2">
-                          To create a new story, please close this form and use the "+ Create New" button, then link the bug from the story view.
-                        </p>
-                        <button
-                          type="button"
-                          onClick={() => setShowNewStoryFromBug(false)}
-                          className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 text-sm"
-                        >
-                          Back to Dropdown
-                        </button>
-                      </div>
-                    )}
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Description *</label>
+                    <textarea
+                      name="description"
+                      required
+                      rows={3}
+                      defaultValue={editingItem && !isStory(editingItem) ? editingItem.description : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="Detailed bug description"
+                    />
                   </div>
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Steps to Reproduce (one per line) *</label>
-                  <textarea
-                    name="steps"
-                    required
-                    rows={4}
-                    defaultValue={editingItem && !isStory(editingItem) ? editingItem.steps.join('\n') : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="Step 1&#10;Step 2&#10;Step 3"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Expected Behavior *</label>
-                  <textarea
-                    name="expected"
-                    required
-                    rows={2}
-                    defaultValue={editingItem && !isStory(editingItem) ? editingItem.expectedBehavior : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="What should happen"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Actual Behavior *</label>
-                  <textarea
-                    name="actual"
-                    required
-                    rows={2}
-                    defaultValue={editingItem && !isStory(editingItem) ? editingItem.actualBehavior : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="What actually happens"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Environment</label>
-                  <input
-                    type="text"
-                    name="environment"
-                    defaultValue={editingItem && !isStory(editingItem) ? editingItem.environment : ''}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="Production - Chrome 120"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Tags</label>
-
-                  {/* Selected Tags */}
-                  {selectedTags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {selectedTags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800 border border-indigo-200"
-                        >
-                          🏷️ {tag}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Severity *</label>
+                      <select
+                        name="severity"
+                        required
+                        defaultValue={editingItem && !isStory(editingItem) ? editingItem.severity : 'Medium'}
+                        className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      >
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Linked Story</label>
+                      {!showNewStoryFromBug ? (
+                        <div className="flex gap-2">
+                          <select
+                            name="linkedStory"
+                            defaultValue={editingItem && !isStory(editingItem) ? editingItem.linkedStory : ''}
+                            className="flex-1 px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                          >
+                            <option value="">-- No Story Linked --</option>
+                            {stories.filter(s => s.qaSignOff && s.pmApproval).map(story => (
+                              <option key={story.id} value={story.id}>
+                                {story.id} - {story.title}
+                              </option>
+                            ))}
+                          </select>
                           <button
                             type="button"
-                            onClick={() => setSelectedTags(selectedTags.filter((_, i) => i !== idx))}
-                            className="ml-1 text-indigo-600 hover:text-indigo-800"
+                            onClick={() => setShowNewStoryFromBug(true)}
+                            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm whitespace-nowrap"
                           >
-                            ×
+                            + New Story
                           </button>
-                        </span>
-                      ))}
+                        </div>
+                      ) : (
+                        <div className="bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-900 rounded-lg p-3">
+                          <p className="text-sm text-indigo-800 dark:text-indigo-350 mb-2">
+                            To create a new story, please close this form and use the "+ Create New" button, then link the bug from the story view.
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => setShowNewStoryFromBug(false)}
+                            className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 text-sm"
+                          >
+                            Back to Dropdown
+                          </button>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Steps to Reproduce (one per line) *</label>
+                    <textarea
+                      name="steps"
+                      required
+                      rows={4}
+                      defaultValue={editingItem && !isStory(editingItem) ? editingItem.steps.join('\n') : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="Step 1&#10;Step 2&#10;Step 3"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Expected Behavior *</label>
+                    <textarea
+                      name="expected"
+                      required
+                      rows={2}
+                      defaultValue={editingItem && !isStory(editingItem) ? editingItem.expectedBehavior : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="What should happen"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Actual Behavior *</label>
+                    <textarea
+                      name="actual"
+                      required
+                      rows={2}
+                      defaultValue={editingItem && !isStory(editingItem) ? editingItem.actualBehavior : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="What actually happens"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Environment</label>
+                    <input
+                      type="text"
+                      name="environment"
+                      defaultValue={editingItem && !isStory(editingItem) ? editingItem.environment : ''}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="Production - Chrome 120"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Tags</label>
 
-                  {/* Tag Input */}
-                  <div className="flex gap-2">
-                    <div className="flex-1">
-                      <input
-                        type="text"
-                        value={tagInput}
-                        onChange={(e) => setTagInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            if (tagInput.trim() && !selectedTags.includes(tagInput.trim())) {
-                              setSelectedTags([...selectedTags, tagInput.trim()]);
-                              setTagInput('');
+                    {/* Selected Tags */}
+                    {selectedTags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {selectedTags.map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800 dark:bg-indigo-950/30 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-900"
+                          >
+                            🏷️ {tag}
+                            <button
+                              type="button"
+                              onClick={() => setSelectedTags(selectedTags.filter((_, i) => i !== idx))}
+                              className="ml-1 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200"
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Tag Input */}
+                    <div className="flex gap-2">
+                      <div className="flex-1">
+                        <input
+                          type="text"
+                          value={tagInput}
+                          onChange={(e) => setTagInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              if (tagInput.trim() && !selectedTags.includes(tagInput.trim())) {
+                                setSelectedTags([...selectedTags, tagInput.trim()]);
+                                setTagInput('');
+                              }
                             }
+                          }}
+                          className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                          placeholder="Type new tag and press Enter"
+                        />
+                      </div>
+                      <select
+                        value=""
+                        onChange={(e) => {
+                          if (e.target.value && !selectedTags.includes(e.target.value)) {
+                            setSelectedTags([...selectedTags, e.target.value]);
                           }
                         }}
-                        className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                        placeholder="Type new tag and press Enter"
-                      />
+                        className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      >
+                        <option value="">Select existing...</option>
+                        {allTags.filter(tag => !selectedTags.includes(tag)).map(tag => (
+                          <option key={tag} value={tag}>{tag}</option>
+                        ))}
+                      </select>
                     </div>
-                    <select
-                      value=""
-                      onChange={(e) => {
-                        if (e.target.value && !selectedTags.includes(e.target.value)) {
-                          setSelectedTags([...selectedTags, e.target.value]);
-                        }
-                      }}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    >
-                      <option value="">Select existing...</option>
-                      {allTags.filter(tag => !selectedTags.includes(tag)).map(tag => (
-                        <option key={tag} value={tag}>{tag}</option>
-                      ))}
-                    </select>
                   </div>
                 </div>
-                <div className="flex flex-col md:flex-row gap-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 px-4 md:px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm md:text-base"
-                  >
-                    {editingItem && !isStory(editingItem) ? 'Update Bug' : 'Create Bug'}
-                  </button>
+                <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3 bg-gray-50 dark:bg-gray-900/50 rounded-b-lg flex-shrink-0">
                   <button
                     type="button"
                     onClick={() => {
@@ -2151,32 +2183,46 @@ export function KanbanBoard() {
                       setEditingItem(null);
                       setSelectedTags([]);
                       setTagInput('');
+                      setShowNewSprintInput(false);
+                      setNewSprintName('');
+                      setShowNewStoryFromBug(false);
                     }}
-                    className="px-4 md:px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm md:text-base"
+                    className="px-4 py-2 text-gray-750 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm md:text-base"
                   >
                     Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm md:text-base font-semibold"
+                  >
+                    {editingItem && !isStory(editingItem) ? 'Update Bug' : 'Create Bug'}
                   </button>
                 </div>
               </form>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Create Test Case Modal */}
       {showCreateModal === 'test' && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[95vh] md:max-h-[90vh] overflow-y-auto">
-            <div className="p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
-              <h2 className="text-xl md:text-2xl">Create New Test Case</h2>
-              <button
-                onClick={() => setShowCreateModal(null)}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-            <div className="p-4 md:p-6">
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-45"
+            onClick={() => setShowCreateModal(null)}
+          ></div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+              <div className="p-4 md:p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
+                <h2 className="text-xl md:text-2xl text-gray-900 dark:text-white font-semibold">Create New Test Case</h2>
+                <button
+                  onClick={() => setShowCreateModal(null)}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
@@ -2227,105 +2273,108 @@ export function KanbanBoard() {
                     type: 'success',
                   });
                 }}
-                className="space-y-4"
+                className="flex flex-col flex-1 overflow-hidden"
               >
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Title *</label>
-                  <input
-                    type="text"
-                    name="title"
-                    required
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="Test case title"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Description *</label>
-                  <textarea
-                    name="description"
-                    required
-                    rows={2}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="What this test verifies"
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 md:p-6 space-y-4 flex-grow overflow-y-auto custom-scrollbar">
                   <div>
-                    <label className="block text-gray-700 mb-2 text-sm md:text-base">Linked Story</label>
-                    <select
-                      name="linkedStory"
-                      className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base bg-white"
-                    >
-                      <option value="">-- No Story Linked --</option>
-                      {stories.filter(s => s.qaSignOff && s.pmApproval).map(story => (
-                        <option key={story.id} value={story.id}>
-                          {story.id} - {story.title}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 mb-2 text-sm md:text-base">Priority *</label>
-                    <select
-                      name="priority"
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Title *</label>
+                    <input
+                      type="text"
+                      name="title"
                       required
-                      className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    >
-                      <option value="Low">Low</option>
-                      <option value="Medium">Medium</option>
-                      <option value="High">High</option>
-                      <option value="Critical">Critical</option>
-                    </select>
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="Test case title"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Description *</label>
+                    <textarea
+                      name="description"
+                      required
+                      rows={2}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="What this test verifies"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Linked Story</label>
+                      <select
+                        name="linkedStory"
+                        className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      >
+                        <option value="">-- No Story Linked --</option>
+                        {stories.filter(s => s.qaSignOff && s.pmApproval).map(story => (
+                          <option key={story.id} value={story.id}>
+                            {story.id} - {story.title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Priority *</label>
+                      <select
+                        name="priority"
+                        required
+                        className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      >
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Preconditions</label>
+                    <textarea
+                      name="preconditions"
+                      rows={2}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="Conditions required before running test"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Test Steps (one per line) *</label>
+                    <textarea
+                      name="steps"
+                      required
+                      rows={4}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="Step 1&#10;Step 2&#10;Step 3"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm md:text-base">Expected Result *</label>
+                    <textarea
+                      name="expected"
+                      required
+                      rows={2}
+                      className="w-full px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
+                      placeholder="What should happen when test passes"
+                    />
                   </div>
                 </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Preconditions</label>
-                  <textarea
-                    name="preconditions"
-                    rows={2}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="Conditions required before running test"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Test Steps (one per line) *</label>
-                  <textarea
-                    name="steps"
-                    required
-                    rows={4}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="Step 1&#10;Step 2&#10;Step 3"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2 text-sm md:text-base">Expected Result *</label>
-                  <textarea
-                    name="expected"
-                    required
-                    rows={2}
-                    className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base"
-                    placeholder="What should happen when test passes"
-                  />
-                </div>
-                <div className="flex flex-col md:flex-row gap-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 px-4 md:px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors text-sm md:text-base"
-                  >
-                    Create Test Case
-                  </button>
+
+                <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3 bg-gray-50 dark:bg-gray-900/50 rounded-b-lg flex-shrink-0">
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(null)}
-                    className="px-4 md:px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm md:text-base"
+                    className="px-4 py-2 text-gray-750 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm md:text-base"
                   >
                     Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors text-sm md:text-base font-semibold"
+                  >
+                    Create Test Case
                   </button>
                 </div>
               </form>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Notification Modal */}

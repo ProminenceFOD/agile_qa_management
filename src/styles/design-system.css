@@ -350,6 +350,12 @@
   ring-color: rgb(96 165 250 / 0.2);
 }
 
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]) {
+  background-color: rgb(31 41 55);
+  border-color: rgb(75 85 99);
+  color: rgb(243 244 246);
+}
+
 .dark select {
   background-color: rgb(31 41 55);
   border-color: rgb(75 85 99);
