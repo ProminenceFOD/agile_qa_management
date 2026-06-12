@@ -14,7 +14,7 @@ const cache = new Map<string, any>();
 const GLOBAL_KEYS = ['aqms_users'];
 
 // Get current user's organization ID from session
-function getCurrentOrganizationId(): string | null {
+export function getCurrentOrganizationId(): string | null {
   try {
     const session = localStorage.getItem('aqms_session');
     if (session) {
@@ -28,26 +28,19 @@ function getCurrentOrganizationId(): string | null {
 }
 
 // Scope a key by organization (unless it's a global key)
-function getScopedKey(key: string): string {
-  // TEMPORARILY DISABLED - just return the key as-is for now
-  // We'll re-enable scoping after ensuring the app loads
-  return key;
-
-  /*
+export function getScopedKey(key: string): string {
   // Don't scope global keys
   if (GLOBAL_KEYS.includes(key)) {
     return key;
   }
 
   const orgId = getCurrentOrganizationId();
-  if (!orgId) {
-    // No organization context, use global key
-    // This happens during login/signup before session is established
+  if (!orgId || orgId === 'demo-org') {
+    // For demo organization or if no session exists, use the base key
     return key;
   }
 
   return `${orgId}_${key}`;
-  */
 }
 
 // Get or create a persistent device ID using cookies (which may persist better than localStorage in iframes)

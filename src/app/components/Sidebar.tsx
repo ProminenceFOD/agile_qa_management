@@ -109,12 +109,18 @@ export function Sidebar({ activeTab, onTabChange, mobileOpen, onMobileToggle, bu
       .slice(0, 3);
   };
   const [showQuickCreate, setShowQuickCreate] = useState(false);
+  const orgId = currentUser?.organizationId || 'demo-org';
+
   const [favorites, setFavorites] = useState<string[]>(() => {
-    const saved = localStorage.getItem('aqms_favorites');
+    const session = localStorage.getItem('aqms_session');
+    const currentOrgId = session ? JSON.parse(session).user?.organizationId || 'demo-org' : 'demo-org';
+    const saved = localStorage.getItem(`${currentOrgId}_aqms_favorites`);
     return saved ? JSON.parse(saved) : ['dashboard', 'validator', 'bugs'];
   });
   const [recentPages, setRecentPages] = useState<string[]>(() => {
-    const saved = localStorage.getItem('aqms_recent');
+    const session = localStorage.getItem('aqms_session');
+    const currentOrgId = session ? JSON.parse(session).user?.organizationId || 'demo-org' : 'demo-org';
+    const saved = localStorage.getItem(`${currentOrgId}_aqms_recent`);
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -132,14 +138,14 @@ export function Sidebar({ activeTab, onTabChange, mobileOpen, onMobileToggle, bu
     if (!recentPages.includes(activeTab)) {
       const updated = [activeTab, ...recentPages.filter(p => p !== activeTab)].slice(0, 5);
       setRecentPages(updated);
-      localStorage.setItem('aqms_recent', JSON.stringify(updated));
+      localStorage.setItem(`${orgId}_aqms_recent`, JSON.stringify(updated));
     }
-  }, [activeTab]);
+  }, [activeTab, orgId]);
 
   // Save favorites
   useEffect(() => {
-    localStorage.setItem('aqms_favorites', JSON.stringify(favorites));
-  }, [favorites]);
+    localStorage.setItem(`${orgId}_aqms_favorites`, JSON.stringify(favorites));
+  }, [favorites, orgId]);
 
   const toggleFavorite = (key: string) => {
     setFavorites(prev =>

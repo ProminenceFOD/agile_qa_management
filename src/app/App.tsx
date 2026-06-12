@@ -33,7 +33,7 @@ import { DocumentationViewer } from './components/DocumentationViewer';
 import { Sidebar } from './components/Sidebar';
 import './utils/fixServerUsers'; // Load server fix utility
 import { overrideRolePermissions, loadUserOverrides } from './utils/permissions';
-import { getData, setData } from './utils/supabaseStorage';
+import { getData, setData, getScopedKey } from './utils/supabaseStorage';
 
 // Suppress findDOMNode deprecation warning from third-party libraries
 const originalError = console.error;
@@ -79,7 +79,8 @@ function AppDashboard() {
         try {
           const data = await getData(key);
           if (data) {
-            localStorage.setItem(key, typeof data === 'string' ? data : JSON.stringify(data));
+            const scopedLocalKey = getScopedKey(key);
+            localStorage.setItem(scopedLocalKey, typeof data === 'string' ? data : JSON.stringify(data));
           }
         } catch (e) {
           console.warn(`[App] Failed to prefetch ${key}:`, e);
@@ -162,9 +163,9 @@ function AppDashboard() {
     // Update counts from localStorage/Supabase data
     const updateCounts = () => {
       try {
-        const stories = JSON.parse(localStorage.getItem('aqms_stories') || '[]');
-        const bugs = JSON.parse(localStorage.getItem('aqms_bugs') || '[]');
-        const tests = JSON.parse(localStorage.getItem('aqms_test_cases') || '[]');
+        const stories = JSON.parse(localStorage.getItem(getScopedKey('aqms_stories')) || '[]');
+        const bugs = JSON.parse(localStorage.getItem(getScopedKey('aqms_bugs')) || '[]');
+        const tests = JSON.parse(localStorage.getItem(getScopedKey('aqms_test_cases')) || '[]');
 
         setStoryCount(stories.length);
         setBugCount(bugs.length);

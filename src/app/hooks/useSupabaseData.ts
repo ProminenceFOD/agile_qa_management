@@ -6,12 +6,13 @@
  */
 
 import { useState, useEffect } from 'react';
-import { getData, setData } from '../utils/supabaseStorage';
+import { getData, setData, getScopedKey } from '../utils/supabaseStorage';
 
 export function useSupabaseData<T>(key: string, initialValue: T) {
   const [data, setDataState] = useState<T>(() => {
     try {
-      const local = localStorage.getItem(key);
+      const scopedLocalKey = getScopedKey(key);
+      const local = localStorage.getItem(scopedLocalKey);
       if (local !== null) {
         return JSON.parse(local) as T;
       }
@@ -35,7 +36,8 @@ export function useSupabaseData<T>(key: string, initialValue: T) {
           console.log(`[useSupabaseData] Loaded ${key} from server`);
           setDataState(stored);
           try {
-            localStorage.setItem(key, typeof stored === 'string' ? stored : JSON.stringify(stored));
+            const scopedLocalKey = getScopedKey(key);
+            localStorage.setItem(scopedLocalKey, typeof stored === 'string' ? stored : JSON.stringify(stored));
           } catch (e) {
             console.warn(`[useSupabaseData] Failed to sync ${key} to localStorage:`, e);
           }
@@ -52,7 +54,8 @@ export function useSupabaseData<T>(key: string, initialValue: T) {
 
     // Listen for storage updates across tabs for instant sync
     const handleStorage = (e: StorageEvent) => {
-      if (e.key === key && e.newValue && mounted) {
+      const scopedLocalKey = getScopedKey(key);
+      if (e.key === scopedLocalKey && e.newValue && mounted) {
         try {
           setDataState(JSON.parse(e.newValue));
         } catch (err) {
@@ -82,7 +85,8 @@ export function useSupabaseData<T>(key: string, initialValue: T) {
 
     // Save to localStorage immediately
     try {
-      localStorage.setItem(key, typeof newValue === 'string' ? newValue : JSON.stringify(newValue));
+      const scopedLocalKey = getScopedKey(key);
+      localStorage.setItem(scopedLocalKey, typeof newValue === 'string' ? newValue : JSON.stringify(newValue));
     } catch (e) {
       console.warn(`[useSupabaseData] Failed to save ${key} to localStorage:`, e);
     }

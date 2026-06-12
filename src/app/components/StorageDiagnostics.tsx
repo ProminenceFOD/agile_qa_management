@@ -16,7 +16,7 @@ export function StorageDiagnostics() {
       // Get all aqms_* keys and their values from localStorage
       const aqms: Record<string, string> = {};
       allKeys.forEach(key => {
-        if (key.startsWith('aqms_')) {
+        if (key.includes('aqms_')) {
           const value = localStorage.getItem(key);
           aqms[key] = value ? `${value.substring(0, 100)}...` : 'null';
         }
@@ -86,7 +86,7 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
 
   const clearAqmsData = () => {
     Object.keys(localStorage).forEach(key => {
-      if (key.startsWith('aqms_')) {
+      if (key.includes('aqms_')) {
         localStorage.removeItem(key);
       }
     });
@@ -157,7 +157,7 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
           ) : (
             <ul className="space-y-1">
               {storageKeys.map(key => (
-                <li key={key} className={key.startsWith('aqms_') ? 'text-indigo-600 font-bold' : ''}>
+                <li key={key} className={key.includes('aqms_') ? 'text-indigo-600 font-bold' : ''}>
                   {key}
                 </li>
               ))}

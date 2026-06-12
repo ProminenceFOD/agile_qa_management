@@ -43,6 +43,7 @@ interface Invitation {
 
 export function UserManagement() {
   const { user: currentUser } = useAuth();
+  const currentOrgId = currentUser?.organizationId || 'demo-org';
   const [activeTab, setActiveTab] = useState<'users' | 'invitations' | 'permissions' | 'userperms' | 'audit'>('users');
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -417,6 +418,8 @@ export function UserManagement() {
       lastActive: new Date(),
       storiesAssigned: 0,
       bugsAssigned: 0,
+      organizationId: currentOrgId,
+      organizationName: currentUser?.organizationName,
     };
 
     setUsers([...users, newUser]);
@@ -607,7 +610,9 @@ export function UserManagement() {
     setEditTitleValue('');
   };
 
-  const filteredUsers = (users || []).filter(u => {
+  const orgUsers = (users || []).filter(u => (u.organizationId || 'demo-org') === currentOrgId);
+
+  const filteredUsers = orgUsers.filter(u => {
     const matchesSearch =
       u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       u.email.toLowerCase().includes(searchQuery.toLowerCase());
@@ -615,7 +620,7 @@ export function UserManagement() {
     return matchesSearch && matchesRole;
   });
 
-  const activeUsers = users.filter(u => u.status === 'Active').length;
+  const activeUsers = orgUsers.filter(u => u.status === 'Active').length;
   const pendingInvites = invitations.filter(i => i.status === 'Pending').length;
 
   return (
@@ -651,10 +656,10 @@ export function UserManagement() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div className="text-xs text-purple-700">
-            <strong>QA Reviewers:</strong> {users.filter(u => u.canSignOffQA).map(u => `${u.name} (${u.title || 'No title'})`).join(', ') || 'None'}
+            <strong>QA Reviewers:</strong> {orgUsers.filter(u => u.canSignOffQA).map(u => `${u.name} (${u.title || 'No title'})`).join(', ') || 'None'}
           </div>
           <div className="text-xs text-purple-700">
-            <strong>PM Approvers:</strong> {users.filter(u => u.canSignOffPM).map(u => `${u.name} (${u.title || 'No title'})`).join(', ') || 'None'}
+            <strong>PM Approvers:</strong> {orgUsers.filter(u => u.canSignOffPM).map(u => `${u.name} (${u.title || 'No title'})`).join(', ') || 'None'}
           </div>
         </div>
       </div>
@@ -663,7 +668,7 @@ export function UserManagement() {
       <div className="grid grid-cols-5 gap-4 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Total Users</div>
-          <div className="text-2xl font-bold text-gray-900">{users.length}</div>
+          <div className="text-2xl font-bold text-gray-900">{orgUsers.length}</div>
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Active Users</div>
@@ -672,7 +677,7 @@ export function UserManagement() {
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Authorized</div>
           <div className="text-2xl font-bold text-purple-600">
-            {users.filter(u => u.canSignOffQA || u.canSignOffPM).length}
+            {orgUsers.filter(u => u.canSignOffQA || u.canSignOffPM).length}
           </div>
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-4">
@@ -682,7 +687,7 @@ export function UserManagement() {
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Developers</div>
           <div className="text-2xl font-bold text-indigo-600">
-            {users.filter(u => u.role === 'Developer').length}
+            {orgUsers.filter(u => u.role === 'Developer').length}
           </div>
         </div>
       </div>
@@ -697,7 +702,7 @@ export function UserManagement() {
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          Team Members ({users.length})
+          Team Members ({orgUsers.length})
         </button>
         <button
           onClick={() => setActiveTab('invitations')}
@@ -1893,7 +1898,7 @@ function UserPermissionsOverrides({ users, currentUser }: UserPermissionsOverrid
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <h3 className="text-sm font-semibold text-gray-800 mb-3">Select User</h3>
           <div className="space-y-2 max-h-[600px] overflow-y-auto">
-            {users.map(user => {
+            {orgUsers.map(user => {
               const override = userOverrides[user.id];
               const hasOverrides = override && (override.grantedPermissions.length > 0 || override.revokedPermissions.length > 0);
 
