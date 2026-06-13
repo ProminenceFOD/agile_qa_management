@@ -25,9 +25,10 @@ interface TestCaseViewProps {
   onExecute: () => void;
   onEdit: () => void;
   onApprove?: () => void;
+  onReject?: () => void;
 }
 
-export function TestCaseView({ testCase, onClose, onExecute, onEdit, onApprove }: TestCaseViewProps) {
+export function TestCaseView({ testCase, onClose, onExecute, onEdit, onApprove, onReject }: TestCaseViewProps) {
   const getStatusColor = (status: TestStatus) => {
     switch (status) {
       case 'Pass':
@@ -168,12 +169,20 @@ export function TestCaseView({ testCase, onClose, onExecute, onEdit, onApprove }
                 Edit
               </button>
               {testCase.isDraft ? (
-                <button
-                  onClick={onApprove}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center gap-1"
-                >
-                  ✓ Approve & Save
-                </button>
+                <>
+                  <button
+                    onClick={onReject}
+                    className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-750 transition-colors font-medium flex items-center gap-1 animate-pulse"
+                  >
+                    ✕ Reject Suggestion
+                  </button>
+                  <button
+                    onClick={onApprove}
+                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center gap-1"
+                  >
+                    ✓ Approve & Save
+                  </button>
+                </>
               ) : (
                 <button
                   onClick={onExecute}

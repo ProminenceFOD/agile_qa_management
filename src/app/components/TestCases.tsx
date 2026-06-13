@@ -354,6 +354,38 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     toast.success('AI suggestion discarded');
   };
 
+  const handleApproveAllDrafts = () => {
+    const drafts = testCases.filter(tc => tc.isDraft);
+    if (drafts.length === 0) return;
+
+    const existingNumbers = testCases
+      .filter(tc => !tc.isDraft)
+      .map(tc => {
+        const match = tc.id.match(/^TC-(\d+)$/);
+        return match ? parseInt(match[1]) : 0;
+      })
+      .filter(n => n > 0);
+
+    let nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+
+    const updatedTestCases = testCases.map(tc => {
+      if (tc.isDraft) {
+        const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
+        nextNumber++;
+        return {
+          ...tc,
+          id: finalId,
+          isDraft: false,
+          status: 'Not Run' as TestStatus,
+        };
+      }
+      return tc;
+    });
+
+    setTestCases(updatedTestCases);
+    toast.success(`Approved all ${drafts.length} suggested test cases!`);
+  };
+
   const handleViewTest = (test: TestCase) => {
     setSelectedTest(test);
     setViewMode('execute');
@@ -421,13 +453,23 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
           <h1 className="text-3xl mb-2">Test Cases Management</h1>
           <p className="text-gray-600">Organize and execute test cases</p>
         </div>
-        <button
-          onClick={() => setShowCreateForm(true)}
-          className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl hover:from-green-700 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
-        >
-          <Plus className="w-5 h-5" />
-          Create Test Case
-        </button>
+        <div className="flex gap-3">
+          {testCases.some(tc => tc.isDraft) && (
+            <button
+              onClick={handleApproveAllDrafts}
+              className="px-5 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl hover:from-purple-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+            >
+              ✓ Approve All Suggestions ({testCases.filter(tc => tc.isDraft).length})
+            </button>
+          )}
+          <button
+            onClick={() => setShowCreateForm(true)}
+            className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl hover:from-green-700 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+          >
+            <Plus className="w-5 h-5" />
+            Create Test Case
+          </button>
+        </div>
       </div>
 
       {/* Statistics Cards */}
@@ -563,10 +605,15 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
           <tbody>
             {paginatedTests.map((test) => {
               const isHighlighted = highlightedItemId === test.id;
+              const rowClassName = isHighlighted
+                ? 'bg-indigo-100 dark:bg-indigo-900 ring-2 ring-indigo-500 animate-pulse'
+                : test.isDraft
+                ? 'bg-purple-50/30 dark:bg-purple-950/10 border-l-4 border-purple-500/70'
+                : '';
               return (
               <tr
                 key={test.id}
-                className={isHighlighted ? 'bg-indigo-100 dark:bg-indigo-900 ring-2 ring-indigo-500 animate-pulse' : ''}
+                className={rowClassName}
               >
                 <td className="px-4 py-3 text-sm font-medium text-gray-900">{test.id}</td>
                 <td className="px-4 py-3 text-sm text-gray-700">{test.title}</td>
@@ -691,6 +738,11 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
           }}
           onApprove={() => {
             handleApproveTestCase(selectedTest);
+            setViewMode('list');
+            setSelectedTest(null);
+          }}
+          onReject={() => {
+            handleRejectTestCase(selectedTest.id);
             setViewMode('list');
             setSelectedTest(null);
           }}
