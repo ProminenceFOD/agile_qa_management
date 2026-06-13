@@ -181,12 +181,29 @@ export function DataManagement() {
         const headers = rows[0].map(h => h.toLowerCase());
         const data = rows.slice(1);
         const existingBugs = await getData('aqms_bugs') || [];
+        const activeModules = await getData('aqms_modules') || [];
         const newBugs: any[] = [];
 
         data.forEach((row, i) => {
           const title = row[headers.indexOf('title')];
           const severity = row[headers.indexOf('severity')] || 'Medium';
           if (!title) return;
+
+          const moduleIdx = headers.indexOf('module');
+          const moduleVal = moduleIdx !== -1 && row[moduleIdx] ? row[moduleIdx].trim() : '';
+
+          let matchedModule = activeModules.find((m: any) => 
+            m.id.toLowerCase() === moduleVal.toLowerCase() ||
+            m.name.toLowerCase() === moduleVal.toLowerCase()
+          );
+
+          // Substring / fuzzy match fallback
+          if (!matchedModule && moduleVal) {
+            matchedModule = activeModules.find((m: any) => 
+              m.name.toLowerCase().includes(moduleVal.toLowerCase()) ||
+              moduleVal.toLowerCase().includes(m.name.toLowerCase())
+            );
+          }
 
           newBugs.push({
             id: row[headers.indexOf('bug_id')] || `BUG-${Date.now()}-${i}`,
@@ -200,7 +217,8 @@ export function DataManagement() {
             steps: ['Imported from historical data'],
             expectedBehavior: 'See historical records',
             actualBehavior: 'See historical records',
-            environment: row[headers.indexOf('module')] || 'Unknown'
+            environment: moduleVal || 'Unknown',
+            moduleId: matchedModule ? matchedModule.id : undefined
           });
         });
 

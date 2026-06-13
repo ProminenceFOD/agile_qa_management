@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getData } from '../utils/supabaseStorage';
+import { useSupabaseData } from '../hooks/useSupabaseData';
 import { RichTextEditor } from './RichTextEditor';
 import { toast } from 'sonner';
 
@@ -28,6 +29,7 @@ interface Bug {
   actualBehavior: string;
   environment?: string;
   attachments?: string[];
+  moduleId?: string;
 }
 
 interface BugReportFormProps {
@@ -37,6 +39,8 @@ interface BugReportFormProps {
 }
 
 export function BugReportForm({ onClose, onSubmit, currentUser }: BugReportFormProps) {
+  const { data: modules } = useSupabaseData<any[]>('aqms_modules', []);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -48,6 +52,7 @@ export function BugReportForm({ onClose, onSubmit, currentUser }: BugReportFormP
     expectedBehavior: '',
     actualBehavior: '',
     environment: '',
+    moduleId: '',
   });
 
   const [steps, setSteps] = useState(['']);
@@ -146,6 +151,7 @@ export function BugReportForm({ onClose, onSubmit, currentUser }: BugReportFormP
       actualBehavior: formData.actualBehavior,
       environment: formData.environment || undefined,
       attachments: attachments.length > 0 ? attachments : undefined,
+      moduleId: formData.moduleId || undefined,
     };
 
     onSubmit(bug);
@@ -312,18 +318,38 @@ export function BugReportForm({ onClose, onSubmit, currentUser }: BugReportFormP
               </div>
             </div>
 
-            {/* Environment */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Environment (Optional)
-              </label>
-              <input
-                type="text"
-                value={formData.environment}
-                onChange={(e) => setFormData({ ...formData, environment: e.target.value })}
-                placeholder="e.g., Production, Staging, Chrome 120"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+            {/* Environment and Module */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Environment (Optional)
+                </label>
+                <input
+                  type="text"
+                  value={formData.environment}
+                  onChange={(e) => setFormData({ ...formData, environment: e.target.value })}
+                  placeholder="e.g., Production, Staging, Chrome 120"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Risk Module (Optional)
+                </label>
+                <select
+                  value={formData.moduleId}
+                  onChange={(e) => setFormData({ ...formData, moduleId: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                >
+                  <option value="">No Module Linked</option>
+                  {modules.map((mod: any) => (
+                    <option key={mod.id} value={mod.id}>
+                      {mod.id} - {mod.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             {/* Attachments */}

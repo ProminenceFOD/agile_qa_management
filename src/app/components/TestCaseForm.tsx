@@ -11,6 +11,7 @@ interface Story {
   title: string;
   qaSignOff: boolean;
   pmApproval: boolean;
+  moduleId?: string;
 }
 
 interface TestCase {
@@ -26,6 +27,7 @@ interface TestCase {
   lastRun?: Date;
   executionTime?: number;
   priority: 'High' | 'Medium' | 'Low';
+  moduleId?: string;
 }
 
 interface TestCaseFormProps {
@@ -35,6 +37,8 @@ interface TestCaseFormProps {
 }
 
 export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps) {
+  const { data: modules } = useSupabaseData<any[]>('aqms_modules', []);
+
   const [formData, setFormData] = useState({
     title: testCase?.title || '',
     description: testCase?.description || '',
@@ -43,6 +47,7 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
     assignedTo: testCase?.assignedTo || '',
     linkedStory: testCase?.linkedStory || '',
     priority: testCase?.priority || 'Medium' as 'High' | 'Medium' | 'Low',
+    moduleId: testCase?.moduleId || '',
   });
 
   const [steps, setSteps] = useState<string[]>(testCase?.steps || ['']);
@@ -65,6 +70,16 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
   const availableStories = allStories.filter((story: any) =>
     story.qaSignOff === true && story.pmApproval === true
   );
+
+  // Auto-resolve moduleId from selected story
+  useEffect(() => {
+    if (formData.linkedStory) {
+      const selectedStory = allStories.find((story) => story.id === formData.linkedStory);
+      if (selectedStory && selectedStory.moduleId) {
+        setFormData((prev) => ({ ...prev, moduleId: selectedStory.moduleId }));
+      }
+    }
+  }, [formData.linkedStory, allStories]);
 
   const handleAddStep = () => {
     setSteps([...steps, '']);
@@ -125,6 +140,7 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
       assignedTo: formData.assignedTo || undefined,
       linkedStory: formData.linkedStory || undefined,
       priority: formData.priority,
+      moduleId: formData.moduleId || undefined,
     };
 
     onSubmit(newTestCase);
@@ -281,8 +297,8 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
               </button>
             </div>
 
-            {/* Linked Story and Assigned To */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Linked Story, Module, and Assigned To */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Linked Story (Optional)
@@ -305,8 +321,29 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
                 </select>
                 <p className="text-xs text-gray-500 mt-1">
                   {availableStories.length === 0
-                    ? 'No approved stories found. Stories require both QA sign-off and PM approval.'
-                    : `${availableStories.length} approved ${availableStories.length === 1 ? 'story' : 'stories'} available`}
+                    ? 'No approved stories found.'
+                    : `${availableStories.length} approved stories available`}
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Module (Optional)
+                </label>
+                <select
+                  value={formData.moduleId}
+                  onChange={(e) => setFormData({ ...formData, moduleId: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                >
+                  <option value="">No Module Linked</option>
+                  {modules.map((module) => (
+                    <option key={module.id} value={module.id}>
+                      {module.name}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Link test case to a specific risk module
                 </p>
               </div>
 

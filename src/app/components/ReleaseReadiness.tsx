@@ -10,6 +10,7 @@ interface Story {
   qaSignOff: boolean;
   pmApproval: boolean;
   linkedBugs?: string[];
+  moduleId?: string;
 }
 
 interface Bug {
@@ -18,6 +19,7 @@ interface Bug {
   severity: string;
   status: string;
   linkedStory?: string;
+  moduleId?: string;
 }
 
 interface TestCase {
@@ -26,6 +28,7 @@ interface TestCase {
   status: string;
   linkedStory?: string;
   type: string;
+  moduleId?: string;
 }
 
 interface Module {
@@ -87,9 +90,15 @@ export function ReleaseReadiness() {
     const highRiskModules = modules.filter(m => m.riskLevel === 'High').length;
     const highRiskCoverage = modules
       .filter(m => m.riskLevel === 'High')
-      .filter(m => {
-        // Check if there are regression tests for this high-risk module
-        return relatedTests.some(tc => tc.type === 'Regression');
+      .filter(module => {
+        // Find stories belonging to this module
+        const moduleStories = stories.filter(s => s.moduleId === module.id);
+        const storyIds = new Set(moduleStories.map(s => s.id));
+        // Check if there are regression tests specifically for this module's stories or directly linked to the module
+        return relatedTests.some(tc => 
+          (tc.moduleId === module.id || (tc.linkedStory && storyIds.has(tc.linkedStory))) && 
+          tc.type === 'Regression'
+        );
       }).length;
 
     // Code quality indicators

@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { CommentsSection } from './CommentsSection';
 import { ActivityLog } from './ActivityLog';
 import { getData } from '../utils/supabaseStorage';
+import { useSupabaseData } from '../hooks/useSupabaseData';
 import { Edit3, ArrowLeft } from 'lucide-react';
 
 type Priority = 'Critical' | 'High' | 'Medium' | 'Low';
@@ -45,6 +46,7 @@ interface Story {
   tags?: string[];
   linkedBugs?: string[];
   status?: string;
+  moduleId?: string;
 }
 
 interface StoryViewProps {
@@ -65,6 +67,7 @@ interface StoryViewProps {
 
 export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAssignDeveloper, onAssignTester, onLinkBug, onUnlinkBug, onLinkTestCase, onUnlinkTestCase, onNavigate, onUpdateComments }: StoryViewProps) {
   const { user } = useAuth();
+  const { data: modules } = useSupabaseData<any[]>('aqms_modules', []);
   const [comments, setComments] = useState<Comment[]>(story.comments || []);
   const [activities, setActivities] = useState<ActivityLogEntry[]>(story.activityLog || []);
   const [showDeveloperDropdown, setShowDeveloperDropdown] = useState(false);
@@ -473,7 +476,7 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
           {/* Story Metadata */}
           <div>
             <h3 className="text-base md:text-lg text-gray-800 mb-4">Story Details</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Priority</div>
                 <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${getPriorityColor(story.priority)}`}>
@@ -487,6 +490,12 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Sprint</div>
                 <div className="text-sm text-gray-900">{story.sprint || 'Unassigned'}</div>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                <div className="text-xs text-gray-600 mb-1">Risk Module</div>
+                <div className="text-sm text-gray-900 truncate" title={modules.find(m => m.id === story.moduleId)?.name || 'None'}>
+                  {modules.find(m => m.id === story.moduleId) ? `${story.moduleId} - ${modules.find(m => m.id === story.moduleId)?.name}` : 'None'}
+                </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Created</div>

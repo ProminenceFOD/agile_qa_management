@@ -348,6 +348,7 @@ export interface Story {
   assignedDeveloper?: string;
   assignedTester?: string;
   assignedQAReviewer?: string;
+  moduleId?: string;
 }
 
 export interface Bug {
@@ -356,12 +357,14 @@ export interface Bug {
   assignedTo?: string;
   assignedDeveloper?: string;
   assignedTester?: string;
+  moduleId?: string;
 }
 
 export interface TestCase {
   id: string;
   createdBy?: string;
   assignedTo?: string;
+  moduleId?: string;
 }
 
 export function canEditStory(user: User | null, story: Story): boolean {

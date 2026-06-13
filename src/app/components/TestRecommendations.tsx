@@ -9,6 +9,7 @@ interface Story {
   status: string;
   acceptanceCriteria?: string[];
   tags?: string[];
+  moduleId?: string;
 }
 
 interface Module {
@@ -30,6 +31,7 @@ interface TestCase {
   linkedStory?: string;
   status: string;
   priority: 'High' | 'Medium' | 'Low';
+  moduleId?: string;
 }
 
 interface Bug {
@@ -103,8 +105,13 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
     modules
       .filter(m => m.riskLevel === 'High')
       .forEach(module => {
-        const hasRegressionTests = testCases.some(tc => tc.type === 'Regression');
-        if (!hasRegressionTests || testCases.filter(tc => tc.type === 'Regression').length < 3) {
+        const moduleStories = stories.filter(s => s.moduleId === module.id);
+        const storyIds = new Set(moduleStories.map(s => s.id));
+        const moduleTestCases = testCases.filter(tc => 
+          tc.moduleId === module.id || (tc.linkedStory && storyIds.has(tc.linkedStory))
+        );
+        const regressionTests = moduleTestCases.filter(tc => tc.type === 'Regression');
+        if (regressionTests.length < 3) {
           recs.push({
             id: `REC-${recId++}`,
             priority: 'Critical',
@@ -211,7 +218,12 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
     modules
       .filter(m => m.businessImpact >= 8)
       .forEach(module => {
-        const hasSmokeTests = testCases.some(tc => tc.type === 'Smoke');
+        const moduleStories = stories.filter(s => s.moduleId === module.id);
+        const storyIds = new Set(moduleStories.map(s => s.id));
+        const moduleTestCases = testCases.filter(tc => 
+          tc.moduleId === module.id || (tc.linkedStory && storyIds.has(tc.linkedStory))
+        );
+        const hasSmokeTests = moduleTestCases.some(tc => tc.type === 'Smoke');
         if (!hasSmokeTests) {
           recs.push({
             id: `REC-${recId++}`,
@@ -315,6 +327,15 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
     const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
+    // Resolve moduleId from recommendation or linked story
+    let resolvedModuleId = rec.moduleId;
+    if (!resolvedModuleId && rec.storyId) {
+      const linkedStory = stories.find(s => s.id === rec.storyId);
+      if (linkedStory) {
+        resolvedModuleId = linkedStory.moduleId;
+      }
+    }
+
     const newTestCases: TestCase[] = rec.suggestedTests.map((test, index) => {
       const testNumber = nextNumber + index;
       const testId = `TC-${String(testNumber).padStart(3, '0')}`;
@@ -347,6 +368,7 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
         linkedStory: rec.storyId,
         status: 'Not Run' as const, // Valid initial status
         priority: rec.priority === 'Critical' || rec.priority === 'High' ? 'High' : rec.priority === 'Medium' ? 'Medium' : 'Low',
+        moduleId: resolvedModuleId,
       };
     });
 

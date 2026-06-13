@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { getData, setData } from '../utils/supabaseStorage';
+import { useSupabaseData } from '../hooks/useSupabaseData';
 import { RichTextEditor } from './RichTextEditor';
 
 type Priority = 'Critical' | 'High' | 'Medium' | 'Low';
@@ -26,6 +27,7 @@ interface Story {
   tags?: string[];
   linkedBugs?: string[];
   status?: string;
+  moduleId?: string;
 }
 
 interface Bug {
@@ -97,6 +99,8 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
     return `US-${String(nextNumber).padStart(3, '0')}`;
   };
 
+  const { data: modules } = useSupabaseData<any[]>('aqms_modules', []);
+
   const [formData, setFormData] = useState<Story>({
     id: generateStoryId(),
     title: story?.title || '',
@@ -118,6 +122,7 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
     updatedAt: new Date(),
     tags: story?.tags || [],
     linkedBugs: story?.linkedBugs || [],
+    moduleId: story?.moduleId || '',
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -492,7 +497,7 @@ And my session should be maintained"
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="priority" className="block text-gray-700 mb-2">
                 Priority *
@@ -536,7 +541,9 @@ And my session should be maintained"
                 <option value="13">13</option>
               </select>
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="sprint" className="block text-gray-700 mb-2">
                 Sprint
@@ -551,6 +558,25 @@ And my session should be maintained"
                 {SPRINTS.map((sprint) => (
                   <option key={sprint} value={sprint}>
                     {sprint}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="moduleId" className="block text-gray-700 mb-2">
+                Risk Module
+              </label>
+              <select
+                id="moduleId"
+                value={formData.moduleId || ''}
+                onChange={(e) => setFormData({ ...formData, moduleId: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+              >
+                <option value="">No Module Linked</option>
+                {modules.map((mod: any) => (
+                  <option key={mod.id} value={mod.id}>
+                    {mod.id} - {mod.name} ({mod.riskLevel} Risk)
                   </option>
                 ))}
               </select>

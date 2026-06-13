@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useSupabaseData } from '../hooks/useSupabaseData';
 import { ModuleForm } from './ModuleForm';
 import { ModuleView } from './ModuleView';
-import { Plus, Eye, Edit3, AlertTriangle, TrendingUp, Shield, Package, Grid, List } from 'lucide-react';
+import { Plus, Eye, Edit3, AlertTriangle, TrendingUp, Shield, Package, Grid, List, RefreshCw } from 'lucide-react';
+import { toast } from 'sonner';
 
 type RiskLevel = 'High' | 'Medium' | 'Low';
 type TestingProtocol = 'Full Regression' | 'Focused Functional' | 'Visual/Smoke Check';
@@ -23,6 +25,81 @@ interface RiskMatrixProps {
   highlightedItemId?: string | null;
 }
 
+const defaultModules: Module[] = [
+  {
+    id: 'MOD-001',
+    name: 'Payment Gateway',
+    defectFrequency: 8,
+    businessImpact: 10,
+    riskLevel: 'High',
+    testingProtocol: 'Full Regression',
+    description: 'Stripe integration for checkout process',
+  },
+  {
+    id: 'MOD-002',
+    name: 'Authentication System',
+    defectFrequency: 7,
+    businessImpact: 9,
+    riskLevel: 'High',
+    testingProtocol: 'Full Regression',
+    description: 'OAuth2 login and session management',
+  },
+  {
+    id: 'MOD-003',
+    name: 'User Dashboard',
+    defectFrequency: 5,
+    businessImpact: 6,
+    riskLevel: 'Medium',
+    testingProtocol: 'Focused Functional',
+    description: 'Analytics and reporting interface',
+  },
+  {
+    id: 'MOD-004',
+    name: 'Email Notification Engine',
+    defectFrequency: 6,
+    businessImpact: 5,
+    riskLevel: 'Medium',
+    testingProtocol: 'Focused Functional',
+    description: 'Transactional email delivery system',
+  },
+  {
+    id: 'MOD-005',
+    name: 'Search Indexing',
+    defectFrequency: 4,
+    businessImpact: 7,
+    riskLevel: 'Medium',
+    testingProtocol: 'Focused Functional',
+    description: 'ElasticSearch integration for product search',
+  },
+  {
+    id: 'MOD-006',
+    name: 'Profile Settings UI',
+    defectFrequency: 2,
+    businessImpact: 3,
+    riskLevel: 'Low',
+    testingProtocol: 'Visual/Smoke Check',
+    description: 'User profile customization interface',
+  },
+  {
+    id: 'MOD-007',
+    name: 'Typography Updates',
+    defectFrequency: 1,
+    businessImpact: 2,
+    riskLevel: 'Low',
+    testingProtocol: 'Visual/Smoke Check',
+    description: 'Font family and styling changes',
+  },
+  {
+    id: 'MOD-008',
+    name: 'Data Export Feature',
+    defectFrequency: 3,
+    businessImpact: 8,
+    riskLevel: 'Medium',
+    testingProtocol: 'Focused Functional',
+    description: 'CSV/Excel export functionality',
+  },
+];
+
 export function RiskMatrix({ highlightedItemId }: RiskMatrixProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
@@ -30,80 +107,63 @@ export function RiskMatrix({ highlightedItemId }: RiskMatrixProps) {
   const [filterRisk, setFilterRisk] = useState<RiskLevel | 'All'>('All');
   const [displayMode, setDisplayMode] = useState<MatrixDisplayMode>('scatter');
 
-  const [modules, setModules] = useState<Module[]>([
-    {
-      id: 'MOD-001',
-      name: 'Payment Gateway',
-      defectFrequency: 8,
-      businessImpact: 10,
-      riskLevel: 'High',
-      testingProtocol: 'Full Regression',
-      description: 'Stripe integration for checkout process',
-    },
-    {
-      id: 'MOD-002',
-      name: 'Authentication System',
-      defectFrequency: 7,
-      businessImpact: 9,
-      riskLevel: 'High',
-      testingProtocol: 'Full Regression',
-      description: 'OAuth2 login and session management',
-    },
-    {
-      id: 'MOD-003',
-      name: 'User Dashboard',
-      defectFrequency: 5,
-      businessImpact: 6,
-      riskLevel: 'Medium',
-      testingProtocol: 'Focused Functional',
-      description: 'Analytics and reporting interface',
-    },
-    {
-      id: 'MOD-004',
-      name: 'Email Notification Engine',
-      defectFrequency: 6,
-      businessImpact: 5,
-      riskLevel: 'Medium',
-      testingProtocol: 'Focused Functional',
-      description: 'Transactional email delivery system',
-    },
-    {
-      id: 'MOD-005',
-      name: 'Search Indexing',
-      defectFrequency: 4,
-      businessImpact: 7,
-      riskLevel: 'Medium',
-      testingProtocol: 'Focused Functional',
-      description: 'ElasticSearch integration for product search',
-    },
-    {
-      id: 'MOD-006',
-      name: 'Profile Settings UI',
-      defectFrequency: 2,
-      businessImpact: 3,
-      riskLevel: 'Low',
-      testingProtocol: 'Visual/Smoke Check',
-      description: 'User profile customization interface',
-    },
-    {
-      id: 'MOD-007',
-      name: 'Typography Updates',
-      defectFrequency: 1,
-      businessImpact: 2,
-      riskLevel: 'Low',
-      testingProtocol: 'Visual/Smoke Check',
-      description: 'Font family and styling changes',
-    },
-    {
-      id: 'MOD-008',
-      name: 'Data Export Feature',
-      defectFrequency: 3,
-      businessImpact: 8,
-      riskLevel: 'Medium',
-      testingProtocol: 'Focused Functional',
-      description: 'CSV/Excel export functionality',
-    },
-  ]);
+  const { data: modules, setData: setModules } = useSupabaseData<Module[]>('aqms_modules', defaultModules);
+  const { data: bugs } = useSupabaseData<any[]>('aqms_bugs', []);
+  const { data: stories } = useSupabaseData<any[]>('aqms_stories', []);
+
+  const handleSyncDefectFrequencies = () => {
+    if (modules.length === 0) {
+      toast.error('No modules defined to sync frequencies for.');
+      return;
+    }
+
+    const bugCounts = modules.map(m => {
+      const moduleStoryIds = new Set(stories.filter((s: any) => s.moduleId === m.id).map((s: any) => s.id));
+      const count = bugs.filter((b: any) => 
+        b.moduleId === m.id || 
+        b.environment?.toLowerCase() === m.name?.toLowerCase() ||
+        (b.linkedStory && moduleStoryIds.has(b.linkedStory))
+      ).length;
+      return { id: m.id, count };
+    });
+
+    const maxCount = Math.max(...bugCounts.map(b => b.count));
+
+    const calculateRiskLevel = (defect: number, impact: number): RiskLevel => {
+      if (defect >= 7 || impact >= 9) return 'High';
+      if (defect >= 4 || impact >= 5) return 'Medium';
+      return 'Low';
+    };
+
+    const getTestingProtocol = (risk: RiskLevel): TestingProtocol => {
+      if (risk === 'High') return 'Full Regression';
+      if (risk === 'Medium') return 'Focused Functional';
+      return 'Visual/Smoke Check';
+    };
+
+    const updatedModules = modules.map(m => {
+      const countInfo = bugCounts.find(bc => bc.id === m.id);
+      const bugCount = countInfo ? countInfo.count : 0;
+      
+      // Calculate normalized score (1-10). If maxCount is 0, score is 1.
+      const defectFrequency = maxCount > 0 
+        ? Math.max(1, Math.round((bugCount / maxCount) * 10)) 
+        : 1;
+
+      const riskLevel = calculateRiskLevel(defectFrequency, m.businessImpact);
+      const testingProtocol = getTestingProtocol(riskLevel);
+
+      return {
+        ...m,
+        defectFrequency,
+        riskLevel,
+        testingProtocol
+      };
+    });
+
+    setModules(updatedModules);
+    toast.success('Defect frequencies synced successfully based on active bug records!');
+  };
 
   const handleViewModule = (module: Module) => {
     setSelectedModule(module);
@@ -208,13 +268,22 @@ export function RiskMatrix({ highlightedItemId }: RiskMatrixProps) {
           <h1 className="text-3xl mb-2">Risk-Prioritisation Matrix</h1>
           <p className="text-gray-600">Automated risk scoring and test action pre-assignment</p>
         </div>
-        <button
-          onClick={handleCreateModule}
-          className="btn btn-primary btn-lg bg-gradient-to-r from-indigo-600 to-indigo-600 hover:from-indigo-700 hover:to-indigo-700 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
-        >
-          <Plus className="w-4 h-4" />
-          Create Module
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleSyncDefectFrequencies}
+            className="btn btn-secondary btn-lg flex items-center gap-2 hover:scale-105 transition-all"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Sync Defect Frequencies
+          </button>
+          <button
+            onClick={handleCreateModule}
+            className="btn btn-primary btn-lg bg-gradient-to-r from-indigo-600 to-indigo-600 hover:from-indigo-700 hover:to-indigo-700 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+          >
+            <Plus className="w-4 h-4" />
+            Create Module
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
