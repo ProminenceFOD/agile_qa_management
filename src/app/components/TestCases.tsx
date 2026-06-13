@@ -291,15 +291,38 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
 
   const handleEditTestCase = (testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>) => {
     if (editingTest) {
+      let finalId = editingTest.id;
+      let finalIsDraft = testCase.isDraft;
+
+      if (editingTest.isDraft && finalIsDraft === false) {
+        const existingNumbers = testCases
+          .filter(tc => !tc.isDraft)
+          .map(tc => {
+            const match = tc.id.match(/^TC-(\d+)$/);
+            return match ? parseInt(match[1]) : 0;
+          })
+          .filter(n => n > 0);
+
+        const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+        finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
+      }
+
       const updatedTestCase: TestCase = {
         ...testCase,
-        id: editingTest.id,
+        id: finalId,
+        isDraft: finalIsDraft,
         lastRun: editingTest.lastRun,
         executionTime: editingTest.executionTime,
       };
+
       setTestCases(testCases.map(tc => tc.id === editingTest.id ? updatedTestCase : tc));
       setEditingTest(null);
-      toast.success(`Test case ${updatedTestCase.id} has been updated successfully!`);
+
+      if (editingTest.isDraft && finalIsDraft === false) {
+        toast.success(`Test case approved and assigned ID ${finalId}`);
+      } else {
+        toast.success(`Test case ${updatedTestCase.id} has been updated successfully!`);
+      }
     }
   };
 
@@ -663,6 +686,11 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
           onExecute={() => setViewMode('execute')}
           onEdit={() => {
             setEditingTest(selectedTest);
+            setViewMode('list');
+            setSelectedTest(null);
+          }}
+          onApprove={() => {
+            handleApproveTestCase(selectedTest);
             setViewMode('list');
             setSelectedTest(null);
           }}

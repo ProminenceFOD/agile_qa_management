@@ -16,6 +16,7 @@ interface TestCase {
   lastRun?: Date;
   executionTime?: number;
   priority: 'High' | 'Medium' | 'Low';
+  isDraft?: boolean;
 }
 
 interface TestCaseViewProps {
@@ -23,9 +24,10 @@ interface TestCaseViewProps {
   onClose: () => void;
   onExecute: () => void;
   onEdit: () => void;
+  onApprove?: () => void;
 }
 
-export function TestCaseView({ testCase, onClose, onExecute, onEdit }: TestCaseViewProps) {
+export function TestCaseView({ testCase, onClose, onExecute, onEdit, onApprove }: TestCaseViewProps) {
   const getStatusColor = (status: TestStatus) => {
     switch (status) {
       case 'Pass':
@@ -69,8 +71,12 @@ export function TestCaseView({ testCase, onClose, onExecute, onEdit }: TestCaseV
                 <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${getTypeColor(testCase.type)}`}>
                   {testCase.type}
                 </span>
-                <span className={`inline-flex items-center px-2 py-1 rounded-full border text-xs ${getStatusColor(testCase.status)}`}>
-                  {testCase.status}
+                <span className={`inline-flex items-center px-2 py-1 rounded-full border text-xs ${
+                  testCase.isDraft
+                    ? 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-200'
+                    : getStatusColor(testCase.status)
+                }`}>
+                  {testCase.isDraft ? 'AI Sug.' : testCase.status}
                 </span>
               </div>
               <h2 className="text-2xl text-gray-900 dark:text-white">{testCase.title}</h2>
@@ -161,16 +167,25 @@ export function TestCaseView({ testCase, onClose, onExecute, onEdit }: TestCaseV
               >
                 Edit
               </button>
-              <button
-                onClick={onExecute}
-                className="btn btn-success btn-lg"
-              >
-                <Play className="w-4 h-4" />
-                Run Test
-              </button>
+              {testCase.isDraft ? (
+                <button
+                  onClick={onApprove}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center gap-1"
+                >
+                  ✓ Approve & Save
+                </button>
+              ) : (
+                <button
+                  onClick={onExecute}
+                  className="btn btn-success btn-lg"
+                >
+                  <Play className="w-4 h-4" />
+                  Run Test
+                </button>
+              )}
             </div>
           </div>
         </div>
       </>
-    );
-  }
+  );
+}

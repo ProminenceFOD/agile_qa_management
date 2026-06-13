@@ -28,6 +28,7 @@ interface TestCase {
   executionTime?: number;
   priority: 'High' | 'Medium' | 'Low';
   moduleId?: string;
+  isDraft?: boolean;
 }
 
 interface TestCaseFormProps {
@@ -38,6 +39,7 @@ interface TestCaseFormProps {
 
 export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps) {
   const { data: modules } = useSupabaseData<any[]>('aqms_modules', []);
+  const [isDraftSubmit, setIsDraftSubmit] = useState<boolean | undefined>(testCase?.isDraft);
 
   const [formData, setFormData] = useState({
     title: testCase?.title || '',
@@ -141,6 +143,7 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
       linkedStory: formData.linkedStory || undefined,
       priority: formData.priority,
       moduleId: formData.moduleId || undefined,
+      isDraft: isDraftSubmit,
     };
 
     onSubmit(newTestCase);
@@ -381,12 +384,31 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
-              >
-                {testCase ? 'Update Test Case' : 'Create Test Case'}
-              </button>
+              {testCase?.isDraft ? (
+                <>
+                  <button
+                    type="submit"
+                    onClick={() => setIsDraftSubmit(true)}
+                    className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-medium"
+                  >
+                    Save as Draft
+                  </button>
+                  <button
+                    type="submit"
+                    onClick={() => setIsDraftSubmit(false)}
+                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                  >
+                    ✓ Approve & Save
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+                >
+                  {testCase ? 'Update Test Case' : 'Create Test Case'}
+                </button>
+              )}
             </div>
           </form>
         </div>
