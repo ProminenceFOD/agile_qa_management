@@ -338,25 +338,92 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
     const newTestCases: TestCase[] = rec.suggestedTests.map((test, index) => {
       const testNumber = nextNumber + index;
-      const testId = `TC-${String(testNumber).padStart(3, '0')}`;
+      const testId = `REC-TC-${String(testNumber).padStart(3, '0')}`;
 
       // Parse test suggestion to extract details
       const [testTypePrefix, ...titleParts] = test.split(':');
       const actualTitle = titleParts.length > 0 ? titleParts.join(':').trim() : test;
 
       // Generate basic steps and expected results from the test title
-      const steps = [
-        'Review test case details',
-        'Execute test scenario',
-        'Verify actual results match expected results',
-        'Document any deviations'
-      ];
+      const getSmartStepsAndExpected = (title: string) => {
+        const lowerTitle = title.toLowerCase();
+        let steps = [
+          'Navigate to the relevant system module',
+          'Execute the action: ' + title,
+          'Verify outcomes against system validation guidelines',
+          'Document results in QA Execution Log'
+        ];
+        let expected = [
+          'Module loads successfully',
+          'Action completed without errors',
+          'System state remains consistent and stable'
+        ];
 
-      const expectedResults = [
-        actualTitle,
-        'No errors or unexpected behavior',
-        'All acceptance criteria met'
-      ];
+        if (lowerTitle.includes('login') || lowerTitle.includes('auth') || lowerTitle.includes('credential')) {
+          steps = [
+            'Navigate to login screen',
+            'Enter credentials for registered user profile',
+            'Click the login submission action',
+            'Validate access tokens are securely written to session cookies'
+          ];
+          expected = [
+            'Redirected to user homepage/dashboard successfully',
+            'Session state initialized without latency',
+            'Audit log records authentication event'
+          ];
+        } else if (lowerTitle.includes('payment') || lowerTitle.includes('stripe') || lowerTitle.includes('checkout')) {
+          steps = [
+            'Add test inventory item to checkout basket',
+            'Select Credit Card payment option',
+            'Submit Stripe test card parameters',
+            'Confirm payment request triggers callback handler'
+          ];
+          expected = [
+            'Transaction processed successfully',
+            'Unique payment receipt reference generated',
+            'Customer dashboard updates status to Paid'
+          ];
+        } else if (lowerTitle.includes('performance') || lowerTitle.includes('load') || lowerTitle.includes('latency')) {
+          steps = [
+            'Configure JMeter/K6 test harness with concurrent threads',
+            'Trigger peak traffic simulation for 10 minutes',
+            'Monitor CPU load, memory thresholds, and database connection pools',
+            'Verify server responses under high workload'
+          ];
+          expected = [
+            'Average response latency stays under 1.5 seconds',
+            'No server timeout responses (0% error rate)',
+            'System auto-scales resources gracefully'
+          ];
+        } else if (lowerTitle.includes('security') || lowerTitle.includes('permission')) {
+          steps = [
+            'Login with a restricted tester profile credentials',
+            'Attempt to directly navigate to Administrator/Reports views',
+            'Perform injection payload testing in forms inputs',
+            'Check that invalid session tokens block API fetch request'
+          ];
+          expected = [
+            'Denied access response is displayed (HTTP 403 Forbidden)',
+            'Inputs reject malformed payloads without database leakage',
+            'Unauthorized attempt is recorded in security audit logs'
+          ];
+        } else if (lowerTitle.includes('smoke') || lowerTitle.includes('health') || lowerTitle.includes('availability')) {
+          steps = [
+            'Verify main landing page availability and responsiveness',
+            'Check database ping status and external integration connectivity',
+            'Validate session cache is read/write operational'
+          ];
+          expected = [
+            'All core pings return green (OK)',
+            'Main dashboard widgets load within normal thresholds',
+            'Critical service paths ready for validation'
+          ];
+        }
+
+        return { steps, expected };
+      };
+
+      const { steps, expected: expectedResults } = getSmartStepsAndExpected(actualTitle);
 
       return {
         id: testId,
@@ -369,6 +436,7 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
         status: 'Not Run' as const, // Valid initial status
         priority: rec.priority === 'Critical' || rec.priority === 'High' ? 'High' : rec.priority === 'Medium' ? 'Medium' : 'Low',
         moduleId: resolvedModuleId,
+        isDraft: true,
       };
     });
 
@@ -381,9 +449,9 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
     setShowPreviewModal(false);
     toast.success(
       <div>
-        <div className="font-semibold">Created {previewTestCases.length} test cases</div>
+        <div className="font-semibold">Suggested {previewTestCases.length} test cases</div>
         <div className="text-xs mt-1">IDs: {previewTestCases.map(tc => tc.id).join(', ')}</div>
-        <div className="text-xs text-yellow-200 mt-1">⚠️ Status: Not Run - Edit test details in Test Cases tab before execution</div>
+        <div className="text-xs text-purple-200 mt-1">💡 Review and Approve them in the Test Cases tab to assign actual TC-XXX IDs.</div>
       </div>,
       { duration: 6000 }
     );

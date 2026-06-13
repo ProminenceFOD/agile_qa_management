@@ -25,6 +25,8 @@ interface TestCase {
   lastRun?: Date;
   executionTime?: number;
   priority: 'High' | 'Medium' | 'Low';
+  moduleId?: string;
+  isDraft?: boolean;
 }
 
 interface Bug {
@@ -301,6 +303,34 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     }
   };
 
+  const handleApproveTestCase = (draftTestCase: TestCase) => {
+    const existingNumbers = testCases
+      .filter(tc => !tc.isDraft)
+      .map(tc => {
+        const match = tc.id.match(/^TC-(\d+)$/);
+        return match ? parseInt(match[1]) : 0;
+      })
+      .filter(n => n > 0);
+
+    const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+    const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
+
+    const approvedTestCase: TestCase = {
+      ...draftTestCase,
+      id: finalId,
+      isDraft: false,
+      status: 'Not Run',
+    };
+
+    setTestCases(testCases.map(tc => tc.id === draftTestCase.id ? approvedTestCase : tc));
+    toast.success(`Test case approved and assigned ID ${finalId}`);
+  };
+
+  const handleRejectTestCase = (draftId: string) => {
+    setTestCases(testCases.filter(tc => tc.id !== draftId));
+    toast.success('AI suggestion discarded');
+  };
+
   const handleViewTest = (test: TestCase) => {
     setSelectedTest(test);
     setViewMode('execute');
@@ -528,8 +558,8 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
                   </span>
                 </td>
                 <td className="text-center">
-                  <span className={`badge ${getStatusColor(test.status)}`}>
-                    {test.status}
+                  <span className={`badge ${test.isDraft ? 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-200' : getStatusColor(test.status)}`}>
+                    {test.isDraft ? 'AI Sug.' : test.status}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-center text-xs text-gray-600">
@@ -543,36 +573,68 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex justify-center gap-2">
-                    <button
-                      onClick={() => {
-                        setSelectedTest(test);
-                        setViewMode('execute');
-                      }}
-                      className="px-3 py-1.5 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-xs font-medium flex items-center gap-1"
-                      title="Execute test case"
-                    >
-                      <Play className="w-3 h-3" />
-                      Run
-                    </button>
-                    <button
-                      onClick={() => {
-                        setSelectedTest(test);
-                        setViewMode('view');
-                      }}
-                      className="px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors text-xs font-medium flex items-center gap-1"
-                      title="View details"
-                    >
-                      <Eye className="w-3 h-3" />
-                      View
-                    </button>
-                    <button
-                      onClick={() => setEditingTest(test)}
-                      className="px-3 py-1.5 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors text-xs font-medium flex items-center gap-1"
-                      title="Edit test case"
-                    >
-                      <Edit3 className="w-3 h-3" />
-                      Edit
-                    </button>
+                    {test.isDraft ? (
+                      <>
+                        <button
+                          onClick={() => handleApproveTestCase(test)}
+                          className="px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-750 transition-colors text-xs font-medium flex items-center gap-1"
+                          title="Approve & save test case"
+                        >
+                          ✓ Approve
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedTest(test);
+                            setViewMode('view');
+                          }}
+                          className="px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors text-xs font-medium flex items-center gap-1"
+                          title="View details"
+                        >
+                          <Eye className="w-3 h-3" />
+                          View
+                        </button>
+                        <button
+                          onClick={() => handleRejectTestCase(test.id)}
+                          className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-650 transition-colors text-xs font-medium flex items-center gap-1"
+                          title="Reject suggestion"
+                        >
+                          ✕ Reject
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => {
+                            setSelectedTest(test);
+                            setViewMode('execute');
+                          }}
+                          className="px-3 py-1.5 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-xs font-medium flex items-center gap-1"
+                          title="Execute test case"
+                        >
+                          <Play className="w-3 h-3" />
+                          Run
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedTest(test);
+                            setViewMode('view');
+                          }}
+                          className="px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors text-xs font-medium flex items-center gap-1"
+                          title="View details"
+                        >
+                          <Eye className="w-3 h-3" />
+                          View
+                        </button>
+                        <button
+                          onClick={() => setEditingTest(test)}
+                          className="px-3 py-1.5 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors text-xs font-medium flex items-center gap-1"
+                          title="Edit test case"
+                        >
+                          <Edit3 className="w-3 h-3" />
+                          Edit
+                        </button>
+                      </>
+                    )}
                   </div>
                 </td>
               </tr>

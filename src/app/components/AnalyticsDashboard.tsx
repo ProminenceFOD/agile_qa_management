@@ -40,6 +40,7 @@ interface Bug {
   linkedStory?: string;
   createdAt?: string;
   resolvedAt?: string;
+  tags?: string[];
 }
 
 interface TestCase {
@@ -275,6 +276,32 @@ export function AnalyticsDashboard() {
       ],
     };
   }, [stories, testCases]);
+
+  // Defect cause analysis based on tags
+  const defectCauseAnalysis = useMemo(() => {
+    const causeCount: Record<string, number> = {};
+    let taggedBugsCount = 0;
+
+    bugs.forEach(bug => {
+      if (bug.tags && bug.tags.length > 0) {
+        taggedBugsCount++;
+        bug.tags.forEach(tag => {
+          causeCount[tag] = (causeCount[tag] || 0) + 1;
+        });
+      }
+    });
+
+    const data = Object.entries(causeCount).map(([tag, count]) => ({
+      name: tag.charAt(0).toUpperCase() + tag.slice(1),
+      value: count,
+    })).sort((a, b) => b.value - a.value);
+
+    return {
+      data,
+      taggedBugsCount,
+      totalBugsCount: bugs.length,
+    };
+  }, [bugs]);
 
   const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#8b5cf6', '#ec4899'];
 
@@ -628,6 +655,49 @@ export function AnalyticsDashboard() {
                 • Average test execution time: <strong>{testMetrics.avgExecutionTime}ms</strong>
               </li>
             </ul>
+          </div>
+
+          {/* Defect Root Cause Analysis (Tags-Based) */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 className="text-lg mb-2 text-gray-900">Defect Root Cause Analysis (Tags-Based)</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Breakdown of defects by tags. Helps trace root causes such as environment conflicts, validation gaps, or regression issues.
+            </p>
+            {defectCauseAnalysis.data.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={defectCauseAnalysis.data}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis label={{ value: 'Bug Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey="value" name="Defects Count" fill="#8b5cf6" radius={[4, 4, 0, 0]}>
+                      {defectCauseAnalysis.data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+                <div className="space-y-3">
+                  <div className="text-sm font-semibold text-gray-700">Root Cause Insights:</div>
+                  <div className="text-sm text-gray-600">
+                    Out of <strong>{defectCauseAnalysis.totalBugsCount}</strong> total defects, 
+                    <strong> {defectCauseAnalysis.taggedBugsCount}</strong> have categorization tags.
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {defectCauseAnalysis.data.slice(0, 4).map((entry, idx) => (
+                      <div key={idx} className="p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-100">
+                        <span className="font-semibold text-gray-800 dark:text-gray-200">{entry.name}</span>: {entry.value} bugs
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-6 text-gray-500 text-sm">
+                No tags mapped to defects yet. Start tagging bugs with regression, database, or UI to see metrics here.
+              </div>
+            )}
           </div>
         </div>
       )}
