@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSupabaseData } from '../hooks/useSupabaseData';
 import { toast } from 'sonner';
 
@@ -73,6 +73,60 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
   const { data: modules } = useSupabaseData<Module[]>('aqms_modules', []);
   const { data: testCases, setData: setTestCases } = useSupabaseData<TestCase[]>('aqms_test_cases', []);
   const { data: bugs } = useSupabaseData<Bug[]>('aqms_bugs', []);
+
+  // Auto-deduplicate test case IDs on load
+  useEffect(() => {
+    if (testCases && testCases.length > 0) {
+      let hasChange = false;
+      const seenContents = new Set<string>();
+      const filteredList: TestCase[] = [];
+
+      // 1. Remove exact duplicate test cases (same title, description, steps, expectedResults)
+      testCases.forEach(tc => {
+        const stepsStr = (tc.steps || []).join('|');
+        const expectedStr = (tc.expectedResults || []).join('|');
+        const signature = `${tc.title}::${tc.description}::${stepsStr}::${expectedStr}`;
+
+        if (seenContents.has(signature)) {
+          hasChange = true;
+          console.log(`[Deduplicate] Removing exact duplicate test case: ${tc.id} (${tc.title})`);
+          return; // Skip/discard
+        }
+
+        seenContents.add(signature);
+        filteredList.push(tc);
+      });
+
+      // 2. Resolve clashing IDs (different test details under the same ID)
+      const seenIds = new Set<string>();
+      const updatedList = filteredList.map(tc => {
+        if (seenIds.has(tc.id)) {
+          hasChange = true;
+          // Find the next available sequential number
+          const existingNumbers = filteredList
+            .map(x => {
+              const match = x.id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1]) : 0;
+            })
+            .filter(n => n > 0 && n < 1000000);
+          const nextNum = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+          const newId = tc.isDraft || tc.id.startsWith('REC-')
+            ? `REC-TC-${String(nextNum).padStart(3, '0')}`
+            : `TC-${String(nextNum).padStart(3, '0')}`;
+          
+          console.log(`[Deduplicate] Renaming clashing test case ID ${tc.id} to ${newId}`);
+          tc.id = newId;
+          return { ...tc, id: newId };
+        }
+        seenIds.add(tc.id);
+        return tc;
+      });
+
+      if (hasChange) {
+        setTestCases(updatedList);
+      }
+    }
+  }, [testCases, setTestCases]);
 
   const recommendations = useMemo(() => {
     const recs: Recommendation[] = [];
@@ -320,10 +374,10 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
     // Get highest existing test case number
     const existingNumbers = testCases
       .map(tc => {
-        const match = tc.id.match(/^TC-(\d+)$/);
+        const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
         return match ? parseInt(match[1]) : 0;
       })
-      .filter(n => n > 0);
+      .filter(n => n > 0 && n < 1000000);
 
     const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 

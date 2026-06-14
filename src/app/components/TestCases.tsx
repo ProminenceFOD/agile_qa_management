@@ -314,6 +314,60 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     }
   }, []);
 
+  // Auto-deduplicate test case IDs on load
+  useEffect(() => {
+    if (testCasesRaw && testCasesRaw.length > 0) {
+      let hasChange = false;
+      const seenContents = new Set<string>();
+      const filteredList: TestCase[] = [];
+
+      // 1. Remove exact duplicate test cases (same title, description, steps, expectedResults)
+      testCasesRaw.forEach(tc => {
+        const stepsStr = (tc.steps || []).join('|');
+        const expectedStr = (tc.expectedResults || []).join('|');
+        const signature = `${tc.title}::${tc.description}::${stepsStr}::${expectedStr}`;
+
+        if (seenContents.has(signature)) {
+          hasChange = true;
+          console.log(`[Deduplicate] Removing exact duplicate test case: ${tc.id} (${tc.title})`);
+          return; // Skip/discard
+        }
+
+        seenContents.add(signature);
+        filteredList.push(tc);
+      });
+
+      // 2. Resolve clashing IDs (different test details under the same ID)
+      const seenIds = new Set<string>();
+      const updatedList = filteredList.map(tc => {
+        if (seenIds.has(tc.id)) {
+          hasChange = true;
+          // Find the next available sequential number
+          const existingNumbers = filteredList
+            .map(x => {
+              const match = x.id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1]) : 0;
+            })
+            .filter(n => n > 0 && n < 1000000);
+          const nextNum = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+          const newId = tc.isDraft || tc.id.startsWith('REC-')
+            ? `REC-TC-${String(nextNum).padStart(3, '0')}`
+            : `TC-${String(nextNum).padStart(3, '0')}`;
+          
+          console.log(`[Deduplicate] Renaming clashing test case ID ${tc.id} to ${newId}`);
+          tc.id = newId;
+          return { ...tc, id: newId };
+        }
+        seenIds.add(tc.id);
+        return tc;
+      });
+
+      if (hasChange) {
+        setTestCases(updatedList);
+      }
+    }
+  }, [testCasesRaw, setTestCases]);
+
   const stats = {
     total: testCases.length,
     pass: testCases.filter(t => t.status === 'Pass').length,
@@ -325,9 +379,19 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
   const passRate = stats.total > 0 ? ((stats.pass / (stats.total - stats.notRun)) * 100).toFixed(1) : 0;
 
   const handleCreateTestCase = (testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>) => {
+    const existingNumbers = testCases
+      .map(tc => {
+        const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
+        return match ? parseInt(match[1]) : 0;
+      })
+      .filter(n => n > 0 && n < 1000000);
+
+    const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+    const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
+
     const newTestCase: TestCase = {
       ...testCase,
-      id: `TC-${String(testCases.length + 1).padStart(3, '0')}`,
+      id: finalId,
     };
     setTestCases([...testCases, newTestCase]);
     setShowCreateForm(false);
@@ -343,10 +407,10 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
         const existingNumbers = testCases
           .filter(tc => !tc.isDraft)
           .map(tc => {
-            const match = tc.id.match(/^TC-(\d+)$/);
+            const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
             return match ? parseInt(match[1]) : 0;
           })
-          .filter(n => n > 0);
+          .filter(n => n > 0 && n < 1000000);
 
         const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
         finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
@@ -375,10 +439,10 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     const existingNumbers = testCases
       .filter(tc => !tc.isDraft)
       .map(tc => {
-        const match = tc.id.match(/^TC-(\d+)$/);
+        const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
         return match ? parseInt(match[1]) : 0;
       })
-      .filter(n => n > 0);
+      .filter(n => n > 0 && n < 1000000);
 
     const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
     const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
@@ -406,10 +470,10 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     const existingNumbers = testCases
       .filter(tc => !tc.isDraft)
       .map(tc => {
-        const match = tc.id.match(/^TC-(\d+)$/);
+        const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
         return match ? parseInt(match[1]) : 0;
       })
-      .filter(n => n > 0);
+      .filter(n => n > 0 && n < 1000000);
 
     let nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
