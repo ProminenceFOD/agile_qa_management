@@ -926,7 +926,7 @@ export function KanbanBoard() {
         const mapping: Record<string, { id: string; title: string; status: string }[]> = {};
 
         testCases.forEach((tc: any) => {
-          if (tc.linkedStory) {
+          if (tc.linkedStory && !tc.isDraft) {
             if (!mapping[tc.linkedStory]) {
               mapping[tc.linkedStory] = [];
             }
@@ -2252,7 +2252,7 @@ export function KanbanBoard() {
                   const testCases = await getData('aqms_test_cases') || [];
                   const mapping: Record<string, { id: string; title: string; status: string }[]> = {};
                   testCases.forEach((tc: any) => {
-                    if (tc.linkedStory) {
+                    if (tc.linkedStory && !tc.isDraft) {
                       if (!mapping[tc.linkedStory]) {
                         mapping[tc.linkedStory] = [];
                       }
@@ -2425,7 +2425,7 @@ export function KanbanBoard() {
             // Reload test cases mapping
             const mapping: Record<string, { id: string; title: string; status: string }[]> = {};
             updatedTestCases.forEach((tc: any) => {
-              if (tc.linkedStory) {
+              if (tc.linkedStory && !tc.isDraft) {
                 if (!mapping[tc.linkedStory]) {
                   mapping[tc.linkedStory] = [];
                 }
@@ -2481,7 +2481,7 @@ export function KanbanBoard() {
             // Reload test cases mapping
             const mapping: Record<string, { id: string; title: string; status: string }[]> = {};
             updatedTestCases.forEach((tc: any) => {
-              if (tc.linkedStory) {
+              if (tc.linkedStory && !tc.isDraft) {
                 if (!mapping[tc.linkedStory]) {
                   mapping[tc.linkedStory] = [];
                 }

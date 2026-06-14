@@ -22,6 +22,7 @@ interface TestCase {
   id: string;
   status: 'Pass' | 'Fail' | 'Blocked' | 'Not Run';
   linkedStory?: string;
+  isDraft?: boolean;
 }
 
 export function Reports() {
@@ -36,13 +37,15 @@ export function Reports() {
   const { data: bugs } = useSupabaseData<Bug[]>('aqms_bugs', []);
   const { data: testCases } = useSupabaseData<TestCase[]>('aqms_test_cases', []);
 
+  const activeTestCases = testCases.filter(tc => !tc.isDraft);
+
   // Test Coverage Metrics
   const totalStories = stories.length;
   const storiesWithTests = stories.filter(s =>
-    testCases.some(tc => tc.linkedStory === s.id)
+    activeTestCases.some(tc => tc.linkedStory === s.id)
   ).length;
   const coveragePercentage = totalStories > 0 ? Math.round((storiesWithTests / totalStories) * 100) : 0;
-  const totalTestCases = testCases.length;
+  const totalTestCases = activeTestCases.length;
 
   // Defect Metrics
   const totalBugs = bugs.length;
@@ -239,7 +242,7 @@ export function Reports() {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {stories.map(story => {
-                    const linkedTestCount = testCases.filter(tc => tc.linkedStory === story.id).length;
+                    const linkedTestCount = activeTestCases.filter(tc => tc.linkedStory === story.id).length;
                     return (
                       <tr key={story.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 text-sm font-medium text-gray-900">{story.id}</td>

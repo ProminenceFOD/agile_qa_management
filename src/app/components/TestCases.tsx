@@ -250,10 +250,55 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     return matchesSearch && matchesStatus && matchesType && matchesAssignedTo;
   });
 
+  // Natural sort test cases by ID (active TC-XXX first, then draft REC-TC-XXX, all naturally ordered)
+  const sortedTests = [...filteredTests].sort((a, b) => {
+    const chunkify = (str: string) => {
+      const chunks: (string | number)[] = [];
+      const regex = /(\d+)|(\D+)/g;
+      let match;
+      while ((match = regex.exec(str)) !== null) {
+        if (match[1] !== undefined) {
+          chunks.push(parseInt(match[1], 10));
+        } else {
+          chunks.push(match[2]);
+        }
+      }
+      return chunks;
+    };
+
+    const isDraftA = a.isDraft || a.id.startsWith('REC-');
+    const isDraftB = b.isDraft || b.id.startsWith('REC-');
+    if (isDraftA !== isDraftB) {
+      return isDraftA ? 1 : -1;
+    }
+
+    const chunksA = chunkify(a.id);
+    const chunksB = chunkify(b.id);
+
+    const minLength = Math.min(chunksA.length, chunksB.length);
+    for (let i = 0; i < minLength; i++) {
+      const chunkA = chunksA[i];
+      const chunkB = chunksB[i];
+
+      if (typeof chunkA === 'number' && typeof chunkB === 'number') {
+        if (chunkA !== chunkB) {
+          return chunkA - chunkB;
+        }
+      } else {
+        const strA = String(chunkA);
+        const strB = String(chunkB);
+        if (strA !== strB) {
+          return strA.localeCompare(strB);
+        }
+      }
+    }
+    return chunksA.length - chunksB.length;
+  });
+
   // Calculate pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedTests = filteredTests.slice(startIndex, endIndex);
+  const paginatedTests = sortedTests.slice(startIndex, endIndex);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -393,6 +438,10 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
 
   const handleExecuteTest = (result: TestStatus, notes?: string) => {
     if (selectedTest) {
+      if (selectedTest.isDraft) {
+        toast.error("Cannot execute a draft test case. Please approve it first.");
+        return;
+      }
       const updatedTest: TestCase = {
         ...selectedTest,
         status: result,

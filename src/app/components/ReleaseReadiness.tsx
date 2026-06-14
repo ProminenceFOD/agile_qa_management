@@ -29,6 +29,7 @@ interface TestCase {
   linkedStory?: string;
   type: string;
   moduleId?: string;
+  isDraft?: boolean;
 }
 
 interface Module {
@@ -73,7 +74,7 @@ export function ReleaseReadiness() {
     const totalOpenBugs = relatedBugs.filter(b => b.status !== 'Resolved' && b.status !== 'Closed').length;
 
     // Test metrics
-    const relatedTests = testCases.filter(tc => !tc.linkedStory || storyIds.includes(tc.linkedStory));
+    const relatedTests = testCases.filter(tc => (!tc.linkedStory || storyIds.includes(tc.linkedStory)) && !tc.isDraft);
     const totalTests = relatedTests.length;
     const passedTests = relatedTests.filter(tc => tc.status === 'Pass').length;
     const failedTests = relatedTests.filter(tc => tc.status === 'Fail').length;

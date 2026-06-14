@@ -17,6 +17,7 @@ interface TestCase {
   linkedStory?: string;
   status: string;
   type: string;
+  isDraft?: boolean;
 }
 
 interface Bug {
@@ -40,7 +41,7 @@ export function TraceabilityMatrix() {
 
   const traceabilityData = useMemo(() => {
     return stories.map(story => {
-      const linkedTests = testCases.filter(tc => tc.linkedStory === story.id);
+      const linkedTests = testCases.filter(tc => tc.linkedStory === story.id && !tc.isDraft);
       const linkedBugs = bugs.filter(bug => bug.linkedStory === story.id);
 
       const totalTests = linkedTests.length;
@@ -104,7 +105,7 @@ export function TraceabilityMatrix() {
     const storiesFullyCovered = traceabilityData.filter(
       item => item.metrics.totalTests > 0 && item.metrics.coverageScore === 100
     ).length;
-    const totalTestCases = testCases.length;
+    const totalTestCases = testCases.filter(tc => !tc.isDraft).length;
     const totalBugs = bugs.length;
     const avgCoverage = totalStories > 0
       ? Math.round(traceabilityData.reduce((sum, item) => sum + item.metrics.coverageScore, 0) / totalStories)

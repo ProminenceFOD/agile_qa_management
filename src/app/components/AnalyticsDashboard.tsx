@@ -50,6 +50,7 @@ interface TestCase {
   linkedStory?: string;
   lastRun?: Date;
   executionTime?: number;
+  isDraft?: boolean;
 }
 
 interface Module {
@@ -67,6 +68,10 @@ export function AnalyticsDashboard() {
   const { data: bugs } = useSupabaseData<Bug[]>('aqms_bugs', []);
   const { data: testCases } = useSupabaseData<TestCase[]>('aqms_test_cases', []);
   const { data: modules } = useSupabaseData<Module[]>('aqms_modules', []);
+
+  const activeTestCases = useMemo(() => {
+    return testCases.filter(tc => !tc.isDraft);
+  }, [testCases]);
 
   // Sprint velocity analysis
   const sprintMetrics = useMemo(() => {
@@ -122,15 +127,15 @@ export function AnalyticsDashboard() {
 
   // Test case effectiveness
   const testMetrics = useMemo(() => {
-    const total = testCases.length;
-    const passed = testCases.filter(tc => tc.status === 'Pass').length;
-    const failed = testCases.filter(tc => tc.status === 'Fail').length;
-    const blocked = testCases.filter(tc => tc.status === 'Blocked').length;
-    const notRun = testCases.filter(tc => tc.status === 'Not Run').length;
+    const total = activeTestCases.length;
+    const passed = activeTestCases.filter(tc => tc.status === 'Pass').length;
+    const failed = activeTestCases.filter(tc => tc.status === 'Fail').length;
+    const blocked = activeTestCases.filter(tc => tc.status === 'Blocked').length;
+    const notRun = activeTestCases.filter(tc => tc.status === 'Not Run').length;
 
-    const avgExecutionTime = testCases
+    const avgExecutionTime = activeTestCases
       .filter(tc => tc.executionTime)
-      .reduce((sum, tc) => sum + (tc.executionTime || 0), 0) / testCases.filter(tc => tc.executionTime).length || 0;
+      .reduce((sum, tc) => sum + (tc.executionTime || 0), 0) / activeTestCases.filter(tc => tc.executionTime).length || 0;
 
     return {
       total,
@@ -147,7 +152,7 @@ export function AnalyticsDashboard() {
         { status: 'Not Run', count: notRun, color: '#94a3b8' },
       ],
     };
-  }, [testCases]);
+  }, [activeTestCases]);
 
   // Bottleneck identification
   const bottlenecks = useMemo(() => {
@@ -259,7 +264,7 @@ export function AnalyticsDashboard() {
     const unapproved = stories.filter(s => !s.qaSignOff && !s.pmApproval).length;
 
     const storiesWithTests = stories.filter(s =>
-      testCases.some(tc => tc.linkedStory === s.id)
+      activeTestCases.some(tc => tc.linkedStory === s.id)
     ).length;
 
     const storiesWithBugs = stories.filter(s => s.linkedBugs && s.linkedBugs.length > 0).length;
@@ -275,7 +280,7 @@ export function AnalyticsDashboard() {
         { type: 'Unapproved', count: unapproved, color: '#94a3b8' },
       ],
     };
-  }, [stories, testCases]);
+  }, [stories, activeTestCases]);
 
   // Defect cause analysis based on tags
   const defectCauseAnalysis = useMemo(() => {
