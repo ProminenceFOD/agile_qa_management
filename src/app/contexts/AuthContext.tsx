@@ -135,6 +135,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     console.log('[AuthContext] Logging out');
     setUser(null);
+    try {
+      sessionStorage.removeItem('aqms_active_tab');
+    } catch (e) {
+      // Ignore
+    }
     await supabaseStorage.logout();
   };
 

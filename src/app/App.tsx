@@ -47,13 +47,29 @@ console.error = (...args) => {
 type TabType = 'dashboard' | 'kanban' | 'validator' | 'risk' | 'burndown' | 'tests' | 'bugs' | 'charts' | 'sprints' | 'attachments' | 'users' | 'reports' | 'notifications' | 'testhistory' | 'data' | 'audit' | 'bulk' | 'traceability' | 'release' | 'team' | 'recommendations';
 
 function AppDashboard() {
-  const [activeTab, setActiveTab] = useState<TabType>('dashboard');
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    try {
+      const saved = sessionStorage.getItem('aqms_active_tab');
+      return (saved as TabType) || 'dashboard';
+    } catch (e) {
+      return 'dashboard';
+    }
+  });
   const [highlightedItemId, setHighlightedItemId] = useState<string | null>(null);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showDocumentation, setShowDocumentation] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { user, logout } = useAuth();
+
+  // Save active tab to sessionStorage to persist navigation on refresh
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('aqms_active_tab', activeTab);
+    } catch (e) {
+      console.warn('[App] Failed to save activeTab to sessionStorage:', e);
+    }
+  }, [activeTab]);
   const { theme, toggleTheme } = useTheme();
   const {
     notifications,
