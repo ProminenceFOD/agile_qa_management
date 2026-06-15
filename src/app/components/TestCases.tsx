@@ -349,15 +349,8 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
       };
 
       const seenIds = new Set<string>();
-      
-      // Pass 1: Add all already-clean IDs to seenIds
-      filteredList.forEach(tc => {
-        if (!isLegacyId(tc.id)) {
-          seenIds.add(tc.id);
-        }
-      });
 
-      // Pass 2: Migrate legacy IDs and resolve clashes
+      // Single pass: Migrate legacy IDs and resolve clashes
       const updatedList = filteredList.map(tc => {
         let currentId = tc.id;
         let idChanged = false;
@@ -371,7 +364,19 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
               return match ? parseInt(match[1], 10) : 0;
             })
             .filter(n => n > 0 && n < 1000000);
-          const nextNum = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+          
+          // Also check all remaining clean IDs in filteredList so we don't collide with them!
+          const remainingNumbers = filteredList
+            .map(x => x.id)
+            .filter(id => !isLegacyId(id))
+            .map(id => {
+              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            })
+            .filter(n => n > 0 && n < 1000000);
+
+          const allNumbers = [...existingNumbers, ...remainingNumbers];
+          const nextNum = allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
           const newId = tc.isDraft || currentId.startsWith('REC-')
             ? `REC-TC-${String(nextNum).padStart(3, '0')}`
             : `TC-${String(nextNum).padStart(3, '0')}`;
@@ -391,7 +396,19 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
               return match ? parseInt(match[1], 10) : 0;
             })
             .filter(n => n > 0 && n < 1000000);
-          const nextNum = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+
+          // Also check all remaining clean IDs in filteredList
+          const remainingNumbers = filteredList
+            .map(x => x.id)
+            .filter(id => !isLegacyId(id))
+            .map(id => {
+              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            })
+            .filter(n => n > 0 && n < 1000000);
+
+          const allNumbers = [...existingNumbers, ...remainingNumbers];
+          const nextNum = allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
           const newId = tc.isDraft || currentId.startsWith('REC-')
             ? `REC-TC-${String(nextNum).padStart(3, '0')}`
             : `TC-${String(nextNum).padStart(3, '0')}`;
