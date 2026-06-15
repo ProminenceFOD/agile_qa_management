@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useSupabaseData } from '../hooks/useSupabaseData';
 import { toast } from 'sonner';
+import { getData, setData } from '../utils/supabaseStorage';
 
 interface Story {
   id: string;
@@ -74,10 +75,11 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
   const { data: testCases, setData: setTestCases } = useSupabaseData<TestCase[]>('aqms_test_cases', []);
   const { data: bugs } = useSupabaseData<Bug[]>('aqms_bugs', []);
 
-  // Auto-deduplicate test case IDs on load
+  // Auto-deduplicate and migrate legacy test case IDs on load
   useEffect(() => {
     if (testCases && testCases.length > 0) {
       let hasChange = false;
+      const idMigrations = new Map<string, string>();
       const seenContents = new Set<string>();
       const filteredList: TestCase[] = [];
 
@@ -97,33 +99,106 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
         filteredList.push(tc);
       });
 
-      // 2. Resolve clashing IDs (different test details under the same ID)
+      // 2. Identify legacy IDs (e.g. containing timestamps or not matching standard sequential formats)
+      // Standard sequential format: TC-XXX or REC-TC-XXX where XXX is a 1-5 digit number.
+      const isLegacyId = (id: string) => {
+        const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+        if (!match) return true; // Doesn't match sequential format at all
+        const num = parseInt(match[1], 10);
+        return num >= 1000000; // Too large (timestamp)
+      };
+
       const seenIds = new Set<string>();
+      
+      // Pass 1: Add all already-clean IDs to seenIds
+      filteredList.forEach(tc => {
+        if (!isLegacyId(tc.id)) {
+          seenIds.add(tc.id);
+        }
+      });
+
+      // Pass 2: Migrate legacy IDs and resolve clashes
       const updatedList = filteredList.map(tc => {
-        if (seenIds.has(tc.id)) {
-          hasChange = true;
-          // Find the next available sequential number
-          const existingNumbers = filteredList
-            .map(x => {
-              const match = x.id.match(/^(?:REC-)?TC-(\d+)$/);
-              return match ? parseInt(match[1]) : 0;
+        let currentId = tc.id;
+        let idChanged = false;
+
+        // If it is a legacy ID, migrate it to a sequential ID
+        if (isLegacyId(currentId)) {
+          // Find next available sequential number
+          const existingNumbers = [...seenIds]
+            .map(id => {
+              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
             })
             .filter(n => n > 0 && n < 1000000);
           const nextNum = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
-          const newId = tc.isDraft || tc.id.startsWith('REC-')
+          const newId = tc.isDraft || currentId.startsWith('REC-')
             ? `REC-TC-${String(nextNum).padStart(3, '0')}`
             : `TC-${String(nextNum).padStart(3, '0')}`;
           
-          console.log(`[Deduplicate] Renaming clashing test case ID ${tc.id} to ${newId}`);
-          tc.id = newId;
-          return { ...tc, id: newId };
+          console.log(`[Migrate] Converting legacy test case ID ${currentId} to sequential ${newId}`);
+          idMigrations.set(currentId, newId);
+          currentId = newId;
+          idChanged = true;
+          hasChange = true;
         }
-        seenIds.add(tc.id);
-        return tc;
+
+        // If it clashes with an already seen ID, rename it
+        if (seenIds.has(currentId)) {
+          const existingNumbers = [...seenIds]
+            .map(id => {
+              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            })
+            .filter(n => n > 0 && n < 1000000);
+          const nextNum = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+          const newId = tc.isDraft || currentId.startsWith('REC-')
+            ? `REC-TC-${String(nextNum).padStart(3, '0')}`
+            : `TC-${String(nextNum).padStart(3, '0')}`;
+          
+          console.log(`[Deduplicate] Renaming clashing test case ID ${currentId} to ${newId}`);
+          if (idChanged) {
+            // Update the mapping to the final ID if it was also legacy
+            for (const [key, val] of idMigrations.entries()) {
+              if (val === currentId) {
+                idMigrations.set(key, newId);
+              }
+            }
+          } else {
+            idMigrations.set(tc.id, newId);
+          }
+          currentId = newId;
+          hasChange = true;
+        }
+
+        seenIds.add(currentId);
+        return { ...tc, id: currentId };
       });
 
       if (hasChange) {
         setTestCases(updatedList);
+
+        // If legacy IDs were migrated, update execution history references as well
+        if (idMigrations.size > 0) {
+          getData('aqms_test_execution_history').then(executions => {
+            if (executions && Array.isArray(executions)) {
+              let execChanged = false;
+              const updatedExecutions = executions.map(ex => {
+                if (idMigrations.has(ex.testCaseId)) {
+                  execChanged = true;
+                  const newId = idMigrations.get(ex.testCaseId)!;
+                  console.log(`[Migrate] Updating execution history reference: ${ex.testCaseId} -> ${newId}`);
+                  return { ...ex, testCaseId: newId };
+                }
+                return ex;
+              });
+
+              if (execChanged) {
+                setData('aqms_test_execution_history', updatedExecutions);
+              }
+            }
+          });
+        }
       }
     }
   }, [testCases, setTestCases]);
