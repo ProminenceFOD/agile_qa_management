@@ -166,10 +166,11 @@ function AppDashboard() {
         const stories = JSON.parse(localStorage.getItem(getScopedKey('aqms_stories')) || '[]');
         const bugs = JSON.parse(localStorage.getItem(getScopedKey('aqms_bugs')) || '[]');
         const tests = JSON.parse(localStorage.getItem(getScopedKey('aqms_test_cases')) || '[]');
+        const activeTests = tests.filter((t: any) => !t.isDraft && !t.id.startsWith('REC-'));
 
         setStoryCount(stories.length);
         setBugCount(bugs.length);
-        setTestCount(tests.length);
+        setTestCount(activeTests.length);
       } catch (error) {
         console.error('Error loading counts:', error);
       }

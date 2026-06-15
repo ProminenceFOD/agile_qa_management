@@ -467,14 +467,14 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
   }, [testCasesRaw, setTestCases]);
 
   const stats = {
-    total: testCases.length,
-    pass: testCases.filter(t => t.status === 'Pass').length,
-    fail: testCases.filter(t => t.status === 'Fail').length,
-    blocked: testCases.filter(t => t.status === 'Blocked').length,
-    notRun: testCases.filter(t => t.status === 'Not Run').length,
+    total: testCases.filter(t => !t.isDraft).length,
+    pass: testCases.filter(t => !t.isDraft && t.status === 'Pass').length,
+    fail: testCases.filter(t => !t.isDraft && t.status === 'Fail').length,
+    blocked: testCases.filter(t => !t.isDraft && t.status === 'Blocked').length,
+    notRun: testCases.filter(t => !t.isDraft && t.status === 'Not Run').length,
   };
 
-  const passRate = stats.total > 0 ? ((stats.pass / (stats.total - stats.notRun)) * 100).toFixed(1) : 0;
+  const passRate = (stats.total - stats.notRun) > 0 ? ((stats.pass / (stats.total - stats.notRun)) * 100).toFixed(1) : 0;
 
   const handleCreateTestCase = (testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>) => {
     const existingNumbers = testCases
