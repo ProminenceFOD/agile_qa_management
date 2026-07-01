@@ -1,88 +1,11 @@
 import { FileText, CheckCircle, Lock, Zap, TrendingUp } from 'lucide-react';
+import { defaultStories } from '../utils/defaultData';
 import { useAuth } from '../contexts/AuthContext';
 import { useSupabaseData } from '../hooks/useSupabaseData';
 
 export function Dashboard() {
   const { user } = useAuth();
 
-  // Default stories that match CriteriaValidator
-  const defaultStories = [
-    {
-      id: 'US-101',
-      title: 'User Authentication - Login Flow',
-      priority: 'Critical',
-      storyPoints: 8,
-      sprint: 'Sprint 12',
-      acceptanceCriteria: true,
-      qaSignOff: true,
-      pmApproval: true,
-      assignedDeveloper: 'James Martinez',
-      assignedTester: 'Damilola Ogunlade',
-      assignedQAReviewer: 'Damilola Ogunlade (Head of QA)'
-    },
-    {
-      id: 'US-102',
-      title: 'Payment Gateway Integration',
-      priority: 'Critical',
-      storyPoints: 13,
-      sprint: 'Sprint 12',
-      acceptanceCriteria: true,
-      qaSignOff: false,
-      pmApproval: true,
-      assignedDeveloper: '',
-      assignedTester: '',
-      assignedQAReviewer: 'Damilola Ogunlade (Head of QA)'
-    },
-    {
-      id: 'US-103',
-      title: 'User Profile Management',
-      priority: 'High',
-      storyPoints: 5,
-      sprint: 'Sprint 12',
-      acceptanceCriteria: true,
-      qaSignOff: true,
-      pmApproval: false,
-      assignedDeveloper: '',
-      assignedQAReviewer: 'Damilola Ogunlade (Head of QA)'
-    },
-    {
-      id: 'US-104',
-      title: 'Email Notifications',
-      priority: 'Medium',
-      storyPoints: 3,
-      sprint: 'Sprint 13',
-      acceptanceCriteria: false,
-      qaSignOff: false,
-      pmApproval: false,
-      assignedQAReviewer: 'Senior QA Lead'
-    },
-    {
-      id: 'US-105',
-      title: 'Dashboard Analytics',
-      priority: 'High',
-      storyPoints: 8,
-      sprint: 'Sprint 12',
-      acceptanceCriteria: true,
-      qaSignOff: true,
-      pmApproval: true,
-      assignedDeveloper: 'Maria Rodriguez',
-      assignedTester: 'Linda Thompson',
-      assignedQAReviewer: 'Damilola Ogunlade (Head of QA)'
-    },
-    {
-      id: 'US-106',
-      title: 'Search Functionality',
-      priority: 'Low',
-      storyPoints: 2,
-      sprint: 'Sprint 13',
-      acceptanceCriteria: true,
-      qaSignOff: false,
-      pmApproval: false,
-      assignedDeveloper: '',
-      assignedTester: '',
-      assignedQAReviewer: 'Damilola Ogunlade (Head of QA)'
-    },
-  ];
 
   // Load stories from Supabase using same hook as CriteriaValidator
   const { data: stories } = useSupabaseData<any[]>('aqms_stories', defaultStories);

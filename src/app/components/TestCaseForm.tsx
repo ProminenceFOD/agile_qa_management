@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { defaultStories } from '../utils/defaultData';
 import { getData } from '../utils/supabaseStorage';
 import { useSupabaseData } from '../hooks/useSupabaseData';
 import { toast } from 'sonner';
@@ -55,15 +56,6 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
   const [steps, setSteps] = useState<string[]>(testCase?.steps || ['']);
   const [expectedResults, setExpectedResults] = useState<string[]>(testCase?.expectedResults || ['']);
 
-  // Default approved stories to show immediately
-  const defaultStories = [
-    { id: 'US-101', title: 'User Authentication - Login Flow', qaSignOff: true, pmApproval: true },
-    { id: 'US-102', title: 'Payment Gateway Integration', qaSignOff: true, pmApproval: true },
-    { id: 'US-103', title: 'Dashboard Analytics Widget', qaSignOff: true, pmApproval: true },
-    { id: 'US-104', title: 'User Profile Update Feature', qaSignOff: true, pmApproval: true },
-    { id: 'US-105', title: 'Email Notification System', qaSignOff: true, pmApproval: true },
-    { id: 'US-106', title: 'Search Functionality Enhancement', qaSignOff: true, pmApproval: true },
-  ];
 
   // Use Supabase hook to get all stories, defaulting to approved stories
   const { data: allStories } = useSupabaseData<any[]>('aqms_stories', defaultStories);

@@ -995,7 +995,7 @@ export function UserManagement() {
       {/* User Permissions Tab */}
       {activeTab === 'userperms' && (
         <UserPermissionsOverrides
-          users={users}
+          users={orgUsers}
           currentUser={currentUser}
         />
       )}
@@ -1898,7 +1898,7 @@ function UserPermissionsOverrides({ users, currentUser }: UserPermissionsOverrid
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <h3 className="text-sm font-semibold text-gray-800 mb-3">Select User</h3>
           <div className="space-y-2 max-h-[600px] overflow-y-auto">
-            {orgUsers.map(user => {
+            {users.map(user => {
               const override = userOverrides[user.id];
               const hasOverrides = override && (override.grantedPermissions.length > 0 || override.revokedPermissions.length > 0);
 

@@ -25,7 +25,7 @@ interface RiskMatrixProps {
   highlightedItemId?: string | null;
 }
 
-const defaultModules: Module[] = [
+export const defaultModules: Module[] = [
   {
     id: 'MOD-001',
     name: 'Payment Gateway',

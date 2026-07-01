@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { defaultBugs } from '../utils/defaultData';
 import { toast } from 'sonner';
 import { Bug as BugIcon, Eye, Edit3, Plus, Search, Filter, AlertCircle, TrendingUp, FilterX } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -54,72 +55,6 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
   const [selectedBug, setSelectedBug] = useState<Bug | null>(null);
 
   // Use Supabase for persistent storage (shares data with KanbanBoard)
-  const defaultBugs: Bug[] = [
-    {
-      id: 'BUG-001',
-      title: 'Payment gateway timeout on high load',
-      description: 'Payment processing fails when multiple concurrent transactions',
-      severity: 'Critical',
-      status: 'In Progress',
-      linkedStory: 'US-105',
-      foundBy: 'Damilola Ogunlade',
-      assignedTo: 'Emily Chen',
-      assignedDeveloper: 'James Anderson',
-      assignedTester: 'Emily Chen',
-      createdAt: new Date('2026-04-24'),
-      steps: [
-        'Initiate 10+ concurrent payment transactions',
-        'Wait for processing',
-        'Observe timeout errors',
-      ],
-      expectedBehavior: 'All payments process successfully',
-      actualBehavior: 'Timeout error after 30 seconds',
-      environment: 'Production',
-    },
-    {
-      id: 'BUG-002',
-      title: 'Dashboard analytics widget shows incorrect data',
-      description: 'Numbers do not match database query results',
-      severity: 'High',
-      status: 'Open',
-      linkedStory: 'US-101',
-      foundBy: 'Linda Thompson',
-      assignedTo: 'David Kumar',
-      assignedDeveloper: 'David Martinez',
-      assignedTester: 'Linda Thompson',
-      createdAt: new Date('2026-04-23'),
-      steps: [
-        'Login to dashboard',
-        'View analytics widget',
-        'Compare with direct database query',
-      ],
-      expectedBehavior: 'Widget shows accurate data matching database',
-      actualBehavior: 'Widget shows data from 24 hours ago',
-      environment: 'Staging',
-    },
-    {
-      id: 'BUG-003',
-      title: 'Search results pagination broken',
-      description: 'Page 2 and beyond return empty results',
-      severity: 'Medium',
-      status: 'Fixed',
-      linkedStory: 'US-101',
-      foundBy: 'Michael Brown',
-      assignedTo: 'James Martinez',
-      assignedDeveloper: 'Robert Taylor',
-      assignedTester: 'Jessica Williams',
-      createdAt: new Date('2026-04-22'),
-      resolvedAt: new Date('2026-04-25'),
-      steps: [
-        'Search for common term',
-        'Navigate to page 2',
-        'Observe no results',
-      ],
-      expectedBehavior: 'Page 2 shows next set of results',
-      actualBehavior: 'Empty results on page 2',
-      environment: 'Development',
-    },
-  ];
 
   const { data: bugs, setData: setBugs, loading: bugsLoading } = useSupabaseData<Bug[]>('aqms_bugs', defaultBugs);
 

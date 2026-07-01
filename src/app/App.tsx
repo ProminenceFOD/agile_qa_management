@@ -3,7 +3,7 @@ import { Toaster } from 'sonner';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { CriteriaValidator } from './components/CriteriaValidator';
-import { RiskMatrix } from './components/RiskMatrix';
+import { RiskMatrix, defaultModules } from './components/RiskMatrix';
 import { QualityBurnDown } from './components/QualityBurnDown';
 import { Dashboard as DashboardOverview } from './components/Dashboard';
 import { TestCases } from './components/TestCases';
@@ -90,10 +90,15 @@ function AppDashboard() {
 
     // 3. Prefetch critical data to populate localStorage cache (fixes iframe storage clear)
     const prefetch = async () => {
-      const keys = ['aqms_stories', 'aqms_bugs', 'aqms_test_cases', 'aqms_users'];
+      const keys = ['aqms_stories', 'aqms_bugs', 'aqms_test_cases', 'aqms_users', 'aqms_modules'];
       for (const key of keys) {
         try {
-          const data = await getData(key);
+          let data = await getData(key);
+          if ((data === null || data === undefined) && key === 'aqms_modules') {
+            console.log('[App] Initializing aqms_modules on server with default modules');
+            await setData('aqms_modules', defaultModules);
+            data = defaultModules;
+          }
           if (data) {
             const scopedLocalKey = getScopedKey(key);
             localStorage.setItem(scopedLocalKey, typeof data === 'string' ? data : JSON.stringify(data));
@@ -341,7 +346,7 @@ function AppDashboard() {
         {activeTab === 'data' && <DataManagement />}
         {activeTab === 'audit' && <AuditTrail />}
         {activeTab === 'bulk' && <BulkOperations />}
-        {activeTab === 'traceability' && <TraceabilityMatrix />}
+        {activeTab === 'traceability' && <TraceabilityMatrix onNavigate={handleNavigateToItem} />}
         {activeTab === 'release' && <ReleaseReadiness />}
         {activeTab === 'team' && <TeamPerformance />}
         {activeTab === 'recommendations' && <TestRecommendations onNavigate={handleNavigateToItem} />}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { defaultTestCases } from '../utils/defaultData';
 import { toast } from 'sonner';
 import { Play, Eye, Edit3, Search, Filter, TrendingUp, Plus, FilterX } from 'lucide-react';
 import { TestCaseForm } from './TestCaseForm';
@@ -9,6 +10,8 @@ import { useSupabaseData } from '../hooks/useSupabaseData';
 import { useAuth } from '../contexts/AuthContext';
 import { Pagination } from './Pagination';
 import { getData, setData } from '../utils/supabaseStorage';
+import { Modal } from './Modal';
+import { useModal } from '../hooks/useModal';
 
 type TestStatus = 'Pass' | 'Fail' | 'Blocked' | 'Not Run';
 type TestType = 'Functional' | 'Regression' | 'Integration' | 'Smoke' | 'Performance';
@@ -56,6 +59,7 @@ interface TestCasesProps {
 
 export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
   const { user } = useAuth();
+  const { modalState, showConfirm, closeModal } = useModal();
   const [viewMode, setViewMode] = useState<'list' | 'create' | 'edit' | 'execute'>('list');
   const [selectedTest, setSelectedTest] = useState<TestCase | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -72,96 +76,6 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     notes: string;
   } | null>(null);
 
-  const defaultTestCases: TestCase[] = [
-    {
-      id: 'TC-001',
-      title: 'Login with valid credentials',
-      description: 'Verify user can login with correct email and password',
-      type: 'Functional',
-      steps: [
-        'Navigate to login page',
-        'Enter valid email: test@example.com',
-        'Enter valid password',
-        'Click login button',
-      ],
-      expectedResults: [
-        'Login page is displayed',
-        'Email field accepts the input',
-        'Password field accepts the input and masks it',
-        'User is redirected to dashboard',
-      ],
-      status: 'Pass',
-      assignedTo: 'Damilola Ogunlade',
-      linkedStory: 'US-101',
-      lastRun: new Date('2026-04-25'),
-      executionTime: 45,
-      priority: 'High',
-    },
-    {
-      id: 'TC-002',
-      title: 'Payment processing with valid card',
-      description: 'Verify payment processes successfully',
-      type: 'Integration',
-      steps: [
-        'Add items to cart',
-        'Proceed to checkout',
-        'Enter valid card details',
-        'Submit payment',
-      ],
-      expectedResults: [
-        'Items are added to cart successfully',
-        'Checkout page loads with cart items',
-        'Card details form accepts valid input',
-        'Payment successful, order confirmation shown',
-      ],
-      status: 'Fail',
-      assignedTo: 'Damilola Ogunlade',
-      linkedStory: 'US-105',
-      lastRun: new Date('2026-04-24'),
-      executionTime: 120,
-      priority: 'High',
-    },
-    {
-      id: 'TC-003',
-      title: 'Dashboard loads within 2 seconds',
-      description: 'Performance test for dashboard',
-      type: 'Performance',
-      steps: [
-        'Login as user',
-        'Measure dashboard load time',
-      ],
-      expectedResults: [
-        'User successfully logs in',
-        'Dashboard loads in under 2 seconds',
-      ],
-      status: 'Pass',
-      assignedTo: 'Linda Thompson',
-      linkedStory: 'US-101',
-      lastRun: new Date('2026-04-23'),
-      executionTime: 30,
-      priority: 'Medium',
-    },
-    {
-      id: 'TC-004',
-      title: 'Profile update validation',
-      description: 'Test profile update with invalid data',
-      type: 'Functional',
-      steps: [
-        'Navigate to profile',
-        'Enter invalid email format',
-        'Click save',
-      ],
-      expectedResults: [
-        'Profile page loads successfully',
-        'Invalid email format is entered',
-        'Error message shown, profile not updated',
-      ],
-      status: 'Not Run',
-      assignedTo: 'Michael Brown',
-      linkedStory: 'US-105',
-      priority: 'Low',
-    },
-  ];
 
   // Use Supabase for persistent storage
   const { data: testCasesRaw, setData: setTestCases, loading: testCasesLoading } = useSupabaseData<TestCase[]>('aqms_test_cases', defaultTestCases);
@@ -323,11 +237,11 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
       const seenContents = new Set<string>();
       const filteredList: TestCase[] = [];
 
-      // 1. Remove exact duplicate test cases (same title, description, steps, expectedResults)
+      // 1. Remove exact duplicate test cases (same title, description, steps, expectedResults, link context, isDraft status)
       testCasesRaw.forEach(tc => {
         const stepsStr = (tc.steps || []).join('|');
         const expectedStr = (tc.expectedResults || []).join('|');
-        const signature = `${tc.title}::${tc.description}::${stepsStr}::${expectedStr}`;
+        const signature = `${tc.title}::${tc.description}::${stepsStr}::${expectedStr}::${tc.linkedStory || ''}::${tc.moduleId || ''}::${tc.isDraft ? 'draft' : 'approved'}`;
 
         if (seenContents.has(signature)) {
           hasChange = true;
@@ -533,64 +447,87 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     }
   };
 
-  const handleApproveTestCase = (draftTestCase: TestCase) => {
-    const existingNumbers = testCases
-      .filter(tc => !tc.isDraft)
-      .map(tc => {
-        const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
-        return match ? parseInt(match[1]) : 0;
-      })
-      .filter(n => n > 0 && n < 1000000);
+  const handleApproveTestCase = (draftTestCase: TestCase, onSuccess?: () => void) => {
+    showConfirm(
+      `Are you sure you want to approve "${draftTestCase.title}" as an active test case?`,
+      () => {
+        const existingNumbers = testCases
+          .filter(tc => !tc.isDraft)
+          .map(tc => {
+            const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
+            return match ? parseInt(match[1]) : 0;
+          })
+          .filter(n => n > 0 && n < 1000000);
 
-    const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
-    const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
+        const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+        const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
 
-    const approvedTestCase: TestCase = {
-      ...draftTestCase,
-      id: finalId,
-      isDraft: false,
-      status: 'Not Run',
-    };
+        const approvedTestCase: TestCase = {
+          ...draftTestCase,
+          id: finalId,
+          isDraft: false,
+          status: 'Not Run',
+        };
 
-    setTestCases(testCases.map(tc => tc.id === draftTestCase.id ? approvedTestCase : tc));
-    toast.success(`Test case approved and assigned ID ${finalId}`);
+        setTestCases(testCases.map(tc => tc.id === draftTestCase.id ? approvedTestCase : tc));
+        toast.success(`Test case approved and assigned ID ${finalId}`);
+        if (onSuccess) onSuccess();
+      },
+      'Confirm Approval',
+      'Approve'
+    );
   };
 
-  const handleRejectTestCase = (draftId: string) => {
-    setTestCases(testCases.filter(tc => tc.id !== draftId));
-    toast.success('AI suggestion discarded');
+  const handleRejectTestCase = (draftTestCase: TestCase, onSuccess?: () => void) => {
+    showConfirm(
+      `Are you sure you want to discard the suggestion for "${draftTestCase.title}"?`,
+      () => {
+        setTestCases(testCases.filter(tc => tc.id !== draftTestCase.id));
+        toast.success('AI suggestion discarded');
+        if (onSuccess) onSuccess();
+      },
+      'Discard Suggestion',
+      'Discard'
+    );
   };
 
   const handleApproveAllDrafts = () => {
     const drafts = testCases.filter(tc => tc.isDraft);
     if (drafts.length === 0) return;
 
-    const existingNumbers = testCases
-      .filter(tc => !tc.isDraft)
-      .map(tc => {
-        const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
-        return match ? parseInt(match[1]) : 0;
-      })
-      .filter(n => n > 0 && n < 1000000);
+    showConfirm(
+      `Are you sure you want to approve all ${drafts.length} suggested test cases?`,
+      () => {
+        const existingNumbers = testCases
+          .filter(tc => !tc.isDraft)
+          .map(tc => {
+            const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
+            return match ? parseInt(match[1]) : 0;
+          })
+          .filter(n => n > 0 && n < 1000000);
 
-    let nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+        let nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
-    const updatedTestCases = testCases.map(tc => {
-      if (tc.isDraft) {
-        const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
-        nextNumber++;
-        return {
-          ...tc,
-          id: finalId,
-          isDraft: false,
-          status: 'Not Run' as TestStatus,
-        };
-      }
-      return tc;
-    });
+        const updatedTestCases = testCases.map(tc => {
+          if (tc.isDraft) {
+            const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
+            nextNumber++;
+            return {
+              ...tc,
+              id: finalId,
+              isDraft: false,
+              status: 'Not Run' as TestStatus,
+            };
+          }
+          return tc;
+        });
 
-    setTestCases(updatedTestCases);
-    toast.success(`Approved all ${drafts.length} suggested test cases!`);
+        setTestCases(updatedTestCases);
+        toast.success(`Approved all ${drafts.length} suggested test cases!`);
+      },
+      'Approve All Suggestions',
+      'Approve All'
+    );
   };
 
   const handleViewTest = (test: TestCase) => {
@@ -875,7 +812,7 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
                           View
                         </button>
                         <button
-                          onClick={() => handleRejectTestCase(test.id)}
+                          onClick={() => handleRejectTestCase(test)}
                           className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-650 transition-colors text-xs font-medium flex items-center gap-1"
                           title="Reject suggestion"
                         >
@@ -948,14 +885,16 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
             setSelectedTest(null);
           }}
           onApprove={() => {
-            handleApproveTestCase(selectedTest);
-            setViewMode('list');
-            setSelectedTest(null);
+            handleApproveTestCase(selectedTest, () => {
+              setViewMode('list');
+              setSelectedTest(null);
+            });
           }}
           onReject={() => {
-            handleRejectTestCase(selectedTest.id);
-            setViewMode('list');
-            setSelectedTest(null);
+            handleRejectTestCase(selectedTest, () => {
+              setViewMode('list');
+              setSelectedTest(null);
+            });
           }}
         />
       )}
@@ -1012,6 +951,18 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
           />
         </div>
       )}
+
+      {/* Modal */}
+      <Modal
+        isOpen={modalState.isOpen}
+        onClose={closeModal}
+        title={modalState.title}
+        message={modalState.message}
+        type={modalState.type}
+        onConfirm={modalState.onConfirm}
+        confirmText={modalState.confirmText}
+        cancelText={modalState.cancelText}
+      />
     </div>
   );
 }
