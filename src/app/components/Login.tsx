@@ -209,7 +209,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
           <div className="mt-10">
             <div className="relative flex items-center py-5">
               <div className="flex-grow border-t border-gray-200"></div>
-              <span className="flex-shrink-0 mx-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Demo Access</span>
+              <span className="flex-shrink-0 mx-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Click to Fill Demo Account</span>
               <div className="flex-grow border-t border-gray-200"></div>
             </div>
 
