@@ -57,7 +57,10 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
           <p className="text-gray-600">Set up your AQMS workspace and become the administrator</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
+          {/* Honeypot/Autofill traps to aggressively prevent browser auto-population */}
+          <input type="email" name="fake-email" id="fake-email" style={{ display: 'none' }} aria-hidden="true" autoComplete="off" />
+          <input type="password" name="fake-password" id="fake-password" style={{ display: 'none' }} aria-hidden="true" autoComplete="new-password" />
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
               {error}
