@@ -73,6 +73,7 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              autoComplete="off"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="John Doe"
             />
@@ -87,6 +88,7 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="off"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="you@company.com"
             />
@@ -101,6 +103,7 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
               type="text"
               value={organizationName}
               onChange={(e) => setOrganizationName(e.target.value)}
+              autoComplete="off"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Your Company Name"
             />
@@ -119,6 +122,7 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="new-password"
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="••••••••"
               />
@@ -153,6 +157,7 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                autoComplete="new-password"
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="••••••••"
               />
