@@ -112,49 +112,23 @@ export function Login({ onSwitchToSignup }: LoginProps) {
           <h1 className="text-5xl font-bold mb-6 leading-tight">
             Agile QA<br />Management<br />System
           </h1>
-          <p className="text-indigo-200 text-lg max-w-md">
+          <p className="text-[#a0b0a8] text-lg max-w-md">
             Submit, track, and manage software quality assurance processes across all projects and teams.
           </p>
         </div>
 
-        <div className="space-y-6 mt-12">
-          {/* Card 1 */}
-          <div className="flex gap-4 p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 transition-all cursor-default">
-            <div className="bg-indigo-500/50 p-3 rounded-lg h-fit shadow-inner">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-1 text-base tracking-wide">Criteria Validator</h3>
-              <p className="text-indigo-200 text-sm leading-relaxed">
-                Story-by-story sign-off. Stories missing QA or PM approval are locked out of the dev queue automatically.
-              </p>
-            </div>
+        <div className="space-y-5 text-[#a0b0a8] text-sm">
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            Role-based access control for all user types
           </div>
-
-          {/* Card 2 */}
-          <div className="flex gap-4 p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 transition-all cursor-default">
-            <div className="bg-indigo-500/50 p-3 rounded-lg h-fit shadow-inner">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-1 text-base tracking-wide">Risk-Prioritization Matrix</h3>
-              <p className="text-indigo-200 text-sm leading-relaxed">
-                Score and rank sprint modules (High/Med/Low). High scores trigger full regression; typos get a quick visual check.
-              </p>
-            </div>
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Real-time request tracking with full audit trail
           </div>
-
-          {/* Card 3 */}
-          <div className="flex gap-4 p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 transition-all cursor-default">
-            <div className="bg-indigo-500/50 p-3 rounded-lg h-fit shadow-inner">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-1 text-base tracking-wide">Quality Burn-Down</h3>
-              <p className="text-indigo-200 text-sm leading-relaxed">
-                Real-time states: Tested, Testing, Bugs Found, & Not Started. Surfaces downstream bottlenecks before it's too late.
-              </p>
-            </div>
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            Analytics dashboard and data export
           </div>
         </div>
       </div>
