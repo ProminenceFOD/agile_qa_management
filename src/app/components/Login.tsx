@@ -13,6 +13,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showDemoMessage, setShowDemoMessage] = useState(false);
   const [notification, setNotification] = useState({ isOpen: false, title: '', message: '', type: 'success' as const });
   const { login } = useAuth();
 
@@ -77,6 +78,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setShowDemoMessage(false);
     setLoading(true);
 
     if (!email || !password) {
@@ -96,6 +98,8 @@ export function Login({ onSwitchToSignup }: LoginProps) {
   const handleDemoClick = (email: string) => {
     setEmail(email);
     setPassword('password123');
+    setError('');
+    setShowDemoMessage(true);
   };
 
   return (
@@ -156,7 +160,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setShowDemoMessage(false); }}
                 autoComplete="off"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-colors"
                 placeholder="you@company.com"
@@ -172,7 +176,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => { setPassword(e.target.value); setShowDemoMessage(false); }}
                   autoComplete="new-password"
                   className="w-full px-4 py-3 pr-12 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-colors"
                   placeholder="••••••••"
@@ -196,6 +200,15 @@ export function Login({ onSwitchToSignup }: LoginProps) {
                 </button>
               </div>
             </div>
+
+            {showDemoMessage && !error && (
+              <div className="flex items-center justify-center gap-2 text-[#4b6a5a] py-1 text-[15px]">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Credentials filled — click <span className="font-bold text-gray-900">Sign In</span> to continue</span>
+              </div>
+            )}
 
             <button
               type="submit"
