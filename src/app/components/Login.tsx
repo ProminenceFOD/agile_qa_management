@@ -14,6 +14,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showDemoMessage, setShowDemoMessage] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
   const [notification, setNotification] = useState({ isOpen: false, title: '', message: '', type: 'success' as const });
   const { login } = useAuth();
 
@@ -103,17 +104,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
   };
 
   const handleForgotPassword = () => {
-    if (!email) {
-      setError('Please enter your email address first to reset your password.');
-      return;
-    }
-    setError('');
-    setNotification({
-      isOpen: true,
-      title: 'Check your inbox',
-      message: `Password reset instructions have been sent to ${email}`,
-      type: 'success',
-    });
+    setShowResetModal(true);
   };
 
   return (
@@ -296,6 +287,36 @@ export function Login({ onSwitchToSignup }: LoginProps) {
         message={notification.message}
         type={notification.type}
       />
+      {/* Password Reset Modal */}
+      {showResetModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={() => setShowResetModal(false)}></div>
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden relative z-10 transform transition-all">
+            <div className="px-6 py-5 border-b border-gray-100">
+              <h3 className="text-xl font-bold text-gray-900">Password Reset</h3>
+            </div>
+            <div className="px-6 py-5 space-y-4">
+              <p className="text-gray-600 text-sm">
+                To reset your password, please contact your system administrator or the IT help desk at <a href="mailto:support@aqms.com" className="text-indigo-600 hover:underline">support@aqms.com</a>
+              </p>
+              <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-100">
+                <p className="text-sm text-indigo-800">
+                  <span className="font-bold">For demo accounts:</span> All demo credentials use the password <code className="bg-white px-2 py-0.5 rounded text-indigo-600 font-mono text-xs border border-indigo-200">password123</code>
+                </p>
+              </div>
+            </div>
+            <div className="px-6 py-4 bg-gray-50 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setShowResetModal(false)}
+                className="bg-indigo-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
