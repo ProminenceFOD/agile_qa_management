@@ -102,6 +102,20 @@ export function Login({ onSwitchToSignup }: LoginProps) {
     setShowDemoMessage(true);
   };
 
+  const handleForgotPassword = () => {
+    if (!email) {
+      setError('Please enter your email address first to reset your password.');
+      return;
+    }
+    setError('');
+    setNotification({
+      isOpen: true,
+      title: 'Check your inbox',
+      message: `Password reset instructions have been sent to ${email}`,
+      type: 'success',
+    });
+  };
+
   return (
     <div className="min-h-screen flex font-sans">
       {/* Left Pane */}
@@ -168,9 +182,18 @@ export function Login({ onSwitchToSignup }: LoginProps) {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">
-                Password
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label htmlFor="password" className="block text-xs font-bold text-gray-600 uppercase tracking-wider">
+                  Password
+                </label>
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 hover:underline"
+                >
+                  Forgot password?
+                </button>
+              </div>
               <div className="relative">
                 <input
                   id="password"
