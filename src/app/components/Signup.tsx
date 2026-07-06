@@ -51,9 +51,9 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
 
   return (
     <div className="min-h-screen flex font-sans">
-      {/* Left Pane - Hero Section (Visible on all window sizes) */}
+      {/* Left Pane - Hero Section (Hidden on mobile, split-screen on desktop) */}
       <div 
-        className="flex w-5/12 text-white p-6 md:p-12 flex-col justify-between relative bg-cover bg-center overflow-hidden border-r border-indigo-900/10"
+        className="hidden md:flex md:w-5/12 text-white p-6 md:p-12 flex-col justify-between relative bg-cover bg-center overflow-hidden border-r border-indigo-900/10"
         style={{ backgroundImage: "url('/login_hero.png')" }}
       >
         {/* Dark/color overlays for readability */}
@@ -110,7 +110,7 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
       </div>
 
       {/* Right Pane */}
-      <div className="w-7/12 bg-[#f9fafa] flex items-center justify-center p-6 md:p-12 overflow-y-auto">
+      <div className="w-full md:w-7/12 bg-[#f9fafa] flex items-center justify-center p-6 md:p-12 overflow-y-auto">
         <div className="w-full max-w-md my-8">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Create Workspace</h2>
