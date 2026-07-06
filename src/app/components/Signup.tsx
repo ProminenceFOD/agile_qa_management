@@ -54,13 +54,13 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
       className="min-h-screen flex font-sans relative bg-cover bg-center"
       style={{ backgroundImage: "url('/login_hero.png')" }}
     >
-      {/* Mobile Dark Overlays (Covered on desktop by the split panes) */}
-      <div className="absolute inset-0 bg-indigo-900/80 mix-blend-multiply sm:hidden"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent sm:hidden"></div>
+      {/* Mobile Dark Overlays (Covered on desktop/tablet by the split panes) */}
+      <div className="absolute inset-0 bg-indigo-900/80 mix-blend-multiply xs:hidden"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent xs:hidden"></div>
 
-      {/* Left Pane - Hero Section (Hidden on mobile, split-screen on desktop) */}
+      {/* Left Pane - Hero Section (Hidden on mobile, split-screen on desktop/tablet) */}
       <div 
-        className="hidden sm:flex sm:w-5/12 text-white p-6 md:p-12 flex-col justify-between relative bg-cover bg-center overflow-hidden border-r border-indigo-900/10"
+        className="hidden xs:flex xs:w-4/12 md:w-5/12 text-white p-6 md:p-12 flex-col justify-between relative bg-cover bg-center overflow-hidden border-r border-indigo-900/10"
         style={{ backgroundImage: "url('/login_hero.png')" }}
       >
         {/* Dark/color overlays for readability */}
@@ -117,8 +117,8 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
       </div>
 
       {/* Right Pane */}
-      <div className="w-full sm:w-7/12 sm:bg-[#f9fafa] flex items-center justify-center p-4 sm:p-6 md:p-12 overflow-y-auto relative z-10">
-        <div className="w-full max-w-md my-8 bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-100 sm:border-none sm:shadow-none sm:p-0 sm:bg-transparent">
+      <div className="w-full xs:w-8/12 md:w-7/12 xs:bg-[#f9fafa] flex items-center justify-center p-4 sm:p-6 md:p-12 overflow-y-auto relative z-10">
+        <div className="w-full max-w-md my-8 bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-100 xs:border-none xs:shadow-none xs:p-0 xs:bg-transparent">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Create Workspace</h2>
             <p className="text-gray-500">Set up your AQMS organization and admin account</p>
