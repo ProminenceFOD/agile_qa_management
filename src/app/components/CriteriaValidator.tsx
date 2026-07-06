@@ -264,6 +264,18 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
     setSelectedStory({ ...selectedStory, assignedTester: tester });
   };
 
+  const handleUpdateStoryComments = (storyId: string, updatedComments: any[], updatedActivities: any[]) => {
+    if (selectedStory && selectedStory.id === storyId) {
+      const updatedStory = {
+        ...selectedStory,
+        comments: updatedComments,
+        activityLog: updatedActivities
+      };
+      setStories(stories.map(s => s.id === storyId ? updatedStory : s));
+      setSelectedStory(updatedStory);
+    }
+  };
+
   const isReadyForDev = (story: Story) => {
     return story.acceptanceCriteria && story.qaSignOff && story.pmApproval;
   };
@@ -418,6 +430,7 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
         onAssignDeveloper={handleAssignDeveloper}
         onAssignTester={handleAssignTester}
         onNavigate={onNavigate}
+        onUpdateComments={handleUpdateStoryComments}
       />
     );
   }
