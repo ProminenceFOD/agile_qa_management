@@ -180,3 +180,34 @@
     line-height: 1.5;
   }
 }
+
+/* Custom Login/Signup Responsive Utilities */
+@media (min-width: 550px) {
+  .hero-pane-responsive {
+    display: flex !important;
+    width: 33.333333% !important; /* 4/12 width */
+  }
+  .form-pane-responsive {
+    width: 66.666667% !important; /* 8/12 width */
+    background-color: #f9fafa !important;
+  }
+  .mobile-overlay-responsive {
+    display: none !important;
+  }
+  .form-card-responsive {
+    border-style: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background-color: transparent !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-pane-responsive {
+    width: 41.666667% !important; /* 5/12 width */
+  }
+  .form-pane-responsive {
+    width: 58.333333% !important; /* 7/12 width */
+  }
+}
+
