@@ -111,7 +111,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
     <div className="min-h-screen flex font-sans">
       {/* Left Pane - Hero Section */}
       <div 
-        className="hidden lg:flex lg:w-5/12 text-white p-12 flex-col justify-between relative bg-cover bg-center overflow-hidden"
+        className="hidden md:flex md:w-5/12 text-white p-8 lg:p-12 flex-col justify-between relative bg-cover bg-center overflow-hidden"
         style={{ backgroundImage: "url('/login_hero.png')" }}
       >
         {/* Dark/color overlays for readability */}
@@ -121,37 +121,37 @@ export function Login({ onSwitchToSignup }: LoginProps) {
         
         {/* Content */}
         <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-16 text-sm font-semibold tracking-wider text-indigo-100">
+          <div className="flex items-center gap-2 mb-10 lg:mb-16 text-sm font-semibold tracking-wider text-indigo-100">
             <div className="bg-white/20 p-1.5 rounded backdrop-blur-sm border border-white/10 shadow-sm">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
             </div>
             AQMS
           </div>
-          <h1 className="text-5xl font-bold mb-6 leading-tight text-white drop-shadow-lg">
+          <h1 className="text-3xl lg:text-5xl font-bold mb-4 lg:mb-6 leading-tight text-white drop-shadow-lg">
             Agile QA<br />Management<br />System
           </h1>
-          <p className="text-indigo-50 text-lg max-w-md drop-shadow font-medium">
+          <p className="text-indigo-50 text-sm lg:text-lg max-w-md drop-shadow font-medium">
             Submit, track, and manage software quality assurance processes across all projects and teams.
           </p>
         </div>
 
         {/* Feature List in Glassmorphism Card */}
-        <div className="space-y-4 text-indigo-50 text-sm relative z-10 bg-white/10 p-7 rounded-2xl backdrop-blur-md border border-white/20 shadow-2xl">
-          <div className="flex items-center gap-4">
-            <div className="bg-white/10 p-2 rounded-lg border border-white/10">
-              <svg className="w-5 h-5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        <div className="space-y-3 lg:space-y-4 text-indigo-50 text-xs lg:text-sm relative z-10 bg-white/10 p-5 lg:p-7 rounded-2xl backdrop-blur-md border border-white/20 shadow-2xl">
+          <div className="flex items-center gap-3 lg:gap-4">
+            <div className="bg-white/10 p-1.5 lg:p-2 rounded-lg border border-white/10">
+              <svg className="w-4 h-4 lg:w-5 lg:h-5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
             </div>
             <span className="font-medium tracking-wide">Role-based access control for all user types</span>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="bg-white/10 p-2 rounded-lg border border-white/10">
-              <svg className="w-5 h-5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <div className="flex items-center gap-3 lg:gap-4">
+            <div className="bg-white/10 p-1.5 lg:p-2 rounded-lg border border-white/10">
+              <svg className="w-4 h-4 lg:w-5 lg:h-5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
             <span className="font-medium tracking-wide">Real-time request tracking with full audit trail</span>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="bg-white/10 p-2 rounded-lg border border-white/10">
-              <svg className="w-5 h-5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+          <div className="flex items-center gap-3 lg:gap-4">
+            <div className="bg-white/10 p-1.5 lg:p-2 rounded-lg border border-white/10">
+              <svg className="w-4 h-4 lg:w-5 lg:h-5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
             </div>
             <span className="font-medium tracking-wide">Analytics dashboard and data export</span>
           </div>
@@ -159,7 +159,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
       </div>
 
       {/* Right Pane */}
-      <div className="w-full lg:w-7/12 bg-[#f9fafa] flex items-center justify-center p-6 sm:p-12 overflow-y-auto">
+      <div className="w-full md:w-7/12 bg-[#f9fafa] flex items-center justify-center p-6 sm:p-12 overflow-y-auto">
         <div className="w-full max-w-md">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Sign in</h2>
