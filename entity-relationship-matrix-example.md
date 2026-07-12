@@ -84,35 +84,35 @@ Replace your current section with this:
 ```
 3.4.1 Database Design (Entity Relationship Model)
 
-The persistence tier of the AQMS is structured as a relational database schema 
-designed to enforce data integrity and track multi-state sprint variables. The 
-model comprises three core entities that map user identity access levels to user 
+The persistence tier of the AQMS is structured as a relational database schema
+designed to enforce data integrity and track multi-state sprint variables. The
+model comprises three core entities that map user identity access levels to user
 stories, and link those stories to modular system risks.
 
-Table 3.1 presents the Entity Relationship Matrix, showing the structural 
-relationships and constraints between the core database entities. Figure 3.2 
-provides the corresponding Entity Relationship Diagram with visual representations 
+Table 3.1 presents the Entity Relationship Matrix, showing the structural
+relationships and constraints between the core database entities. Figure 3.2
+provides the corresponding Entity Relationship Diagram with visual representations
 of cardinality and referential integrity constraints.
 
 [INSERT TABLE 3.1 HERE - Use Option A or B above]
 
 The matrix demonstrates three critical design decisions:
 
-1. USER_ROLES maintains a one-to-many relationship with USER_STORIES through the 
+1. USER_ROLES maintains a one-to-many relationship with USER_STORIES through the
    email unique constraint, enabling role-based story evaluation tracking.
 
-2. USER_STORIES references MODULE_RISKS through the module_id foreign key, 
-   establishing a many-to-one relationship that links each story to its associated 
+2. USER_STORIES references MODULE_RISKS through the module_id foreign key,
+   establishing a many-to-one relationship that links each story to its associated
    risk module.
 
-3. MODULE_RISKS serves as the parent entity for risk aggregation, with each module 
+3. MODULE_RISKS serves as the parent entity for risk aggregation, with each module
    tracking bug_frequency and impact_multiplier metrics across multiple linked stories.
 
 [INSERT FIGURE 3.2 HERE - Your ER Diagram]
 
 Figure 3.2: Entity Relationship Diagram - Visual Schema Representation
 
-This dual representation (matrix + diagram) ensures both tabular analysis of 
+This dual representation (matrix + diagram) ensures both tabular analysis of
 constraints and visual comprehension of data flow patterns.
 ```
 
@@ -158,6 +158,7 @@ Key: PK = Primary Key, FK = Foreign Key, → = References
 ## Summary:
 
 Your supervisor is correct - you need to either:
+
 1. **Change title** to "Entity Relationship Diagram" (simpler)
 2. **Add a matrix table** before the diagram (better, more complete)
 

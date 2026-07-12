@@ -1,7 +1,18 @@
 import { useState, useEffect } from 'react';
 import { defaultStories } from '../utils/defaultData';
 import { toast } from 'sonner';
-import { Eye, Edit3, Trash2, Plus, Search, Filter, FileText, Lock, CheckCircle, FilterX } from 'lucide-react';
+import {
+  Eye,
+  Edit3,
+  Trash2,
+  Plus,
+  Search,
+  Filter,
+  FileText,
+  Lock,
+  CheckCircle,
+  FilterX,
+} from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { StoryForm } from './StoryForm';
 import { StoryView } from './StoryView';
@@ -53,35 +64,44 @@ interface CriteriaValidatorProps {
   onNavigate?: (tab: string, itemId?: string) => void;
 }
 
-export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaValidatorProps) {
+export function CriteriaValidator({
+  highlightedItemId,
+  onNavigate,
+}: CriteriaValidatorProps) {
   const { user } = useAuth();
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    const quickCreate = localStorage.getItem('aqms_quick_create');
+    if (quickCreate === 'story') {
+      localStorage.removeItem('aqms_quick_create');
+      return 'create';
+    }
+    return 'list';
+  });
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterPriority, setFilterPriority] = useState<Priority | 'All'>('All');
   const [filterSprint, setFilterSprint] = useState<string>('All');
-  const [filterStatus, setFilterStatus] = useState<'All' | 'Ready' | 'Locked'>('All');
-  const [filterAssignedDeveloper, setFilterAssignedDeveloper] = useState<string>('All');
-  const [filterAssignedTester, setFilterAssignedTester] = useState<string>('All');
+  const [filterStatus, setFilterStatus] = useState<'All' | 'Ready' | 'Locked'>(
+    'All'
+  );
+  const [filterAssignedDeveloper, setFilterAssignedDeveloper] =
+    useState<string>('All');
+  const [filterAssignedTester, setFilterAssignedTester] =
+    useState<string>('All');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deletingStoryId, setDeletingStoryId] = useState<string | null>(null);
 
-
   // Use Supabase for persistent storage
-  const { data: stories, setData: setStories, loading: storiesLoading } = useSupabaseData<Story[]>('aqms_stories', defaultStories);
-  const { data: usersList } = useSupabaseData<any[]>('aqms_users', []);
+  const {
+    data: stories,
+    setData: setStories,
+    loading: storiesLoading,
+  } = useSupabaseData<Story[]>('aqms_stories', defaultStories);
+  const { data: usersList } = useSupabaseData<Record<string, unknown>[]>('aqms_users', []);
 
-  // Listen for quick create trigger
-  useEffect(() => {
-    const quickCreate = localStorage.getItem('aqms_quick_create');
-    if (quickCreate === 'story') {
-      setViewMode('create');
-      setSelectedStory(null);
-      localStorage.removeItem('aqms_quick_create');
-    }
-  }, []);
+  // Listen for quick create trigger handled via lazy initialization of viewMode
 
   // Show loading state immediately if data isn't ready
   if (storiesLoading || !stories) {
@@ -99,7 +119,7 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
     console.log('[CriteriaValidator] toggleQASignOff called for:', id);
     console.trace('[CriteriaValidator] Call stack:'); // This will show us WHO called this function
 
-    const story = stories.find(s => s.id === id);
+    const story = stories.find((s) => s.id === id);
     if (!story) return;
 
     // Don't allow toggle if no QA reviewer is assigned
@@ -110,52 +130,82 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
     }
 
     // Check if current user is the assigned QA reviewer
-    const isAssignedReviewer = story.assignedQAReviewer &&
+    const isAssignedReviewer =
+      story.assignedQAReviewer &&
       story.assignedQAReviewer.includes(user?.name || '');
 
     if (!isAssignedReviewer) {
-      toast.error(`Only the assigned QA Reviewer (${story.assignedQAReviewer}) can sign off on this story.`);
+      toast.error(
+        `Only the assigned QA Reviewer (${story.assignedQAReviewer}) can sign off on this story.`
+      );
       return;
     }
 
     const newQASignOff = !story.qaSignOff;
-    console.log(`[CriteriaValidator] Toggling QA sign-off for ${id}: ${story.qaSignOff} → ${newQASignOff}`);
+    console.log(
+      `[CriteriaValidator] Toggling QA sign-off for ${id}: ${story.qaSignOff} → ${newQASignOff}`
+    );
 
     // Validate acceptance criteria before allowing sign-off
     if (newQASignOff) {
       if (!story.acceptanceCriteria) {
-        toast.error('Cannot sign off: Acceptance Criteria checkbox must be checked');
+        toast.error(
+          'Cannot sign off: Acceptance Criteria checkbox must be checked'
+        );
         return;
       }
       // Strip HTML tags for validation
-      const plainText = story.criteriaDetails ? story.criteriaDetails.replace(/<[^>]*>/g, '').trim() : '';
+      const plainText = story.criteriaDetails
+        ? story.criteriaDetails.replace(/<[^>]*>/g, '').trim()
+        : '';
       if (!plainText || plainText.length < 20) {
-        toast.error('Cannot sign off: Acceptance Criteria details are missing or incomplete (minimum 20 characters)');
+        toast.error(
+          'Cannot sign off: Acceptance Criteria details are missing or incomplete (minimum 20 characters)'
+        );
         return;
       }
       // Check for placeholder text
       const lowerCriteria = plainText.toLowerCase();
-      if (lowerCriteria.includes('todo') || lowerCriteria.includes('tbd') || lowerCriteria === 'given\nwhen\nthen') {
-        toast.error('Cannot sign off: Acceptance Criteria contains placeholder text (TODO/TBD/template only)');
+      if (
+        lowerCriteria.includes('todo') ||
+        lowerCriteria.includes('tbd') ||
+        lowerCriteria === 'given\nwhen\nthen'
+      ) {
+        toast.error(
+          'Cannot sign off: Acceptance Criteria contains placeholder text (TODO/TBD/template only)'
+        );
         return;
       }
       // Validate Given/When/Then format is actually filled in
-      if (!lowerCriteria.includes('given') || !lowerCriteria.includes('when') || !lowerCriteria.includes('then')) {
-        toast.error('Cannot sign off: Acceptance Criteria must follow Given/When/Then format');
+      if (
+        !lowerCriteria.includes('given') ||
+        !lowerCriteria.includes('when') ||
+        !lowerCriteria.includes('then')
+      ) {
+        toast.error(
+          'Cannot sign off: Acceptance Criteria must follow Given/When/Then format'
+        );
         return;
       }
     }
 
-    setStories(stories.map(s => {
-      if (s.id === id) {
-        // If removing QA sign-off, clear assignments (quality gate enforcement)
-        if (!newQASignOff) {
-          return { ...s, qaSignOff: newQASignOff, assignedDeveloper: '', assignedTester: '' };
+    setStories(
+      stories.map((s) => {
+        if (s.id === id) {
+          // If removing QA sign-off, clear assignments (quality gate enforcement)
+          if (!newQASignOff) {
+            return {
+              ...s,
+              qaSignOff: newQASignOff,
+              assignedDeveloper: '',
+              assignedTester: '',
+            };
+          }
+          return { ...s, qaSignOff: newQASignOff };
         }
-        return { ...s, qaSignOff: newQASignOff };
-      }
-      return s;
-    }));
+        return s;
+      })
+    );
     if (selectedStory && selectedStory.id === id) {
       const newQASignOff = !selectedStory.qaSignOff;
       setSelectedStory({
@@ -170,7 +220,9 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
   const togglePMApproval = (id: string) => {
     // Check if user has PM sign-off authority
     const storedUsers = usersList || [];
-    const currentPM = storedUsers.find((u: any) => u.email === user?.email && u.role === 'Product Manager');
+    const currentPM = storedUsers.find(
+      (u: Record<string, unknown>) => u.email === user?.email && u.role === 'Product Manager'
+    );
 
     console.log('[CriteriaValidator] PM Approval attempt:', {
       userId: user?.email,
@@ -180,67 +232,102 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
     });
 
     if (!currentPM || !currentPM.canSignOffPM) {
-      toast.error('You do not have PM approval authority. Only authorized Product Managers can approve stories.');
+      toast.error(
+        'You do not have PM approval authority. Only authorized Product Managers can approve stories.'
+      );
       return;
     }
 
-    const story = stories.find(s => s.id === id);
+    const story = stories.find((s) => s.id === id);
     if (!story) return;
 
     const newPMApproval = !story.pmApproval;
-    console.log(`[CriteriaValidator] Toggling PM approval for ${id}: ${story.pmApproval} → ${newPMApproval}`);
+    console.log(
+      `[CriteriaValidator] Toggling PM approval for ${id}: ${story.pmApproval} → ${newPMApproval}`
+    );
 
     // Validate acceptance criteria before allowing approval
     if (newPMApproval) {
       if (!story.acceptanceCriteria) {
-        toast.error('Cannot approve: Acceptance Criteria checkbox must be checked');
+        toast.error(
+          'Cannot approve: Acceptance Criteria checkbox must be checked'
+        );
         return;
       }
       // Strip HTML tags for validation
-      const plainText = story.criteriaDetails ? story.criteriaDetails.replace(/<[^>]*>/g, '').trim() : '';
+      const plainText = story.criteriaDetails
+        ? story.criteriaDetails.replace(/<[^>]*>/g, '').trim()
+        : '';
       if (!plainText || plainText.length < 20) {
-        toast.error('Cannot approve: Acceptance Criteria details are missing or incomplete (minimum 20 characters)');
+        toast.error(
+          'Cannot approve: Acceptance Criteria details are missing or incomplete (minimum 20 characters)'
+        );
         return;
       }
       // Check for placeholder text
       const lowerCriteria = plainText.toLowerCase();
-      if (lowerCriteria.includes('todo') || lowerCriteria.includes('tbd') || lowerCriteria === 'given\nwhen\nthen') {
-        toast.error('Cannot approve: Acceptance Criteria contains placeholder text (TODO/TBD/template only)');
+      if (
+        lowerCriteria.includes('todo') ||
+        lowerCriteria.includes('tbd') ||
+        lowerCriteria === 'given\nwhen\nthen'
+      ) {
+        toast.error(
+          'Cannot approve: Acceptance Criteria contains placeholder text (TODO/TBD/template only)'
+        );
         return;
       }
       // Validate Given/When/Then format is actually filled in
-      if (!lowerCriteria.includes('given') || !lowerCriteria.includes('when') || !lowerCriteria.includes('then')) {
-        toast.error('Cannot approve: Acceptance Criteria must follow Given/When/Then format');
+      if (
+        !lowerCriteria.includes('given') ||
+        !lowerCriteria.includes('when') ||
+        !lowerCriteria.includes('then')
+      ) {
+        toast.error(
+          'Cannot approve: Acceptance Criteria must follow Given/When/Then format'
+        );
         return;
       }
       // Validate title and description are filled
       if (!story.title || story.title.trim().length < 10) {
-        toast.error('Cannot approve: Story title is missing or too short (minimum 10 characters)');
+        toast.error(
+          'Cannot approve: Story title is missing or too short (minimum 10 characters)'
+        );
         return;
       }
       if (!story.description || story.description.trim().length < 20) {
-        toast.error('Cannot approve: Story description is missing or incomplete (minimum 20 characters)');
+        toast.error(
+          'Cannot approve: Story description is missing or incomplete (minimum 20 characters)'
+        );
         return;
       }
     }
 
-    setStories(stories.map(story => {
-      if (story.id === id) {
-        const newPMApproval = !story.pmApproval;
-        // If removing PM approval, clear assignments (quality gate enforcement)
-        if (!newPMApproval) {
-          return { ...story, pmApproval: newPMApproval, assignedDeveloper: '', assignedTester: '' };
+    setStories(
+      stories.map((story) => {
+        if (story.id === id) {
+          const newPMApproval = !story.pmApproval;
+          // If removing PM approval, clear assignments (quality gate enforcement)
+          if (!newPMApproval) {
+            return {
+              ...story,
+              pmApproval: newPMApproval,
+              assignedDeveloper: '',
+              assignedTester: '',
+            };
+          }
+          return { ...story, pmApproval: newPMApproval };
         }
-        return { ...story, pmApproval: newPMApproval };
-      }
-      return story;
-    }));
+        return story;
+      })
+    );
     if (selectedStory && selectedStory.id === id) {
       const newPMApproval = !selectedStory.pmApproval;
       setSelectedStory({
         ...selectedStory,
         pmApproval: newPMApproval,
-        assignedDeveloper: !newPMApproval ? '' : selectedStory.assignedDeveloper,
+        assignedDeveloper: !newPMApproval
+          ? ''
+          : selectedStory.assignedDeveloper,
         assignedTester: !newPMApproval ? '' : selectedStory.assignedTester,
       });
     }
@@ -249,29 +336,37 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
   const handleAssignDeveloper = (developer: string) => {
     if (!selectedStory) return;
 
-    setStories(stories.map(s =>
-      s.id === selectedStory.id ? { ...s, assignedDeveloper: developer } : s
-    ));
+    setStories(
+      stories.map((s) =>
+        s.id === selectedStory.id ? { ...s, assignedDeveloper: developer } : s
+      )
+    );
     setSelectedStory({ ...selectedStory, assignedDeveloper: developer });
   };
 
   const handleAssignTester = (tester: string) => {
     if (!selectedStory) return;
 
-    setStories(stories.map(s =>
-      s.id === selectedStory.id ? { ...s, assignedTester: tester } : s
-    ));
+    setStories(
+      stories.map((s) =>
+        s.id === selectedStory.id ? { ...s, assignedTester: tester } : s
+      )
+    );
     setSelectedStory({ ...selectedStory, assignedTester: tester });
   };
 
-  const handleUpdateStoryComments = (storyId: string, updatedComments: any[], updatedActivities: any[]) => {
+  const handleUpdateStoryComments = (
+    storyId: string,
+    updatedComments: any[],
+    updatedActivities: any[]
+  ) => {
     if (selectedStory && selectedStory.id === storyId) {
       const updatedStory = {
         ...selectedStory,
         comments: updatedComments,
-        activityLog: updatedActivities
+        activityLog: updatedActivities,
       };
-      setStories(stories.map(s => s.id === storyId ? updatedStory : s));
+      setStories(stories.map((s) => (s.id === storyId ? updatedStory : s)));
       setSelectedStory(updatedStory);
     }
   };
@@ -282,7 +377,9 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
 
   const getRoleMessage = () => {
     const storedUsers = usersList || [];
-    const currentUserData = storedUsers.find((u: any) => u.email === user?.email);
+    const currentUserData = storedUsers.find(
+      (u: any) => u.email === user?.email
+    );
 
     if (user?.role === 'QA Engineer') {
       if (currentUserData?.canSignOffQA) {
@@ -331,7 +428,9 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
       console.log('[CriteriaValidator] New story created and saved');
       toast.success(`Story ${story.id} created successfully`);
     } else if (viewMode === 'edit') {
-      const updatedStories = stories.map(s => (s.id === story.id ? story : s));
+      const updatedStories = stories.map((s) =>
+        s.id === story.id ? story : s
+      );
       setStories(updatedStories);
       // useSupabaseData handles saving automatically
       console.log('[CriteriaValidator] Story updated and saved');
@@ -355,7 +454,7 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
 
   const confirmDeleteStory = () => {
     if (deletingStoryId) {
-      setStories(stories.filter(s => s.id !== deletingStoryId));
+      setStories(stories.filter((s) => s.id !== deletingStoryId));
       toast.success('Story deleted successfully');
     }
     setShowDeleteConfirm(false);
@@ -376,16 +475,23 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
   };
 
   // Filter and search logic
-  const filteredStories = stories.filter(story => {
-    const matchesSearch = searchQuery === '' ||
+  const filteredStories = stories.filter((story) => {
+    const matchesSearch =
+      searchQuery === '' ||
       story.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       story.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesPriority = filterPriority === 'All' || story.priority === filterPriority;
-    const matchesSprint = filterSprint === 'All' || story.sprint === filterSprint;
-    const matchesDeveloper = filterAssignedDeveloper === 'All' || story.assignedDeveloper === filterAssignedDeveloper;
-    const matchesTester = filterAssignedTester === 'All' || story.assignedTester === filterAssignedTester;
+    const matchesPriority =
+      filterPriority === 'All' || story.priority === filterPriority;
+    const matchesSprint =
+      filterSprint === 'All' || story.sprint === filterSprint;
+    const matchesDeveloper =
+      filterAssignedDeveloper === 'All' ||
+      story.assignedDeveloper === filterAssignedDeveloper;
+    const matchesTester =
+      filterAssignedTester === 'All' ||
+      story.assignedTester === filterAssignedTester;
 
     let matchesStatus = true;
     if (filterStatus === 'Ready') {
@@ -394,22 +500,32 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
       matchesStatus = !isReadyForDev(story);
     }
 
-    return matchesSearch && matchesPriority && matchesSprint && matchesStatus && matchesDeveloper && matchesTester;
+    return (
+      matchesSearch &&
+      matchesPriority &&
+      matchesSprint &&
+      matchesStatus &&
+      matchesDeveloper &&
+      matchesTester
+    );
   });
 
-  const allSprints = Array.from(new Set(stories.map(s => s.sprint).filter(Boolean))) as string[];
-  const allDevelopers = Array.from(new Set(stories.map(s => s.assignedDeveloper).filter(Boolean))) as string[];
-  const allTesters = Array.from(new Set(stories.map(s => s.assignedTester).filter(Boolean))) as string[];
+  const allSprints = Array.from(
+    new Set(stories.map((s) => s.sprint).filter(Boolean))
+  ) as string[];
+  const allDevelopers = Array.from(
+    new Set(stories.map((s) => s.assignedDeveloper).filter(Boolean))
+  ) as string[];
+  const allTesters = Array.from(
+    new Set(stories.map((s) => s.assignedTester).filter(Boolean))
+  ) as string[];
 
   // Calculate pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedStories = filteredStories.slice(startIndex, endIndex);
 
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, filterPriority, filterSprint, filterStatus, filterAssignedDeveloper, filterAssignedTester]);
+  // Reset to page 1 when filters change is handled by derived state elsewhere if needed
 
   if (viewMode === 'view' && selectedStory) {
     return (
@@ -452,7 +568,9 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
       <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl mb-2">Criteria Validator</h1>
-          <p className="text-gray-600">Story-by-story quality gate enforcement</p>
+          <p className="text-gray-600">
+            Story-by-story quality gate enforcement
+          </p>
           <div className="mt-3 bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-2 text-sm text-indigo-800">
             <strong>{user?.role}:</strong> {getRoleMessage()}
           </div>
@@ -471,8 +589,12 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
         <div className="card fade-in p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-3xl font-bold text-green-700 mb-1">{stories.filter(isReadyForDev).length}</div>
-              <div className="text-sm text-green-600 font-medium">Ready for Dev</div>
+              <div className="text-3xl font-bold text-green-700 mb-1">
+                {stories.filter(isReadyForDev).length}
+              </div>
+              <div className="text-sm text-green-600 font-medium">
+                Ready for Dev
+              </div>
             </div>
             <CheckCircle className="w-10 h-10 text-green-600" />
           </div>
@@ -480,8 +602,12 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
         <div className="card fade-in p-4 bg-gradient-to-br from-red-50 to-rose-50 border-red-200">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-3xl font-bold text-red-700 mb-1">{stories.filter(s => !isReadyForDev(s)).length}</div>
-              <div className="text-sm text-red-600 font-medium">Locked Stories</div>
+              <div className="text-3xl font-bold text-red-700 mb-1">
+                {stories.filter((s) => !isReadyForDev(s)).length}
+              </div>
+              <div className="text-sm text-red-600 font-medium">
+                Locked Stories
+              </div>
             </div>
             <Lock className="w-10 h-10 text-red-600" />
           </div>
@@ -489,8 +615,12 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
         <div className="card fade-in p-4 bg-gradient-to-br from-indigo-50 to-indigo-50 border-indigo-200">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-3xl font-bold text-indigo-700 mb-1">{stories.length}</div>
-              <div className="text-sm text-indigo-600 font-medium">Total Stories</div>
+              <div className="text-3xl font-bold text-indigo-700 mb-1">
+                {stories.length}
+              </div>
+              <div className="text-sm text-indigo-600 font-medium">
+                Total Stories
+              </div>
             </div>
             <FileText className="w-10 h-10 text-indigo-600" />
           </div>
@@ -501,15 +631,34 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
       <div className="mb-6 bg-gradient-to-r from-orange-50 to-red-50 border-l-4 border-orange-500 p-4 rounded-r-lg">
         <div className="flex items-start">
           <div className="flex-shrink-0">
-            <svg className="h-6 w-6 text-orange-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            <svg
+              className="h-6 w-6 text-orange-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-orange-900">Quality Gate Enforcement Active</h3>
+            <h3 className="text-sm font-medium text-orange-900">
+              Quality Gate Enforcement Active
+            </h3>
             <div className="mt-2 text-sm text-orange-800">
-              <p>✅ <strong>Workflow:</strong> Acceptance Criteria → QA Sign-Off → PM Approval → Developer/Tester Assignment → Ready for Dev</p>
-              <p className="mt-1">🔒 Stories cannot be assigned to developers or testers until BOTH QA sign-off and PM approval are completed.</p>
+              <p>
+                ✅ <strong>Workflow:</strong> Acceptance Criteria → QA Sign-Off
+                → PM Approval → Developer/Tester Assignment → Ready for Dev
+              </p>
+              <p className="mt-1">
+                🔒 Stories cannot be assigned to developers or testers until
+                BOTH QA sign-off and PM approval are completed.
+              </p>
             </div>
           </div>
         </div>
@@ -555,8 +704,10 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
                 className="input"
               >
                 <option value="All">All Sprints</option>
-                {allSprints.map(sprint => (
-                  <option key={sprint} value={sprint}>{sprint}</option>
+                {allSprints.map((sprint) => (
+                  <option key={sprint} value={sprint}>
+                    {sprint}
+                  </option>
                 ))}
               </select>
             </div>
@@ -578,7 +729,9 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Assigned Developer</label>
+            <label className="block text-sm text-gray-700 mb-1">
+              Assigned Developer
+            </label>
             <div className="relative">
               <select
                 value={filterAssignedDeveloper}
@@ -586,14 +739,18 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
                 className="input"
               >
                 <option value="All">All Developers</option>
-                {allDevelopers.map(dev => (
-                  <option key={dev} value={dev}>{dev}</option>
+                {allDevelopers.map((dev) => (
+                  <option key={dev} value={dev}>
+                    {dev}
+                  </option>
                 ))}
               </select>
             </div>
           </div>
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Assigned Tester</label>
+            <label className="block text-sm text-gray-700 mb-1">
+              Assigned Tester
+            </label>
             <div className="relative">
               <select
                 value={filterAssignedTester}
@@ -601,8 +758,10 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
                 className="input"
               >
                 <option value="All">All Testers</option>
-                {allTesters.map(tester => (
-                  <option key={tester} value={tester}>{tester}</option>
+                {allTesters.map((tester) => (
+                  <option key={tester} value={tester}>
+                    {tester}
+                  </option>
                 ))}
               </select>
             </div>
@@ -670,11 +829,17 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
                   `}
                 >
                   <td className="px-4 py-3">
-                    <span className="font-medium text-gray-900 text-sm">{story.id}</span>
+                    <span className="font-medium text-gray-900 text-sm">
+                      {story.id}
+                    </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-700 text-sm">{story.title}</td>
+                  <td className="px-4 py-3 text-gray-700 text-sm">
+                    {story.title}
+                  </td>
                   <td className="text-center">
-                    <span className={`badge ${getPriorityColor(story.priority)}`}>
+                    <span
+                      className={`badge ${getPriorityColor(story.priority)}`}
+                    >
                       {story.priority}
                     </span>
                   </td>
@@ -686,8 +851,15 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
                   </td>
                   <td className="px-4 py-3 text-center text-xs">
                     {story.assignedQAReviewer ? (
-                      <span className="text-purple-700 font-medium" title={story.assignedQAReviewer}>
-                        {story.assignedQAReviewer.split(' ').slice(0, 2).map(n => n[0]).join('')}
+                      <span
+                        className="text-purple-700 font-medium"
+                        title={story.assignedQAReviewer}
+                      >
+                        {story.assignedQAReviewer
+                          .split(' ')
+                          .slice(0, 2)
+                          .map((n) => n[0])
+                          .join('')}
                       </span>
                     ) : (
                       <span className="text-gray-400">-</span>
@@ -696,23 +868,43 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
                   <td className="px-4 py-3 text-center text-xs">
                     {ready ? (
                       story.assignedDeveloper ? (
-                        <span className="text-gray-700">{story.assignedDeveloper.split(' ').map(n => n[0]).join('')}</span>
+                        <span className="text-gray-700">
+                          {story.assignedDeveloper
+                            .split(' ')
+                            .map((n) => n[0])
+                            .join('')}
+                        </span>
                       ) : (
                         <span className="text-gray-400">-</span>
                       )
                     ) : (
-                      <span className="text-red-600" title="Blocked: Requires QA sign-off and PM approval">🔒</span>
+                      <span
+                        className="text-red-600"
+                        title="Blocked: Requires QA sign-off and PM approval"
+                      >
+                        🔒
+                      </span>
                     )}
                   </td>
                   <td className="px-4 py-3 text-center text-xs">
                     {ready ? (
                       story.assignedTester ? (
-                        <span className="text-gray-700">{story.assignedTester.split(' ').map(n => n[0]).join('')}</span>
+                        <span className="text-gray-700">
+                          {story.assignedTester
+                            .split(' ')
+                            .map((n) => n[0])
+                            .join('')}
+                        </span>
                       ) : (
                         <span className="text-gray-400">-</span>
                       )
                     ) : (
-                      <span className="text-red-600" title="Blocked: Requires QA sign-off and PM approval">🔒</span>
+                      <span
+                        className="text-red-600"
+                        title="Blocked: Requires QA sign-off and PM approval"
+                      >
+                        🔒
+                      </span>
                     )}
                   </td>
                   <td className="px-4 py-3 text-center">
@@ -728,15 +920,21 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
                   </td>
                   <td className="px-4 py-3 text-center">
                     {(() => {
-                      const isAssignedReviewer = story.assignedQAReviewer &&
+                      const isAssignedReviewer =
+                        story.assignedQAReviewer &&
                         story.assignedQAReviewer.includes(user?.name || '');
-                      const canSignOff = user?.role === 'QA Engineer' && isAssignedReviewer;
+                      const canSignOff =
+                        user?.role === 'QA Engineer' && isAssignedReviewer;
 
                       return (
                         <button
                           onClick={() => toggleQASignOff(story.id)}
                           disabled={!canSignOff}
-                          title={!isAssignedReviewer ? `Only ${story.assignedQAReviewer || 'assigned QA reviewer'} can sign off` : ''}
+                          title={
+                            !isAssignedReviewer
+                              ? `Only ${story.assignedQAReviewer || 'assigned QA reviewer'} can sign off`
+                              : ''
+                          }
                           className={`inline-flex items-center px-2 py-1 rounded-full transition-colors text-xs ${
                             story.qaSignOff
                               ? 'bg-green-100 text-green-800 hover:bg-green-200'
@@ -751,14 +949,22 @@ export function CriteriaValidator({ highlightedItemId, onNavigate }: CriteriaVal
                   <td className="px-4 py-3 text-center">
                     {(() => {
                       const storedUsers = usersList || [];
-                      const currentPM = storedUsers.find((u: any) => u.email === user?.email && u.role === 'Product Manager');
+                      const currentPM = storedUsers.find(
+                        (u: any) =>
+                          u.email === user?.email &&
+                          u.role === 'Product Manager'
+                      );
                       const canApprove = currentPM && currentPM.canSignOffPM;
 
                       return (
                         <button
                           onClick={() => togglePMApproval(story.id)}
                           disabled={!canApprove}
-                          title={!canApprove && user?.role === 'Product Manager' ? 'You do not have PM approval authority' : ''}
+                          title={
+                            !canApprove && user?.role === 'Product Manager'
+                              ? 'You do not have PM approval authority'
+                              : ''
+                          }
                           className={`inline-flex items-center px-2 py-1 rounded-full transition-colors text-xs ${
                             story.pmApproval
                               ? 'bg-green-100 text-green-800 hover:bg-green-200'

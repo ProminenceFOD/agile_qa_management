@@ -9,7 +9,7 @@ const lines = markdown.split('\n');
 const doc = new jsPDF({
   orientation: 'portrait',
   unit: 'mm',
-  format: 'a4'
+  format: 'a4',
 });
 
 let y = 20;

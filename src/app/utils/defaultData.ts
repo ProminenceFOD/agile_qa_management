@@ -13,8 +13,8 @@ export interface Story {
   storyPoints?: number;
   sprint?: string;
   dependencies?: string[];
-  comments?: any[];
-  activityLog?: any[];
+  comments?: Record<string, unknown>[];
+  activityLog?: Record<string, unknown>[];
   createdAt: Date;
   updatedAt: Date;
   status: string;
@@ -55,18 +55,20 @@ export interface Bug {
   actualBehavior: string;
   environment?: string;
   attachments?: string[];
-  comments?: any[];
+  comments?: Record<string, unknown>[];
 }
 
 export const defaultStories: Story[] = [
   {
     id: 'US-101',
     title: 'User Authentication - Login Flow',
-    description: 'As a user, I want to securely log into the system using my email and password.',
+    description:
+      'As a user, I want to securely log into the system using my email and password.',
     acceptanceCriteria: true,
     qaSignOff: true,
     pmApproval: true,
-    criteriaDetails: 'Given a valid user account\nWhen I enter correct credentials\nThen I should be redirected to the dashboard\nAnd my session should be maintained',
+    criteriaDetails:
+      'Given a valid user account\nWhen I enter correct credentials\nThen I should be redirected to the dashboard\nAnd my session should be maintained',
     assignedQAReviewer: 'Damilola Ogunlade (Head of QA)',
     assignedDeveloper: 'James Martinez',
     assignedTester: 'Damilola Ogunlade',
@@ -78,16 +80,18 @@ export const defaultStories: Story[] = [
     activityLog: [],
     createdAt: new Date('2026-04-15'),
     updatedAt: new Date('2026-04-20'),
-    status: 'Ready for Dev'
+    status: 'Ready for Dev',
   },
   {
     id: 'US-102',
     title: 'Payment Gateway Integration',
-    description: 'As a user, I want to make payments through Stripe for my purchases.',
+    description:
+      'As a user, I want to make payments through Stripe for my purchases.',
     acceptanceCriteria: true,
     qaSignOff: false,
     pmApproval: true,
-    criteriaDetails: 'Given I have items in cart\nWhen I proceed to checkout\nThen I should see Stripe payment form\nAnd payment should process securely',
+    criteriaDetails:
+      'Given I have items in cart\nWhen I proceed to checkout\nThen I should see Stripe payment form\nAnd payment should process securely',
     assignedQAReviewer: 'Damilola Ogunlade (Head of QA)',
     assignedDeveloper: '',
     assignedTester: '',
@@ -99,16 +103,18 @@ export const defaultStories: Story[] = [
     activityLog: [],
     createdAt: new Date('2026-04-16'),
     updatedAt: new Date('2026-04-22'),
-    status: 'Locked'
+    status: 'Locked',
   },
   {
     id: 'US-103',
     title: 'Dashboard Analytics Widget',
-    description: 'As an admin, I want to view real-time analytics on my dashboard.',
+    description:
+      'As an admin, I want to view real-time analytics on my dashboard.',
     acceptanceCriteria: true,
     qaSignOff: true,
     pmApproval: false,
-    criteriaDetails: 'Given I am logged in as admin\nWhen I access the dashboard\nThen I should see analytics widgets\nAnd data should update in real-time',
+    criteriaDetails:
+      'Given I am logged in as admin\nWhen I access the dashboard\nThen I should see analytics widgets\nAnd data should update in real-time',
     assignedQAReviewer: 'Damilola Ogunlade (Head of QA)',
     assignedDeveloper: '',
     priority: 'High',
@@ -119,12 +125,13 @@ export const defaultStories: Story[] = [
     activityLog: [],
     createdAt: new Date('2026-04-14'),
     updatedAt: new Date('2026-04-21'),
-    status: 'Locked'
+    status: 'Locked',
   },
   {
     id: 'US-104',
     title: 'User Profile Update Feature',
-    description: 'As a user, I want to update my profile information including name, email, and avatar.',
+    description:
+      'As a user, I want to update my profile information including name, email, and avatar.',
     acceptanceCriteria: false,
     qaSignOff: false,
     pmApproval: false,
@@ -138,16 +145,18 @@ export const defaultStories: Story[] = [
     activityLog: [],
     createdAt: new Date('2026-04-18'),
     updatedAt: new Date('2026-04-18'),
-    status: 'Locked'
+    status: 'Locked',
   },
   {
     id: 'US-105',
     title: 'Email Notification System',
-    description: 'As a user, I want to receive email notifications for important account activities.',
+    description:
+      'As a user, I want to receive email notifications for important account activities.',
     acceptanceCriteria: true,
     qaSignOff: true,
     pmApproval: true,
-    criteriaDetails: 'Given an important account event occurs\nWhen the event is triggered\nThen I should receive an email notification\nAnd the email should contain relevant details',
+    criteriaDetails:
+      'Given an important account event occurs\nWhen the event is triggered\nThen I should receive an email notification\nAnd the email should contain relevant details',
     assignedQAReviewer: 'Damilola Ogunlade (Head of QA)',
     assignedDeveloper: 'Maria Rodriguez',
     assignedTester: 'Linda Thompson',
@@ -159,16 +168,18 @@ export const defaultStories: Story[] = [
     activityLog: [],
     createdAt: new Date('2026-04-13'),
     updatedAt: new Date('2026-04-23'),
-    status: 'Ready for Dev'
+    status: 'Ready for Dev',
   },
   {
     id: 'US-106',
     title: 'Search Functionality Enhancement',
-    description: 'As a user, I want to improved search with filters and sorting options.',
+    description:
+      'As a user, I want to improved search with filters and sorting options.',
     acceptanceCriteria: true,
     qaSignOff: false,
     pmApproval: false,
-    criteriaDetails: 'Given I am on the search page\nWhen I enter a search query\nThen results should be filtered and sortable\nAnd search should be performant',
+    criteriaDetails:
+      'Given I am on the search page\nWhen I enter a search query\nThen results should be filtered and sortable\nAnd search should be performant',
     assignedQAReviewer: 'Damilola Ogunlade (Head of QA)',
     assignedDeveloper: '',
     assignedTester: '',
@@ -180,7 +191,7 @@ export const defaultStories: Story[] = [
     activityLog: [],
     createdAt: new Date('2026-04-19'),
     updatedAt: new Date('2026-04-19'),
-    status: 'Locked'
+    status: 'Locked',
   },
 ];
 
@@ -238,10 +249,7 @@ export const defaultTestCases: TestCase[] = [
     title: 'Dashboard loads within 2 seconds',
     description: 'Performance test for dashboard',
     type: 'Performance',
-    steps: [
-      'Login as user',
-      'Measure dashboard load time',
-    ],
+    steps: ['Login as user', 'Measure dashboard load time'],
     expectedResults: [
       'User successfully logs in',
       'Dashboard loads in under 2 seconds',
@@ -258,11 +266,7 @@ export const defaultTestCases: TestCase[] = [
     title: 'Profile update validation',
     description: 'Test profile update with invalid data',
     type: 'Functional',
-    steps: [
-      'Navigate to profile',
-      'Enter invalid email format',
-      'Click save',
-    ],
+    steps: ['Navigate to profile', 'Enter invalid email format', 'Click save'],
     expectedResults: [
       'Profile page loads successfully',
       'Invalid email format is entered',
@@ -279,7 +283,8 @@ export const defaultBugs: Bug[] = [
   {
     id: 'BUG-001',
     title: 'Payment gateway timeout on high load',
-    description: 'Payment processing fails when multiple concurrent transactions',
+    description:
+      'Payment processing fails when multiple concurrent transactions',
     severity: 'Critical',
     status: 'In Progress',
     linkedStory: 'US-102', // Points to payment gateway integration

@@ -1,4 +1,13 @@
-import { Plus, Edit3, Trash2, UserPlus, Check, MessageCircle, Paperclip, FileText } from 'lucide-react';
+import {
+  Plus,
+  Edit3,
+  Trash2,
+  UserPlus,
+  Check,
+  MessageCircle,
+  Paperclip,
+  FileText,
+} from 'lucide-react';
 
 interface ActivityLog {
   id: string;
@@ -23,13 +32,16 @@ export function ActivityLog({ activities }: ActivityLogProps) {
   };
 
   const getActionIcon = (action: string) => {
-    const iconClass = "w-4 h-4";
+    const iconClass = 'w-4 h-4';
     if (action.includes('created')) return <Plus className={iconClass} />;
-    if (action.includes('updated') || action.includes('edited')) return <Edit3 className={iconClass} />;
+    if (action.includes('updated') || action.includes('edited'))
+      return <Edit3 className={iconClass} />;
     if (action.includes('deleted')) return <Trash2 className={iconClass} />;
     if (action.includes('assigned')) return <UserPlus className={iconClass} />;
-    if (action.includes('approved') || action.includes('signed')) return <Check className={iconClass} />;
-    if (action.includes('comment')) return <MessageCircle className={iconClass} />;
+    if (action.includes('approved') || action.includes('signed'))
+      return <Check className={iconClass} />;
+    if (action.includes('comment'))
+      return <MessageCircle className={iconClass} />;
     if (action.includes('attached')) return <Paperclip className={iconClass} />;
     return <FileText className={iconClass} />;
   };
@@ -49,10 +61,13 @@ export function ActivityLog({ activities }: ActivityLogProps) {
               </div>
               <div className="flex-1">
                 <div className="text-gray-900">
-                  <span className="font-medium">{activity.user}</span> {activity.action}
+                  <span className="font-medium">{activity.user}</span>{' '}
+                  {activity.action}
                 </div>
                 {activity.details && (
-                  <div className="text-gray-600 text-xs mt-1">{activity.details}</div>
+                  <div className="text-gray-600 text-xs mt-1">
+                    {activity.details}
+                  </div>
                 )}
                 <div className="text-gray-500 text-xs mt-1">
                   {formatTimestamp(activity.timestamp)}

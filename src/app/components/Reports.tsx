@@ -26,8 +26,12 @@ interface TestCase {
 }
 
 export function Reports() {
-  const [activeReport, setActiveReport] = useState<'coverage' | 'defects' | 'velocity'>('coverage');
-  const [dateRange, setDateRange] = useState<'7days' | '30days' | '90days' | 'custom'>('30days');
+  const [activeReport, setActiveReport] = useState<
+    'coverage' | 'defects' | 'velocity'
+  >('coverage');
+  const [dateRange, setDateRange] = useState<
+    '7days' | '30days' | '90days' | 'custom'
+  >('30days');
   const [showCustomDatePicker, setShowCustomDatePicker] = useState(false);
   const [customStartDate, setCustomStartDate] = useState('');
   const [customEndDate, setCustomEndDate] = useState('');
@@ -35,41 +39,57 @@ export function Reports() {
   // Load data from Supabase
   const { data: stories } = useSupabaseData<Story[]>('aqms_stories', []);
   const { data: bugs } = useSupabaseData<Bug[]>('aqms_bugs', []);
-  const { data: testCases } = useSupabaseData<TestCase[]>('aqms_test_cases', []);
+  const { data: testCases } = useSupabaseData<TestCase[]>(
+    'aqms_test_cases',
+    []
+  );
 
-  const activeTestCases = testCases.filter(tc => !tc.isDraft);
+  const activeTestCases = testCases.filter((tc) => !tc.isDraft);
 
   // Test Coverage Metrics
   const totalStories = stories.length;
-  const storiesWithTests = stories.filter(s =>
-    activeTestCases.some(tc => tc.linkedStory === s.id)
+  const storiesWithTests = stories.filter((s) =>
+    activeTestCases.some((tc) => tc.linkedStory === s.id)
   ).length;
-  const coveragePercentage = totalStories > 0 ? Math.round((storiesWithTests / totalStories) * 100) : 0;
+  const coveragePercentage =
+    totalStories > 0 ? Math.round((storiesWithTests / totalStories) * 100) : 0;
   const totalTestCases = activeTestCases.length;
 
   // Defect Metrics
   const totalBugs = bugs.length;
-  const openBugs = bugs.filter(b => b.status === 'Open' || b.status === 'In Progress').length;
-  const criticalBugs = bugs.filter(b => b.severity === 'Critical' && b.status !== 'Closed').length;
-  const resolvedBugs = bugs.filter(b => b.status === 'Resolved' || b.status === 'Closed');
-  const avgResolutionTime = resolvedBugs.length > 0
-    ? Math.round(
-        resolvedBugs.reduce((sum, bug) => {
-          if (bug.resolvedAt) {
-            const resolvedDate = new Date(bug.resolvedAt);
-            const createdDate = new Date(bug.createdAt);
-            const days = Math.abs(resolvedDate.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
-            return sum + days;
-          }
-          return sum;
-        }, 0) / resolvedBugs.length
-      )
-    : 0;
+  const openBugs = bugs.filter(
+    (b) => b.status === 'Open' || b.status === 'In Progress'
+  ).length;
+  const criticalBugs = bugs.filter(
+    (b) => b.severity === 'Critical' && b.status !== 'Closed'
+  ).length;
+  const resolvedBugs = bugs.filter(
+    (b) => b.status === 'Resolved' || b.status === 'Closed'
+  );
+  const avgResolutionTime =
+    resolvedBugs.length > 0
+      ? Math.round(
+          resolvedBugs.reduce((sum, bug) => {
+            if (bug.resolvedAt) {
+              const resolvedDate = new Date(bug.resolvedAt);
+              const createdDate = new Date(bug.createdAt);
+              const days =
+                Math.abs(resolvedDate.getTime() - createdDate.getTime()) /
+                (1000 * 60 * 60 * 24);
+              return sum + days;
+            }
+            return sum;
+          }, 0) / resolvedBugs.length
+        )
+      : 0;
 
   const handleExportReport = () => {
     const reportData = {
       generatedAt: new Date().toISOString(),
-      dateRange: dateRange === 'custom' ? `${customStartDate} to ${customEndDate}` : dateRange,
+      dateRange:
+        dateRange === 'custom'
+          ? `${customStartDate} to ${customEndDate}`
+          : dateRange,
       coverage: {
         totalStories,
         storiesWithTests,
@@ -99,7 +119,9 @@ export function Reports() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl mb-2">Reports & Analytics</h1>
-          <p className="text-gray-600">Comprehensive quality metrics and insights</p>
+          <p className="text-gray-600">
+            Comprehensive quality metrics and insights
+          </p>
         </div>
         <button
           onClick={handleExportReport}
@@ -144,7 +166,7 @@ export function Reports() {
       {/* Date Range Selector */}
       <div className="mb-6">
         <div className="flex gap-2 mb-3">
-          {(['7days', '30days', '90days'] as const).map(range => (
+          {(['7days', '30days', '90days'] as const).map((range) => (
             <button
               key={range}
               onClick={() => {
@@ -157,7 +179,11 @@ export function Reports() {
                   : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
               }`}
             >
-              {range === '7days' ? 'Last 7 Days' : range === '30days' ? 'Last 30 Days' : 'Last 90 Days'}
+              {range === '7days'
+                ? 'Last 7 Days'
+                : range === '30days'
+                  ? 'Last 30 Days'
+                  : 'Last 90 Days'}
             </button>
           ))}
           <button
@@ -199,7 +225,13 @@ export function Reports() {
             </div>
             {customStartDate && customEndDate && (
               <span className="text-sm text-gray-600">
-                ({Math.ceil((new Date(customEndDate).getTime() - new Date(customStartDate).getTime()) / (1000 * 60 * 60 * 24))} days)
+                (
+                {Math.ceil(
+                  (new Date(customEndDate).getTime() -
+                    new Date(customStartDate).getTime()) /
+                    (1000 * 60 * 60 * 24)
+                )}{' '}
+                days)
               </span>
             )}
           </div>
@@ -215,39 +247,63 @@ export function Reports() {
               <div className="text-3xl mb-1">{totalStories}</div>
             </div>
             <div className="bg-green-50 rounded-lg shadow-sm border border-green-200 p-6">
-              <div className="text-sm text-gray-600 mb-1">Stories with Tests</div>
-              <div className="text-3xl text-green-600 mb-1">{storiesWithTests}</div>
+              <div className="text-sm text-gray-600 mb-1">
+                Stories with Tests
+              </div>
+              <div className="text-3xl text-green-600 mb-1">
+                {storiesWithTests}
+              </div>
             </div>
             <div className="bg-indigo-50 rounded-lg shadow-sm border border-indigo-200 p-6">
               <div className="text-sm text-gray-600 mb-1">Coverage</div>
-              <div className="text-3xl text-indigo-600 mb-1">{coveragePercentage}%</div>
+              <div className="text-3xl text-indigo-600 mb-1">
+                {coveragePercentage}%
+              </div>
             </div>
             <div className="bg-purple-50 rounded-lg shadow-sm border border-purple-200 p-6">
               <div className="text-sm text-gray-600 mb-1">Total Test Cases</div>
-              <div className="text-3xl text-purple-600 mb-1">{totalTestCases}</div>
+              <div className="text-3xl text-purple-600 mb-1">
+                {totalTestCases}
+              </div>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg text-gray-800 mb-4">Test Coverage by Story</h3>
+            <h3 className="text-lg text-gray-800 mb-4">
+              Test Coverage by Story
+            </h3>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-gray-700">Story ID</th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Story ID
+                    </th>
                     <th className="px-6 py-3 text-left text-gray-700">Title</th>
-                    <th className="px-6 py-3 text-center text-gray-700">Test Cases</th>
-                    <th className="px-6 py-3 text-center text-gray-700">Coverage Status</th>
+                    <th className="px-6 py-3 text-center text-gray-700">
+                      Test Cases
+                    </th>
+                    <th className="px-6 py-3 text-center text-gray-700">
+                      Coverage Status
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {stories.map(story => {
-                    const linkedTestCount = activeTestCases.filter(tc => tc.linkedStory === story.id).length;
+                  {stories.map((story) => {
+                    const linkedTestCount = activeTestCases.filter(
+                      (tc) => tc.linkedStory === story.id
+                    ).length;
                     return (
                       <tr key={story.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{story.id}</td>
-                        <td className="px-6 py-4 text-sm text-gray-700">{story.title}</td>
-                        <td className="px-6 py-4 text-center text-sm">{linkedTestCount}</td>
+                        <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                          {story.id}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-700">
+                          {story.title}
+                        </td>
+                        <td className="px-6 py-4 text-center text-sm">
+                          {linkedTestCount}
+                        </td>
                         <td className="px-6 py-4 text-center">
                           {linkedTestCount > 0 ? (
                             <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs">
@@ -283,11 +339,15 @@ export function Reports() {
             </div>
             <div className="bg-orange-50 rounded-lg shadow-sm border border-orange-200 p-6">
               <div className="text-sm text-gray-600 mb-1">Critical Bugs</div>
-              <div className="text-3xl text-orange-600 mb-1">{criticalBugs}</div>
+              <div className="text-3xl text-orange-600 mb-1">
+                {criticalBugs}
+              </div>
             </div>
             <div className="bg-indigo-50 rounded-lg shadow-sm border border-indigo-200 p-6">
               <div className="text-sm text-gray-600 mb-1">Avg Resolution</div>
-              <div className="text-3xl text-indigo-600 mb-1">{avgResolutionTime}d</div>
+              <div className="text-3xl text-indigo-600 mb-1">
+                {avgResolutionTime}d
+              </div>
             </div>
           </div>
 
@@ -295,58 +355,82 @@ export function Reports() {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg text-gray-800 mb-4">Bugs by Severity</h3>
               <div className="space-y-3">
-                {(['Critical', 'High', 'Medium', 'Low'] as const).map(severity => {
-                  const count = bugs.filter(b => b.severity === severity).length;
-                  const percentage = totalBugs > 0 ? Math.round((count / totalBugs) * 100) : 0;
-                  return (
-                    <div key={severity}>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm text-gray-700">{severity}</span>
-                        <span className="text-sm text-gray-600">{count} ({percentage}%)</span>
+                {(['Critical', 'High', 'Medium', 'Low'] as const).map(
+                  (severity) => {
+                    const count = bugs.filter(
+                      (b) => b.severity === severity
+                    ).length;
+                    const percentage =
+                      totalBugs > 0 ? Math.round((count / totalBugs) * 100) : 0;
+                    return (
+                      <div key={severity}>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm text-gray-700">
+                            {severity}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {count} ({percentage}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className={`h-2 rounded-full ${
+                              severity === 'Critical'
+                                ? 'bg-red-500'
+                                : severity === 'High'
+                                  ? 'bg-orange-500'
+                                  : severity === 'Medium'
+                                    ? 'bg-yellow-500'
+                                    : 'bg-green-500'
+                            }`}
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className={`h-2 rounded-full ${
-                            severity === 'Critical' ? 'bg-red-500' :
-                            severity === 'High' ? 'bg-orange-500' :
-                            severity === 'Medium' ? 'bg-yellow-500' :
-                            'bg-green-500'
-                          }`}
-                          style={{ width: `${percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  }
+                )}
               </div>
             </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg text-gray-800 mb-4">Bugs by Status</h3>
               <div className="space-y-3">
-                {(['Open', 'In Progress', 'Resolved', 'Closed'] as const).map(status => {
-                  const count = bugs.filter(b => b.status === status).length;
-                  const percentage = totalBugs > 0 ? Math.round((count / totalBugs) * 100) : 0;
-                  return (
-                    <div key={status}>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm text-gray-700">{status}</span>
-                        <span className="text-sm text-gray-600">{count} ({percentage}%)</span>
+                {(['Open', 'In Progress', 'Resolved', 'Closed'] as const).map(
+                  (status) => {
+                    const count = bugs.filter(
+                      (b) => b.status === status
+                    ).length;
+                    const percentage =
+                      totalBugs > 0 ? Math.round((count / totalBugs) * 100) : 0;
+                    return (
+                      <div key={status}>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm text-gray-700">
+                            {status}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {count} ({percentage}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className={`h-2 rounded-full ${
+                              status === 'Open'
+                                ? 'bg-red-500'
+                                : status === 'In Progress'
+                                  ? 'bg-yellow-500'
+                                  : status === 'Resolved'
+                                    ? 'bg-indigo-500'
+                                    : 'bg-green-500'
+                            }`}
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className={`h-2 rounded-full ${
-                            status === 'Open' ? 'bg-red-500' :
-                            status === 'In Progress' ? 'bg-yellow-500' :
-                            status === 'Resolved' ? 'bg-indigo-500' :
-                            'bg-green-500'
-                          }`}
-                          style={{ width: `${percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  }
+                )}
               </div>
             </div>
           </div>
@@ -362,26 +446,41 @@ export function Reports() {
               { sprint: 'Sprint 12', planned: 39, completed: 16, velocity: 41 },
               { sprint: 'Sprint 11', planned: 35, completed: 30, velocity: 86 },
               { sprint: 'Sprint 10', planned: 40, completed: 38, velocity: 95 },
-            ].map(data => (
-              <div key={data.sprint} className="border-b border-gray-200 pb-4 last:border-0">
+            ].map((data) => (
+              <div
+                key={data.sprint}
+                className="border-b border-gray-200 pb-4 last:border-0"
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium text-gray-900">{data.sprint}</span>
-                  <span className="text-sm text-gray-600">Velocity: {data.velocity}%</span>
+                  <span className="font-medium text-gray-900">
+                    {data.sprint}
+                  </span>
+                  <span className="text-sm text-gray-600">
+                    Velocity: {data.velocity}%
+                  </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4 mb-2">
                   <div className="text-sm text-gray-600">
-                    Planned: <span className="font-medium text-gray-900">{data.planned} points</span>
+                    Planned:{' '}
+                    <span className="font-medium text-gray-900">
+                      {data.planned} points
+                    </span>
                   </div>
                   <div className="text-sm text-gray-600">
-                    Completed: <span className="font-medium text-gray-900">{data.completed} points</span>
+                    Completed:{' '}
+                    <span className="font-medium text-gray-900">
+                      {data.completed} points
+                    </span>
                   </div>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div
                     className={`h-3 rounded-full ${
-                      data.velocity >= 80 ? 'bg-green-500' :
-                      data.velocity >= 60 ? 'bg-yellow-500' :
-                      'bg-red-500'
+                      data.velocity >= 80
+                        ? 'bg-green-500'
+                        : data.velocity >= 60
+                          ? 'bg-yellow-500'
+                          : 'bg-red-500'
                     }`}
                     style={{ width: `${Math.min(data.velocity, 100)}%` }}
                   ></div>

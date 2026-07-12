@@ -1,4 +1,5 @@
 # Literature Review Enhancement Guide
+
 ## Additional Papers Needed for Each Subsection
 
 ---
@@ -20,13 +21,14 @@
    - **Where to integrate**: Add after discussing Scrum limitations, before local adaptation
 
 ### Suggested Addition:
+
 ```
-Furthermore, distributed agile implementations face compounded coordination overhead. 
-Aldahmash et al. (2023) systematically reviewed Scrum adoption barriers in geographically 
-dispersed teams, identifying that artifact synchronization and ceremony timing constraints 
-disproportionately affect teams in emerging technology markets. Saltz & Shamshurin (2021) 
-empirically demonstrated that teams with explicitly documented and enforced Definition of 
-Done criteria achieve 34% fewer post-sprint defect escapes compared to teams using informal 
+Furthermore, distributed agile implementations face compounded coordination overhead.
+Aldahmash et al. (2023) systematically reviewed Scrum adoption barriers in geographically
+dispersed teams, identifying that artifact synchronization and ceremony timing constraints
+disproportionately affect teams in emerging technology markets. Saltz & Shamshurin (2021)
+empirically demonstrated that teams with explicitly documented and enforced Definition of
+Done criteria achieve 34% fewer post-sprint defect escapes compared to teams using informal
 completion checklists.
 ```
 
@@ -49,11 +51,12 @@ completion checklists.
    - **Where to integrate**: After CrowdStrike example, transition to prevention mechanisms
 
 ### Suggested Addition:
+
 ```
-Rola et al. (2022) conducted a systematic review of 87 primary studies, proving that 
-testing debt compounds at a 15-20% acceleration rate per sprint when QA capacity remains 
-static while development velocity increases. Huang et al. (2023) applied machine learning 
-models to predict sprint failure likelihood based on story carryover patterns, achieving 
+Rola et al. (2022) conducted a systematic review of 87 primary studies, proving that
+testing debt compounds at a 15-20% acceleration rate per sprint when QA capacity remains
+static while development velocity increases. Huang et al. (2023) applied machine learning
+models to predict sprint failure likelihood based on story carryover patterns, achieving
 82% accuracy in identifying bottlenecks three days before sprint closure.
 ```
 
@@ -72,11 +75,12 @@ models to predict sprint failure likelihood based on story carryover patterns, a
    - **Where to integrate**: Support your claim about vague criteria being the biggest bug driver
 
 ### Suggested Addition:
+
 ```
-Inayat et al. (2021) systematically analyzed 48 primary studies on agile requirements 
-practices, revealing that 67% of surveyed teams report insufficient acceptance criteria 
-as their primary requirements defect source. Wnuk & Garrepalli (2022) surveyed 124 
-practitioners across 17 organizations, identifying that teams lacking formalized 
+Inayat et al. (2021) systematically analyzed 48 primary studies on agile requirements
+practices, revealing that 67% of surveyed teams report insufficient acceptance criteria
+as their primary requirements defect source. Wnuk & Garrepalli (2022) surveyed 124
+practitioners across 17 organizations, identifying that teams lacking formalized
 acceptance criteria templates experience 2.3x higher defect density in production releases.
 ```
 
@@ -95,12 +99,13 @@ acceptance criteria templates experience 2.3x higher defect density in productio
    - **Where to integrate**: After ISO standard reference, before authentication example
 
 ### Suggested Addition:
+
 ```
-Felderer & Fourniere (2022) surveyed 156 industrial practitioners, demonstrating that 
-organizations applying systematic risk-based testing reduce critical post-release defects 
-by 42% while maintaining equivalent test execution effort. Santos & Travassos (2023) 
-conducted controlled experiments showing that agile teams using automated risk classification 
-detect 73% of high-severity bugs within the first three days of sprint testing, compared to 
+Felderer & Fourniere (2022) surveyed 156 industrial practitioners, demonstrating that
+organizations applying systematic risk-based testing reduce critical post-release defects
+by 42% while maintaining equivalent test execution effort. Santos & Travassos (2023)
+conducted controlled experiments showing that agile teams using automated risk classification
+detect 73% of high-severity bugs within the first three days of sprint testing, compared to
 31% for teams using chronological test prioritization.
 ```
 
@@ -129,14 +134,15 @@ detect 73% of high-severity bugs within the first three days of sprint testing, 
    - **Where to integrate**: Support the need for multi-state categorization
 
 ### Suggested Addition:
+
 ```
-Nguyen et al. (2022) evaluated continuous integration dashboards across 43 development teams, 
-proving that teams tracking five or more intermediate testing states (Not Started, In Progress, 
-Blocked, Review, Done) identify release blockers 6.2 days earlier than teams using binary 
-progress indicators. Forsgren et al. (2021) introduced the SPACE framework, demonstrating that 
-velocity-only metrics create perverse incentives where teams optimize for story completion rather 
-than quality outcomes. Rahman & Williams (2022) analyzed 1,847 builds across ten open-source 
-projects, showing that granular defect telemetry enables build failure prediction with 78% 
+Nguyen et al. (2022) evaluated continuous integration dashboards across 43 development teams,
+proving that teams tracking five or more intermediate testing states (Not Started, In Progress,
+Blocked, Review, Done) identify release blockers 6.2 days earlier than teams using binary
+progress indicators. Forsgren et al. (2021) introduced the SPACE framework, demonstrating that
+velocity-only metrics create perverse incentives where teams optimize for story completion rather
+than quality outcomes. Rahman & Williams (2022) analyzed 1,847 builds across ten open-source
+projects, showing that granular defect telemetry enables build failure prediction with 78%
 precision up to 48 hours before deployment.
 ```
 
@@ -144,13 +150,13 @@ precision up to 48 hours before deployment.
 
 ## Summary of Additions Needed:
 
-| Subsection | Current | Target | Papers to Add |
-|------------|---------|--------|---------------|
-| 2.3.1 Agile | 2 | 4-5 | Aldahmash 2023, Saltz 2021, Paasivaara 2022 |
-| 2.3.2 Bottlenecks | 2 | 4-5 | Rola 2022, Gupta 2021, Huang 2023 |
-| 2.3.3 Requirements | 3 | 5 | Inayat 2021, Wnuk 2022 |
-| 2.3.4 Risk Testing | 3 | 5 | Felderer 2022, Santos 2023 |
-| 2.3.5 Quality Tracking | 1 | 4-5 | Nguyen 2022, Forsgren 2021, Rahman 2022, Mäntylä 2023 |
+| Subsection             | Current | Target | Papers to Add                                         |
+| ---------------------- | ------- | ------ | ----------------------------------------------------- |
+| 2.3.1 Agile            | 2       | 4-5    | Aldahmash 2023, Saltz 2021, Paasivaara 2022           |
+| 2.3.2 Bottlenecks      | 2       | 4-5    | Rola 2022, Gupta 2021, Huang 2023                     |
+| 2.3.3 Requirements     | 3       | 5      | Inayat 2021, Wnuk 2022                                |
+| 2.3.4 Risk Testing     | 3       | 5      | Felderer 2022, Santos 2023                            |
+| 2.3.5 Quality Tracking | 1       | 4-5    | Nguyen 2022, Forsgren 2021, Rahman 2022, Mäntylä 2023 |
 
 ---
 
@@ -172,6 +178,7 @@ precision up to 48 hours before deployment.
 ---
 
 Would you like me to:
+
 1. Generate the complete revised subsections with all papers integrated?
 2. Create a bibliography file with all references formatted?
 3. Help you search for any specific papers?

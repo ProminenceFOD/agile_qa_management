@@ -1,4 +1,5 @@
 # AQMS - Agile Quality Management System
+
 ## Comprehensive User Documentation
 
 **Version:** 1.0  
@@ -27,6 +28,7 @@
 AQMS (Agile Quality Management System) is a comprehensive quality assurance and project management platform designed for agile teams. It provides end-to-end test management, bug tracking, sprint planning, and quality analytics.
 
 ### Key Capabilities
+
 - **Story Management** - Define, track, and validate user stories with acceptance criteria
 - **Test Management** - Create, execute, and track test cases
 - **Bug Tracking** - Report, assign, and resolve defects
@@ -41,18 +43,22 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance and 
 ## Getting Started
 
 ### Login
+
 1. Navigate to the AQMS login page
 2. Enter your email and password
 3. Check "Remember Me" to stay logged in for 7 days
 4. Click "Login"
 
 **Demo Accounts:**
+
 - QA Engineer: `qa@aqms.com` / `password123`
 - Product Manager: `pm@aqms.com` / `password123`
 - Scrum Master: `sm@aqms.com` / `password123`
 
 ### First-Time Setup
+
 After logging in, you'll see the Dashboard which provides an overview of:
+
 - Total stories, bugs, and test cases
 - Test coverage statistics
 - Risk assessment summary
@@ -64,7 +70,9 @@ After logging in, you'll see the Dashboard which provides an overview of:
 ## User Roles & Permissions
 
 ### QA Engineer
+
 **Permissions:**
+
 - Create, edit, and execute test cases
 - Report and track bugs
 - Sign off on story quality (QA Sign-Off)
@@ -72,13 +80,16 @@ After logging in, you'll see the Dashboard which provides an overview of:
 - Access AI test recommendations
 
 **Key Responsibilities:**
+
 - Ensure acceptance criteria are testable
 - Execute test plans
 - Validate bug fixes
 - Maintain test coverage
 
 ### Product Manager
+
 **Permissions:**
+
 - Create and edit user stories
 - Approve stories (PM Approval)
 - View quality metrics
@@ -86,19 +97,23 @@ After logging in, you'll see the Dashboard which provides an overview of:
 - Review sprint readiness
 
 **Key Responsibilities:**
+
 - Define acceptance criteria
 - Approve stories for development
 - Review test coverage
 - Validate features meet requirements
 
 ### Scrum Master
+
 **Permissions:**
+
 - Create and manage sprints
 - View team performance metrics
 - Access all dashboards
 - Manage team assignments
 
 **Key Responsibilities:**
+
 - Facilitate sprint planning
 - Track velocity and burndown
 - Remove blockers
@@ -109,9 +124,11 @@ After logging in, you'll see the Dashboard which provides an overview of:
 ## Navigation & Interface
 
 ### Sidebar Navigation
+
 The left sidebar provides access to all AQMS features. Click the **« / »** button in the top-right of the sidebar to collapse/expand for more screen space.
 
 **Sections:**
+
 - **Overview** - Dashboard, Kanban Board
 - **Quality Management** - Stories, Test Cases, Bugs, Risk Matrix, Burn-Down
 - **Analytics & Reports** - Analytics, Reports, Test History, Team Performance
@@ -119,12 +136,14 @@ The left sidebar provides access to all AQMS features. Click the **« / »** but
 - **Administration** - Audit Trail, Bulk Operations, Data Management, Users
 
 ### Quick Features
+
 - **Search Pages** - Use the search box at the top of the sidebar
 - **Quick Create** - Click the "Quick Create" button for fast story/bug/test creation
 - **Favorites** - Star pages for quick access (click star icon on menu items)
 - **Recent Pages** - Last 3 visited pages appear at the top
 
 ### Header
+
 - **Page Title** - Shows current active page
 - **Theme Toggle** - Switch between light/dark mode (Ctrl+Shift+D)
 - **User Menu** - Access profile and logout
@@ -134,9 +153,11 @@ The left sidebar provides access to all AQMS features. Click the **« / »** but
 ## Core Features
 
 ### 1. Dashboard
+
 **Purpose:** High-level overview of project health and quality metrics
 
 **What You See:**
+
 - **Quality Metrics Cards:**
   - Total Stories: All user stories in the system
   - Total Bugs: All reported defects
@@ -157,6 +178,7 @@ The left sidebar provides access to all AQMS features. Click the **« / »** but
   - Actions: View sprint details
 
 **How to Use:**
+
 - Review daily for project health overview
 - Click on any metric card to drill down
 - Monitor test coverage to ensure quality standards
@@ -165,15 +187,18 @@ The left sidebar provides access to all AQMS features. Click the **« / »** but
 ---
 
 ### 2. Kanban Board
+
 **Purpose:** Visual workflow management for stories, bugs, and tasks
 
 **Columns:**
+
 - **Backlog** - Items not yet started
 - **In Progress** - Active work
 - **In Testing** - Items under QA review
 - **Done** - Completed items
 
 **Features:**
+
 - **Drag & Drop** - Move cards between columns to update status
 - **Card Details:**
   - ID and title
@@ -183,21 +208,26 @@ The left sidebar provides access to all AQMS features. Click the **« / »** but
   - Linked bugs/tests indicators
 
 **Buttons & Actions:**
+
 - **View All** - See all items in a column
 - **Create New** - Add story, bug, or task
 - **Card Click** - Open detailed view
 
 **Filters:**
+
 - Filter by type: Stories, Bugs, All
 - Search by title or ID
 
 ---
 
 ### 3. Stories (Criteria Validator)
+
 **Purpose:** Manage user stories and acceptance criteria
 
 #### Story List View
+
 **Columns:**
+
 - ID - Story identifier
 - Title - Story name
 - Priority - Critical/High/Medium/Low
@@ -209,45 +239,54 @@ The left sidebar provides access to all AQMS features. Click the **« / »** but
 - Actions - View, Edit, Delete
 
 **Filters:**
+
 - Search by title or ID
 - Filter by priority
 - Filter by sprint
 - Filter by status (Ready/Locked)
 
 **Items Per Page Dropdown:**
+
 - Choose 10, 25, 50, or 100 stories per page
 - Located at top-left above the table
 
 **Status Indicators:**
+
 - **Green Row** - Story is ready for development (has QA sign-off and PM approval)
 - **Red Row** - Story is locked/not ready (missing sign-offs)
 - **🔒 Lock Icon** - Developer/Tester fields are locked until story is approved
 
 #### Story Detail View
+
 Click "View" on any story to see:
 
 **Header Section:**
+
 - Story ID and title
 - Priority badge
 - Status indicators (✅ Acceptance Criteria, QA Sign-Off, PM Approval)
 
 **Acceptance Criteria:**
+
 - Full criteria details
 - Given/When/Then format
 
 **Buttons:**
+
 - **QA Sign-Off** (QA Engineers only) - Approve story quality
 - **PM Approval** (Product Managers only) - Approve story for development
 - **Edit** - Modify story details
 - **Back** - Return to list view
 
 **Assignments Section:**
+
 - **QA Reviewer** - Assign QA engineer
 - **Developer** - Assign developer (unlocked after approvals)
 - **Tester** - Assign tester (unlocked after approvals)
 - Click "Assign" or "Change" to select from dropdown
 
 **Additional Information:**
+
 - Story points
 - Sprint
 - Tags
@@ -255,11 +294,12 @@ Click "View" on any story to see:
 - Created/Updated dates
 
 **Linked Items:**
+
 - **Linked Bugs:**
   - Click bug ID to navigate to bug details
   - Click "+ Link Bug" to associate existing bugs
   - Click "Unlink" to remove association
-  
+
 - **Linked Test Cases:**
   - Click test case ID to navigate to test details
   - Shows test status (Pass/Fail/Blocked/Not Run)
@@ -267,16 +307,20 @@ Click "View" on any story to see:
   - Click "Unlink" to remove association
 
 **Comments & Activity:**
+
 - Add comments for collaboration
 - View activity log of all changes
 
 #### Create/Edit Story
+
 **Required Fields:**
+
 - Title
 - Description
 - Acceptance Criteria (checkbox)
 
 **Optional Fields:**
+
 - Priority (default: Medium)
 - Story Points
 - Sprint
@@ -284,16 +328,20 @@ Click "View" on any story to see:
 - Dependencies
 
 **Buttons:**
+
 - **Save** - Create or update story
 - **Cancel** - Discard changes
 
 ---
 
 ### 4. Test Cases
+
 **Purpose:** Create, manage, and execute test cases
 
 #### Test Cases List View
+
 **Statistics Cards:**
+
 - Total Tests
 - Pass (green)
 - Fail (red)
@@ -302,6 +350,7 @@ Click "View" on any story to see:
 - Pass Rate percentage
 
 **Table Columns:**
+
 - Test ID
 - Title
 - Type (Functional, Regression, Integration, Smoke, Performance)
@@ -313,20 +362,24 @@ Click "View" on any story to see:
 - Actions - Run, View, Edit
 
 **Filters:**
+
 - Search by title or ID
 - Filter by status
 - Filter by type
 - Items per page: 10, 25, 50, 100
 
 **Action Buttons:**
+
 - **Run** (Green) - Execute test case
 - **View** (Blue) - See test details
 - **Edit** (Gray) - Modify test case
 
 #### Create Test Case
+
 **Button:** Green "Create Test Case" button at top-right
 
 **Required Fields:**
+
 - Title
 - Description
 - Type (Functional, Regression, etc.)
@@ -334,14 +387,17 @@ Click "View" on any story to see:
 - Expected Results (for each step)
 
 **Optional Fields:**
+
 - Priority
 - Linked Story
 - Assigned To
 
 #### Execute Test Case
+
 Click "Run" to execute a test:
 
 **Execution Screen:**
+
 - Test case details
 - Step-by-step execution
 - For each step:
@@ -353,7 +409,9 @@ Click "Run" to execute a test:
 - **Cancel** - Stop without saving
 
 #### Test Case Details
+
 Click "View" to see:
+
 - Full test case information
 - Execution history
 - Linked story
@@ -363,10 +421,13 @@ Click "View" to see:
 ---
 
 ### 5. Bugs (Bug Tracker)
+
 **Purpose:** Report, track, and resolve defects
 
 #### Bug List View
+
 **Statistics Cards:**
+
 - Total Bugs
 - Open
 - In Progress
@@ -375,6 +436,7 @@ Click "View" to see:
 - Average Resolution Time
 
 **Table Columns:**
+
 - Bug ID
 - Title
 - Severity (Critical, High, Medium, Low)
@@ -385,6 +447,7 @@ Click "View" to see:
 - Actions - View, Edit
 
 **Filters:**
+
 - Search by title or ID
 - Filter by severity
 - Filter by status
@@ -392,15 +455,18 @@ Click "View" to see:
 - Items per page: 10, 25, 50, 100
 
 **Color Coding:**
+
 - Red badge - Critical
 - Orange badge - High
 - Yellow badge - Medium
 - Blue badge - Low
 
 #### Report Bug
+
 **Button:** Green "Report Bug" button at top-right
 
 **Required Fields:**
+
 - Title
 - Description
 - Severity
@@ -409,6 +475,7 @@ Click "View" to see:
 - Actual Behavior
 
 **Optional Fields:**
+
 - Linked Story
 - Environment (browser, OS, etc.)
 - Assignee
@@ -416,12 +483,15 @@ Click "View" to see:
 
 **Auto-Fill from Test:**
 When reporting from a failed test execution, pre-fills:
+
 - Test case information
 - Execution notes
 - Linked story
 
 #### Bug Detail View
+
 Click "View" to see:
+
 - Bug ID and title
 - Severity and status badges
 - Full description
@@ -434,6 +504,7 @@ Click "View" to see:
 - Comments and activity log
 
 **Actions:**
+
 - **Edit** - Update bug details
 - **Change Status** - Move through workflow
 - **Assign** - Assign to developer/tester
@@ -442,21 +513,26 @@ Click "View" to see:
 ---
 
 ### 6. Risk Matrix
+
 **Purpose:** Identify and assess module risk levels
 
 #### Matrix View (Default)
+
 **Visual Scatter Plot:**
+
 - X-axis: Defect Frequency (0-10)
 - Y-axis: Business Impact (0-10)
 - Each dot represents a module
 
 **Risk Quadrants:**
+
 - Top-Right (Red): High Risk - High defects + High impact
 - Top-Left (Yellow): Medium Risk - Low defects + High impact
 - Bottom-Right (Orange): Medium Risk - High defects + Low impact
 - Bottom-Left (Green): Low Risk - Low defects + Low impact
 
 **Hover over dots to see:**
+
 - Module name
 - Risk level
 - Testing protocol
@@ -464,9 +540,11 @@ Click "View" to see:
 **Click dot to view module details**
 
 #### Table View
+
 Click "List View" button to switch to table format
 
 **Columns:**
+
 - Module ID
 - Module Name
 - Description
@@ -477,43 +555,52 @@ Click "List View" button to switch to table format
 - Actions - View, Edit
 
 **Testing Protocols:**
+
 - **Full Regression** - High risk modules
 - **Focused Functional** - Medium risk
 - **Visual/Smoke Check** - Low risk
 
 **Filters:**
+
 - Sort by: Risk, Defect Frequency, Business Impact
 - Filter by risk level
 
 #### Create/Edit Module
+
 **Button:** "+ Add Module" button at top-right
 
 **Required Fields:**
+
 - Module Name
 - Description
 - Defect Frequency (0-10 scale)
 - Business Impact (0-10 scale)
 
 **Auto-Calculated:**
+
 - Risk Level (based on frequency + impact)
 - Testing Protocol (based on risk level)
 
 **Buttons:**
+
 - **Save** - Create or update module
 - **Cancel** - Discard changes
 
 ---
 
 ### 7. Burn-Down Chart
+
 **Purpose:** Track quality progress over time
 
 **Chart Display:**
+
 - X-axis: Time (sprint days or dates)
 - Y-axis: Work remaining
 - Blue line: Ideal burn-down
 - Red line: Actual progress
 
 **Quality States:**
+
 - **Not Ready** - Missing acceptance criteria, sign-offs
 - **Ready** - Approved and ready for dev
 - **In Development** - Being worked on
@@ -522,11 +609,13 @@ Click "List View" button to switch to table format
 
 **Story Table:**
 Shows all stories with:
+
 - Story ID and title
 - Current quality state (color-coded badge)
 - Actions to move states
 
 **How It Works:**
+
 - Stories move through quality states
 - Chart shows reduction in "not ready" items
 - Goal: All stories reach "Done" state by sprint end
@@ -534,6 +623,7 @@ Shows all stories with:
 ---
 
 ### 8. Analytics Dashboard
+
 **Purpose:** Comprehensive quality metrics and trends
 
 **Available Charts:**
@@ -561,12 +651,14 @@ Shows all stories with:
    - Completion percentage
 
 **Date Range Filters:**
+
 - Last 7 days
 - Last 30 days
 - Last 90 days
 - Custom range
 
 **Export Options:**
+
 - Download as CSV
 - Download as PDF
 - Print report
@@ -574,10 +666,13 @@ Shows all stories with:
 ---
 
 ### 9. Sprints Management
+
 **Purpose:** Plan and track sprint execution
 
 #### Sprint List View
+
 **Columns:**
+
 - Sprint name
 - Goal/description
 - Status (Planning, Active, Completed, Cancelled)
@@ -588,44 +683,53 @@ Shows all stories with:
 - Actions - View, Edit, Delete
 
 **Sprint Status Colors:**
+
 - Blue - Planning
 - Green - Active
 - Gray - Completed
 - Red - Cancelled
 
 #### Create Sprint
+
 **Button:** "+ Create Sprint" at top-right
 
 **Required Fields:**
+
 - Sprint Name (e.g., "Sprint 12")
 - Sprint Goal
 - Start Date
 - End Date
 
 **Optional Fields:**
+
 - Team capacity
 - Story assignments
 
 #### Sprint Detail View
+
 Click "View" on a sprint to see:
 
 **Summary:**
+
 - Sprint goal
 - Dates and duration
 - Status
 - Velocity metrics
 
 **Stories in Sprint:**
+
 - All assigned stories
 - Status of each story
 - Story points
 - Progress indicators
 
 **Burndown Chart:**
+
 - Daily progress tracking
 - Ideal vs actual lines
 
 **Actions:**
+
 - **Start Sprint** - Activate sprint
 - **Complete Sprint** - Mark as done
 - **Add Stories** - Assign stories to sprint
@@ -634,9 +738,11 @@ Click "View" on a sprint to see:
 ---
 
 ### 10. Test Execution History
+
 **Purpose:** View past test executions and results
 
 **Table Columns:**
+
 - Execution Date/Time
 - Test Case ID and Title
 - Executed By (tester name)
@@ -646,18 +752,21 @@ Click "View" on a sprint to see:
 - Linked Bug (if test failed)
 
 **Filters:**
+
 - Date range
 - Test case
 - Executed by
 - Result status
 
 **Features:**
+
 - See complete execution history
 - Track test stability over time
 - Identify flaky tests
 - Review execution notes
 
 **Click on execution to see:**
+
 - Full test case details
 - Step-by-step results
 - Screenshots/attachments
@@ -666,6 +775,7 @@ Click "View" on a sprint to see:
 ---
 
 ### 11. Traceability Matrix
+
 **Purpose:** Map relationships between requirements, tests, and bugs
 
 **Matrix View:**
@@ -674,27 +784,32 @@ Columns = Test Cases
 Cells = Linked (✓) or Not Linked (-)
 
 **Features:**
+
 - **Quick Linking** - Click cell to link/unlink
 - **Coverage View** - See which stories lack tests
 - **Gap Analysis** - Identify untested requirements
 
 **Filters:**
+
 - Filter by sprint
 - Filter by priority
 - Show only gaps
 
 **Color Coding:**
+
 - Green row - Full coverage (all tests linked)
 - Yellow row - Partial coverage
 - Red row - No coverage
 
 **Export:**
+
 - Download complete traceability report
 - Includes all linkages and gaps
 
 ---
 
 ### 12. Release Readiness
+
 **Purpose:** Assess readiness for production release
 
 **Readiness Checks:**
@@ -725,18 +840,21 @@ Cells = Linked (✓) or Not Linked (-)
    - Stakeholder approvals
 
 **Overall Readiness Score:**
+
 - 0-60%: Not Ready (Red)
 - 61-85%: At Risk (Yellow)
 - 86-100%: Ready (Green)
 
 **Blockers Section:**
 Lists all items preventing release:
+
 - Critical bugs
 - Missing test coverage
 - Pending approvals
 - Failed tests
 
 **Actions:**
+
 - **Generate Report** - Create release report
 - **Export** - Download as PDF
 - **Mark Ready** - Approve for release
@@ -744,15 +862,18 @@ Lists all items preventing release:
 ---
 
 ### 13. Team Performance
+
 **Purpose:** Track individual and team metrics
 
 **Individual Metrics:**
+
 - Tests executed
 - Bugs found
 - Stories completed
 - Average quality score
 
 **Team Metrics:**
+
 - Total velocity
 - Test coverage trend
 - Bug discovery rate
@@ -760,6 +881,7 @@ Lists all items preventing release:
 
 **Quality Metrics Comparison Table:**
 Shows for each team member:
+
 - Tests created
 - Tests executed
 - Bugs reported
@@ -767,17 +889,20 @@ Shows for each team member:
 - Average defect age
 
 **Productivity Metrics Table:**
+
 - Stories completed
 - Story points delivered
 - Average cycle time
 - Throughput
 
 **Filters:**
+
 - Date range
 - Team member
 - Sprint
 
 **Charts:**
+
 - Velocity trend
 - Quality score over time
 - Workload distribution
@@ -785,10 +910,13 @@ Shows for each team member:
 ---
 
 ### 14. AI Test Recommendations
+
 **Purpose:** Get automated test suggestions based on project analysis
 
 #### How It Works
+
 The AI analyzes your project data every time you open the page:
+
 - **Stories** without test cases
 - **Modules** with high risk or defect frequency
 - **Bugs** indicating test gaps
@@ -833,7 +961,9 @@ The AI analyzes your project data every time you open the page:
    - **Suggested Tests:** Basic health checks
 
 #### Recommendation Card
+
 Each recommendation shows:
+
 - **Recommendation ID** (e.g., REC-001)
 - **Priority Badge** (Critical/High/Medium/Low)
 - **Type Badge** (Coverage Gap, Risk-Based, etc.)
@@ -846,6 +976,7 @@ Each recommendation shows:
 #### Actions
 
 **Create Test Cases Button:**
+
 - Automatically creates test cases from all suggested tests
 - Sets appropriate type (Functional, Regression, Integration)
 - Links to the associated story
@@ -853,6 +984,7 @@ Each recommendation shows:
 - Shows success toast with count
 
 **View Details Button:**
+
 - Expands to show:
   - Recommendation ID
   - Auto-generated status
@@ -861,6 +993,7 @@ Each recommendation shows:
 - Click again to collapse
 
 **Dismiss Button:**
+
 - Removes recommendation from current view
 - Toast confirmation shown
 - Recommendation returns after page refresh
@@ -868,6 +1001,7 @@ Each recommendation shows:
 #### Filters
 
 **Priority Filter:**
+
 - All Priorities
 - Critical only
 - High only
@@ -875,6 +1009,7 @@ Each recommendation shows:
 - Low only
 
 **Type Filter:**
+
 - All Types
 - Coverage Gaps
 - Risk-Based
@@ -883,6 +1018,7 @@ Each recommendation shows:
 - Bug Patterns
 
 **Auto-Generated Only Checkbox:**
+
 - When checked: Shows only AI-generated recommendations
 - When unchecked: Shows all (currently all are AI-generated)
 
@@ -890,6 +1026,7 @@ Each recommendation shows:
 Shows "Showing X of Y recommendations"
 
 #### Best Practices
+
 - Review recommendations daily
 - Prioritize Critical and High recommendations
 - Click linked stories/modules to understand context
@@ -899,9 +1036,11 @@ Shows "Showing X of Y recommendations"
 ---
 
 ### 15. Audit Trail
+
 **Purpose:** Track all system changes for compliance and debugging
 
 **Log Entries Show:**
+
 - Timestamp (date and time)
 - User who made the change
 - Action type (Create, Update, Delete, Execute, etc.)
@@ -911,6 +1050,7 @@ Shows "Showing X of Y recommendations"
 - IP address (optional)
 
 **Filters:**
+
 - Date range
 - User
 - Action type
@@ -918,18 +1058,21 @@ Shows "Showing X of Y recommendations"
 - Search by entity ID
 
 **Use Cases:**
+
 - Track who changed what and when
 - Compliance auditing
 - Debug data issues
 - Review user activity
 
 **Export:**
+
 - Download audit log as CSV
 - Includes all filtered entries
 
 ---
 
 ### 16. Bulk Operations
+
 **Purpose:** Perform actions on multiple items simultaneously
 
 **Supported Operations:**
@@ -959,6 +1102,7 @@ Shows "Showing X of Y recommendations"
    - Create custom reports
 
 **How to Use:**
+
 1. Select item type (Stories, Bugs, or Tests)
 2. Use checkboxes to select items
 3. Choose operation from dropdown
@@ -967,6 +1111,7 @@ Shows "Showing X of Y recommendations"
 6. Review confirmation and results
 
 **Safety Features:**
+
 - Confirmation dialog for destructive operations
 - Preview changes before applying
 - Undo option (where supported)
@@ -975,6 +1120,7 @@ Shows "Showing X of Y recommendations"
 ---
 
 ### 17. Data Management
+
 **Purpose:** Import, export, and manage system data
 
 **Features:**
@@ -1003,6 +1149,7 @@ Shows "Showing X of Y recommendations"
    - Optimize database
 
 **Import Process:**
+
 1. Download template
 2. Fill in data
 3. Upload file
@@ -1011,6 +1158,7 @@ Shows "Showing X of Y recommendations"
 6. Review import log
 
 **Export Process:**
+
 1. Select entities
 2. Choose format (CSV/Excel/JSON)
 3. Apply filters (optional)
@@ -1019,10 +1167,13 @@ Shows "Showing X of Y recommendations"
 ---
 
 ### 18. User Management
+
 **Purpose:** Manage team members and permissions
 
 #### Users Tab
+
 **Table Columns:**
+
 - User name and email
 - Role (QA Engineer, Product Manager, Scrum Master)
 - Title/Position
@@ -1032,6 +1183,7 @@ Shows "Showing X of Y recommendations"
 - Actions - Edit, Deactivate
 
 **Add User:**
+
 1. Click "+ Invite User"
 2. Enter email
 3. Select role
@@ -1039,13 +1191,16 @@ Shows "Showing X of Y recommendations"
 5. Send invitation
 
 **Edit User:**
+
 - Update role
 - Change permissions
 - Modify authority levels
 - Deactivate account
 
 #### Invitations Tab
+
 **Pending Invitations:**
+
 - Email address
 - Role
 - Sent by
@@ -1054,6 +1209,7 @@ Shows "Showing X of Y recommendations"
 - Actions - Resend, Revoke
 
 **Invitation Process:**
+
 1. User receives email
 2. Clicks invitation link
 3. Sets password
@@ -1062,6 +1218,7 @@ Shows "Showing X of Y recommendations"
 ---
 
 ### 19. Reports
+
 **Purpose:** Generate custom quality reports
 
 **Available Reports:**
@@ -1097,6 +1254,7 @@ Shows "Showing X of Y recommendations"
    - Save templates
 
 **Report Features:**
+
 - Interactive charts
 - Drill-down capability
 - Export to PDF/Excel
@@ -1108,9 +1266,11 @@ Shows "Showing X of Y recommendations"
 ## AI-Powered Features
 
 ### AI Test Recommendations
+
 **Technology:** Pattern recognition and risk analysis algorithms
 
 **Data Sources:**
+
 - Story status and metadata
 - Test case coverage
 - Bug history and patterns
@@ -1118,6 +1278,7 @@ Shows "Showing X of Y recommendations"
 - Sprint progress
 
 **Analysis Process:**
+
 1. **Coverage Analysis**
    - Identifies stories without tests
    - Calculates coverage gaps by priority
@@ -1148,6 +1309,7 @@ Shows "Showing X of Y recommendations"
    - Ensures rapid validation
 
 **Recommendation Quality:**
+
 - Updates in real-time as data changes
 - Learns from your test patterns
 - Prioritizes based on risk
@@ -1158,18 +1320,22 @@ Shows "Showing X of Y recommendations"
 ## Data Management
 
 ### Data Storage
+
 **Backend:** Supabase (PostgreSQL database)
 **Local Caching:** Browser localStorage for performance
 **Session Management:** Cookie-based with 7-day expiry
 
 ### Key-Value Store
+
 **Table:** `kv_store_5a760dac`
 **Structure:**
+
 - Key: Unique identifier (e.g., "aqms_stories")
 - Value: JSON data
 - Updated: Timestamp
 
 **Stored Data:**
+
 - `aqms_stories` - User stories
 - `aqms_bugs` - Bug reports
 - `aqms_test_cases` - Test cases
@@ -1178,7 +1344,9 @@ Shows "Showing X of Y recommendations"
 - `aqms_sprints` - Sprint data
 
 ### Data Synchronization
+
 **How It Works:**
+
 1. Browser loads data from Supabase on page load
 2. Local cache stores copy for fast access
 3. Changes saved to both cache and Supabase
@@ -1186,21 +1354,26 @@ Shows "Showing X of Y recommendations"
 5. Multi-user updates sync via polling (2-second interval)
 
 **Offline Mode:**
+
 - Reads from cache when server unavailable
 - Shows toast warning: "Cannot reach server"
 - Writes queued until connection restored
 
 **Session Persistence:**
+
 - Login state cached for 7 days
 - Session validated on each page load
 - Expired sessions redirect to login
 
 ### Data Backup
+
 **Automatic:**
+
 - Supabase performs daily backups
 - Point-in-time recovery available
 
 **Manual:**
+
 - Export all data via Data Management page
 - Download as CSV/JSON
 - Store backups externally
@@ -1351,6 +1524,7 @@ Shows "Showing X of Y recommendations"
 ## Keyboard Shortcuts
 
 **Navigation:**
+
 - `Ctrl + 1` - Dashboard
 - `Ctrl + 2` - Kanban Board
 - `Ctrl + 3` - Stories
@@ -1363,6 +1537,7 @@ Shows "Showing X of Y recommendations"
 - `Ctrl + 0` - Users
 
 **Additional Pages:**
+
 - `Ctrl + O` - Reports
 - `Ctrl + U` - Test History
 - `Ctrl + M` - Team Performance
@@ -1374,10 +1549,12 @@ Shows "Showing X of Y recommendations"
 - `Ctrl + E` - Data Management
 
 **System:**
+
 - `Ctrl + Shift + D` - Toggle Dark Mode
 - `Ctrl + /` - Show Keyboard Shortcuts
 
 **Tips:**
+
 - Shortcuts work from any page
 - Combine with sidebar collapse for maximum efficiency
 - All shortcuts shown in tooltip on hover
@@ -1390,6 +1567,7 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Can't log in
 **Solutions:**
+
 1. Verify email and password are correct
 2. Check Caps Lock is off
 3. Clear browser cache and cookies
@@ -1398,6 +1576,7 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Session expires too quickly
 **Solutions:**
+
 1. Check "Remember Me" on login
 2. Verify cookies are enabled
 3. Check browser privacy settings
@@ -1407,6 +1586,7 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Tables show "No data" or loading spinner
 **Solutions:**
+
 1. Refresh page
 2. Check internet connection
 3. Check browser console for errors
@@ -1415,6 +1595,7 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Changes not saving
 **Solutions:**
+
 1. Check internet connection
 2. Wait for "Saved" toast notification
 3. Verify permissions for that action
@@ -1425,6 +1606,7 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Page is slow
 **Solutions:**
+
 1. Collapse sidebar for more space
 2. Reduce items per page (use 10 or 25)
 3. Apply filters to reduce data
@@ -1434,6 +1616,7 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Table scrolling is laggy
 **Solutions:**
+
 1. Reduce items per page
 2. Apply filters to show less data
 3. Update browser to latest version
@@ -1444,6 +1627,7 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Can't sign off story (QA/PM)
 **Solutions:**
+
 1. Verify you have correct role
 2. Check story has acceptance criteria
 3. Refresh page
@@ -1451,12 +1635,14 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Can't assign developer/tester to story
 **Solutions:**
+
 1. Story must have QA sign-off and PM approval first
 2. Verify story status is "Ready"
 3. Unlock happens after both approvals
 
 **Problem:** Test recommendations not showing
 **Solutions:**
+
 1. Ensure you have stories and test cases
 2. Create some stories without tests
 3. Add modules with risk scores
@@ -1464,6 +1650,7 @@ Shows "Showing X of Y recommendations"
 
 **Problem:** Action buttons not visible in tables
 **Solutions:**
+
 1. Scroll table horizontally (horizontal scrollbar appears if needed)
 2. Expand browser window
 3. Collapse sidebar for more space
@@ -1472,17 +1659,20 @@ Shows "Showing X of Y recommendations"
 ### Browser Compatibility
 
 **Supported Browsers:**
+
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
 - Edge 90+
 
 **Not Supported:**
+
 - Internet Explorer (any version)
 - Browsers with JavaScript disabled
 - Very old browser versions
 
 **Mobile Support:**
+
 - Responsive design works on tablets
 - Some features limited on phones
 - Recommend desktop for full experience
@@ -1625,4 +1815,4 @@ Shows "Showing X of Y recommendations"
 
 ---
 
-*This documentation covers all features as of version 1.0. Some features may be added or changed in future versions.*
+_This documentation covers all features as of version 1.0. Some features may be added or changed in future versions._

@@ -13,7 +13,10 @@ interface AttachmentsListProps {
   onDelete?: (id: string) => void;
 }
 
-export function AttachmentsList({ attachments, onDelete }: AttachmentsListProps) {
+export function AttachmentsList({
+  attachments,
+  onDelete,
+}: AttachmentsListProps) {
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
@@ -25,7 +28,8 @@ export function AttachmentsList({ attachments, onDelete }: AttachmentsListProps)
     if (fileType === 'application/pdf') return '📄';
     if (fileType.includes('word') || fileType.includes('document')) return '📝';
     if (fileType.includes('sheet') || fileType.includes('excel')) return '📊';
-    if (fileType.includes('presentation') || fileType.includes('powerpoint')) return '📽️';
+    if (fileType.includes('presentation') || fileType.includes('powerpoint'))
+      return '📽️';
     return '📎';
   };
 
@@ -39,16 +43,19 @@ export function AttachmentsList({ attachments, onDelete }: AttachmentsListProps)
 
   return (
     <div className="space-y-2">
-      {attachments.map(attachment => (
+      {attachments.map((attachment) => (
         <div
           key={attachment.id}
           className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
         >
           <div className="text-2xl">{getFileIcon(attachment.fileType)}</div>
           <div className="flex-1 min-w-0">
-            <div className="font-medium text-gray-900 truncate">{attachment.fileName}</div>
+            <div className="font-medium text-gray-900 truncate">
+              {attachment.fileName}
+            </div>
             <div className="text-xs text-gray-500">
-              {formatFileSize(attachment.fileSize)} • {attachment.uploadedBy} • {new Date(attachment.uploadedAt).toLocaleDateString()}
+              {formatFileSize(attachment.fileSize)} • {attachment.uploadedBy} •{' '}
+              {new Date(attachment.uploadedAt).toLocaleDateString()}
             </div>
           </div>
           <div className="flex gap-2">

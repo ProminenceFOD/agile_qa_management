@@ -18,7 +18,8 @@ import {
   AreaChart,
 } from 'recharts';
 
-type AnalyticsView = 'overview' | 'sprints' | 'quality' | 'bottlenecks' | 'risks' | 'workflow';
+type AnalyticsView =
+  'overview' | 'sprints' | 'quality' | 'bottlenecks' | 'risks' | 'workflow';
 
 interface Story {
   id: string;
@@ -66,26 +67,37 @@ export function AnalyticsDashboard() {
 
   const { data: stories } = useSupabaseData<Story[]>('aqms_stories', []);
   const { data: bugs } = useSupabaseData<Bug[]>('aqms_bugs', []);
-  const { data: testCases } = useSupabaseData<TestCase[]>('aqms_test_cases', []);
+  const { data: testCases } = useSupabaseData<TestCase[]>(
+    'aqms_test_cases',
+    []
+  );
   const { data: modules } = useSupabaseData<Module[]>('aqms_modules', []);
 
   const activeTestCases = useMemo(() => {
-    return testCases.filter(tc => !tc.isDraft);
+    return testCases.filter((tc) => !tc.isDraft);
   }, [testCases]);
 
   // Sprint velocity analysis
   const sprintMetrics = useMemo(() => {
-    const sprintMap = new Map<string, {
-      planned: number;
-      completed: number;
-      bugs: number;
-      stories: number;
-    }>();
+    const sprintMap = new Map<
+      string,
+      {
+        planned: number;
+        completed: number;
+        bugs: number;
+        stories: number;
+      }
+    >();
 
-    stories.forEach(story => {
+    stories.forEach((story) => {
       const sprint = story.sprint || 'Backlog';
       if (!sprintMap.has(sprint)) {
-        sprintMap.set(sprint, { planned: 0, completed: 0, bugs: 0, stories: 0 });
+        sprintMap.set(sprint, {
+          planned: 0,
+          completed: 0,
+          bugs: 0,
+          stories: 0,
+        });
       }
       const metrics = sprintMap.get(sprint)!;
       metrics.planned += story.storyPoints || 0;
@@ -104,23 +116,37 @@ export function AnalyticsDashboard() {
         velocity: data.completed,
         bugs: data.bugs,
         stories: data.stories,
-        completionRate: data.planned > 0 ? Math.round((data.completed / data.planned) * 100) : 0,
+        completionRate:
+          data.planned > 0
+            ? Math.round((data.completed / data.planned) * 100)
+            : 0,
       }))
-      .filter(s => s.sprint !== 'Backlog')
+      .filter((s) => s.sprint !== 'Backlog')
       .sort((a, b) => a.sprint.localeCompare(b.sprint));
   }, [stories]);
 
   // Defect trends by severity
   const defectTrends = useMemo(() => {
-    const severityCount = bugs.reduce((acc, bug) => {
-      acc[bug.severity] = (acc[bug.severity] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const severityCount = bugs.reduce(
+      (acc, bug) => {
+        acc[bug.severity] = (acc[bug.severity] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return [
-      { severity: 'Critical', count: severityCount['Critical'] || 0, color: '#ef4444' },
+      {
+        severity: 'Critical',
+        count: severityCount['Critical'] || 0,
+        color: '#ef4444',
+      },
       { severity: 'High', count: severityCount['High'] || 0, color: '#f97316' },
-      { severity: 'Medium', count: severityCount['Medium'] || 0, color: '#eab308' },
+      {
+        severity: 'Medium',
+        count: severityCount['Medium'] || 0,
+        color: '#eab308',
+      },
       { severity: 'Low', count: severityCount['Low'] || 0, color: '#22c55e' },
     ];
   }, [bugs]);
@@ -128,14 +154,20 @@ export function AnalyticsDashboard() {
   // Test case effectiveness
   const testMetrics = useMemo(() => {
     const total = activeTestCases.length;
-    const passed = activeTestCases.filter(tc => tc.status === 'Pass').length;
-    const failed = activeTestCases.filter(tc => tc.status === 'Fail').length;
-    const blocked = activeTestCases.filter(tc => tc.status === 'Blocked').length;
-    const notRun = activeTestCases.filter(tc => tc.status === 'Not Run').length;
+    const passed = activeTestCases.filter((tc) => tc.status === 'Pass').length;
+    const failed = activeTestCases.filter((tc) => tc.status === 'Fail').length;
+    const blocked = activeTestCases.filter(
+      (tc) => tc.status === 'Blocked'
+    ).length;
+    const notRun = activeTestCases.filter(
+      (tc) => tc.status === 'Not Run'
+    ).length;
 
-    const avgExecutionTime = activeTestCases
-      .filter(tc => tc.executionTime)
-      .reduce((sum, tc) => sum + (tc.executionTime || 0), 0) / activeTestCases.filter(tc => tc.executionTime).length || 0;
+    const avgExecutionTime =
+      activeTestCases
+        .filter((tc) => tc.executionTime)
+        .reduce((sum, tc) => sum + (tc.executionTime || 0), 0) /
+        activeTestCases.filter((tc) => tc.executionTime).length || 0;
 
     return {
       total,
@@ -156,10 +188,13 @@ export function AnalyticsDashboard() {
 
   // Bottleneck identification
   const bottlenecks = useMemo(() => {
-    const statusCount = stories.reduce((acc, story) => {
-      acc[story.status] = (acc[story.status] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const statusCount = stories.reduce(
+      (acc, story) => {
+        acc[story.status] = (acc[story.status] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     const statusData = Object.entries(statusCount).map(([status, count]) => ({
       status,
@@ -169,7 +204,10 @@ export function AnalyticsDashboard() {
 
     // Identify bottleneck stages (>20% of stories stuck)
     const bottleneckStages = statusData
-      .filter(s => s.percentage > 20 && s.status !== 'Done' && s.status !== 'Backlog')
+      .filter(
+        (s) =>
+          s.percentage > 20 && s.status !== 'Done' && s.status !== 'Backlog'
+      )
       .sort((a, b) => b.percentage - a.percentage);
 
     return { statusData, bottleneckStages };
@@ -177,12 +215,17 @@ export function AnalyticsDashboard() {
 
   // Risk evolution tracking
   const riskTrends = useMemo(() => {
-    const highRisk = modules.filter(m => m.riskLevel === 'High').length;
-    const mediumRisk = modules.filter(m => m.riskLevel === 'Medium').length;
-    const lowRisk = modules.filter(m => m.riskLevel === 'Low').length;
+    const highRisk = modules.filter((m) => m.riskLevel === 'High').length;
+    const mediumRisk = modules.filter((m) => m.riskLevel === 'Medium').length;
+    const lowRisk = modules.filter((m) => m.riskLevel === 'Low').length;
 
     const topRiskyModules = [...modules]
-      .sort((a, b) => (b.defectFrequency + b.businessImpact) - (a.defectFrequency + a.businessImpact))
+      .sort(
+        (a, b) =>
+          b.defectFrequency +
+          b.businessImpact -
+          (a.defectFrequency + a.businessImpact)
+      )
       .slice(0, 5);
 
     return {
@@ -198,8 +241,8 @@ export function AnalyticsDashboard() {
   // Workflow cycle time analysis
   const workflowMetrics = useMemo(() => {
     const storyTimings = stories
-      .filter(s => s.createdAt && s.completedAt)
-      .map(s => {
+      .filter((s) => s.createdAt && s.completedAt)
+      .map((s) => {
         const created = new Date(s.createdAt!).getTime();
         const completed = new Date(s.completedAt!).getTime();
         const leadTime = (completed - created) / (1000 * 60 * 60 * 24); // days
@@ -210,13 +253,21 @@ export function AnalyticsDashboard() {
         };
       });
 
-    const avgLeadTime = storyTimings.length > 0
-      ? Math.round(storyTimings.reduce((sum, s) => sum + s.leadTime, 0) / storyTimings.length)
-      : 0;
+    const avgLeadTime =
+      storyTimings.length > 0
+        ? Math.round(
+            storyTimings.reduce((sum, s) => sum + s.leadTime, 0) /
+              storyTimings.length
+          )
+        : 0;
 
-    const throughput = sprintMetrics.length > 0
-      ? Math.round(stories.filter(s => s.status === 'Done').length / sprintMetrics.length)
-      : 0;
+    const throughput =
+      sprintMetrics.length > 0
+        ? Math.round(
+            stories.filter((s) => s.status === 'Done').length /
+              sprintMetrics.length
+          )
+        : 0;
 
     // Simulate cycle time by status (in real system, track status transitions)
     const statusCycleTimes = [
@@ -227,21 +278,30 @@ export function AnalyticsDashboard() {
       { status: 'Done', avgDays: 0, color: '#22c55e' },
     ];
 
-    const totalCycleTime = statusCycleTimes.reduce((sum, s) => sum + s.avgDays, 0);
+    const totalCycleTime = statusCycleTimes.reduce(
+      (sum, s) => sum + s.avgDays,
+      0
+    );
 
     // WIP (Work in Progress) analysis
     const wipByStage = (bottlenecks.statusData || []).filter(
-      s => s.status !== 'Done' && s.status !== 'Backlog' && s.status !== 'Cancelled'
+      (s) =>
+        s.status !== 'Done' &&
+        s.status !== 'Backlog' &&
+        s.status !== 'Cancelled'
     );
 
     const wipLimit = 10; // Ideal WIP limit per stage
-    const wipViolations = wipByStage.filter(s => s.count > wipLimit);
+    const wipViolations = wipByStage.filter((s) => s.count > wipLimit);
 
     // Calculate flow efficiency (value-adding time / total lead time)
     const valueAddingTime = statusCycleTimes
-      .filter(s => s.status === 'In Development' || s.status === 'In Testing')
+      .filter((s) => s.status === 'In Development' || s.status === 'In Testing')
       .reduce((sum, s) => sum + s.avgDays, 0);
-    const flowEfficiency = totalCycleTime > 0 ? Math.round((valueAddingTime / totalCycleTime) * 100) : 0;
+    const flowEfficiency =
+      totalCycleTime > 0
+        ? Math.round((valueAddingTime / totalCycleTime) * 100)
+        : 0;
 
     return {
       avgLeadTime,
@@ -258,21 +318,32 @@ export function AnalyticsDashboard() {
   // Quality gate compliance
   const qualityMetrics = useMemo(() => {
     const totalStories = stories.length;
-    const approved = stories.filter(s => s.qaSignOff && s.pmApproval).length;
-    const qaOnly = stories.filter(s => s.qaSignOff && !s.pmApproval).length;
-    const pmOnly = stories.filter(s => !s.qaSignOff && s.pmApproval).length;
-    const unapproved = stories.filter(s => !s.qaSignOff && !s.pmApproval).length;
-
-    const storiesWithTests = stories.filter(s =>
-      activeTestCases.some(tc => tc.linkedStory === s.id)
+    const approved = stories.filter((s) => s.qaSignOff && s.pmApproval).length;
+    const qaOnly = stories.filter((s) => s.qaSignOff && !s.pmApproval).length;
+    const pmOnly = stories.filter((s) => !s.qaSignOff && s.pmApproval).length;
+    const unapproved = stories.filter(
+      (s) => !s.qaSignOff && !s.pmApproval
     ).length;
 
-    const storiesWithBugs = stories.filter(s => s.linkedBugs && s.linkedBugs.length > 0).length;
+    const storiesWithTests = stories.filter((s) =>
+      activeTestCases.some((tc) => tc.linkedStory === s.id)
+    ).length;
+
+    const storiesWithBugs = stories.filter(
+      (s) => s.linkedBugs && s.linkedBugs.length > 0
+    ).length;
 
     return {
-      approvalRate: totalStories > 0 ? Math.round((approved / totalStories) * 100) : 0,
-      testCoverageRate: totalStories > 0 ? Math.round((storiesWithTests / totalStories) * 100) : 0,
-      defectDensity: totalStories > 0 ? Math.round((storiesWithBugs / totalStories) * 100) : 0,
+      approvalRate:
+        totalStories > 0 ? Math.round((approved / totalStories) * 100) : 0,
+      testCoverageRate:
+        totalStories > 0
+          ? Math.round((storiesWithTests / totalStories) * 100)
+          : 0,
+      defectDensity:
+        totalStories > 0
+          ? Math.round((storiesWithBugs / totalStories) * 100)
+          : 0,
       distribution: [
         { type: 'Fully Approved', count: approved, color: '#22c55e' },
         { type: 'QA Only', count: qaOnly, color: '#eab308' },
@@ -287,19 +358,21 @@ export function AnalyticsDashboard() {
     const causeCount: Record<string, number> = {};
     let taggedBugsCount = 0;
 
-    bugs.forEach(bug => {
+    bugs.forEach((bug) => {
       if (bug.tags && bug.tags.length > 0) {
         taggedBugsCount++;
-        bug.tags.forEach(tag => {
+        bug.tags.forEach((tag) => {
           causeCount[tag] = (causeCount[tag] || 0) + 1;
         });
       }
     });
 
-    const data = Object.entries(causeCount).map(([tag, count]) => ({
-      name: tag.charAt(0).toUpperCase() + tag.slice(1),
-      value: count,
-    })).sort((a, b) => b.value - a.value);
+    const data = Object.entries(causeCount)
+      .map(([tag, count]) => ({
+        name: tag.charAt(0).toUpperCase() + tag.slice(1),
+        value: count,
+      }))
+      .sort((a, b) => b.value - a.value);
 
     return {
       data,
@@ -308,13 +381,22 @@ export function AnalyticsDashboard() {
     };
   }, [bugs]);
 
-  const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#8b5cf6', '#ec4899'];
+  const COLORS = [
+    '#3b82f6',
+    '#22c55e',
+    '#eab308',
+    '#ef4444',
+    '#8b5cf6',
+    '#ec4899',
+  ];
 
   return (
     <div className="w-full max-w-7xl mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-3xl mb-2">Analytics Dashboard</h1>
-        <p className="text-gray-600">Historical insights and predictive quality indicators</p>
+        <p className="text-gray-600">
+          Historical insights and predictive quality indicators
+        </p>
       </div>
 
       {/* Navigation Tabs */}
@@ -326,7 +408,7 @@ export function AnalyticsDashboard() {
           { id: 'bottlenecks', label: 'Bottlenecks' },
           { id: 'workflow', label: 'Workflow Diagnostics' },
           { id: 'risks', label: 'Risk Trends' },
-        ].map(view => (
+        ].map((view) => (
           <button
             key={view.id}
             onClick={() => setActiveView(view.id as AnalyticsView)}
@@ -347,32 +429,53 @@ export function AnalyticsDashboard() {
           {/* Key Metrics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 rounded-lg p-4">
-              <div className="text-sm text-indigo-600 mb-1">Avg Sprint Velocity</div>
+              <div className="text-sm text-indigo-600 mb-1">
+                Avg Sprint Velocity
+              </div>
               <div className="text-3xl mb-1">
                 {sprintMetrics.length > 0
-                  ? Math.round(sprintMetrics.reduce((sum, s) => sum + s.velocity, 0) / sprintMetrics.length)
+                  ? Math.round(
+                      sprintMetrics.reduce((sum, s) => sum + s.velocity, 0) /
+                        sprintMetrics.length
+                    )
                   : 0}
               </div>
-              <div className="text-xs text-indigo-600">Story Points / Sprint</div>
+              <div className="text-xs text-indigo-600">
+                Story Points / Sprint
+              </div>
             </div>
 
             <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
               <div className="text-sm text-green-600 mb-1">Test Pass Rate</div>
               <div className="text-3xl mb-1">{testMetrics.passRate}%</div>
-              <div className="text-xs text-green-600">{testMetrics.passed}/{testMetrics.total} Tests Passing</div>
+              <div className="text-xs text-green-600">
+                {testMetrics.passed}/{testMetrics.total} Tests Passing
+              </div>
             </div>
 
             <div className="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-4">
-              <div className="text-sm text-purple-600 mb-1">Quality Approval Rate</div>
-              <div className="text-3xl mb-1">{qualityMetrics.approvalRate}%</div>
-              <div className="text-xs text-purple-600">Stories with QA & PM Sign-off</div>
+              <div className="text-sm text-purple-600 mb-1">
+                Quality Approval Rate
+              </div>
+              <div className="text-3xl mb-1">
+                {qualityMetrics.approvalRate}%
+              </div>
+              <div className="text-xs text-purple-600">
+                Stories with QA & PM Sign-off
+              </div>
             </div>
 
             <div className="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-lg p-4">
               <div className="text-sm text-red-600 mb-1">Active Bugs</div>
-              <div className="text-3xl mb-1">{bugs.filter(b => b.status !== 'Resolved' && b.status !== 'Closed').length}</div>
+              <div className="text-3xl mb-1">
+                {
+                  bugs.filter(
+                    (b) => b.status !== 'Resolved' && b.status !== 'Closed'
+                  ).length
+                }
+              </div>
               <div className="text-xs text-red-600">
-                {bugs.filter(b => b.severity === 'Critical').length} Critical
+                {bugs.filter((b) => b.severity === 'Critical').length} Critical
               </div>
             </div>
           </div>
@@ -385,21 +488,31 @@ export function AnalyticsDashboard() {
                   <span className="text-2xl">⚠️</span>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">Delivery Bottleneck Alert</h3>
+                  <h3 className="text-sm font-medium text-red-800">
+                    Delivery Bottleneck Alert
+                  </h3>
                   <div className="mt-2 text-sm text-red-700">
-                    <p className="mb-2">The following workflow stages have accumulated work (&gt;20% of total stories):</p>
+                    <p className="mb-2">
+                      The following workflow stages have accumulated work
+                      (&gt;20% of total stories):
+                    </p>
                     <ul className="list-disc list-inside space-y-1">
-                      {bottlenecks.bottleneckStages?.map(stage => (
+                      {bottlenecks.bottleneckStages?.map((stage) => (
                         <li key={stage.status}>
-                          <strong>{stage.status}</strong>: {stage.count} stories ({stage.percentage}% of total) -
-                          {stage.percentage > 30 ? ' Critical congestion' : ' Moderate accumulation'}
+                          <strong>{stage.status}</strong>: {stage.count} stories
+                          ({stage.percentage}% of total) -
+                          {stage.percentage > 30
+                            ? ' Critical congestion'
+                            : ' Moderate accumulation'}
                         </li>
                       ))}
                     </ul>
                     <p className="mt-2">
-                      <strong>Impact:</strong> Increased cycle time ({workflowMetrics.totalCycleTime || 0} days avg),
-                      reduced throughput ({workflowMetrics.throughput || 0} stories/sprint).
-                      See <strong>Workflow Diagnostics</strong> tab for detailed analysis.
+                      <strong>Impact:</strong> Increased cycle time (
+                      {workflowMetrics.totalCycleTime || 0} days avg), reduced
+                      throughput ({workflowMetrics.throughput || 0}{' '}
+                      stories/sprint). See <strong>Workflow Diagnostics</strong>{' '}
+                      tab for detailed analysis.
                     </p>
                   </div>
                 </div>
@@ -409,35 +522,58 @@ export function AnalyticsDashboard() {
 
           {/* Workflow Health Summary */}
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
-            <h3 className="text-lg mb-4 text-gray-900">📊 Workflow Health Summary</h3>
+            <h3 className="text-lg mb-4 text-gray-900">
+              📊 Workflow Health Summary
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div>
                 <div className="text-blue-700 font-medium mb-2">Cycle Time</div>
                 <div className="flex items-center gap-2">
-                  <div className="text-3xl text-gray-900">{workflowMetrics.totalCycleTime || 0}</div>
+                  <div className="text-3xl text-gray-900">
+                    {workflowMetrics.totalCycleTime || 0}
+                  </div>
                   <div className="text-gray-600">days</div>
                 </div>
                 <div className="text-xs text-gray-600 mt-1">
-                  {workflowMetrics.totalCycleTime <= 7 ? '✅ Excellent' : workflowMetrics.totalCycleTime <= 14 ? '⚠️ Moderate' : '❌ High'}
+                  {workflowMetrics.totalCycleTime <= 7
+                    ? '✅ Excellent'
+                    : workflowMetrics.totalCycleTime <= 14
+                      ? '⚠️ Moderate'
+                      : '❌ High'}
                 </div>
               </div>
               <div>
-                <div className="text-blue-700 font-medium mb-2">Flow Efficiency</div>
+                <div className="text-blue-700 font-medium mb-2">
+                  Flow Efficiency
+                </div>
                 <div className="flex items-center gap-2">
-                  <div className="text-3xl text-gray-900">{workflowMetrics.flowEfficiency || 0}%</div>
+                  <div className="text-3xl text-gray-900">
+                    {workflowMetrics.flowEfficiency || 0}%
+                  </div>
                 </div>
                 <div className="text-xs text-gray-600 mt-1">
-                  {workflowMetrics.flowEfficiency >= 60 ? '✅ Excellent' : workflowMetrics.flowEfficiency >= 40 ? '⚠️ Acceptable' : '❌ Low'}
+                  {workflowMetrics.flowEfficiency >= 60
+                    ? '✅ Excellent'
+                    : workflowMetrics.flowEfficiency >= 40
+                      ? '⚠️ Acceptable'
+                      : '❌ Low'}
                 </div>
               </div>
               <div>
                 <div className="text-blue-700 font-medium mb-2">WIP Status</div>
                 <div className="flex items-center gap-2">
-                  <div className="text-3xl text-gray-900">{workflowMetrics.wipByStage?.reduce((sum, s) => sum + s.count, 0) || 0}</div>
+                  <div className="text-3xl text-gray-900">
+                    {workflowMetrics.wipByStage?.reduce(
+                      (sum, s) => sum + s.count,
+                      0
+                    ) || 0}
+                  </div>
                   <div className="text-gray-600">active</div>
                 </div>
                 <div className="text-xs text-gray-600 mt-1">
-                  {workflowMetrics.wipViolations?.length === 0 ? '✅ Within limits' : `❌ ${workflowMetrics.wipViolations?.length || 0} violations`}
+                  {workflowMetrics.wipViolations?.length === 0
+                    ? '✅ Within limits'
+                    : `❌ ${workflowMetrics.wipViolations?.length || 0} violations`}
                 </div>
               </div>
             </div>
@@ -446,7 +582,9 @@ export function AnalyticsDashboard() {
           {/* Quick Charts */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg mb-4 text-gray-900">Sprint Velocity Trend</h3>
+              <h3 className="text-lg mb-4 text-gray-900">
+                Sprint Velocity Trend
+              </h3>
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={sprintMetrics}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -454,14 +592,28 @@ export function AnalyticsDashboard() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="completed" stroke="#3b82f6" name="Completed" strokeWidth={2} />
-                  <Line type="monotone" dataKey="planned" stroke="#94a3b8" name="Planned" strokeDasharray="5 5" />
+                  <Line
+                    type="monotone"
+                    dataKey="completed"
+                    stroke="#3b82f6"
+                    name="Completed"
+                    strokeWidth={2}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="planned"
+                    stroke="#94a3b8"
+                    name="Planned"
+                    strokeDasharray="5 5"
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg mb-4 text-gray-900">Defect Distribution</h3>
+              <h3 className="text-lg mb-4 text-gray-900">
+                Defect Distribution
+              </h3>
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
                   <Pie
@@ -489,7 +641,9 @@ export function AnalyticsDashboard() {
       {activeView === 'sprints' && (
         <div className="space-y-6">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg mb-4 text-gray-900">Sprint Velocity & Completion Trends</h3>
+            <h3 className="text-lg mb-4 text-gray-900">
+              Sprint Velocity & Completion Trends
+            </h3>
             <ResponsiveContainer width="100%" height={350}>
               <BarChart data={sprintMetrics}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -498,41 +652,71 @@ export function AnalyticsDashboard() {
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="planned" fill="#94a3b8" name="Planned Points" />
-                <Bar dataKey="completed" fill="#3b82f6" name="Completed Points" />
+                <Bar
+                  dataKey="completed"
+                  fill="#3b82f6"
+                  name="Completed Points"
+                />
                 <Bar dataKey="bugs" fill="#ef4444" name="Bugs Found" />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg mb-4 text-gray-900">Sprint Performance Metrics</h3>
+            <h3 className="text-lg mb-4 text-gray-900">
+              Sprint Performance Metrics
+            </h3>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="px-4 py-3 text-left text-gray-700">Sprint</th>
-                    <th className="px-4 py-3 text-center text-gray-700">Stories</th>
-                    <th className="px-4 py-3 text-center text-gray-700">Planned</th>
-                    <th className="px-4 py-3 text-center text-gray-700">Completed</th>
-                    <th className="px-4 py-3 text-center text-gray-700">Velocity</th>
-                    <th className="px-4 py-3 text-center text-gray-700">Bugs</th>
-                    <th className="px-4 py-3 text-center text-gray-700">Completion %</th>
+                    <th className="px-4 py-3 text-left text-gray-700">
+                      Sprint
+                    </th>
+                    <th className="px-4 py-3 text-center text-gray-700">
+                      Stories
+                    </th>
+                    <th className="px-4 py-3 text-center text-gray-700">
+                      Planned
+                    </th>
+                    <th className="px-4 py-3 text-center text-gray-700">
+                      Completed
+                    </th>
+                    <th className="px-4 py-3 text-center text-gray-700">
+                      Velocity
+                    </th>
+                    <th className="px-4 py-3 text-center text-gray-700">
+                      Bugs
+                    </th>
+                    <th className="px-4 py-3 text-center text-gray-700">
+                      Completion %
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {sprintMetrics.map(sprint => (
+                  {sprintMetrics.map((sprint) => (
                     <tr key={sprint.sprint} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 font-medium text-gray-900">{sprint.sprint}</td>
-                      <td className="px-4 py-3 text-center text-gray-600">{sprint.stories}</td>
-                      <td className="px-4 py-3 text-center text-gray-600">{sprint.planned}</td>
-                      <td className="px-4 py-3 text-center text-gray-600">{sprint.completed}</td>
+                      <td className="px-4 py-3 font-medium text-gray-900">
+                        {sprint.sprint}
+                      </td>
+                      <td className="px-4 py-3 text-center text-gray-600">
+                        {sprint.stories}
+                      </td>
+                      <td className="px-4 py-3 text-center text-gray-600">
+                        {sprint.planned}
+                      </td>
+                      <td className="px-4 py-3 text-center text-gray-600">
+                        {sprint.completed}
+                      </td>
                       <td className="px-4 py-3 text-center">
                         <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded">
                           {sprint.velocity}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-center">
-                        <span className={`px-2 py-1 rounded ${sprint.bugs > 5 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                        <span
+                          className={`px-2 py-1 rounded ${sprint.bugs > 5 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}
+                        >
                           {sprint.bugs}
                         </span>
                       </td>
@@ -544,7 +728,9 @@ export function AnalyticsDashboard() {
                               style={{ width: `${sprint.completionRate}%` }}
                             ></div>
                           </div>
-                          <span className="text-sm text-gray-600">{sprint.completionRate}%</span>
+                          <span className="text-sm text-gray-600">
+                            {sprint.completionRate}%
+                          </span>
                         </div>
                       </td>
                     </tr>
@@ -561,17 +747,30 @@ export function AnalyticsDashboard() {
               {sprintMetrics.length >= 3 && (
                 <>
                   <li>
-                    • <strong>Velocity Trend:</strong> Your team's average velocity is{' '}
-                    {Math.round(sprintMetrics.reduce((sum, s) => sum + s.velocity, 0) / sprintMetrics.length)} points/sprint.
-                    {sprintMetrics[sprintMetrics.length - 1].velocity > sprintMetrics[sprintMetrics.length - 2].velocity
+                    • <strong>Velocity Trend:</strong> Your team's average
+                    velocity is{' '}
+                    {Math.round(
+                      sprintMetrics.reduce((sum, s) => sum + s.velocity, 0) /
+                        sprintMetrics.length
+                    )}{' '}
+                    points/sprint.
+                    {sprintMetrics[sprintMetrics.length - 1].velocity >
+                    sprintMetrics[sprintMetrics.length - 2].velocity
                       ? ' ↗️ Velocity is improving.'
                       : ' ↘️ Consider investigating capacity constraints.'}
                   </li>
                   <li>
                     • <strong>Bug Pattern:</strong> Average{' '}
-                    {Math.round(sprintMetrics.reduce((sum, s) => sum + s.bugs, 0) / sprintMetrics.length)} bugs/sprint.
+                    {Math.round(
+                      sprintMetrics.reduce((sum, s) => sum + s.bugs, 0) /
+                        sprintMetrics.length
+                    )}{' '}
+                    bugs/sprint.
                     {sprintMetrics[sprintMetrics.length - 1].bugs >
-                     Math.round(sprintMetrics.reduce((sum, s) => sum + s.bugs, 0) / sprintMetrics.length)
+                    Math.round(
+                      sprintMetrics.reduce((sum, s) => sum + s.bugs, 0) /
+                        sprintMetrics.length
+                    )
                       ? ' ⚠️ Recent increase detected - review high-risk modules.'
                       : ' ✅ Bug rate is stable or improving.'}
                   </li>
@@ -588,24 +787,38 @@ export function AnalyticsDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <div className="text-sm text-gray-600 mb-2">Approval Rate</div>
-              <div className="text-4xl mb-2 text-gray-900">{qualityMetrics.approvalRate}%</div>
-              <div className="text-xs text-gray-500">Stories with QA & PM sign-off</div>
+              <div className="text-4xl mb-2 text-gray-900">
+                {qualityMetrics.approvalRate}%
+              </div>
+              <div className="text-xs text-gray-500">
+                Stories with QA & PM sign-off
+              </div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <div className="text-sm text-gray-600 mb-2">Test Coverage</div>
-              <div className="text-4xl mb-2 text-gray-900">{qualityMetrics.testCoverageRate}%</div>
-              <div className="text-xs text-gray-500">Stories with test cases</div>
+              <div className="text-4xl mb-2 text-gray-900">
+                {qualityMetrics.testCoverageRate}%
+              </div>
+              <div className="text-xs text-gray-500">
+                Stories with test cases
+              </div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <div className="text-sm text-gray-600 mb-2">Defect Density</div>
-              <div className="text-4xl mb-2 text-gray-900">{qualityMetrics.defectDensity}%</div>
-              <div className="text-xs text-gray-500">Stories with linked bugs</div>
+              <div className="text-4xl mb-2 text-gray-900">
+                {qualityMetrics.defectDensity}%
+              </div>
+              <div className="text-xs text-gray-500">
+                Stories with linked bugs
+              </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg mb-4 text-gray-900">Approval Status Distribution</h3>
+              <h3 className="text-lg mb-4 text-gray-900">
+                Approval Status Distribution
+              </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -628,7 +841,9 @@ export function AnalyticsDashboard() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg mb-4 text-gray-900">Test Execution Status</h3>
+              <h3 className="text-lg mb-4 text-gray-900">
+                Test Execution Status
+              </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={testMetrics.distribution}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -650,23 +865,35 @@ export function AnalyticsDashboard() {
             <h4 className="text-gray-800 mb-2">✅ Quality Gate Impact</h4>
             <ul className="text-sm text-gray-700 space-y-2">
               <li>
-                • <strong>{stories.filter(s => !s.qaSignOff || !s.pmApproval).length} stories</strong> currently blocked from linking due to missing approvals
+                •{' '}
+                <strong>
+                  {stories.filter((s) => !s.qaSignOff || !s.pmApproval).length}{' '}
+                  stories
+                </strong>{' '}
+                currently blocked from linking due to missing approvals
               </li>
               <li>
-                • <strong>{testMetrics.passRate}% test pass rate</strong> indicates{' '}
-                {testMetrics.passRate >= 80 ? 'healthy quality standards' : 'room for quality improvement'}
+                • <strong>{testMetrics.passRate}% test pass rate</strong>{' '}
+                indicates{' '}
+                {testMetrics.passRate >= 80
+                  ? 'healthy quality standards'
+                  : 'room for quality improvement'}
               </li>
               <li>
-                • Average test execution time: <strong>{testMetrics.avgExecutionTime}ms</strong>
+                • Average test execution time:{' '}
+                <strong>{testMetrics.avgExecutionTime}ms</strong>
               </li>
             </ul>
           </div>
 
           {/* Defect Root Cause Analysis (Tags-Based) */}
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg mb-2 text-gray-900">Defect Root Cause Analysis (Tags-Based)</h3>
+            <h3 className="text-lg mb-2 text-gray-900">
+              Defect Root Cause Analysis (Tags-Based)
+            </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Breakdown of defects by tags. Helps trace root causes such as environment conflicts, validation gaps, or regression issues.
+              Breakdown of defects by tags. Helps trace root causes such as
+              environment conflicts, validation gaps, or regression issues.
             </p>
             {defectCauseAnalysis.data.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
@@ -674,25 +901,49 @@ export function AnalyticsDashboard() {
                   <BarChart data={defectCauseAnalysis.data}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
-                    <YAxis label={{ value: 'Bug Count', angle: -90, position: 'insideLeft' }} />
+                    <YAxis
+                      label={{
+                        value: 'Bug Count',
+                        angle: -90,
+                        position: 'insideLeft',
+                      }}
+                    />
                     <Tooltip />
-                    <Bar dataKey="value" name="Defects Count" fill="#8b5cf6" radius={[4, 4, 0, 0]}>
+                    <Bar
+                      dataKey="value"
+                      name="Defects Count"
+                      fill="#8b5cf6"
+                      radius={[4, 4, 0, 0]}
+                    >
                       {defectCauseAnalysis.data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
                       ))}
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
                 <div className="space-y-3">
-                  <div className="text-sm font-semibold text-gray-700">Root Cause Insights:</div>
+                  <div className="text-sm font-semibold text-gray-700">
+                    Root Cause Insights:
+                  </div>
                   <div className="text-sm text-gray-600">
-                    Out of <strong>{defectCauseAnalysis.totalBugsCount}</strong> total defects, 
-                    <strong> {defectCauseAnalysis.taggedBugsCount}</strong> have categorization tags.
+                    Out of <strong>{defectCauseAnalysis.totalBugsCount}</strong>{' '}
+                    total defects,
+                    <strong> {defectCauseAnalysis.taggedBugsCount}</strong> have
+                    categorization tags.
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     {defectCauseAnalysis.data.slice(0, 4).map((entry, idx) => (
-                      <div key={idx} className="p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-100">
-                        <span className="font-semibold text-gray-800 dark:text-gray-200">{entry.name}</span>: {entry.value} bugs
+                      <div
+                        key={idx}
+                        className="p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-100"
+                      >
+                        <span className="font-semibold text-gray-800 dark:text-gray-200">
+                          {entry.name}
+                        </span>
+                        : {entry.value} bugs
                       </div>
                     ))}
                   </div>
@@ -700,7 +951,8 @@ export function AnalyticsDashboard() {
               </div>
             ) : (
               <div className="text-center py-6 text-gray-500 text-sm">
-                No tags mapped to defects yet. Start tagging bugs with regression, database, or UI to see metrics here.
+                No tags mapped to defects yet. Start tagging bugs with
+                regression, database, or UI to see metrics here.
               </div>
             )}
           </div>
@@ -711,7 +963,9 @@ export function AnalyticsDashboard() {
       {activeView === 'bottlenecks' && (
         <div className="space-y-6">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg mb-4 text-gray-900">Work Distribution by Status</h3>
+            <h3 className="text-lg mb-4 text-gray-900">
+              Work Distribution by Status
+            </h3>
             <ResponsiveContainer width="100%" height={350}>
               <BarChart data={bottlenecks.statusData || []} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" />
@@ -725,10 +979,15 @@ export function AnalyticsDashboard() {
 
           {(bottlenecks.bottleneckStages?.length || 0) > 0 ? (
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg mb-4 text-gray-900">Identified Bottlenecks</h3>
+              <h3 className="text-lg mb-4 text-gray-900">
+                Identified Bottlenecks
+              </h3>
               <div className="space-y-4">
                 {bottlenecks.bottleneckStages?.map((stage, index) => (
-                  <div key={stage.status} className="border-l-4 border-red-500 bg-red-50 p-4 rounded">
+                  <div
+                    key={stage.status}
+                    className="border-l-4 border-red-500 bg-red-50 p-4 rounded"
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-medium text-gray-900">
                         #{index + 1} {stage.status}
@@ -738,7 +997,8 @@ export function AnalyticsDashboard() {
                       </span>
                     </div>
                     <p className="text-sm text-gray-700">
-                      <strong>{stage.count} stories</strong> are currently in this status. This represents a potential bottleneck.
+                      <strong>{stage.count} stories</strong> are currently in
+                      this status. This represents a potential bottleneck.
                     </p>
                     <div className="mt-3 text-sm text-gray-600">
                       <strong>Recommendations:</strong>
@@ -752,8 +1012,12 @@ export function AnalyticsDashboard() {
                         )}
                         {stage.status === 'Bugs Found' && (
                           <>
-                            <li>Allocate more developer capacity for bug fixes</li>
-                            <li>Review defect patterns to prevent recurring issues</li>
+                            <li>
+                              Allocate more developer capacity for bug fixes
+                            </li>
+                            <li>
+                              Review defect patterns to prevent recurring issues
+                            </li>
                             <li>Consider root cause analysis sessions</li>
                           </>
                         )}
@@ -766,7 +1030,9 @@ export function AnalyticsDashboard() {
                         )}
                         {stage.status === 'Ready for Dev' && (
                           <>
-                            <li>Review developer capacity and sprint planning</li>
+                            <li>
+                              Review developer capacity and sprint planning
+                            </li>
                             <li>Consider splitting large stories</li>
                             <li>Check for dependency blockers</li>
                           </>
@@ -780,9 +1046,12 @@ export function AnalyticsDashboard() {
           ) : (
             <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
               <span className="text-4xl mb-2 block">✅</span>
-              <h3 className="text-lg text-gray-900 mb-2">No Major Bottlenecks Detected</h3>
+              <h3 className="text-lg text-gray-900 mb-2">
+                No Major Bottlenecks Detected
+              </h3>
               <p className="text-gray-600">
-                Work is evenly distributed across statuses. No stage has accumulated more than 20% of total work.
+                Work is evenly distributed across statuses. No stage has
+                accumulated more than 20% of total work.
               </p>
             </div>
           )}
@@ -791,17 +1060,29 @@ export function AnalyticsDashboard() {
           <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
             <h4 className="text-gray-800 mb-2">📈 Historical Patterns</h4>
             <p className="text-sm text-gray-700 mb-2">
-              Based on {stories.length} stories across {sprintMetrics.length} sprints:
+              Based on {stories.length} stories across {sprintMetrics.length}{' '}
+              sprints:
             </p>
             <ul className="text-sm text-gray-700 space-y-1">
               <li>
-                • Most common status: <strong>{bottlenecks.statusData?.sort((a, b) => b.count - a.count)[0]?.status || 'N/A'}</strong>{' '}
-                ({bottlenecks.statusData?.sort((a, b) => b.count - a.count)[0]?.count || 0} stories)
+                • Most common status:{' '}
+                <strong>
+                  {bottlenecks.statusData?.sort((a, b) => b.count - a.count)[0]
+                    ?.status || 'N/A'}
+                </strong>{' '}
+                (
+                {bottlenecks.statusData?.sort((a, b) => b.count - a.count)[0]
+                  ?.count || 0}{' '}
+                stories)
               </li>
               <li>
                 • Stories in non-terminal states (not Done/Backlog):{' '}
                 <strong>
-                  {bottlenecks.statusData?.filter(s => s.status !== 'Done' && s.status !== 'Backlog').reduce((sum, s) => sum + s.count, 0) || 0}
+                  {bottlenecks.statusData
+                    ?.filter(
+                      (s) => s.status !== 'Done' && s.status !== 'Backlog'
+                    )
+                    .reduce((sum, s) => sum + s.count, 0) || 0}
                 </strong>
               </li>
             </ul>
@@ -816,39 +1097,67 @@ export function AnalyticsDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-sm text-gray-600 mb-1">Avg Lead Time</div>
-              <div className="text-3xl mb-1 text-gray-900">{workflowMetrics.avgLeadTime}</div>
-              <div className="text-xs text-gray-500">Days from creation to done</div>
+              <div className="text-3xl mb-1 text-gray-900">
+                {workflowMetrics.avgLeadTime}
+              </div>
+              <div className="text-xs text-gray-500">
+                Days from creation to done
+              </div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-sm text-gray-600 mb-1">Avg Cycle Time</div>
-              <div className="text-3xl mb-1 text-gray-900">{workflowMetrics.totalCycleTime}</div>
-              <div className="text-xs text-gray-500">Days across all stages</div>
+              <div className="text-3xl mb-1 text-gray-900">
+                {workflowMetrics.totalCycleTime}
+              </div>
+              <div className="text-xs text-gray-500">
+                Days across all stages
+              </div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-sm text-gray-600 mb-1">Throughput</div>
-              <div className="text-3xl mb-1 text-gray-900">{workflowMetrics.throughput || 0}</div>
-              <div className="text-xs text-gray-500">Stories completed / sprint</div>
+              <div className="text-3xl mb-1 text-gray-900">
+                {workflowMetrics.throughput || 0}
+              </div>
+              <div className="text-xs text-gray-500">
+                Stories completed / sprint
+              </div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-sm text-gray-600 mb-1">Flow Efficiency</div>
-              <div className="text-3xl mb-1 text-gray-900">{workflowMetrics.flowEfficiency || 0}%</div>
-              <div className="text-xs text-gray-500">Value-add time / total time</div>
+              <div className="text-3xl mb-1 text-gray-900">
+                {workflowMetrics.flowEfficiency || 0}%
+              </div>
+              <div className="text-xs text-gray-500">
+                Value-add time / total time
+              </div>
             </div>
           </div>
 
           {/* Cycle Time Breakdown */}
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg mb-4 text-gray-900">Cycle Time Breakdown by Stage</h3>
+            <h3 className="text-lg mb-4 text-gray-900">
+              Cycle Time Breakdown by Stage
+            </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Average time spent in each workflow stage. Identifies where stories spend the most time.
+              Average time spent in each workflow stage. Identifies where
+              stories spend the most time.
             </p>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={workflowMetrics.statusCycleTimes || []} layout="horizontal">
+              <BarChart
+                data={workflowMetrics.statusCycleTimes || []}
+                layout="horizontal"
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="status" />
-                <YAxis label={{ value: 'Days', angle: -90, position: 'insideLeft' }} />
+                <YAxis
+                  label={{ value: 'Days', angle: -90, position: 'insideLeft' }}
+                />
                 <Tooltip />
-                <Bar dataKey="avgDays" name="Average Days" radius={[8, 8, 0, 0]}>
+                <Bar
+                  dataKey="avgDays"
+                  name="Average Days"
+                  radius={[8, 8, 0, 0]}
+                >
                   {workflowMetrics.statusCycleTimes?.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
@@ -859,47 +1168,71 @@ export function AnalyticsDashboard() {
               <div className="bg-blue-50 border border-blue-200 rounded p-3 text-sm">
                 <strong>💡 Insight:</strong> Longest stage is{' '}
                 <strong>
-                  {workflowMetrics.statusCycleTimes?.sort((a, b) => b.avgDays - a.avgDays)[0]?.status || 'N/A'}
+                  {workflowMetrics.statusCycleTimes?.sort(
+                    (a, b) => b.avgDays - a.avgDays
+                  )[0]?.status || 'N/A'}
                 </strong>{' '}
-                ({workflowMetrics.statusCycleTimes?.sort((a, b) => b.avgDays - a.avgDays)[0]?.avgDays || 0} days).
-                This is your primary cycle time driver.
+                (
+                {workflowMetrics.statusCycleTimes?.sort(
+                  (a, b) => b.avgDays - a.avgDays
+                )[0]?.avgDays || 0}{' '}
+                days). This is your primary cycle time driver.
               </div>
               <div className="bg-purple-50 border border-purple-200 rounded p-3 text-sm">
-                <strong>📊 Flow Efficiency:</strong> {workflowMetrics.flowEfficiency || 0}% of time is value-adding work.
-                {workflowMetrics.flowEfficiency < 40 && ' Consider reducing wait times and handoffs.'}
-                {workflowMetrics.flowEfficiency >= 40 && workflowMetrics.flowEfficiency < 60 && ' Acceptable but room for improvement.'}
-                {workflowMetrics.flowEfficiency >= 60 && ' Excellent flow efficiency!'}
+                <strong>📊 Flow Efficiency:</strong>{' '}
+                {workflowMetrics.flowEfficiency || 0}% of time is value-adding
+                work.
+                {workflowMetrics.flowEfficiency < 40 &&
+                  ' Consider reducing wait times and handoffs.'}
+                {workflowMetrics.flowEfficiency >= 40 &&
+                  workflowMetrics.flowEfficiency < 60 &&
+                  ' Acceptable but room for improvement.'}
+                {workflowMetrics.flowEfficiency >= 60 &&
+                  ' Excellent flow efficiency!'}
               </div>
             </div>
           </div>
 
           {/* WIP (Work in Progress) Analysis */}
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg mb-4 text-gray-900">Work in Progress (WIP) Analysis</h3>
+            <h3 className="text-lg mb-4 text-gray-900">
+              Work in Progress (WIP) Analysis
+            </h3>
             <p className="text-sm text-gray-600 mb-4">
               High WIP increases lead time. Ideal WIP per stage: ≤{10} stories.
             </p>
             {(workflowMetrics.wipViolations?.length || 0) > 0 ? (
               <div className="space-y-3">
                 <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                  <h4 className="font-medium text-red-800 mb-2">⚠️ WIP Limit Violations Detected</h4>
+                  <h4 className="font-medium text-red-800 mb-2">
+                    ⚠️ WIP Limit Violations Detected
+                  </h4>
                   <p className="text-sm text-red-700 mb-3">
-                    The following stages have exceeded the recommended WIP limit of 10 stories:
+                    The following stages have exceeded the recommended WIP limit
+                    of 10 stories:
                   </p>
                   <div className="space-y-2">
-                    {workflowMetrics.wipViolations?.map(stage => (
-                      <div key={stage.status} className="bg-white border border-red-200 rounded p-3">
+                    {workflowMetrics.wipViolations?.map((stage) => (
+                      <div
+                        key={stage.status}
+                        className="bg-white border border-red-200 rounded p-3"
+                      >
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-medium text-gray-900">{stage.status}</span>
+                          <span className="font-medium text-gray-900">
+                            {stage.status}
+                          </span>
                           <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-sm">
-                            {stage.count} stories (WIP: {stage.count - 10} over limit)
+                            {stage.count} stories (WIP: {stage.count - 10} over
+                            limit)
                           </span>
                         </div>
                         <div className="text-sm text-gray-600">
-                          <strong>Impact:</strong> Increased cycle time, reduced focus, context switching
+                          <strong>Impact:</strong> Increased cycle time, reduced
+                          focus, context switching
                         </div>
                         <div className="text-sm text-gray-600 mt-1">
-                          <strong>Action:</strong> Limit new work in this stage, focus on completing existing stories
+                          <strong>Action:</strong> Limit new work in this stage,
+                          focus on completing existing stories
                         </div>
                       </div>
                     ))}
@@ -909,24 +1242,39 @@ export function AnalyticsDashboard() {
             ) : (
               <div className="bg-green-50 border border-green-200 rounded p-4 text-center">
                 <span className="text-4xl mb-2 block">✅</span>
-                <h4 className="text-lg text-gray-900 mb-2">WIP Levels Healthy</h4>
-                <p className="text-gray-600">All stages are within recommended WIP limits.</p>
+                <h4 className="text-lg text-gray-900 mb-2">
+                  WIP Levels Healthy
+                </h4>
+                <p className="text-gray-600">
+                  All stages are within recommended WIP limits.
+                </p>
               </div>
             )}
             <div className="mt-4">
-              <h4 className="font-medium text-gray-900 mb-3">Current WIP by Stage</h4>
+              <h4 className="font-medium text-gray-900 mb-3">
+                Current WIP by Stage
+              </h4>
               <div className="space-y-2">
-                {workflowMetrics.wipByStage?.map(stage => (
-                  <div key={stage.status} className="flex items-center justify-between bg-gray-50 p-3 rounded">
-                    <span className="text-sm text-gray-700">{stage.status}</span>
+                {workflowMetrics.wipByStage?.map((stage) => (
+                  <div
+                    key={stage.status}
+                    className="flex items-center justify-between bg-gray-50 p-3 rounded"
+                  >
+                    <span className="text-sm text-gray-700">
+                      {stage.status}
+                    </span>
                     <div className="flex items-center gap-3">
                       <div className="w-48 bg-gray-200 rounded-full h-2">
                         <div
                           className={`h-2 rounded-full ${stage.count > 10 ? 'bg-red-500' : 'bg-green-500'}`}
-                          style={{ width: `${Math.min((stage.count / 15) * 100, 100)}%` }}
+                          style={{
+                            width: `${Math.min((stage.count / 15) * 100, 100)}%`,
+                          }}
                         ></div>
                       </div>
-                      <span className={`text-sm font-medium ${stage.count > 10 ? 'text-red-600' : 'text-gray-900'}`}>
+                      <span
+                        className={`text-sm font-medium ${stage.count > 10 ? 'text-red-600' : 'text-gray-900'}`}
+                      >
                         {stage.count}
                       </span>
                     </div>
@@ -939,34 +1287,70 @@ export function AnalyticsDashboard() {
           {/* Lead Time Distribution */}
           {(workflowMetrics.storyTimings?.length || 0) > 0 && (
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg mb-4 text-gray-900">Lead Time Distribution</h3>
+              <h3 className="text-lg mb-4 text-gray-900">
+                Lead Time Distribution
+              </h3>
               <p className="text-sm text-gray-600 mb-4">
-                Distribution of time from story creation to completion. Helps identify outliers and predictability.
+                Distribution of time from story creation to completion. Helps
+                identify outliers and predictability.
               </p>
               <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={workflowMetrics.storyTimings?.sort((a, b) => a.leadTime - b.leadTime) || []}>
+                <AreaChart
+                  data={
+                    workflowMetrics.storyTimings?.sort(
+                      (a, b) => a.leadTime - b.leadTime
+                    ) || []
+                  }
+                >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="id" hide />
-                  <YAxis label={{ value: 'Days', angle: -90, position: 'insideLeft' }} />
+                  <YAxis
+                    label={{
+                      value: 'Days',
+                      angle: -90,
+                      position: 'insideLeft',
+                    }}
+                  />
                   <Tooltip />
-                  <Area type="monotone" dataKey="leadTime" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.6} name="Lead Time (days)" />
+                  <Area
+                    type="monotone"
+                    dataKey="leadTime"
+                    stroke="#3b82f6"
+                    fill="#3b82f6"
+                    fillOpacity={0.6}
+                    name="Lead Time (days)"
+                  />
                 </AreaChart>
               </ResponsiveContainer>
               <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div className="bg-gray-50 border border-gray-200 rounded p-3">
                   <div className="text-gray-600">Min Lead Time</div>
                   <div className="text-2xl text-gray-900">
-                    {workflowMetrics.storyTimings && workflowMetrics.storyTimings.length > 0 ? Math.min(...workflowMetrics.storyTimings.map(s => s.leadTime)) : 0} days
+                    {workflowMetrics.storyTimings &&
+                    workflowMetrics.storyTimings.length > 0
+                      ? Math.min(
+                          ...workflowMetrics.storyTimings.map((s) => s.leadTime)
+                        )
+                      : 0}{' '}
+                    days
                   </div>
                 </div>
                 <div className="bg-gray-50 border border-gray-200 rounded p-3">
                   <div className="text-gray-600">Avg Lead Time</div>
-                  <div className="text-2xl text-gray-900">{workflowMetrics.avgLeadTime || 0} days</div>
+                  <div className="text-2xl text-gray-900">
+                    {workflowMetrics.avgLeadTime || 0} days
+                  </div>
                 </div>
                 <div className="bg-gray-50 border border-gray-200 rounded p-3">
                   <div className="text-gray-600">Max Lead Time</div>
                   <div className="text-2xl text-gray-900">
-                    {workflowMetrics.storyTimings && workflowMetrics.storyTimings.length > 0 ? Math.max(...workflowMetrics.storyTimings.map(s => s.leadTime)) : 0} days
+                    {workflowMetrics.storyTimings &&
+                    workflowMetrics.storyTimings.length > 0
+                      ? Math.max(
+                          ...workflowMetrics.storyTimings.map((s) => s.leadTime)
+                        )
+                      : 0}{' '}
+                    days
                   </div>
                 </div>
               </div>
@@ -975,19 +1359,40 @@ export function AnalyticsDashboard() {
 
           {/* Delivery Bottleneck Summary */}
           <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-6">
-            <h3 className="text-lg mb-3 text-gray-900">🔍 Delivery Bottleneck Diagnostic Summary</h3>
+            <h3 className="text-lg mb-3 text-gray-900">
+              🔍 Delivery Bottleneck Diagnostic Summary
+            </h3>
             <div className="space-y-3 text-sm text-gray-700">
               <div>
                 <strong>1. Cycle Time Analysis:</strong>
                 <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
                   <li>
-                    Average cycle time is <strong>{workflowMetrics.totalCycleTime} days</strong>.
-                    {workflowMetrics.totalCycleTime > 14 && ' This is high - consider breaking down stories or reducing handoffs.'}
-                    {workflowMetrics.totalCycleTime <= 14 && workflowMetrics.totalCycleTime > 7 && ' This is moderate - monitor for trends.'}
-                    {workflowMetrics.totalCycleTime <= 7 && ' This is excellent - maintain current practices.'}
+                    Average cycle time is{' '}
+                    <strong>{workflowMetrics.totalCycleTime} days</strong>.
+                    {workflowMetrics.totalCycleTime > 14 &&
+                      ' This is high - consider breaking down stories or reducing handoffs.'}
+                    {workflowMetrics.totalCycleTime <= 14 &&
+                      workflowMetrics.totalCycleTime > 7 &&
+                      ' This is moderate - monitor for trends.'}
+                    {workflowMetrics.totalCycleTime <= 7 &&
+                      ' This is excellent - maintain current practices.'}
                   </li>
                   <li>
-                    Longest stage: <strong>{workflowMetrics.statusCycleTimes.sort((a, b) => b.avgDays - a.avgDays)[0]?.status}</strong> ({workflowMetrics.statusCycleTimes.sort((a, b) => b.avgDays - a.avgDays)[0]?.avgDays} days) - Primary bottleneck candidate
+                    Longest stage:{' '}
+                    <strong>
+                      {
+                        workflowMetrics.statusCycleTimes.sort(
+                          (a, b) => b.avgDays - a.avgDays
+                        )[0]?.status
+                      }
+                    </strong>{' '}
+                    (
+                    {
+                      workflowMetrics.statusCycleTimes.sort(
+                        (a, b) => b.avgDays - a.avgDays
+                      )[0]?.avgDays
+                    }{' '}
+                    days) - Primary bottleneck candidate
                   </li>
                 </ul>
               </div>
@@ -1000,7 +1405,14 @@ export function AnalyticsDashboard() {
                       : `⚠️ ${workflowMetrics.wipViolations?.length || 0} stage(s) exceed WIP limits - risk of congestion`}
                   </li>
                   <li>
-                    Total active WIP: <strong>{workflowMetrics.wipByStage?.reduce((sum, s) => sum + s.count, 0) || 0} stories</strong>
+                    Total active WIP:{' '}
+                    <strong>
+                      {workflowMetrics.wipByStage?.reduce(
+                        (sum, s) => sum + s.count,
+                        0
+                      ) || 0}{' '}
+                      stories
+                    </strong>
                   </li>
                 </ul>
               </div>
@@ -1008,13 +1420,20 @@ export function AnalyticsDashboard() {
                 <strong>3. Flow Efficiency:</strong>
                 <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
                   <li>
-                    Current efficiency: <strong>{workflowMetrics.flowEfficiency}%</strong>
-                    {workflowMetrics.flowEfficiency < 40 && ' - Significant wait time between stages'}
-                    {workflowMetrics.flowEfficiency >= 40 && workflowMetrics.flowEfficiency < 60 && ' - Acceptable but improvable'}
-                    {workflowMetrics.flowEfficiency >= 60 && ' - Excellent value delivery rate'}
+                    Current efficiency:{' '}
+                    <strong>{workflowMetrics.flowEfficiency}%</strong>
+                    {workflowMetrics.flowEfficiency < 40 &&
+                      ' - Significant wait time between stages'}
+                    {workflowMetrics.flowEfficiency >= 40 &&
+                      workflowMetrics.flowEfficiency < 60 &&
+                      ' - Acceptable but improvable'}
+                    {workflowMetrics.flowEfficiency >= 60 &&
+                      ' - Excellent value delivery rate'}
                   </li>
                   <li>
-                    Non-value-add time: <strong>{100 - workflowMetrics.flowEfficiency}%</strong> (waiting, handoffs, rework)
+                    Non-value-add time:{' '}
+                    <strong>{100 - workflowMetrics.flowEfficiency}%</strong>{' '}
+                    (waiting, handoffs, rework)
                   </li>
                 </ul>
               </div>
@@ -1022,35 +1441,58 @@ export function AnalyticsDashboard() {
                 <strong>4. Throughput:</strong>
                 <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
                   <li>
-                    Delivering <strong>{workflowMetrics.throughput} stories per sprint</strong> on average
+                    Delivering{' '}
+                    <strong>
+                      {workflowMetrics.throughput} stories per sprint
+                    </strong>{' '}
+                    on average
                   </li>
                   <li>
                     {workflowMetrics.avgLeadTime > 0 &&
                       `Lead time: ${workflowMetrics.avgLeadTime} days - ${
-                        workflowMetrics.avgLeadTime > 21 ? 'High (>3 weeks) - investigate delays' :
-                        workflowMetrics.avgLeadTime > 14 ? 'Moderate (2-3 weeks)' :
-                        'Good (<2 weeks)'
+                        workflowMetrics.avgLeadTime > 21
+                          ? 'High (>3 weeks) - investigate delays'
+                          : workflowMetrics.avgLeadTime > 14
+                            ? 'Moderate (2-3 weeks)'
+                            : 'Good (<2 weeks)'
                       }`}
                   </li>
                 </ul>
               </div>
             </div>
             <div className="mt-4 p-4 bg-white border border-indigo-300 rounded">
-              <h4 className="font-medium text-indigo-900 mb-2">📋 Recommended Actions</h4>
+              <h4 className="font-medium text-indigo-900 mb-2">
+                📋 Recommended Actions
+              </h4>
               <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
                 {(workflowMetrics.wipViolations?.length || 0) > 0 && (
-                  <li>Implement WIP limits to reduce context switching and improve focus</li>
+                  <li>
+                    Implement WIP limits to reduce context switching and improve
+                    focus
+                  </li>
                 )}
                 {(workflowMetrics.flowEfficiency || 0) < 40 && (
-                  <li>Reduce wait times by improving handoff processes and cross-functional collaboration</li>
+                  <li>
+                    Reduce wait times by improving handoff processes and
+                    cross-functional collaboration
+                  </li>
                 )}
                 {(workflowMetrics.totalCycleTime || 0) > 14 && (
-                  <li>Break down large stories to reduce cycle time and improve predictability</li>
+                  <li>
+                    Break down large stories to reduce cycle time and improve
+                    predictability
+                  </li>
                 )}
                 {(workflowMetrics.avgLeadTime || 0) > 21 && (
-                  <li>Investigate delays in earliest stages - likely requirements or approval delays</li>
+                  <li>
+                    Investigate delays in earliest stages - likely requirements
+                    or approval delays
+                  </li>
                 )}
-                <li>Monitor these metrics weekly to identify trends and measure improvement impact</li>
+                <li>
+                  Monitor these metrics weekly to identify trends and measure
+                  improvement impact
+                </li>
               </ul>
             </div>
           </div>
@@ -1062,7 +1504,9 @@ export function AnalyticsDashboard() {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg mb-4 text-gray-900">Risk Level Distribution</h3>
+              <h3 className="text-lg mb-4 text-gray-900">
+                Risk Level Distribution
+              </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -1084,30 +1528,43 @@ export function AnalyticsDashboard() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg mb-4 text-gray-900">Top 5 Risky Modules</h3>
+              <h3 className="text-lg mb-4 text-gray-900">
+                Top 5 Risky Modules
+              </h3>
               <div className="space-y-3">
                 {riskTrends.topRiskyModules.map((module, index) => (
-                  <div key={module.id} className="border-l-4 border-red-500 bg-gray-50 p-3 rounded">
+                  <div
+                    key={module.id}
+                    className="border-l-4 border-red-500 bg-gray-50 p-3 rounded"
+                  >
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-medium text-gray-900">
                         #{index + 1} {module.name}
                       </span>
-                      <span className={`px-2 py-1 rounded text-xs ${
-                        module.riskLevel === 'High' ? 'bg-red-100 text-red-800' :
-                        module.riskLevel === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-green-100 text-green-800'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded text-xs ${
+                          module.riskLevel === 'High'
+                            ? 'bg-red-100 text-red-800'
+                            : module.riskLevel === 'Medium'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-green-100 text-green-800'
+                        }`}
+                      >
                         {module.riskLevel}
                       </span>
                     </div>
                     <div className="text-sm text-gray-600 space-y-1">
                       <div className="flex justify-between">
                         <span>Defect Frequency:</span>
-                        <span className="font-medium">{module.defectFrequency}/10</span>
+                        <span className="font-medium">
+                          {module.defectFrequency}/10
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Business Impact:</span>
-                        <span className="font-medium">{module.businessImpact}/10</span>
+                        <span className="font-medium">
+                          {module.businessImpact}/10
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Risk Score:</span>
@@ -1124,49 +1581,80 @@ export function AnalyticsDashboard() {
 
           {/* Risk Insights */}
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg mb-4 text-gray-900">Risk Analysis & Recommendations</h3>
+            <h3 className="text-lg mb-4 text-gray-900">
+              Risk Analysis & Recommendations
+            </h3>
             <div className="space-y-4">
-              {riskTrends.distribution.filter(r => r.count > 0).map(risk => (
-                <div key={risk.risk} className="border-l-4 p-4 rounded" style={{ borderColor: risk.color, backgroundColor: `${risk.color}10` }}>
-                  <h4 className="font-medium text-gray-900 mb-2">
-                    {risk.risk} Risk Modules ({risk.count})
-                  </h4>
-                  <p className="text-sm text-gray-700 mb-2">
-                    {risk.risk === 'High' &&
-                      'These modules require full regression testing and close monitoring. They have high historical defect rates or critical business impact.'}
-                    {risk.risk === 'Medium' &&
-                      'These modules need focused functional testing. Monitor for changes in defect patterns.'}
-                    {risk.risk === 'Low' &&
-                      'These modules can proceed with visual/smoke testing. Maintain current quality standards.'}
-                  </p>
-                  {risk.risk === 'High' && risk.count > 0 && (
-                    <div className="mt-2 text-sm text-gray-600">
-                      <strong>Action Required:</strong>
-                      <ul className="list-disc list-inside mt-1">
-                        <li>Allocate senior QA resources to high-risk modules</li>
-                        <li>Implement automated regression test suites</li>
-                        <li>Consider architectural refactoring if defect frequency persists</li>
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ))}
+              {riskTrends.distribution
+                .filter((r) => r.count > 0)
+                .map((risk) => (
+                  <div
+                    key={risk.risk}
+                    className="border-l-4 p-4 rounded"
+                    style={{
+                      borderColor: risk.color,
+                      backgroundColor: `${risk.color}10`,
+                    }}
+                  >
+                    <h4 className="font-medium text-gray-900 mb-2">
+                      {risk.risk} Risk Modules ({risk.count})
+                    </h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      {risk.risk === 'High' &&
+                        'These modules require full regression testing and close monitoring. They have high historical defect rates or critical business impact.'}
+                      {risk.risk === 'Medium' &&
+                        'These modules need focused functional testing. Monitor for changes in defect patterns.'}
+                      {risk.risk === 'Low' &&
+                        'These modules can proceed with visual/smoke testing. Maintain current quality standards.'}
+                    </p>
+                    {risk.risk === 'High' && risk.count > 0 && (
+                      <div className="mt-2 text-sm text-gray-600">
+                        <strong>Action Required:</strong>
+                        <ul className="list-disc list-inside mt-1">
+                          <li>
+                            Allocate senior QA resources to high-risk modules
+                          </li>
+                          <li>Implement automated regression test suites</li>
+                          <li>
+                            Consider architectural refactoring if defect
+                            frequency persists
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ))}
             </div>
           </div>
 
           {/* Module Risk Evolution */}
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-            <h4 className="text-gray-800 mb-2">🔮 Predictive Risk Indicators</h4>
+            <h4 className="text-gray-800 mb-2">
+              🔮 Predictive Risk Indicators
+            </h4>
             <ul className="text-sm text-gray-700 space-y-2">
               <li>
-                • <strong>{riskTrends.distribution.find(r => r.risk === 'High')?.count || 0} high-risk modules</strong> require continuous monitoring
+                •{' '}
+                <strong>
+                  {riskTrends.distribution.find((r) => r.risk === 'High')
+                    ?.count || 0}{' '}
+                  high-risk modules
+                </strong>{' '}
+                require continuous monitoring
               </li>
               <li>
-                • Top risky module: <strong>{riskTrends.topRiskyModules[0]?.name}</strong> with combined risk score of{' '}
-                <strong>{(riskTrends.topRiskyModules[0]?.defectFrequency || 0) + (riskTrends.topRiskyModules[0]?.businessImpact || 0)}/20</strong>
+                • Top risky module:{' '}
+                <strong>{riskTrends.topRiskyModules[0]?.name}</strong> with
+                combined risk score of{' '}
+                <strong>
+                  {(riskTrends.topRiskyModules[0]?.defectFrequency || 0) +
+                    (riskTrends.topRiskyModules[0]?.businessImpact || 0)}
+                  /20
+                </strong>
               </li>
               <li>
-                • Recommendation: Prioritize test automation for modules with defect frequency ≥7 to reduce regression risk
+                • Recommendation: Prioritize test automation for modules with
+                defect frequency ≥7 to reduce regression risk
               </li>
             </ul>
           </div>

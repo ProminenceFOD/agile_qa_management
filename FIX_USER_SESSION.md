@@ -8,7 +8,7 @@ localStorage.removeItem('aqms_session');
 
 // Fix user data
 const users = JSON.parse(localStorage.getItem('aqms_users') || '[]');
-const qaUser = users.find(u => u.email === 'qa@aqms.com');
+const qaUser = users.find((u) => u.email === 'qa@aqms.com');
 if (qaUser) {
   qaUser.role = 'Administrator';
   qaUser.organizationName = 'AQMS Demo Organization';
@@ -23,6 +23,7 @@ location.reload();
 ```
 
 This will:
+
 1. Clear your cached session
 2. Fix the qa@aqms.com user to be Administrator
 3. Add the organization name

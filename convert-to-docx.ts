@@ -1,5 +1,12 @@
 import * as fs from 'fs';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
+import {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  HeadingLevel,
+  AlignmentType,
+} from 'docx';
 
 // Read the markdown file
 const markdownContent = fs.readFileSync('./AQMS_Documentation.md', 'utf-8');
@@ -23,7 +30,7 @@ lines.forEach((line: string, index: number) => {
               text: codeBlockContent.join('\n'),
               font: 'Courier New',
               size: 20,
-            })
+            }),
           ],
           spacing: { before: 200, after: 200 },
         })
@@ -126,7 +133,7 @@ lines.forEach((line: string, index: number) => {
   // Regular paragraphs
   else if (line.trim() !== '') {
     // Remove markdown links but keep text
-    let cleanLine = line.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
+    let cleanLine = line.replace(/\[([^\]]+)\]([^)]+)\)/g, '$1');
     // Remove inline code backticks
     cleanLine = cleanLine.replace(/`([^`]+)`/g, '$1');
 
@@ -144,10 +151,12 @@ lines.forEach((line: string, index: number) => {
 
 // Create the document
 const doc = new Document({
-  sections: [{
-    properties: {},
-    children: docElements,
-  }],
+  sections: [
+    {
+      properties: {},
+      children: docElements,
+    },
+  ],
   numbering: {
     config: [
       {
@@ -166,12 +175,16 @@ const doc = new Document({
 });
 
 // Generate and save the document
-Packer.toBuffer(doc).then((buffer: Buffer) => {
-  fs.writeFileSync('./AQMS_Documentation.docx', buffer);
-  console.log('✅ Document created successfully: AQMS_Documentation.docx');
-  console.log('📄 File location: /workspaces/default/code/AQMS_Documentation.docx');
-  console.log('📦 File size:', (buffer.length / 1024).toFixed(2), 'KB');
-}).catch((error: Error) => {
-  console.error('❌ Error creating document:', error);
-  process.exit(1);
-});
+Packer.toBuffer(doc)
+  .then((buffer: Buffer) => {
+    fs.writeFileSync('./AQMS_Documentation.docx', buffer);
+    console.log('✅ Document created successfully: AQMS_Documentation.docx');
+    console.log(
+      '📄 File location: /workspaces/default/code/AQMS_Documentation.docx'
+    );
+    console.log('📦 File size:', (buffer.length / 1024).toFixed(2), 'KB');
+  })
+  .catch((error: Error) => {
+    console.error('❌ Error creating document:', error);
+    process.exit(1);
+  });

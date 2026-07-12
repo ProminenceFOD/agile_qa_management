@@ -8,7 +8,9 @@ interface SprintData {
 }
 
 export function AdvancedCharts() {
-  const [selectedChart, setSelectedChart] = useState<'velocity' | 'burnup' | 'cumulative'>('velocity');
+  const [selectedChart, setSelectedChart] = useState<
+    'velocity' | 'burnup' | 'cumulative'
+  >('velocity');
 
   // Sample data
   const velocityData: SprintData[] = [
@@ -19,7 +21,8 @@ export function AdvancedCharts() {
     { sprint: 'Sprint 12', planned: 35, completed: 28, velocity: 28 },
   ];
 
-  const averageVelocity = velocityData.reduce((sum, s) => sum + s.velocity, 0) / velocityData.length;
+  const averageVelocity =
+    velocityData.reduce((sum, s) => sum + s.velocity, 0) / velocityData.length;
 
   const burnupData = [
     { day: 0, completed: 0, total: 120, ideal: 0 },
@@ -104,7 +107,9 @@ export function AdvancedCharts() {
             {/* Average line */}
             <div
               className="absolute left-0 right-0 border-t-2 border-green-500 border-dashed z-10"
-              style={{ top: `${maxHeight - (averageVelocity / 40) * maxHeight}px` }}
+              style={{
+                top: `${maxHeight - (averageVelocity / 40) * maxHeight}px`,
+              }}
             ></div>
 
             {/* Bars */}
@@ -113,7 +118,10 @@ export function AdvancedCharts() {
                 const plannedHeight = (data.planned / 40) * maxHeight;
                 const completedHeight = (data.completed / 40) * maxHeight;
                 return (
-                  <div key={index} className="flex-1 flex flex-col items-center">
+                  <div
+                    key={index}
+                    className="flex-1 flex flex-col items-center"
+                  >
                     <div className="w-full flex items-end justify-center gap-1 flex-1">
                       <div
                         className="w-full bg-gray-300 rounded-t relative group cursor-pointer"
@@ -132,7 +140,9 @@ export function AdvancedCharts() {
                         </div>
                       </div>
                     </div>
-                    <div className="text-xs text-gray-600 mt-2">{data.sprint}</div>
+                    <div className="text-xs text-gray-600 mt-2">
+                      {data.sprint}
+                    </div>
                   </div>
                 );
               })}
@@ -142,9 +152,22 @@ export function AdvancedCharts() {
           <div className="mt-6 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
             <h3 className="text-sm font-medium text-gray-800 mb-2">Insights</h3>
             <ul className="text-sm text-gray-700 space-y-1">
-              <li>• Average velocity: {averageVelocity.toFixed(1)} points per sprint</li>
-              <li>• Latest sprint: {velocityData[velocityData.length - 1].velocity} points completed</li>
-              <li>• Trend: {velocityData[velocityData.length - 1].velocity > averageVelocity ? '📈 Above average' : '📉 Below average'}</li>
+              <li>
+                • Average velocity: {averageVelocity.toFixed(1)} points per
+                sprint
+              </li>
+              <li>
+                • Latest sprint:{' '}
+                {velocityData[velocityData.length - 1].velocity} points
+                completed
+              </li>
+              <li>
+                • Trend:{' '}
+                {velocityData[velocityData.length - 1].velocity >
+                averageVelocity
+                  ? '📈 Above average'
+                  : '📉 Below average'}
+              </li>
             </ul>
           </div>
         </div>
@@ -169,7 +192,10 @@ export function AdvancedCharts() {
             </div>
           </div>
 
-          <div className="relative bg-gray-50 rounded p-4" style={{ height: maxHeight + 40 }}>
+          <div
+            className="relative bg-gray-50 rounded p-4"
+            style={{ height: maxHeight + 40 }}
+          >
             <svg className="w-full h-full">
               {/* Grid lines */}
               {[0, 25, 50, 75, 100, 125].map((value, i) => (
@@ -194,9 +220,12 @@ export function AdvancedCharts() {
 
               {/* Ideal line */}
               <polyline
-                points={burnupData.map((d, i) =>
-                  `${(i / (burnupData.length - 1)) * 100}%,${maxHeight - (d.ideal / 130) * maxHeight}`
-                ).join(' ')}
+                points={burnupData
+                  .map(
+                    (d, i) =>
+                      `${(i / (burnupData.length - 1)) * 100}%,${maxHeight - (d.ideal / 130) * maxHeight}`
+                  )
+                  .join(' ')}
                 fill="none"
                 stroke="#9ca3af"
                 strokeWidth="2"
@@ -205,9 +234,12 @@ export function AdvancedCharts() {
 
               {/* Total scope line */}
               <polyline
-                points={burnupData.map((d, i) =>
-                  `${(i / (burnupData.length - 1)) * 100}%,${maxHeight - (d.total / 130) * maxHeight}`
-                ).join(' ')}
+                points={burnupData
+                  .map(
+                    (d, i) =>
+                      `${(i / (burnupData.length - 1)) * 100}%,${maxHeight - (d.total / 130) * maxHeight}`
+                  )
+                  .join(' ')}
                 fill="none"
                 stroke="#ef4444"
                 strokeWidth="3"
@@ -215,9 +247,12 @@ export function AdvancedCharts() {
 
               {/* Completed work line */}
               <polyline
-                points={burnupData.map((d, i) =>
-                  `${(i / (burnupData.length - 1)) * 100}%,${maxHeight - (d.completed / 130) * maxHeight}`
-                ).join(' ')}
+                points={burnupData
+                  .map(
+                    (d, i) =>
+                      `${(i / (burnupData.length - 1)) * 100}%,${maxHeight - (d.completed / 130) * maxHeight}`
+                  )
+                  .join(' ')}
                 fill="none"
                 stroke="#10b981"
                 strokeWidth="3"
@@ -232,7 +267,9 @@ export function AdvancedCharts() {
           </div>
 
           <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-800 mb-2">Scope Changes</h3>
+            <h3 className="text-sm font-medium text-gray-800 mb-2">
+              Scope Changes
+            </h3>
             <p className="text-sm text-gray-700">
               Scope increased from 120 to 130 points (+8.3%) during sprint
             </p>
@@ -243,7 +280,9 @@ export function AdvancedCharts() {
       {/* Cumulative Flow Diagram */}
       {selectedChart === 'cumulative' && (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl mb-4 text-gray-800">Cumulative Flow Diagram</h2>
+          <h2 className="text-xl mb-4 text-gray-800">
+            Cumulative Flow Diagram
+          </h2>
           <div className="mb-4 flex items-center gap-4 text-sm flex-wrap">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-green-500 rounded"></div>
@@ -263,9 +302,13 @@ export function AdvancedCharts() {
             </div>
           </div>
 
-          <div className="flex items-end justify-between gap-2" style={{ height: maxHeight }}>
+          <div
+            className="flex items-end justify-between gap-2"
+            style={{ height: maxHeight }}
+          >
             {cumulativeFlowData.map((data, index) => {
-              const total = data.notStarted + data.testing + data.bugsFound + data.tested;
+              const total =
+                data.notStarted + data.testing + data.bugsFound + data.tested;
               const testedHeight = (data.tested / total) * maxHeight;
               const bugsHeight = (data.bugsFound / total) * maxHeight;
               const testingHeight = (data.testing / total) * maxHeight;
@@ -273,10 +316,22 @@ export function AdvancedCharts() {
 
               return (
                 <div key={index} className="flex-1 flex flex-col-reverse">
-                  <div className="bg-green-500" style={{ height: `${testedHeight}px` }}></div>
-                  <div className="bg-orange-500" style={{ height: `${bugsHeight}px` }}></div>
-                  <div className="bg-indigo-500" style={{ height: `${testingHeight}px` }}></div>
-                  <div className="bg-gray-400" style={{ height: `${notStartedHeight}px` }}></div>
+                  <div
+                    className="bg-green-500"
+                    style={{ height: `${testedHeight}px` }}
+                  ></div>
+                  <div
+                    className="bg-orange-500"
+                    style={{ height: `${bugsHeight}px` }}
+                  ></div>
+                  <div
+                    className="bg-indigo-500"
+                    style={{ height: `${testingHeight}px` }}
+                  ></div>
+                  <div
+                    className="bg-gray-400"
+                    style={{ height: `${notStartedHeight}px` }}
+                  ></div>
                 </div>
               );
             })}
@@ -289,7 +344,9 @@ export function AdvancedCharts() {
           </div>
 
           <div className="mt-6 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-800 mb-2">Flow Metrics</h3>
+            <h3 className="text-sm font-medium text-gray-800 mb-2">
+              Flow Metrics
+            </h3>
             <ul className="text-sm text-gray-700 space-y-1">
               <li>• Work in Progress (WIP): Decreasing trend ✅</li>
               <li>• Throughput: Steady completion rate</li>

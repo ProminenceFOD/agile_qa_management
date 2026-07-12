@@ -1,6 +1,7 @@
 # Automated Quality Management System (AQMS) - Complete Feature Set
 
 ## Overview
+
 This AQMS is a comprehensive solution designed to address the four core problems in Agile QA:
 
 1. **The "Social Trust" Gap** - System-enforced quality gates
@@ -13,9 +14,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ## Core Modules
 
 ### 1. Dashboard (Ctrl+1)
+
 **Purpose:** High-level overview of system health and key metrics
 
 **Features:**
+
 - Real-time system health indicators
 - Quick access to critical metrics
 - Recent activity feed
@@ -25,9 +28,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 2. Kanban Board (Ctrl+2)
+
 **Purpose:** Visual workflow management with real-time quality states
 
 **Features:**
+
 - **Quality-Aware Columns:** Backlog, Ready for Dev, In Development, In Testing, Bugs Found, Done
 - **Real-Time Quality Indicators on Cards:**
   - 🐛 Bugs Found (red)
@@ -45,9 +50,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 3. Stories / Criteria Validator (Ctrl+3)
+
 **Purpose:** User story management with approval workflow
 
 **Features:**
+
 - Create, edit, view, and delete user stories
 - **Quality Gates:** QA Sign-off and PM Approval toggles
 - Acceptance criteria management
@@ -62,9 +69,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 4. Risk Matrix (Ctrl+4)
+
 **Purpose:** Data-driven risk prioritization and testing protocol assignment
 
 **Features:**
+
 - **Automatic Risk Scoring:** `Risk Level = f(Historical Defect Frequency, Business Impact Weight)`
 - **Risk Levels:**
   - **High Risk:** Defect ≥7 OR Impact ≥9 → Full Regression Testing
@@ -81,9 +90,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 5. Quality Burn-Down (Ctrl+5)
+
 **Purpose:** Sprint progress visualization
 
 **Features:**
+
 - Ideal vs actual progress tracking
 - Story points burn-down charts
 - Sprint velocity trends
@@ -92,9 +103,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 6. Test Cases (Ctrl+6)
+
 **Purpose:** Comprehensive test case management
 
 **Features:**
+
 - Create, edit, execute, and track test cases
 - **Test Types:** Functional, Regression, Integration, Smoke, Performance
 - **Test Status:** Pass, Fail, Blocked, Not Run
@@ -112,9 +125,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 7. Bugs (Ctrl+7)
+
 **Purpose:** Defect tracking and management
 
 **Features:**
+
 - Bug creation and tracking
 - Severity levels (Critical, High, Medium, Low)
 - Status workflow (Open, In Progress, Resolved, Closed, Reopened)
@@ -127,9 +142,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 8. Analytics Dashboard (Ctrl+8) **NEW**
+
 **Purpose:** Turn "silent data" into actionable insights
 
 **Views:**
+
 1. **Overview Dashboard**
    - Average Sprint Velocity
    - Test Pass Rate
@@ -176,9 +193,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 9. Sprints Management (Ctrl+9)
+
 **Purpose:** Structured sprint and release planning
 
 **Features:**
+
 - **Sprint List View:**
   - Active sprint highlighting
   - Days remaining counter
@@ -202,9 +221,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 10. Traceability Matrix (Ctrl+T) **NEW**
+
 **Purpose:** End-to-end coverage from requirements to tests to defects
 
 **Views:**
+
 1. **Traceability Matrix**
    - Complete mapping of Stories → Test Cases → Bugs
    - Test pass rate per story
@@ -229,6 +250,7 @@ This AQMS is a comprehensive solution designed to address the four core problems
      - "X critical bugs - prioritize bug resolution before release"
 
 **Metrics:**
+
 - Test Coverage Rate (% of stories with tests)
 - Average Test Pass Rate
 - Coverage Gaps count
@@ -239,9 +261,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 11. Release Readiness Scorecard (Ctrl+L) **NEW**
+
 **Purpose:** Consolidated quality health check before deployment
 
 **Features:**
+
 - **Overall Readiness Score (0-100%):**
   - Weighted formula: Completion (25%), Approval (20%), Test Pass (25%), Coverage (15%), Bugs (15%)
   - Color-coded status: Excellent ✅ / Good 👍 / Warning ⚠️ / Critical 🚫
@@ -279,9 +303,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 12. Team Performance Analytics (Ctrl+P) **NEW**
+
 **Purpose:** Individual and team productivity & quality metrics
 
 **Views:**
+
 1. **Team Overview**
    - **Team Summary Cards:**
      - Team Velocity (total story points)
@@ -328,6 +354,7 @@ This AQMS is a comprehensive solution designed to address the four core problems
    - Velocity distribution chart
 
 **Metrics Calculated:**
+
 - **Quality Score:** `(Test Pass Rate × 0.4) + (Approval Rate × 0.4) + (Bug Resolution × 0.2)`
 - **Productivity Score:** `Completed Points / Total Stories`
 
@@ -338,9 +365,11 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ---
 
 ### 13. AI-Powered Test Recommendations (Ctrl+M) **NEW**
+
 **Purpose:** Intelligent test prioritization based on risk, coverage gaps, and defect patterns
 
 **Features:**
+
 - **6 AI Recommendation Engines:**
 
   1. **Coverage Gap Analysis**
@@ -411,6 +440,7 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ## Additional Features
 
 ### 14. Reports (Ctrl+R)
+
 - Customizable quality reports
 - Sprint retrospective reports
 - Test execution summaries
@@ -418,36 +448,42 @@ This AQMS is a comprehensive solution designed to address the four core problems
 - Export to PDF/Excel
 
 ### 15. Test Execution History (Ctrl+H)
+
 - Historical test run tracking
 - Execution trends over time
 - Flaky test identification
 - Performance degradation detection
 
 ### 16. Audit Trail (Ctrl+A)
+
 - Complete change history
 - User action tracking
 - Compliance documentation
 - Rollback support
 
 ### 17. Bulk Operations (Ctrl+B)
+
 - Bulk test case creation
 - Bulk story updates
 - Bulk status changes
 - CSV import/export
 
 ### 18. Data Management (Ctrl+E)
+
 - Backup and restore
 - Data export
 - Data cleanup utilities
 - Archive management
 
 ### 19. User Management (Ctrl+0)
+
 - User roles and permissions
 - Team member administration
 - Access control
 - Authentication management
 
 ### 20. Notifications (Ctrl+N)
+
 - Real-time notifications
 - Assignment alerts
 - Quality gate violations
@@ -455,6 +491,7 @@ This AQMS is a comprehensive solution designed to address the four core problems
 - Test failures
 
 ### 21. Attachments
+
 - File upload support
 - Screenshot management
 - Document linking
@@ -465,6 +502,7 @@ This AQMS is a comprehensive solution designed to address the four core problems
 ## Quality Gate Enforcement (System-Wide)
 
 ### What Gets Enforced:
+
 1. **Test Case Linking:** Only approved stories (QA Sign-off ✓ AND PM Approval ✓) appear in test case "Linked Story" dropdown
 2. **Bug Linking:** Only approved stories appear in bug "Linked Story" dropdown
 3. **Kanban Filtering:** Option to show only approved stories
@@ -472,6 +510,7 @@ This AQMS is a comprehensive solution designed to address the four core problems
 5. **Release Readiness:** Approval rate directly impacts release score
 
 ### How It Works:
+
 ```
 Story Approval Status = qaSignOff === true && pmApproval === true
 
@@ -492,30 +531,30 @@ If Story is NOT Approved:
 
 ## Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| Ctrl+1 | Dashboard |
-| Ctrl+2 | Kanban Board |
-| Ctrl+3 | Stories |
-| Ctrl+4 | Risk Matrix |
-| Ctrl+5 | Burn-Down |
-| Ctrl+6 | Test Cases |
-| Ctrl+7 | Bugs |
-| Ctrl+8 | Analytics |
-| Ctrl+9 | Sprints |
-| Ctrl+R | Reports |
-| Ctrl+H | Test History |
-| Ctrl+A | Audit Trail |
-| Ctrl+B | Bulk Operations |
-| Ctrl+E | Data Management |
-| Ctrl+T | Traceability Matrix |
-| Ctrl+L | Release Readiness |
-| Ctrl+P | Team Performance |
-| Ctrl+M | AI Recommendations |
-| Ctrl+N | Notifications |
-| Ctrl+0 | Users |
-| Ctrl+D | Toggle Dark Mode |
-| Shift+? | Show Shortcuts |
+| Shortcut | Action              |
+| -------- | ------------------- |
+| Ctrl+1   | Dashboard           |
+| Ctrl+2   | Kanban Board        |
+| Ctrl+3   | Stories             |
+| Ctrl+4   | Risk Matrix         |
+| Ctrl+5   | Burn-Down           |
+| Ctrl+6   | Test Cases          |
+| Ctrl+7   | Bugs                |
+| Ctrl+8   | Analytics           |
+| Ctrl+9   | Sprints             |
+| Ctrl+R   | Reports             |
+| Ctrl+H   | Test History        |
+| Ctrl+A   | Audit Trail         |
+| Ctrl+B   | Bulk Operations     |
+| Ctrl+E   | Data Management     |
+| Ctrl+T   | Traceability Matrix |
+| Ctrl+L   | Release Readiness   |
+| Ctrl+P   | Team Performance    |
+| Ctrl+M   | AI Recommendations  |
+| Ctrl+N   | Notifications       |
+| Ctrl+0   | Users               |
+| Ctrl+D   | Toggle Dark Mode    |
+| Shift+?  | Show Shortcuts      |
 
 ---
 
@@ -673,7 +712,9 @@ If Story is NOT Approved:
 ## Problem-Solution Mapping
 
 ### Problem #1: The "Social Trust" Gap
+
 **Solution:**
+
 - **Quality Gates in Stories Tab:** QA Sign-off and PM Approval checkboxes
 - **System Enforcement:** Only approved stories appear in test case and bug linking dropdowns
 - **Visual Indicators:** Stories show approval status in all views
@@ -684,7 +725,9 @@ If Story is NOT Approved:
 ---
 
 ### Problem #2: Testing by Guesswork
+
 **Solution:**
+
 - **Risk Matrix:** Data-driven risk scoring using historical defect frequency + business impact
 - **Automatic Protocol Assignment:**
   - High Risk → Full Regression Testing
@@ -702,7 +745,9 @@ If Story is NOT Approved:
 ---
 
 ### Problem #3: The "In Progress" Black Box
+
 **Solution:**
+
 - **Real-Time Quality Indicators on Kanban Cards:**
   - 🐛 Bugs Found
   - ⚠️ Testing Blocked
@@ -718,7 +763,9 @@ If Story is NOT Approved:
 ---
 
 ### Problem #4: Silent Data
+
 **Solution:**
+
 - **Analytics Dashboard (5 views):**
   1. Overview: Key metrics + bottleneck alerts
   2. Sprint Analysis: Velocity trends + predictive insights
@@ -740,17 +787,20 @@ If Story is NOT Approved:
 ## Technology Stack
 
 ### Frontend
+
 - **React** with TypeScript
 - **Tailwind CSS** for styling
 - **Recharts** for data visualization
 - **React DnD** for drag-and-drop
 
 ### Data Persistence
+
 - **Supabase** cloud storage integration
 - **Custom Hook:** `useSupabaseData` for fire-and-forget async operations
 - Default data fallbacks for offline/demo mode
 
 ### State Management
+
 - React useState and useEffect
 - Custom hooks for data synchronization
 - Real-time calculation of derived metrics
@@ -760,6 +810,7 @@ If Story is NOT Approved:
 ## Getting Started
 
 ### Quick Navigation
+
 1. **First Time Users:**
    - Start with Dashboard (Ctrl+1) for overview
    - Create stories in Stories tab (Ctrl+3)
@@ -790,6 +841,7 @@ If Story is NOT Approved:
 ## Best Practices
 
 ### 1. Quality Gate Workflow
+
 ```
 1. PM creates story → PM Approval ✓
 2. QA reviews acceptance criteria → QA Sign-off ✓
@@ -801,6 +853,7 @@ If Story is NOT Approved:
 ```
 
 ### 2. Risk-Based Testing
+
 ```
 1. Create modules in Risk Matrix
 2. Set defect frequency (from historical data)
@@ -812,6 +865,7 @@ If Story is NOT Approved:
 ```
 
 ### 3. Using AI Recommendations
+
 ```
 1. Navigate to AI Recommend tab (Ctrl+M)
 2. Review critical priority first
@@ -822,6 +876,7 @@ If Story is NOT Approved:
 ```
 
 ### 4. Release Preparation
+
 ```
 1. Week before release:
    - Check Release Readiness score
@@ -878,27 +933,32 @@ Track these KPIs to measure AQMS effectiveness:
 ## Future Enhancements (Roadmap)
 
 ### Phase 1: CI/CD Integration
+
 - Real-time test results from pipelines
 - Automated test execution triggers
 - Build status integration
 
 ### Phase 2: Advanced ML/AI
+
 - Defect prediction models
 - Flaky test detection
 - Optimal test suite selection
 
 ### Phase 3: External Integrations
+
 - Jira sync
 - GitHub/GitLab integration
 - Slack/Teams notifications
 - Email alerts
 
 ### Phase 4: Performance & Security
+
 - Performance test result tracking
 - Security vulnerability scanning
 - Compliance reporting (SOC2, HIPAA, etc.)
 
 ### Phase 5: Mobile Testing
+
 - Device coverage matrix
 - Browser compatibility tracking
 - Mobile-specific test types
@@ -917,4 +977,4 @@ Track these KPIs to measure AQMS effectiveness:
 **Version:** 1.0.0  
 **Last Updated:** 2026-04-28  
 **License:** Proprietary - Case Study Research Project  
-**Author:** AQMS Development Team  
+**Author:** AQMS Development Team

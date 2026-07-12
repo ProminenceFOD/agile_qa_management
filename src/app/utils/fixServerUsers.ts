@@ -28,7 +28,7 @@ export async function fixServerUsers() {
       lastActive: new Date(),
       storiesAssigned: 12,
       bugsAssigned: 8,
-      isActive: true
+      isActive: true,
     },
     {
       email: 'pm@aqms.com',
@@ -42,7 +42,7 @@ export async function fixServerUsers() {
       title: 'Senior Product Manager',
       status: 'Active',
       joinedDate: new Date('2026-01-10'),
-      isActive: true
+      isActive: true,
     },
     {
       email: 'sm@aqms.com',
@@ -55,8 +55,8 @@ export async function fixServerUsers() {
       title: 'Lead Scrum Master',
       status: 'Active',
       joinedDate: new Date('2026-01-10'),
-      isActive: true
-    }
+      isActive: true,
+    },
   ];
 
   try {
@@ -64,16 +64,16 @@ export async function fixServerUsers() {
     const response = await fetch(`${API_BASE}/data/aqms_users`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${publicAnonKey}`,
+        Authorization: `Bearer ${publicAnonKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ data: correctUsers })
+      body: JSON.stringify({ data: correctUsers }),
     });
 
     if (response.ok) {
       console.log('✅ Server users updated successfully!');
       console.log('📋 Updated users:');
-      correctUsers.forEach(u => {
+      correctUsers.forEach((u) => {
         console.log(`  - ${u.email}: ${u.role} (${u.organizationName})`);
       });
 

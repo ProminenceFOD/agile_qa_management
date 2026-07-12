@@ -17,7 +17,10 @@ export function useSupabaseData<T>(key: string, initialValue: T) {
         return JSON.parse(local) as T;
       }
     } catch (e) {
-      console.warn(`[useSupabaseData] Failed to parse local state for ${key}:`, e);
+      console.warn(
+        `[useSupabaseData] Failed to parse local state for ${key}:`,
+        e
+      );
     }
     return initialValue;
   });
@@ -37,9 +40,15 @@ export function useSupabaseData<T>(key: string, initialValue: T) {
           setDataState(stored);
           try {
             const scopedLocalKey = getScopedKey(key);
-            localStorage.setItem(scopedLocalKey, typeof stored === 'string' ? stored : JSON.stringify(stored));
+            localStorage.setItem(
+              scopedLocalKey,
+              typeof stored === 'string' ? stored : JSON.stringify(stored)
+            );
           } catch (e) {
-            console.warn(`[useSupabaseData] Failed to sync ${key} to localStorage:`, e);
+            console.warn(
+              `[useSupabaseData] Failed to sync ${key} to localStorage:`,
+              e
+            );
           }
         }
       } catch (err) {
@@ -77,22 +86,27 @@ export function useSupabaseData<T>(key: string, initialValue: T) {
 
   // Custom setter that saves to Supabase (fire and forget)
   const setDataAndSave = (value: T | ((prev: T) => T)) => {
-    const newValue = typeof value === 'function'
-      ? (value as (prev: T) => T)(data)
-      : value;
+    const newValue =
+      typeof value === 'function' ? (value as (prev: T) => T)(data) : value;
 
     setDataState(newValue);
 
     // Save to localStorage immediately
     try {
       const scopedLocalKey = getScopedKey(key);
-      localStorage.setItem(scopedLocalKey, typeof newValue === 'string' ? newValue : JSON.stringify(newValue));
+      localStorage.setItem(
+        scopedLocalKey,
+        typeof newValue === 'string' ? newValue : JSON.stringify(newValue)
+      );
     } catch (e) {
-      console.warn(`[useSupabaseData] Failed to save ${key} to localStorage:`, e);
+      console.warn(
+        `[useSupabaseData] Failed to save ${key} to localStorage:`,
+        e
+      );
     }
 
     // Save to server in background (don't block UI)
-    setData(key, newValue).catch(err =>
+    setData(key, newValue).catch((err) =>
       console.warn(`[useSupabaseData] Failed to save ${key}:`, err)
     );
   };

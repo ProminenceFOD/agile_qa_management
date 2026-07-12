@@ -47,7 +47,12 @@ interface Bug {
 interface Recommendation {
   id: string;
   priority: 'Critical' | 'High' | 'Medium' | 'Low';
-  type: 'Coverage Gap' | 'Risk-Based' | 'Regression' | 'New Feature' | 'Bug Pattern';
+  type:
+    | 'Coverage Gap'
+    | 'Risk-Based'
+    | 'Regression'
+    | 'New Feature'
+    | 'Bug Pattern';
   storyId?: string;
   storyTitle?: string;
   moduleId?: string;
@@ -73,7 +78,9 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
   const { data: stories } = useSupabaseData<Story[]>('aqms_stories', []);
   const { data: modules } = useSupabaseData<Module[]>('aqms_modules', []);
-  const { data: testCases, setData: setTestCases } = useSupabaseData<TestCase[]>('aqms_test_cases', []);
+  const { data: testCases, setData: setTestCases } = useSupabaseData<
+    TestCase[]
+  >('aqms_test_cases', []);
   const { data: bugs } = useSupabaseData<Bug[]>('aqms_bugs', []);
 
   // Auto-deduplicate and migrate legacy test case IDs on load
@@ -85,14 +92,16 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
       const filteredList: TestCase[] = [];
 
       // 1. Remove exact duplicate test cases (same title, description, steps, expectedResults, link context, isDraft status)
-      testCases.forEach(tc => {
+      testCases.forEach((tc) => {
         const stepsStr = (tc.steps || []).join('|');
         const expectedStr = (tc.expectedResults || []).join('|');
         const signature = `${tc.title}::${tc.description}::${stepsStr}::${expectedStr}::${tc.linkedStory || ''}::${tc.moduleId || ''}::${tc.isDraft ? 'draft' : 'approved'}`;
 
         if (seenContents.has(signature)) {
           hasChange = true;
-          console.log(`[Deduplicate] Removing exact duplicate test case: ${tc.id} (${tc.title})`);
+          console.log(
+            `[Deduplicate] Removing exact duplicate test case: ${tc.id} (${tc.title})`
+          );
           return; // Skip/discard
         }
 
@@ -112,38 +121,42 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
       const seenIds = new Set<string>();
 
       // Single pass: Migrate legacy IDs and resolve clashes
-      const updatedList = filteredList.map(tc => {
+      const updatedList = filteredList.map((tc) => {
         let currentId = tc.id;
         let idChanged = false;
-        const isDraft = tc.isDraft || tc.status === 'Draft' || currentId.startsWith('REC-');
+        const isDraft =
+          tc.isDraft || tc.status === 'Draft' || currentId.startsWith('REC-');
 
         // If it is a legacy ID, migrate it to a sequential ID
         if (isLegacyId(currentId)) {
           // Find next available sequential number
           const existingNumbers = [...seenIds]
-            .map(id => {
+            .map((id) => {
               const match = id.match(/^(?:REC-)?TC-(\d+)$/);
               return match ? parseInt(match[1], 10) : 0;
             })
-            .filter(n => n > 0 && n < 1000);
-          
+            .filter((n) => n > 0 && n < 1000);
+
           // Also check all remaining clean IDs in filteredList so we don't collide with them!
           const remainingNumbers = filteredList
-            .map(x => x.id)
-            .filter(id => !isLegacyId(id))
-            .map(id => {
+            .map((x) => x.id)
+            .filter((id) => !isLegacyId(id))
+            .map((id) => {
               const match = id.match(/^(?:REC-)?TC-(\d+)$/);
               return match ? parseInt(match[1], 10) : 0;
             })
-            .filter(n => n > 0 && n < 1000);
+            .filter((n) => n > 0 && n < 1000);
 
           const allNumbers = [...existingNumbers, ...remainingNumbers];
-          const nextNum = allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
+          const nextNum =
+            allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
           const newId = isDraft
             ? `REC-TC-${String(nextNum).padStart(3, '0')}`
             : `TC-${String(nextNum).padStart(3, '0')}`;
-          
-          console.log(`[Migrate] Converting legacy test case ID ${currentId} to sequential ${newId}`);
+
+          console.log(
+            `[Migrate] Converting legacy test case ID ${currentId} to sequential ${newId}`
+          );
           idMigrations.set(currentId, newId);
           currentId = newId;
           idChanged = true;
@@ -153,29 +166,32 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
         // If it clashes with an already seen ID, rename it
         if (seenIds.has(currentId)) {
           const existingNumbers = [...seenIds]
-            .map(id => {
+            .map((id) => {
               const match = id.match(/^(?:REC-)?TC-(\d+)$/);
               return match ? parseInt(match[1], 10) : 0;
             })
-            .filter(n => n > 0 && n < 1000);
+            .filter((n) => n > 0 && n < 1000);
 
           // Also check all remaining clean IDs in filteredList
           const remainingNumbers = filteredList
-            .map(x => x.id)
-            .filter(id => !isLegacyId(id))
-            .map(id => {
+            .map((x) => x.id)
+            .filter((id) => !isLegacyId(id))
+            .map((id) => {
               const match = id.match(/^(?:REC-)?TC-(\d+)$/);
               return match ? parseInt(match[1], 10) : 0;
             })
-            .filter(n => n > 0 && n < 1000);
+            .filter((n) => n > 0 && n < 1000);
 
           const allNumbers = [...existingNumbers, ...remainingNumbers];
-          const nextNum = allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
+          const nextNum =
+            allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
           const newId = isDraft
             ? `REC-TC-${String(nextNum).padStart(3, '0')}`
             : `TC-${String(nextNum).padStart(3, '0')}`;
-          
-          console.log(`[Deduplicate] Renaming clashing test case ID ${currentId} to ${newId}`);
+
+          console.log(
+            `[Deduplicate] Renaming clashing test case ID ${currentId} to ${newId}`
+          );
           if (idChanged) {
             // Update the mapping to the final ID if it was also legacy
             for (const [key, val] of idMigrations.entries()) {
@@ -195,7 +211,7 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
           ...tc,
           id: currentId,
           isDraft: isDraft,
-          status: tc.status === 'Draft' ? 'Not Run' : tc.status
+          status: tc.status === 'Draft' ? 'Not Run' : tc.status,
         };
       });
 
@@ -204,14 +220,16 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
         // If legacy IDs were migrated, update execution history references as well
         if (idMigrations.size > 0) {
-          getData('aqms_test_execution_history').then(executions => {
+          getData('aqms_test_execution_history').then((executions) => {
             if (executions && Array.isArray(executions)) {
               let execChanged = false;
-              const updatedExecutions = executions.map(ex => {
+              const updatedExecutions = executions.map((ex) => {
                 if (idMigrations.has(ex.testCaseId)) {
                   execChanged = true;
                   const newId = idMigrations.get(ex.testCaseId)!;
-                  console.log(`[Migrate] Updating execution history reference: ${ex.testCaseId} -> ${newId}`);
+                  console.log(
+                    `[Migrate] Updating execution history reference: ${ex.testCaseId} -> ${newId}`
+                  );
                   return { ...ex, testCaseId: newId };
                 }
                 return ex;
@@ -239,7 +257,7 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
       };
       const actualTitle = getActualTitle(title).toLowerCase();
 
-      return testCases.some(tc => {
+      return testCases.some((tc) => {
         const titleMatch = tc.title.toLowerCase() === actualTitle;
         if (!titleMatch) return false;
 
@@ -251,20 +269,23 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
     // 1. Coverage Gap Analysis - Stories without tests
     stories
-      .filter(s => !testCases.some(tc => tc.linkedStory === s.id))
-      .forEach(story => {
+      .filter((s) => !testCases.some((tc) => tc.linkedStory === s.id))
+      .forEach((story) => {
         const suggested = [
           `Functional test: Verify ${story.title} basic functionality`,
           `Integration test: Test ${story.title} with dependent components`,
           story.acceptanceCriteria && story.acceptanceCriteria.length > 0
             ? `Acceptance test: Validate all ${story.acceptanceCriteria.length} acceptance criteria`
             : 'Acceptance test: Validate acceptance criteria',
-        ].filter(t => !testExists(t, story.id));
+        ].filter((t) => !testExists(t, story.id));
 
         if (suggested.length > 0) {
           recs.push({
             id: `REC-${recId++}`,
-            priority: story.status === 'In Testing' || story.status === 'Ready for Dev' ? 'High' : 'Medium',
+            priority:
+              story.status === 'In Testing' || story.status === 'Ready for Dev'
+                ? 'High'
+                : 'Medium',
             type: 'Coverage Gap',
             storyId: story.id,
             storyTitle: story.title,
@@ -278,21 +299,25 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
     // 2. Risk-Based Testing - High risk modules without regression tests
     modules
-      .filter(m => m.riskLevel === 'High')
-      .forEach(module => {
-        const moduleStories = stories.filter(s => s.moduleId === module.id);
-        const storyIds = new Set(moduleStories.map(s => s.id));
-        const moduleTestCases = testCases.filter(tc => 
-          tc.moduleId === module.id || (tc.linkedStory && storyIds.has(tc.linkedStory))
+      .filter((m) => m.riskLevel === 'High')
+      .forEach((module) => {
+        const moduleStories = stories.filter((s) => s.moduleId === module.id);
+        const storyIds = new Set(moduleStories.map((s) => s.id));
+        const moduleTestCases = testCases.filter(
+          (tc) =>
+            tc.moduleId === module.id ||
+            (tc.linkedStory && storyIds.has(tc.linkedStory))
         );
-        const regressionTests = moduleTestCases.filter(tc => tc.type === 'Regression');
+        const regressionTests = moduleTestCases.filter(
+          (tc) => tc.type === 'Regression'
+        );
         if (regressionTests.length < 3) {
           const suggested = [
             `Regression suite: Core ${module.name} functionality`,
             `Edge case testing: Boundary conditions in ${module.name}`,
             `Performance test: ${module.name} under load`,
             `Security test: Authentication/authorization in ${module.name}`,
-          ].filter(t => !testExists(t, undefined, module.id));
+          ].filter((t) => !testExists(t, undefined, module.id));
 
           if (suggested.length > 0) {
             recs.push({
@@ -311,21 +336,21 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
       });
 
     // 3. Bug Pattern Analysis - Stories with recurring bugs
-    const storiesWithMultipleBugs = stories.filter(story => {
-      const linkedBugs = bugs.filter(b => b.linkedStory === story.id);
+    const storiesWithMultipleBugs = stories.filter((story) => {
+      const linkedBugs = bugs.filter((b) => b.linkedStory === story.id);
       return linkedBugs.length >= 2;
     });
 
-    storiesWithMultipleBugs.forEach(story => {
-      const storyBugs = bugs.filter(b => b.linkedStory === story.id);
-      const criticalBugs = storyBugs.filter(b => b.severity === 'Critical');
+    storiesWithMultipleBugs.forEach((story) => {
+      const storyBugs = bugs.filter((b) => b.linkedStory === story.id);
+      const criticalBugs = storyBugs.filter((b) => b.severity === 'Critical');
 
       const suggested = [
         `Regression test: Reproduce conditions that caused previous bugs`,
         `Negative testing: Validate error handling and edge cases`,
         `Exploratory testing session: Uncover additional defects`,
         `Code review-based tests: Cover complex logic branches`,
-      ].filter(t => !testExists(t, story.id));
+      ].filter((t) => !testExists(t, story.id));
 
       if (suggested.length > 0) {
         recs.push({
@@ -344,16 +369,18 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
     // 4. Regression Testing - Recent bug fixes need regression tests
     const recentlyResolvedBugs = bugs.filter(
-      b => (b.status === 'Resolved' || b.status === 'Closed') && b.linkedStory
+      (b) => (b.status === 'Resolved' || b.status === 'Closed') && b.linkedStory
     );
 
     const storiesWithResolvedBugs = Array.from(
-      new Set(recentlyResolvedBugs.map(b => b.linkedStory))
-    ).map(storyId => stories.find(s => s.id === storyId)).filter(Boolean) as Story[];
+      new Set(recentlyResolvedBugs.map((b) => b.linkedStory))
+    )
+      .map((storyId) => stories.find((s) => s.id === storyId))
+      .filter(Boolean) as Story[];
 
-    storiesWithResolvedBugs.forEach(story => {
+    storiesWithResolvedBugs.forEach((story) => {
       const hasRegressionTest = testCases.some(
-        tc => tc.linkedStory === story.id && tc.type === 'Regression'
+        (tc) => tc.linkedStory === story.id && tc.type === 'Regression'
       );
 
       if (!hasRegressionTest) {
@@ -361,7 +388,7 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
           'Regression test: Verify bug fix remains stable',
           'Smoke test: Ensure related functionality not broken',
           'Integration test: Validate fix in end-to-end scenarios',
-        ].filter(t => !testExists(t, story.id));
+        ].filter((t) => !testExists(t, story.id));
 
         if (suggested.length > 0) {
           recs.push({
@@ -370,7 +397,8 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
             type: 'Regression',
             storyId: story.id,
             storyTitle: story.title,
-            reason: 'Story had bugs that were resolved. Add regression tests to prevent recurrence.',
+            reason:
+              'Story had bugs that were resolved. Add regression tests to prevent recurrence.',
             suggestedTests: suggested,
             estimatedEffort: '2-3 hours',
             autoGenerated: true,
@@ -381,14 +409,18 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
     // 5. New Feature Testing - Stories in development
     stories
-      .filter(s => s.status === 'In Development' || s.status === 'Ready for Dev')
-      .filter(s => testCases.filter(tc => tc.linkedStory === s.id).length < 2)
-      .forEach(story => {
+      .filter(
+        (s) => s.status === 'In Development' || s.status === 'Ready for Dev'
+      )
+      .filter(
+        (s) => testCases.filter((tc) => tc.linkedStory === s.id).length < 2
+      )
+      .forEach((story) => {
         const suggested = [
           `Unit test: Test individual components of ${story.title}`,
           `Integration test: Verify ${story.title} works with existing features`,
           `UI/UX test: Validate user experience and accessibility`,
-        ].filter(t => !testExists(t, story.id));
+        ].filter((t) => !testExists(t, story.id));
 
         if (suggested.length > 0) {
           recs.push({
@@ -407,20 +439,22 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
     // 6. Smoke Testing - Critical modules need smoke tests
     modules
-      .filter(m => m.businessImpact >= 8)
-      .forEach(module => {
-        const moduleStories = stories.filter(s => s.moduleId === module.id);
-        const storyIds = new Set(moduleStories.map(s => s.id));
-        const moduleTestCases = testCases.filter(tc => 
-          tc.moduleId === module.id || (tc.linkedStory && storyIds.has(tc.linkedStory))
+      .filter((m) => m.businessImpact >= 8)
+      .forEach((module) => {
+        const moduleStories = stories.filter((s) => s.moduleId === module.id);
+        const storyIds = new Set(moduleStories.map((s) => s.id));
+        const moduleTestCases = testCases.filter(
+          (tc) =>
+            tc.moduleId === module.id ||
+            (tc.linkedStory && storyIds.has(tc.linkedStory))
         );
-        const hasSmokeTests = moduleTestCases.some(tc => tc.type === 'Smoke');
+        const hasSmokeTests = moduleTestCases.some((tc) => tc.type === 'Smoke');
         if (!hasSmokeTests) {
           const suggested = [
             `Smoke test: ${module.name} basic health check`,
             `Smoke test: Critical path through ${module.name}`,
             `Smoke test: ${module.name} availability and responsiveness`,
-          ].filter(t => !testExists(t, undefined, module.id));
+          ].filter((t) => !testExists(t, undefined, module.id));
 
           if (suggested.length > 0) {
             recs.push({
@@ -442,39 +476,50 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
   }, [stories, modules, testCases, bugs]);
 
   const filteredRecommendations = useMemo(() => {
-    let filtered = recommendations.filter(r => !dismissedRecs.has(r.id));
+    let filtered = recommendations.filter((r) => !dismissedRecs.has(r.id));
 
     if (filterPriority !== 'all') {
-      filtered = filtered.filter(r => r.priority === filterPriority);
+      filtered = filtered.filter((r) => r.priority === filterPriority);
     }
 
     if (filterType !== 'all') {
-      filtered = filtered.filter(r => r.type === filterType);
+      filtered = filtered.filter((r) => r.type === filterType);
     }
 
     if (showAutoOnly) {
-      filtered = filtered.filter(r => r.autoGenerated);
+      filtered = filtered.filter((r) => r.autoGenerated);
     }
 
     return filtered.sort((a, b) => {
       const priorityOrder = { Critical: 0, High: 1, Medium: 2, Low: 3 };
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
-  }, [recommendations, filterPriority, filterType, showAutoOnly, dismissedRecs]);
+  }, [
+    recommendations,
+    filterPriority,
+    filterType,
+    showAutoOnly,
+    dismissedRecs,
+  ]);
 
   const metrics = useMemo(() => {
     return {
       total: recommendations.length,
-      critical: recommendations.filter(r => r.priority === 'Critical').length,
-      high: recommendations.filter(r => r.priority === 'High').length,
-      medium: recommendations.filter(r => r.priority === 'Medium').length,
-      low: recommendations.filter(r => r.priority === 'Low').length,
+      critical: recommendations.filter((r) => r.priority === 'Critical').length,
+      high: recommendations.filter((r) => r.priority === 'High').length,
+      medium: recommendations.filter((r) => r.priority === 'Medium').length,
+      low: recommendations.filter((r) => r.priority === 'Low').length,
       byType: {
-        coverageGap: recommendations.filter(r => r.type === 'Coverage Gap').length,
-        riskBased: recommendations.filter(r => r.type === 'Risk-Based').length,
-        regression: recommendations.filter(r => r.type === 'Regression').length,
-        newFeature: recommendations.filter(r => r.type === 'New Feature').length,
-        bugPattern: recommendations.filter(r => r.type === 'Bug Pattern').length,
+        coverageGap: recommendations.filter((r) => r.type === 'Coverage Gap')
+          .length,
+        riskBased: recommendations.filter((r) => r.type === 'Risk-Based')
+          .length,
+        regression: recommendations.filter((r) => r.type === 'Regression')
+          .length,
+        newFeature: recommendations.filter((r) => r.type === 'New Feature')
+          .length,
+        bugPattern: recommendations.filter((r) => r.type === 'Bug Pattern')
+          .length,
       },
     };
   }, [recommendations]);
@@ -514,18 +559,19 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
   const handlePreviewTestCases = (rec: Recommendation) => {
     // Get highest existing test case number
     const existingNumbers = testCases
-      .map(tc => {
+      .map((tc) => {
         const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
         return match ? parseInt(match[1]) : 0;
       })
-      .filter(n => n > 0 && n < 1000000);
+      .filter((n) => n > 0 && n < 1000000);
 
-    const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+    const nextNumber =
+      existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
     // Resolve moduleId from recommendation or linked story
     let resolvedModuleId = rec.moduleId;
     if (!resolvedModuleId && rec.storyId) {
-      const linkedStory = stories.find(s => s.id === rec.storyId);
+      const linkedStory = stories.find((s) => s.id === rec.storyId);
       if (linkedStory) {
         resolvedModuleId = linkedStory.moduleId;
       }
@@ -537,7 +583,8 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
       // Parse test suggestion to extract details
       const [testTypePrefix, ...titleParts] = test.split(':');
-      const actualTitle = titleParts.length > 0 ? titleParts.join(':').trim() : test;
+      const actualTitle =
+        titleParts.length > 0 ? titleParts.join(':').trim() : test;
 
       // Generate basic steps and expected results from the test title
       const getSmartStepsAndExpected = (title: string) => {
@@ -546,90 +593,120 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
           'Navigate to the relevant system module',
           'Execute the action: ' + title,
           'Verify outcomes against system validation guidelines',
-          'Document results in QA Execution Log'
+          'Document results in QA Execution Log',
         ];
         let expected = [
           'Module loads successfully',
           'Action completed without errors',
-          'System state remains consistent and stable'
+          'System state remains consistent and stable',
         ];
 
-        if (lowerTitle.includes('login') || lowerTitle.includes('auth') || lowerTitle.includes('credential')) {
+        if (
+          lowerTitle.includes('login') ||
+          lowerTitle.includes('auth') ||
+          lowerTitle.includes('credential')
+        ) {
           steps = [
             'Navigate to login screen',
             'Enter credentials for registered user profile',
             'Click the login submission action',
-            'Validate access tokens are securely written to session cookies'
+            'Validate access tokens are securely written to session cookies',
           ];
           expected = [
             'Redirected to user homepage/dashboard successfully',
             'Session state initialized without latency',
-            'Audit log records authentication event'
+            'Audit log records authentication event',
           ];
-        } else if (lowerTitle.includes('payment') || lowerTitle.includes('stripe') || lowerTitle.includes('checkout')) {
+        } else if (
+          lowerTitle.includes('payment') ||
+          lowerTitle.includes('stripe') ||
+          lowerTitle.includes('checkout')
+        ) {
           steps = [
             'Add test inventory item to checkout basket',
             'Select Credit Card payment option',
             'Submit Stripe test card parameters',
-            'Confirm payment request triggers callback handler'
+            'Confirm payment request triggers callback handler',
           ];
           expected = [
             'Transaction processed successfully',
             'Unique payment receipt reference generated',
-            'Customer dashboard updates status to Paid'
+            'Customer dashboard updates status to Paid',
           ];
-        } else if (lowerTitle.includes('performance') || lowerTitle.includes('load') || lowerTitle.includes('latency')) {
+        } else if (
+          lowerTitle.includes('performance') ||
+          lowerTitle.includes('load') ||
+          lowerTitle.includes('latency')
+        ) {
           steps = [
             'Configure JMeter/K6 test harness with concurrent threads',
             'Trigger peak traffic simulation for 10 minutes',
             'Monitor CPU load, memory thresholds, and database connection pools',
-            'Verify server responses under high workload'
+            'Verify server responses under high workload',
           ];
           expected = [
             'Average response latency stays under 1.5 seconds',
             'No server timeout responses (0% error rate)',
-            'System auto-scales resources gracefully'
+            'System auto-scales resources gracefully',
           ];
-        } else if (lowerTitle.includes('security') || lowerTitle.includes('permission')) {
+        } else if (
+          lowerTitle.includes('security') ||
+          lowerTitle.includes('permission')
+        ) {
           steps = [
             'Login with a restricted tester profile credentials',
             'Attempt to directly navigate to Administrator/Reports views',
             'Perform injection payload testing in forms inputs',
-            'Check that invalid session tokens block API fetch request'
+            'Check that invalid session tokens block API fetch request',
           ];
           expected = [
             'Denied access response is displayed (HTTP 403 Forbidden)',
             'Inputs reject malformed payloads without database leakage',
-            'Unauthorized attempt is recorded in security audit logs'
+            'Unauthorized attempt is recorded in security audit logs',
           ];
-        } else if (lowerTitle.includes('smoke') || lowerTitle.includes('health') || lowerTitle.includes('availability')) {
+        } else if (
+          lowerTitle.includes('smoke') ||
+          lowerTitle.includes('health') ||
+          lowerTitle.includes('availability')
+        ) {
           steps = [
             'Verify main landing page availability and responsiveness',
             'Check database ping status and external integration connectivity',
-            'Validate session cache is read/write operational'
+            'Validate session cache is read/write operational',
           ];
           expected = [
             'All core pings return green (OK)',
             'Main dashboard widgets load within normal thresholds',
-            'Critical service paths ready for validation'
+            'Critical service paths ready for validation',
           ];
         }
 
         return { steps, expected };
       };
 
-      const { steps, expected: expectedResults } = getSmartStepsAndExpected(actualTitle);
+      const { steps, expected: expectedResults } =
+        getSmartStepsAndExpected(actualTitle);
 
       return {
         id: testId,
         title: actualTitle,
         description: `AI-generated test case from ${rec.type} recommendation (${rec.id}). Review and update as needed.`,
-        type: rec.type === 'Regression' ? 'Regression' : rec.type === 'Risk-Based' ? 'Integration' : 'Functional',
+        type:
+          rec.type === 'Regression'
+            ? 'Regression'
+            : rec.type === 'Risk-Based'
+              ? 'Integration'
+              : 'Functional',
         steps,
         expectedResults,
         linkedStory: rec.storyId,
         status: 'Not Run' as const, // Valid initial status
-        priority: rec.priority === 'Critical' || rec.priority === 'High' ? 'High' : rec.priority === 'Medium' ? 'Medium' : 'Low',
+        priority:
+          rec.priority === 'Critical' || rec.priority === 'High'
+            ? 'High'
+            : rec.priority === 'Medium'
+              ? 'Medium'
+              : 'Low',
         moduleId: resolvedModuleId,
         isDraft: true,
       };
@@ -644,9 +721,16 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
     setShowPreviewModal(false);
     toast.success(
       <div>
-        <div className="font-semibold">Suggested {previewTestCases.length} test cases</div>
-        <div className="text-xs mt-1">IDs: {previewTestCases.map(tc => tc.id).join(', ')}</div>
-        <div className="text-xs text-purple-200 mt-1">💡 Review and Approve them in the Test Cases tab to assign actual TC-XXX IDs.</div>
+        <div className="font-semibold">
+          Suggested {previewTestCases.length} test cases
+        </div>
+        <div className="text-xs mt-1">
+          IDs: {previewTestCases.map((tc) => tc.id).join(', ')}
+        </div>
+        <div className="text-xs text-purple-200 mt-1">
+          💡 Review and Approve them in the Test Cases tab to assign actual
+          TC-XXX IDs.
+        </div>
       </div>,
       { duration: 6000 }
     );
@@ -654,7 +738,7 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
   };
 
   const handleViewDetails = (recId: string) => {
-    setExpandedRecs(prev => {
+    setExpandedRecs((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(recId)) {
         newSet.delete(recId);
@@ -666,7 +750,7 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
   };
 
   const handleDismiss = (recId: string) => {
-    setDismissedRecs(prev => new Set([...prev, recId]));
+    setDismissedRecs((prev) => new Set([...prev, recId]));
     toast.success('Recommendation dismissed');
   };
 
@@ -674,54 +758,89 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
     <div className="w-full max-w-7xl mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-3xl mb-2">AI-Powered Test Recommendations</h1>
-        <p className="text-gray-600">Intelligent test prioritization based on risk, coverage gaps, and defect patterns</p>
+        <p className="text-gray-600">
+          Intelligent test prioritization based on risk, coverage gaps, and
+          defect patterns
+        </p>
       </div>
 
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4">
           <div className="text-2xl mb-1 dark:text-white">{metrics.total}</div>
-          <div className="text-sm text-gray-600 dark:text-gray-300">Total Recommendations</div>
+          <div className="text-sm text-gray-600 dark:text-gray-300">
+            Total Recommendations
+          </div>
         </div>
         <div className="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg p-4">
-          <div className="text-2xl mb-1 dark:text-white">{metrics.critical}</div>
-          <div className="text-sm text-gray-600 dark:text-red-200">Critical Priority</div>
+          <div className="text-2xl mb-1 dark:text-white">
+            {metrics.critical}
+          </div>
+          <div className="text-sm text-gray-600 dark:text-red-200">
+            Critical Priority
+          </div>
         </div>
         <div className="bg-orange-50 dark:bg-orange-900 border border-orange-200 dark:border-orange-700 rounded-lg p-4">
           <div className="text-2xl mb-1 dark:text-white">{metrics.high}</div>
-          <div className="text-sm text-gray-600 dark:text-orange-200">High Priority</div>
+          <div className="text-sm text-gray-600 dark:text-orange-200">
+            High Priority
+          </div>
         </div>
         <div className="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
           <div className="text-2xl mb-1 dark:text-white">{metrics.medium}</div>
-          <div className="text-sm text-gray-600 dark:text-yellow-200">Medium Priority</div>
+          <div className="text-sm text-gray-600 dark:text-yellow-200">
+            Medium Priority
+          </div>
         </div>
         <div className="bg-indigo-50 dark:bg-indigo-900 border border-indigo-200 dark:border-indigo-700 rounded-lg p-4">
           <div className="text-2xl mb-1 dark:text-white">{metrics.low}</div>
-          <div className="text-sm text-gray-600 dark:text-indigo-200">Low Priority</div>
+          <div className="text-sm text-gray-600 dark:text-indigo-200">
+            Low Priority
+          </div>
         </div>
       </div>
 
       {/* Type Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <div className="bg-purple-50 dark:bg-purple-900 border border-purple-200 dark:border-purple-700 rounded-lg p-3">
-          <div className="text-lg mb-1 dark:text-white">{metrics.byType.coverageGap}</div>
-          <div className="text-xs text-gray-600 dark:text-purple-200">Coverage Gaps</div>
+          <div className="text-lg mb-1 dark:text-white">
+            {metrics.byType.coverageGap}
+          </div>
+          <div className="text-xs text-gray-600 dark:text-purple-200">
+            Coverage Gaps
+          </div>
         </div>
         <div className="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg p-3">
-          <div className="text-lg mb-1 dark:text-white">{metrics.byType.riskBased}</div>
-          <div className="text-xs text-gray-600 dark:text-red-200">Risk-Based</div>
+          <div className="text-lg mb-1 dark:text-white">
+            {metrics.byType.riskBased}
+          </div>
+          <div className="text-xs text-gray-600 dark:text-red-200">
+            Risk-Based
+          </div>
         </div>
         <div className="bg-orange-50 dark:bg-orange-900 border border-orange-200 dark:border-orange-700 rounded-lg p-3">
-          <div className="text-lg mb-1 dark:text-white">{metrics.byType.regression}</div>
-          <div className="text-xs text-gray-600 dark:text-orange-200">Regression</div>
+          <div className="text-lg mb-1 dark:text-white">
+            {metrics.byType.regression}
+          </div>
+          <div className="text-xs text-gray-600 dark:text-orange-200">
+            Regression
+          </div>
         </div>
         <div className="bg-indigo-50 dark:bg-indigo-900 border border-indigo-200 dark:border-indigo-700 rounded-lg p-3">
-          <div className="text-lg mb-1 dark:text-white">{metrics.byType.newFeature}</div>
-          <div className="text-xs text-gray-600 dark:text-indigo-200">New Feature</div>
+          <div className="text-lg mb-1 dark:text-white">
+            {metrics.byType.newFeature}
+          </div>
+          <div className="text-xs text-gray-600 dark:text-indigo-200">
+            New Feature
+          </div>
         </div>
         <div className="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg p-3">
-          <div className="text-lg mb-1 dark:text-white">{metrics.byType.bugPattern}</div>
-          <div className="text-xs text-gray-600 dark:text-yellow-200">Bug Patterns</div>
+          <div className="text-lg mb-1 dark:text-white">
+            {metrics.byType.bugPattern}
+          </div>
+          <div className="text-xs text-gray-600 dark:text-yellow-200">
+            Bug Patterns
+          </div>
         </div>
       </div>
 
@@ -763,22 +882,32 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
         </label>
 
         <div className="ml-auto text-sm text-gray-600 dark:text-gray-400">
-          Showing {filteredRecommendations.length} of {recommendations.length} recommendations
+          Showing {filteredRecommendations.length} of {recommendations.length}{' '}
+          recommendations
         </div>
       </div>
 
       {/* Recommendations List */}
       <div className="space-y-4">
-        {filteredRecommendations.map(rec => (
-          <div key={rec.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+        {filteredRecommendations.map((rec) => (
+          <div
+            key={rec.id}
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+          >
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-lg font-medium text-gray-900 dark:text-white">{rec.id}</span>
-                  <span className={`px-3 py-1 rounded-full text-xs border ${getPriorityColor(rec.priority)}`}>
+                  <span className="text-lg font-medium text-gray-900 dark:text-white">
+                    {rec.id}
+                  </span>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs border ${getPriorityColor(rec.priority)}`}
+                  >
                     {rec.priority} Priority
                   </span>
-                  <span className={`px-3 py-1 rounded-full text-xs ${getTypeColor(rec.type)}`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs ${getTypeColor(rec.type)}`}
+                  >
                     {rec.type}
                   </span>
                   {rec.autoGenerated && (
@@ -811,7 +940,9 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
                     <span> - {rec.moduleName}</span>
                   </div>
                 )}
-                <div className="text-sm text-gray-700 dark:text-gray-300 mb-3">{rec.reason}</div>
+                <div className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+                  {rec.reason}
+                </div>
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400 text-right">
                 <div className="mb-1">Estimated Effort:</div>
@@ -820,11 +951,18 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
             </div>
 
             <div className="bg-indigo-50 dark:bg-indigo-900 border border-indigo-200 dark:border-indigo-700 rounded p-4">
-              <h4 className="text-sm font-medium text-gray-800 dark:text-indigo-100 mb-2">💡 Suggested Test Cases:</h4>
+              <h4 className="text-sm font-medium text-gray-800 dark:text-indigo-100 mb-2">
+                💡 Suggested Test Cases:
+              </h4>
               <ul className="space-y-2">
                 {rec.suggestedTests.map((test, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm text-gray-700 dark:text-indigo-200">
-                    <span className="text-indigo-600 dark:text-indigo-400 flex-shrink-0">•</span>
+                  <li
+                    key={index}
+                    className="flex items-start gap-2 text-sm text-gray-700 dark:text-indigo-200"
+                  >
+                    <span className="text-indigo-600 dark:text-indigo-400 flex-shrink-0">
+                      •
+                    </span>
                     <span>{test}</span>
                   </li>
                 ))}
@@ -858,31 +996,53 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
             {/* Expanded Details */}
             {expandedRecs.has(rec.id) && (
               <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Additional Details</h4>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                  Additional Details
+                </h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Recommendation ID:</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{rec.id}</span>
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Recommendation ID:
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {rec.id}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Auto-Generated:</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{rec.autoGenerated ? 'Yes' : 'No'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Auto-Generated:
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {rec.autoGenerated ? 'Yes' : 'No'}
+                    </span>
                   </div>
                   {rec.storyId && (
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Linked Story:</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{rec.storyId}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Linked Story:
+                      </span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {rec.storyId}
+                      </span>
                     </div>
                   )}
                   {rec.moduleId && (
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Linked Module:</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{rec.moduleId}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Linked Module:
+                      </span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {rec.moduleId}
+                      </span>
                     </div>
                   )}
                   <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
-                    <span className="text-gray-600 dark:text-gray-400 block mb-1">Test Cases to Create:</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{rec.suggestedTests.length} test cases</span>
+                    <span className="text-gray-600 dark:text-gray-400 block mb-1">
+                      Test Cases to Create:
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {rec.suggestedTests.length} test cases
+                    </span>
                   </div>
                 </div>
               </div>
@@ -894,7 +1054,9 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
       {filteredRecommendations.length === 0 && (
         <div className="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg p-12 text-center">
           <span className="text-5xl mb-3 block">✅</span>
-          <h3 className="text-xl text-gray-900 dark:text-white mb-2">No Recommendations Found</h3>
+          <h3 className="text-xl text-gray-900 dark:text-white mb-2">
+            No Recommendations Found
+          </h3>
           <p className="text-gray-600 dark:text-gray-300">
             {filterPriority !== 'all' || filterType !== 'all'
               ? 'Try adjusting your filters to see more recommendations.'
@@ -905,19 +1067,36 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
       {/* How It Works */}
       <div className="mt-8 bg-indigo-50 dark:bg-indigo-900 border border-indigo-200 dark:border-indigo-700 rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">🤖 How AI Recommendations Work</h3>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+          🤖 How AI Recommendations Work
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-700 dark:text-indigo-200">
           <div>
-            <h4 className="font-medium text-gray-900 dark:text-indigo-100 mb-2">Coverage Gap Analysis</h4>
-            <p>Identifies stories without test cases and prioritizes based on development status and business impact.</p>
+            <h4 className="font-medium text-gray-900 dark:text-indigo-100 mb-2">
+              Coverage Gap Analysis
+            </h4>
+            <p>
+              Identifies stories without test cases and prioritizes based on
+              development status and business impact.
+            </p>
           </div>
           <div>
-            <h4 className="font-medium text-gray-900 dark:text-indigo-100 mb-2">Risk-Based Prioritization</h4>
-            <p>Uses historical defect frequency and business impact scores to recommend tests for high-risk modules first.</p>
+            <h4 className="font-medium text-gray-900 dark:text-indigo-100 mb-2">
+              Risk-Based Prioritization
+            </h4>
+            <p>
+              Uses historical defect frequency and business impact scores to
+              recommend tests for high-risk modules first.
+            </p>
           </div>
           <div>
-            <h4 className="font-medium text-gray-900 dark:text-indigo-100 mb-2">Bug Pattern Detection</h4>
-            <p>Analyzes defect history to identify areas with recurring bugs and suggests targeted regression tests.</p>
+            <h4 className="font-medium text-gray-900 dark:text-indigo-100 mb-2">
+              Bug Pattern Detection
+            </h4>
+            <p>
+              Analyzes defect history to identify areas with recurring bugs and
+              suggests targeted regression tests.
+            </p>
           </div>
         </div>
       </div>
@@ -925,27 +1104,48 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
       {/* Preview Modal */}
       {showPreviewModal && (
         <>
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setShowPreviewModal(false)}></div>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-50"
+            onClick={() => setShowPreviewModal(false)}
+          ></div>
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
               <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Preview Test Cases</h2>
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  Preview Test Cases
+                </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Review AI-generated test cases before creation. You can edit them later in the Test Cases tab.
+                  Review AI-generated test cases before creation. You can edit
+                  them later in the Test Cases tab.
                 </p>
               </div>
 
               <div className="flex-1 overflow-y-auto p-6">
                 <div className="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4 mb-4">
                   <div className="flex items-start gap-2">
-                    <span className="text-yellow-600 dark:text-yellow-400 text-xl">⚠️</span>
+                    <span className="text-yellow-600 dark:text-yellow-400 text-xl">
+                      ⚠️
+                    </span>
                     <div className="text-sm text-yellow-800 dark:text-yellow-200">
-                      <div className="font-semibold mb-1">Important: Review Required</div>
+                      <div className="font-semibold mb-1">
+                        Important: Review Required
+                      </div>
                       <ul className="list-disc list-inside space-y-1">
-                        <li>Test cases will be created with status: <strong>Not Run</strong></li>
-                        <li>IDs are auto-generated sequentially (TC-001, TC-002, etc.)</li>
-                        <li>Steps and expected results are placeholder templates</li>
-                        <li><strong>Edit each test case</strong> in the Test Cases tab before execution</li>
+                        <li>
+                          Test cases will be created with status:{' '}
+                          <strong>Not Run</strong>
+                        </li>
+                        <li>
+                          IDs are auto-generated sequentially (TC-001, TC-002,
+                          etc.)
+                        </li>
+                        <li>
+                          Steps and expected results are placeholder templates
+                        </li>
+                        <li>
+                          <strong>Edit each test case</strong> in the Test Cases
+                          tab before execution
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -953,16 +1153,25 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
                 <div className="space-y-4">
                   {previewTestCases.map((tc) => (
-                    <div key={tc.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
+                    <div
+                      key={tc.id}
+                      className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900"
+                    >
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-mono text-sm font-semibold text-indigo-600 dark:text-indigo-400">{tc.id}</span>
-                            <span className={`px-2 py-0.5 rounded text-xs ${
-                              tc.priority === 'High' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                              tc.priority === 'Medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                              'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-                            }`}>
+                            <span className="font-mono text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+                              {tc.id}
+                            </span>
+                            <span
+                              className={`px-2 py-0.5 rounded text-xs ${
+                                tc.priority === 'High'
+                                  ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                                  : tc.priority === 'Medium'
+                                    ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                                    : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+                              }`}
+                            >
                               {tc.priority}
                             </span>
                             <span className="px-2 py-0.5 bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 rounded text-xs">
@@ -972,8 +1181,12 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
                               Not Run
                             </span>
                           </div>
-                          <h4 className="font-medium text-gray-900 dark:text-white">{tc.title}</h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{tc.description}</p>
+                          <h4 className="font-medium text-gray-900 dark:text-white">
+                            {tc.title}
+                          </h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            {tc.description}
+                          </p>
                           {tc.linkedStory && (
                             <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                               Linked to: {tc.linkedStory}
@@ -984,7 +1197,9 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div>
-                          <div className="font-medium text-gray-700 dark:text-gray-300 mb-1">Steps ({tc.steps.length})</div>
+                          <div className="font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Steps ({tc.steps.length})
+                          </div>
                           <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-0.5 list-disc list-inside">
                             {tc.steps.map((step, idx) => (
                               <li key={idx}>{step}</li>
@@ -992,7 +1207,9 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
                           </ul>
                         </div>
                         <div>
-                          <div className="font-medium text-gray-700 dark:text-gray-300 mb-1">Expected Results ({tc.expectedResults.length})</div>
+                          <div className="font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Expected Results ({tc.expectedResults.length})
+                          </div>
                           <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-0.5 list-disc list-inside">
                             {tc.expectedResults.map((result, idx) => (
                               <li key={idx}>{result}</li>
@@ -1007,7 +1224,8 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
 
               <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {previewTestCases.length} test case{previewTestCases.length !== 1 ? 's' : ''} ready to create
+                  {previewTestCases.length} test case
+                  {previewTestCases.length !== 1 ? 's' : ''} ready to create
                 </div>
                 <div className="flex gap-3">
                   <button
@@ -1020,7 +1238,8 @@ export function TestRecommendations({ onNavigate }: TestRecommendationsProps) {
                     onClick={handleConfirmCreate}
                     className="px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
                   >
-                    Create {previewTestCases.length} Test Case{previewTestCases.length !== 1 ? 's' : ''}
+                    Create {previewTestCases.length} Test Case
+                    {previewTestCases.length !== 1 ? 's' : ''}
                   </button>
                 </div>
               </div>

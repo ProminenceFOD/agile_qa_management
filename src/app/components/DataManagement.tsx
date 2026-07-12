@@ -6,7 +6,8 @@ import { getData, setData } from '../utils/supabaseStorage';
 import { toast } from 'sonner';
 
 export function DataManagement() {
-  const { modalState, showAlert, showSuccess, showConfirm, closeModal } = useModal();
+  const { modalState, showAlert, showSuccess, showConfirm, closeModal } =
+    useModal();
   const [importing, setImporting] = useState(false);
   const [importingCSV, setImportingCSV] = useState(false);
   const [dataCounts, setDataCounts] = useState({
@@ -15,24 +16,25 @@ export function DataManagement() {
     testCases: 0,
     users: 0,
     executionHistory: 0,
-    totalSize: '0.00'
+    totalSize: '0.00',
   });
 
   useEffect(() => {
     const loadDataCounts = async () => {
-      const stories = await getData('aqms_stories') || [];
-      const bugs = await getData('aqms_bugs') || [];
-      const testCases = await getData('aqms_test_cases') || [];
-      const users = await getData('aqms_users') || [];
-      const executionHistory = await getData('aqms_test_execution_history') || [];
+      const stories = (await getData('aqms_stories')) || [];
+      const bugs = (await getData('aqms_bugs')) || [];
+      const testCases = (await getData('aqms_test_cases')) || [];
+      const users = (await getData('aqms_users')) || [];
+      const executionHistory =
+        (await getData('aqms_test_execution_history')) || [];
 
-      const totalSize = (
-        JSON.stringify(stories).length +
-        JSON.stringify(bugs).length +
-        JSON.stringify(testCases).length +
-        JSON.stringify(users).length +
-        JSON.stringify(executionHistory).length
-      ) / 1024; // Convert to KB
+      const totalSize =
+        (JSON.stringify(stories).length +
+          JSON.stringify(bugs).length +
+          JSON.stringify(testCases).length +
+          JSON.stringify(users).length +
+          JSON.stringify(executionHistory).length) /
+        1024; // Convert to KB
 
       setDataCounts({
         stories: stories.length,
@@ -40,7 +42,7 @@ export function DataManagement() {
         testCases: testCases.length,
         users: users.length,
         executionHistory: executionHistory.length,
-        totalSize: totalSize.toFixed(2)
+        totalSize: totalSize.toFixed(2),
       });
     };
 
@@ -55,7 +57,9 @@ export function DataManagement() {
       bugs: JSON.stringify(await getData('aqms_bugs')),
       testCases: JSON.stringify(await getData('aqms_test_cases')),
       users: JSON.stringify(await getData('aqms_users')),
-      executionHistory: JSON.stringify(await getData('aqms_test_execution_history')),
+      executionHistory: JSON.stringify(
+        await getData('aqms_test_execution_history')
+      ),
     };
 
     const dataStr = JSON.stringify(data, null, 2);
@@ -93,11 +97,17 @@ export function DataManagement() {
             }
 
             // Import data to Supabase
-            if (data.stories) await setData('aqms_stories', JSON.parse(data.stories));
+            if (data.stories)
+              await setData('aqms_stories', JSON.parse(data.stories));
             if (data.bugs) await setData('aqms_bugs', JSON.parse(data.bugs));
-            if (data.testCases) await setData('aqms_test_cases', JSON.parse(data.testCases));
+            if (data.testCases)
+              await setData('aqms_test_cases', JSON.parse(data.testCases));
             if (data.users) await setData('aqms_users', JSON.parse(data.users));
-            if (data.executionHistory) await setData('aqms_test_execution_history', JSON.parse(data.executionHistory));
+            if (data.executionHistory)
+              await setData(
+                'aqms_test_execution_history',
+                JSON.parse(data.executionHistory)
+              );
 
             showSuccess('Data imported successfully! Please refresh the page.');
             setImporting(false);
@@ -141,13 +151,13 @@ export function DataManagement() {
   };
 
   const parseCSV = (csvText: string) => {
-    const lines = csvText.split('\n').filter(line => line.trim());
-    return lines.map(line => {
+    const lines = csvText.split('\n').filter((line) => line.trim());
+    return lines.map((line) => {
       const values: string[] = [];
       let current = '';
       let inQuotes = false;
 
-      for (let char of line) {
+      for (const char of line) {
         if (char === '"') {
           inQuotes = !inQuotes;
         } else if (char === ',' && !inQuotes) {
@@ -178,10 +188,10 @@ export function DataManagement() {
           return;
         }
 
-        const headers = rows[0].map(h => h.toLowerCase());
+        const headers = rows[0].map((h) => h.toLowerCase());
         const data = rows.slice(1);
-        const existingBugs = await getData('aqms_bugs') || [];
-        const activeModules = await getData('aqms_modules') || [];
+        const existingBugs = (await getData('aqms_bugs')) || [];
+        const activeModules = (await getData('aqms_modules')) || [];
         const newBugs: any[] = [];
 
         data.forEach((row, i) => {
@@ -190,18 +200,21 @@ export function DataManagement() {
           if (!title) return;
 
           const moduleIdx = headers.indexOf('module');
-          const moduleVal = moduleIdx !== -1 && row[moduleIdx] ? row[moduleIdx].trim() : '';
+          const moduleVal =
+            moduleIdx !== -1 && row[moduleIdx] ? row[moduleIdx].trim() : '';
 
-          let matchedModule = activeModules.find((m: any) => 
-            m.id.toLowerCase() === moduleVal.toLowerCase() ||
-            m.name.toLowerCase() === moduleVal.toLowerCase()
+          let matchedModule = activeModules.find(
+            (m: any) =>
+              m.id.toLowerCase() === moduleVal.toLowerCase() ||
+              m.name.toLowerCase() === moduleVal.toLowerCase()
           );
 
           // Substring / fuzzy match fallback
           if (!matchedModule && moduleVal) {
-            matchedModule = activeModules.find((m: any) => 
-              m.name.toLowerCase().includes(moduleVal.toLowerCase()) ||
-              moduleVal.toLowerCase().includes(m.name.toLowerCase())
+            matchedModule = activeModules.find(
+              (m: any) =>
+                m.name.toLowerCase().includes(moduleVal.toLowerCase()) ||
+                moduleVal.toLowerCase().includes(m.name.toLowerCase())
             );
           }
 
@@ -209,16 +222,20 @@ export function DataManagement() {
             id: row[headers.indexOf('bug_id')] || `BUG-${Date.now()}-${i}`,
             title,
             description: 'Imported from CSV',
-            severity: ['Critical','High','Medium','Low'].includes(severity) ? severity : 'Medium',
+            severity: ['Critical', 'High', 'Medium', 'Low'].includes(severity)
+              ? severity
+              : 'Medium',
             status: row[headers.indexOf('status')] || 'Open',
             linkedStory: row[headers.indexOf('linked_story')],
             foundBy: 'CSV Import',
-            createdAt: new Date(row[headers.indexOf('created_date')] || Date.now()),
+            createdAt: new Date(
+              row[headers.indexOf('created_date')] || Date.now()
+            ),
             steps: ['Imported from historical data'],
             expectedBehavior: 'See historical records',
             actualBehavior: 'See historical records',
             environment: moduleVal || 'Unknown',
-            moduleId: matchedModule ? matchedModule.id : undefined
+            moduleId: matchedModule ? matchedModule.id : undefined,
           });
         });
 
@@ -266,7 +283,9 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
     <div className="w-full max-w-4xl mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-3xl mb-2">Data Management</h1>
-        <p className="text-gray-600">Export, import, and manage your AQMS data</p>
+        <p className="text-gray-600">
+          Export, import, and manage your AQMS data
+        </p>
       </div>
 
       {/* Data Statistics */}
@@ -277,7 +296,9 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
         </div>
         <div className="bg-indigo-50 rounded-lg shadow-sm border border-indigo-200 p-6">
           <div className="text-sm text-gray-600 mb-1">Stories</div>
-          <div className="text-3xl text-indigo-600 mb-1">{dataCounts.stories}</div>
+          <div className="text-3xl text-indigo-600 mb-1">
+            {dataCounts.stories}
+          </div>
         </div>
         <div className="bg-red-50 rounded-lg shadow-sm border border-red-200 p-6">
           <div className="text-sm text-gray-600 mb-1">Bugs</div>
@@ -285,15 +306,21 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
         </div>
         <div className="bg-green-50 rounded-lg shadow-sm border border-green-200 p-6">
           <div className="text-sm text-gray-600 mb-1">Test Cases</div>
-          <div className="text-3xl text-green-600 mb-1">{dataCounts.testCases}</div>
+          <div className="text-3xl text-green-600 mb-1">
+            {dataCounts.testCases}
+          </div>
         </div>
         <div className="bg-purple-50 rounded-lg shadow-sm border border-purple-200 p-6">
           <div className="text-sm text-gray-600 mb-1">Users</div>
-          <div className="text-3xl text-purple-600 mb-1">{dataCounts.users}</div>
+          <div className="text-3xl text-purple-600 mb-1">
+            {dataCounts.users}
+          </div>
         </div>
         <div className="bg-orange-50 rounded-lg shadow-sm border border-orange-200 p-6">
           <div className="text-sm text-gray-600 mb-1">Test Executions</div>
-          <div className="text-3xl text-orange-600 mb-1">{dataCounts.executionHistory}</div>
+          <div className="text-3xl text-orange-600 mb-1">
+            {dataCounts.executionHistory}
+          </div>
         </div>
       </div>
 
@@ -301,7 +328,8 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
         <h2 className="text-xl mb-4">Export Data</h2>
         <p className="text-gray-600 mb-4">
-          Download a complete backup of all your AQMS data including stories, bugs, test cases, users, and execution history.
+          Download a complete backup of all your AQMS data including stories,
+          bugs, test cases, users, and execution history.
         </p>
         <button
           onClick={handleExportData}
@@ -315,15 +343,19 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
         <h2 className="text-xl mb-4">Import Data</h2>
         <p className="text-gray-600 mb-4">
-          Restore data from a previous export. This will overwrite all existing data.
+          Restore data from a previous export. This will overwrite all existing
+          data.
         </p>
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
           <div className="flex items-start gap-2">
             <span className="text-yellow-600 text-xl">⚠️</span>
             <div>
-              <h3 className="text-sm font-medium text-yellow-900 mb-1">Warning</h3>
+              <h3 className="text-sm font-medium text-yellow-900 mb-1">
+                Warning
+              </h3>
               <p className="text-sm text-yellow-800">
-                Importing data will replace all current data. Make sure to export your current data first if you want to keep it.
+                Importing data will replace all current data. Make sure to
+                export your current data first if you want to keep it.
               </p>
             </div>
           </div>
@@ -344,7 +376,8 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
         <h2 className="text-xl mb-4">Import Historical Data (CSV)</h2>
         <p className="text-gray-600 mb-4">
-          Import historical defect records from CSV for risk analysis and trend identification.
+          Import historical defect records from CSV for risk analysis and trend
+          identification.
         </p>
 
         <div className="border border-gray-200 rounded-lg p-4">
@@ -353,7 +386,8 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
             Defect Records
           </h3>
           <p className="text-sm text-gray-600 mb-3">
-            Import historical bug data with severity, status, and module information.
+            Import historical bug data with severity, status, and module
+            information.
           </p>
           <div className="space-y-2">
             <button
@@ -377,13 +411,16 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
             </label>
           </div>
           <div className="mt-3 text-xs text-gray-500">
-            <strong>Required:</strong> title, severity<br/>
-            <strong>Optional:</strong> bug_id, status, created_date, resolved_date, linked_story, module
+            <strong>Required:</strong> title, severity
+            <br />
+            <strong>Optional:</strong> bug_id, status, created_date,
+            resolved_date, linked_story, module
           </div>
         </div>
 
         <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800">
-          <strong>💡 Tip:</strong> Download template first to see correct format. Imported data merges with existing records.
+          <strong>💡 Tip:</strong> Download template first to see correct
+          format. Imported data merges with existing records.
         </div>
       </div>
 
@@ -393,10 +430,7 @@ Sprint 11,2026-01-15,2026-01-28,55,50,50,2`;
         <p className="text-gray-700 mb-4">
           Clear all AQMS data from local storage. This action cannot be undone.
         </p>
-        <button
-          onClick={handleClearAllData}
-          className="btn btn-danger btn-lg"
-        >
+        <button onClick={handleClearAllData} className="btn btn-danger btn-lg">
           <Trash2 className="w-4 h-4" />
           Clear All Data
         </button>

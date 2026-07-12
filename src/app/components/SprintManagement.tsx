@@ -35,11 +35,18 @@ interface Release {
 }
 
 export function SprintManagement() {
-  const [viewMode, setViewMode] = useState<'calendar' | 'list' | 'releases'>('list');
+  const [viewMode, setViewMode] = useState<'calendar' | 'list' | 'releases'>(
+    'list'
+  );
   const [selectedSprint, setSelectedSprint] = useState<Sprint | null>(null);
   const [showSprintForm, setShowSprintForm] = useState(false);
   const [showReleaseForm, setShowReleaseForm] = useState(false);
-  const [notification, setNotification] = useState({ isOpen: false, title: '', message: '', type: 'success' as const });
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'success' as const,
+  });
 
   const [sprints, setSprints] = useState<Sprint[]>([
     {
@@ -149,9 +156,11 @@ export function SprintManagement() {
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
   };
 
-  const activeSprint = sprints.find(s => s.status === 'Active');
+  const activeSprint = sprints.find((s) => s.status === 'Active');
 
-  const handleCreateSprint = (sprint: Omit<Sprint, 'id' | 'committed' | 'completed' | 'stories'>) => {
+  const handleCreateSprint = (
+    sprint: Omit<Sprint, 'id' | 'committed' | 'completed' | 'stories'>
+  ) => {
     const newSprint: Sprint = {
       ...sprint,
       id: `SPR-${String(sprints.length + 1).padStart(3, '0')}`,
@@ -189,6 +198,7 @@ export function SprintManagement() {
   useEffect(() => {
     const quickCreate = localStorage.getItem('aqms_quick_create');
     if (quickCreate === 'sprint') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowSprintForm(true);
       localStorage.removeItem('aqms_quick_create');
     }
@@ -257,7 +267,9 @@ export function SprintManagement() {
             <div className="flex items-center gap-2">
               <Target className="w-6 h-6 text-green-600" />
               <div>
-                <h2 className="text-xl font-medium text-gray-900">Active Sprint: {activeSprint.name}</h2>
+                <h2 className="text-xl font-medium text-gray-900">
+                  Active Sprint: {activeSprint.name}
+                </h2>
                 <p className="text-gray-600">{activeSprint.goal}</p>
               </div>
             </div>
@@ -274,15 +286,21 @@ export function SprintManagement() {
           <div className="grid grid-cols-3 gap-4">
             <div className="bg-white rounded-lg p-4 border border-gray-200">
               <div className="text-sm text-gray-600 mb-1">Capacity</div>
-              <div className="text-2xl font-bold text-gray-900">{activeSprint.capacity} pts</div>
+              <div className="text-2xl font-bold text-gray-900">
+                {activeSprint.capacity} pts
+              </div>
             </div>
             <div className="bg-white rounded-lg p-4 border border-gray-200">
               <div className="text-sm text-gray-600 mb-1">Committed</div>
-              <div className="text-2xl font-bold text-indigo-600">{activeSprint.committed} pts</div>
+              <div className="text-2xl font-bold text-indigo-600">
+                {activeSprint.committed} pts
+              </div>
             </div>
             <div className="bg-white rounded-lg p-4 border border-gray-200">
               <div className="text-sm text-gray-600 mb-1">Completed</div>
-              <div className="text-2xl font-bold text-green-600">{activeSprint.completed} pts</div>
+              <div className="text-2xl font-bold text-green-600">
+                {activeSprint.completed} pts
+              </div>
             </div>
           </div>
 
@@ -290,13 +308,19 @@ export function SprintManagement() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-600">Progress</span>
               <span className="text-sm font-medium text-gray-900">
-                {((activeSprint.completed / activeSprint.committed) * 100).toFixed(0)}%
+                {(
+                  (activeSprint.completed / activeSprint.committed) *
+                  100
+                ).toFixed(0)}
+                %
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
                 className="bg-green-500 h-3 rounded-full transition-all"
-                style={{ width: `${(activeSprint.completed / activeSprint.committed) * 100}%` }}
+                style={{
+                  width: `${(activeSprint.completed / activeSprint.committed) * 100}%`,
+                }}
               ></div>
             </div>
           </div>
@@ -309,38 +333,70 @@ export function SprintManagement() {
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-left text-sm text-gray-700">Sprint</th>
-                <th className="px-6 py-4 text-left text-sm text-gray-700">Goal</th>
-                <th className="px-6 py-4 text-center text-sm text-gray-700">Status</th>
-                <th className="px-6 py-4 text-center text-sm text-gray-700">Duration</th>
-                <th className="px-6 py-4 text-center text-sm text-gray-700">Capacity</th>
-                <th className="px-6 py-4 text-center text-sm text-gray-700">Committed</th>
-                <th className="px-6 py-4 text-center text-sm text-gray-700">Completed</th>
-                <th className="px-6 py-4 text-center text-sm text-gray-700">Velocity</th>
-                <th className="px-6 py-4 text-center text-sm text-gray-700">Actions</th>
+                <th className="px-6 py-4 text-left text-sm text-gray-700">
+                  Sprint
+                </th>
+                <th className="px-6 py-4 text-left text-sm text-gray-700">
+                  Goal
+                </th>
+                <th className="px-6 py-4 text-center text-sm text-gray-700">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-center text-sm text-gray-700">
+                  Duration
+                </th>
+                <th className="px-6 py-4 text-center text-sm text-gray-700">
+                  Capacity
+                </th>
+                <th className="px-6 py-4 text-center text-sm text-gray-700">
+                  Committed
+                </th>
+                <th className="px-6 py-4 text-center text-sm text-gray-700">
+                  Completed
+                </th>
+                <th className="px-6 py-4 text-center text-sm text-gray-700">
+                  Velocity
+                </th>
+                <th className="px-6 py-4 text-center text-sm text-gray-700">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {sprints.map((sprint) => {
-                const velocity = sprint.status === 'Completed' ? sprint.completed : 0;
+                const velocity =
+                  sprint.status === 'Completed' ? sprint.completed : 0;
                 return (
                   <tr key={sprint.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
-                      <div className="font-medium text-gray-900">{sprint.name}</div>
+                      <div className="font-medium text-gray-900">
+                        {sprint.name}
+                      </div>
                       <div className="text-xs text-gray-500">{sprint.id}</div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-700">{sprint.goal}</td>
+                    <td className="px-6 py-4 text-sm text-gray-700">
+                      {sprint.goal}
+                    </td>
                     <td className="px-6 py-4 text-center">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full border text-xs ${getStatusColor(sprint.status)}`}>
+                      <span
+                        className={`inline-flex items-center px-3 py-1 rounded-full border text-xs ${getStatusColor(sprint.status)}`}
+                      >
                         {sprint.status}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center text-sm text-gray-600">
-                      {new Date(sprint.startDate).toLocaleDateString()} - {new Date(sprint.endDate).toLocaleDateString()}
+                      {new Date(sprint.startDate).toLocaleDateString()} -{' '}
+                      {new Date(sprint.endDate).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-900">{sprint.capacity}</td>
-                    <td className="px-6 py-4 text-center text-sm text-indigo-600">{sprint.committed}</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600">{sprint.completed}</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-900">
+                      {sprint.capacity}
+                    </td>
+                    <td className="px-6 py-4 text-center text-sm text-indigo-600">
+                      {sprint.committed}
+                    </td>
+                    <td className="px-6 py-4 text-center text-sm text-green-600">
+                      {sprint.completed}
+                    </td>
                     <td className="px-6 py-4 text-center text-sm font-medium text-gray-900">
                       {velocity > 0 ? velocity : '-'}
                     </td>
@@ -367,7 +423,11 @@ export function SprintManagement() {
           <h2 className="text-xl mb-4 text-gray-800">Sprint Timeline</h2>
           <div className="space-y-4">
             {sprints.map((sprint, index) => {
-              const duration = Math.ceil((new Date(sprint.endDate).getTime() - new Date(sprint.startDate).getTime()) / (1000 * 60 * 60 * 24));
+              const duration = Math.ceil(
+                (new Date(sprint.endDate).getTime() -
+                  new Date(sprint.startDate).getTime()) /
+                  (1000 * 60 * 60 * 24)
+              );
               return (
                 <div key={sprint.id} className="relative">
                   <div className="flex items-center gap-4">
@@ -377,9 +437,11 @@ export function SprintManagement() {
                     <div className="flex-1 relative h-12 bg-gray-100 rounded">
                       <div
                         className={`absolute h-full rounded flex items-center px-3 text-white text-sm ${
-                          sprint.status === 'Active' ? 'bg-green-500' :
-                          sprint.status === 'Completed' ? 'bg-gray-400' :
-                          'bg-indigo-500'
+                          sprint.status === 'Active'
+                            ? 'bg-green-500'
+                            : sprint.status === 'Completed'
+                              ? 'bg-gray-400'
+                              : 'bg-indigo-500'
                         }`}
                         style={{ width: '100%' }}
                       >
@@ -402,16 +464,25 @@ export function SprintManagement() {
       {viewMode === 'releases' && (
         <div className="space-y-6">
           {releases.map((release) => (
-            <div key={release.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div
+              key={release.id}
+              className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+            >
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-3">
-                    <h2 className="text-xl font-medium text-gray-900">{release.name}</h2>
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs ${getReleaseStatusColor(release.status)}`}>
+                    <h2 className="text-xl font-medium text-gray-900">
+                      {release.name}
+                    </h2>
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs ${getReleaseStatusColor(release.status)}`}
+                    >
                       {release.status}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">Version: {release.version}</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Version: {release.version}
+                  </p>
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-gray-600">Target Release</div>
@@ -422,10 +493,15 @@ export function SprintManagement() {
               </div>
 
               <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Features</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                  Features
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {release.features.map((feature, index) => (
-                    <span key={index} className="px-3 py-1 bg-purple-50 border border-purple-200 rounded-full text-sm text-purple-800">
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-purple-50 border border-purple-200 rounded-full text-sm text-purple-800"
+                    >
                       {feature}
                     </span>
                   ))}
@@ -433,12 +509,17 @@ export function SprintManagement() {
               </div>
 
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Sprints</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                  Sprints
+                </h3>
                 <div className="flex gap-2">
                   {release.sprints.map((sprintId) => {
-                    const sprint = sprints.find(s => s.id === sprintId);
+                    const sprint = sprints.find((s) => s.id === sprintId);
                     return sprint ? (
-                      <span key={sprintId} className="px-3 py-1 bg-indigo-50 border border-indigo-200 rounded text-sm text-indigo-800">
+                      <span
+                        key={sprintId}
+                        className="px-3 py-1 bg-indigo-50 border border-indigo-200 rounded text-sm text-indigo-800"
+                      >
                         {sprint.name}
                       </span>
                     ) : null;
@@ -455,7 +536,7 @@ export function SprintManagement() {
         <SprintForm
           onClose={() => setShowSprintForm(false)}
           onSubmit={handleCreateSprint}
-          releases={releases.map(r => ({ id: r.id, name: r.name }))}
+          releases={releases.map((r) => ({ id: r.id, name: r.name }))}
         />
       )}
 
@@ -492,7 +573,9 @@ export function SprintManagement() {
             releaseId: selectedSprint.releaseId,
           }}
           onClose={() => setSelectedSprint(null)}
-          releaseName={releases.find(r => r.id === selectedSprint.releaseId)?.name}
+          releaseName={
+            releases.find((r) => r.id === selectedSprint.releaseId)?.name
+          }
         />
       )}
     </div>

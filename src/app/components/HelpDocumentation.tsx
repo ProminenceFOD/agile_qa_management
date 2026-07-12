@@ -4,8 +4,8 @@ import { toast } from 'sonner';
 export function HelpDocumentation() {
   const downloadMarkdown = () => {
     fetch('/AQMS_Documentation.md')
-      .then(response => response.text())
-      .then(content => {
+      .then((response) => response.text())
+      .then((content) => {
         const blob = new Blob([content], { type: 'text/markdown' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -17,7 +17,7 @@ export function HelpDocumentation() {
         URL.revokeObjectURL(url);
         toast.success('Documentation downloaded successfully!');
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Download error:', error);
         toast.error('Failed to download documentation');
       });
@@ -54,12 +54,10 @@ export function HelpDocumentation() {
             </h3>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Download the complete documentation as a Markdown file for offline access
+            Download the complete documentation as a Markdown file for offline
+            access
           </p>
-          <button
-            onClick={downloadMarkdown}
-            className="btn btn-primary w-full"
-          >
+          <button onClick={downloadMarkdown} className="btn btn-primary w-full">
             <Download className="w-4 h-4" />
             Download Markdown
           </button>
@@ -77,10 +75,7 @@ export function HelpDocumentation() {
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
             Open the documentation in a new tab to read it online
           </p>
-          <button
-            onClick={viewOnline}
-            className="btn btn-secondary w-full"
-          >
+          <button onClick={viewOnline} className="btn btn-secondary w-full">
             <Book className="w-4 h-4" />
             View Online
           </button>
@@ -204,28 +199,48 @@ export function HelpDocumentation() {
           </h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Dashboard</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">Ctrl+1</kbd>
+              <span className="text-gray-600 dark:text-gray-400">
+                Dashboard
+              </span>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                Ctrl+1
+              </kbd>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-400">Stories</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">Ctrl+3</kbd>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                Ctrl+3
+              </kbd>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Test Cases</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">Ctrl+6</kbd>
+              <span className="text-gray-600 dark:text-gray-400">
+                Test Cases
+              </span>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                Ctrl+6
+              </kbd>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-400">Bugs</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">Ctrl+7</kbd>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                Ctrl+7
+              </kbd>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Toggle Theme</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">Ctrl+Shift+D</kbd>
+              <span className="text-gray-600 dark:text-gray-400">
+                Toggle Theme
+              </span>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                Ctrl+Shift+D
+              </kbd>
             </div>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-500 mt-4">
-            Press <kbd className="px-1 bg-gray-100 dark:bg-gray-700 rounded">Ctrl+/</kbd> to see all shortcuts
+            Press{' '}
+            <kbd className="px-1 bg-gray-100 dark:bg-gray-700 rounded">
+              Ctrl+/
+            </kbd>{' '}
+            to see all shortcuts
           </p>
         </div>
 
@@ -235,20 +250,36 @@ export function HelpDocumentation() {
           </h3>
           <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
             <div>
-              <div className="font-medium text-gray-900 dark:text-white mb-1">Create a Story</div>
-              <div className="text-xs">Stories → Create Story → Fill details → Save</div>
+              <div className="font-medium text-gray-900 dark:text-white mb-1">
+                Create a Story
+              </div>
+              <div className="text-xs">
+                Stories → Create Story → Fill details → Save
+              </div>
             </div>
             <div>
-              <div className="font-medium text-gray-900 dark:text-white mb-1">Execute a Test</div>
-              <div className="text-xs">Test Cases → Run → Follow steps → Mark Pass/Fail</div>
+              <div className="font-medium text-gray-900 dark:text-white mb-1">
+                Execute a Test
+              </div>
+              <div className="text-xs">
+                Test Cases → Run → Follow steps → Mark Pass/Fail
+              </div>
             </div>
             <div>
-              <div className="font-medium text-gray-900 dark:text-white mb-1">Report a Bug</div>
-              <div className="text-xs">Bugs → Report Bug → Describe issue → Submit</div>
+              <div className="font-medium text-gray-900 dark:text-white mb-1">
+                Report a Bug
+              </div>
+              <div className="text-xs">
+                Bugs → Report Bug → Describe issue → Submit
+              </div>
             </div>
             <div>
-              <div className="font-medium text-gray-900 dark:text-white mb-1">Link Test to Story</div>
-              <div className="text-xs">View Story → Linked Items → + Link Test</div>
+              <div className="font-medium text-gray-900 dark:text-white mb-1">
+                Link Test to Story
+              </div>
+              <div className="text-xs">
+                View Story → Linked Items → + Link Test
+              </div>
             </div>
           </div>
         </div>
@@ -260,8 +291,9 @@ export function HelpDocumentation() {
           Need Help?
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-          The comprehensive documentation contains detailed explanations of every feature,
-          button, workflow, and functionality in AQMS. Download it for a complete reference guide.
+          The comprehensive documentation contains detailed explanations of
+          every feature, button, workflow, and functionality in AQMS. Download
+          it for a complete reference guide.
         </p>
         <div className="flex gap-3">
           <button onClick={downloadMarkdown} className="btn btn-primary">

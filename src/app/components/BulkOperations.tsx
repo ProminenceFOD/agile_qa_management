@@ -32,7 +32,8 @@ interface TestCase {
 }
 
 export function BulkOperations() {
-  const { modalState, showAlert, showSuccess, showConfirm, closeModal } = useModal();
+  const { modalState, showAlert, showSuccess, showConfirm, closeModal } =
+    useModal();
   const [entityType, setEntityType] = useState<EntityType>('stories');
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [bulkAction, setBulkAction] = useState<BulkAction>('assign');
@@ -42,55 +43,64 @@ export function BulkOperations() {
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [testCases, setTestCases] = useState<TestCase[]>([]);
 
-  useEffect(() => {
-    loadData();
-  }, []);
+
 
   const loadData = async () => {
     // Load stories from Supabase
     const storiesData = await getData('aqms_stories');
     if (storiesData) {
-      setStories(storiesData.map((s: any) => ({
-        id: s.id,
-        title: s.title,
-        priority: s.priority,
-        sprint: s.sprint,
-        assignedDeveloper: s.assignedDeveloper,
-        assignedTester: s.assignedTester,
-      })));
+      setStories(
+        storiesData.map((s: Record<string, unknown>) => ({
+          id: s.id,
+          title: s.title,
+          priority: s.priority,
+          sprint: s.sprint,
+          assignedDeveloper: s.assignedDeveloper,
+          assignedTester: s.assignedTester,
+        }))
+      );
     }
 
     // Load bugs from Supabase
     const bugsData = await getData('aqms_bugs');
     if (bugsData) {
-      setBugs(bugsData.map((b: any) => ({
-        id: b.id,
-        title: b.title,
-        severity: b.severity,
-        status: b.status,
-        assignedTo: b.assignedTo,
-      })));
+      setBugs(
+        bugsData.map((b: Record<string, unknown>) => ({
+          id: b.id,
+          title: b.title,
+          severity: b.severity,
+          status: b.status,
+          assignedTo: b.assignedTo,
+        }))
+      );
     }
 
     // Load test cases from Supabase
     const testCasesData = await getData('aqms_test_cases');
     if (testCasesData) {
-      setTestCases(testCasesData.map((tc: any) => ({
-        id: tc.id,
-        title: tc.title,
-        status: tc.status,
-        priority: tc.priority,
-        assignedTo: tc.assignedTo,
-      })));
+      setTestCases(
+        testCasesData.map((tc: Record<string, unknown>) => ({
+          id: tc.id,
+          title: tc.title,
+          status: tc.status,
+          priority: tc.priority,
+          assignedTo: tc.assignedTo,
+        }))
+      );
     }
   };
 
-  const handleSelectAll = () => {
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadData();
+  }, []);
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentItems = getCurrentItems();
     if (selectedItems.size === currentItems.length) {
       setSelectedItems(new Set());
     } else {
-      setSelectedItems(new Set(currentItems.map(item => item.id)));
+      setSelectedItems(new Set(currentItems.map((item) => item.id)));
     }
   };
 
@@ -106,9 +116,12 @@ export function BulkOperations() {
 
   const getCurrentItems = () => {
     switch (entityType) {
-      case 'stories': return stories;
-      case 'bugs': return bugs;
-      case 'testcases': return testCases;
+      case 'stories':
+        return stories;
+      case 'bugs':
+        return bugs;
+      case 'testcases':
+        return testCases;
     }
   };
 
@@ -138,8 +151,8 @@ export function BulkOperations() {
     const selectedIds = Array.from(selectedItems);
 
     if (entityType === 'stories') {
-      const storiesData = await getData('aqms_stories') || [];
-      const updated = storiesData.map((story: any) => {
+      const storiesData = (await getData('aqms_stories')) || [];
+      const updated = storiesData.map((story: Record<string, unknown>) => {
         if (!selectedIds.includes(story.id)) return story;
 
         switch (bulkAction) {
@@ -157,14 +170,16 @@ export function BulkOperations() {
       });
 
       if (bulkAction === 'delete') {
-        const filtered = storiesData.filter((story: any) => !selectedIds.includes(story.id));
+        const filtered = storiesData.filter(
+          (story: Record<string, unknown>) => !selectedIds.includes(story.id as string)
+        );
         await setData('aqms_stories', filtered);
       } else {
         await setData('aqms_stories', updated);
       }
     } else if (entityType === 'bugs') {
-      const bugsData = await getData('aqms_bugs') || [];
-      const updated = bugsData.map((bug: any) => {
+      const bugsData = (await getData('aqms_bugs')) || [];
+      const updated = bugsData.map((bug: Record<string, unknown>) => {
         if (!selectedIds.includes(bug.id)) return bug;
 
         switch (bulkAction) {
@@ -180,14 +195,16 @@ export function BulkOperations() {
       });
 
       if (bulkAction === 'delete') {
-        const filtered = bugsData.filter((bug: any) => !selectedIds.includes(bug.id));
+        const filtered = bugsData.filter(
+          (bug: Record<string, unknown>) => !selectedIds.includes(bug.id as string)
+        );
         await setData('aqms_bugs', filtered);
       } else {
         await setData('aqms_bugs', updated);
       }
     } else if (entityType === 'testcases') {
-      const testCasesData = await getData('aqms_test_cases') || [];
-      const updated = testCasesData.map((tc: any) => {
+      const testCasesData = (await getData('aqms_test_cases')) || [];
+      const updated = testCasesData.map((tc: Record<string, unknown>) => {
         if (!selectedIds.includes(tc.id)) return tc;
 
         switch (bulkAction) {
@@ -203,7 +220,9 @@ export function BulkOperations() {
       });
 
       if (bulkAction === 'delete') {
-        const filtered = testCasesData.filter((tc: any) => !selectedIds.includes(tc.id));
+        const filtered = testCasesData.filter(
+          (tc: Record<string, unknown>) => !selectedIds.includes(tc.id as string)
+        );
         await setData('aqms_test_cases', filtered);
       } else {
         await setData('aqms_test_cases', updated);
@@ -217,7 +236,8 @@ export function BulkOperations() {
   };
 
   const currentItems = getCurrentItems();
-  const allSelected = selectedItems.size === currentItems.length && currentItems.length > 0;
+  const allSelected =
+    selectedItems.size === currentItems.length && currentItems.length > 0;
 
   return (
     <div className="w-full max-w-7xl mx-auto p-6">
@@ -228,7 +248,7 @@ export function BulkOperations() {
 
       {/* Entity Type Selector */}
       <div className="mb-6 flex gap-2">
-        {(['stories', 'bugs', 'testcases'] as const).map(type => (
+        {(['stories', 'bugs', 'testcases'] as const).map((type) => (
           <button
             key={type}
             onClick={() => {
@@ -237,9 +257,7 @@ export function BulkOperations() {
               setActionValue('');
             }}
             className={`btn ${
-              entityType === type
-                ? 'btn-primary'
-                : 'btn-secondary'
+              entityType === type ? 'btn-primary' : 'btn-secondary'
             }`}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -264,7 +282,9 @@ export function BulkOperations() {
               <option value="assign">Assign To</option>
               <option value="status">Change Status</option>
               <option value="priority">Change Priority</option>
-              {entityType === 'stories' && <option value="sprint">Assign Sprint</option>}
+              {entityType === 'stories' && (
+                <option value="sprint">Assign Sprint</option>
+              )}
               <option value="delete">Delete</option>
             </select>
           </div>
@@ -386,29 +406,47 @@ export function BulkOperations() {
                 <th className="px-6 py-3 text-left text-gray-700">Title</th>
                 {entityType === 'stories' && (
                   <>
-                    <th className="px-6 py-3 text-left text-gray-700">Priority</th>
-                    <th className="px-6 py-3 text-left text-gray-700">Sprint</th>
-                    <th className="px-6 py-3 text-left text-gray-700">Assigned</th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Priority
+                    </th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Sprint
+                    </th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Assigned
+                    </th>
                   </>
                 )}
                 {entityType === 'bugs' && (
                   <>
-                    <th className="px-6 py-3 text-left text-gray-700">Severity</th>
-                    <th className="px-6 py-3 text-left text-gray-700">Status</th>
-                    <th className="px-6 py-3 text-left text-gray-700">Assigned</th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Severity
+                    </th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Assigned
+                    </th>
                   </>
                 )}
                 {entityType === 'testcases' && (
                   <>
-                    <th className="px-6 py-3 text-left text-gray-700">Status</th>
-                    <th className="px-6 py-3 text-left text-gray-700">Priority</th>
-                    <th className="px-6 py-3 text-left text-gray-700">Assigned</th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Priority
+                    </th>
+                    <th className="px-6 py-3 text-left text-gray-700">
+                      Assigned
+                    </th>
                   </>
                 )}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {currentItems.map(item => (
+              {currentItems.map((item) => (
                 <tr
                   key={item.id}
                   className={`hover:bg-gray-50 ${selectedItems.has(item.id) ? 'bg-indigo-50' : ''}`}
@@ -421,27 +459,49 @@ export function BulkOperations() {
                       className="w-4 h-4 text-indigo-500 border-gray-300 rounded focus:ring-indigo-500"
                     />
                   </td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{item.id}</td>
-                  <td className="px-6 py-4 text-sm text-gray-700">{item.title}</td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    {item.id}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {item.title}
+                  </td>
                   {entityType === 'stories' && (
                     <>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as Story).priority}</td>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as Story).sprint || '-'}</td>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as Story).assignedDeveloper || '-'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as Story).priority}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as Story).sprint || '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as Story).assignedDeveloper || '-'}
+                      </td>
                     </>
                   )}
                   {entityType === 'bugs' && (
                     <>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as Bug).severity}</td>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as Bug).status}</td>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as Bug).assignedTo || '-'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as Bug).severity}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as Bug).status}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as Bug).assignedTo || '-'}
+                      </td>
                     </>
                   )}
                   {entityType === 'testcases' && (
                     <>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as TestCase).status}</td>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as TestCase).priority}</td>
-                      <td className="px-6 py-4 text-sm text-gray-700">{(item as TestCase).assignedTo || '-'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as TestCase).status}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as TestCase).priority}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {(item as TestCase).assignedTo || '-'}
+                      </td>
                     </>
                   )}
                 </tr>
@@ -451,9 +511,7 @@ export function BulkOperations() {
         </div>
 
         {currentItems.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
-            No items found
-          </div>
+          <div className="text-center py-12 text-gray-500">No items found</div>
         )}
       </div>
 

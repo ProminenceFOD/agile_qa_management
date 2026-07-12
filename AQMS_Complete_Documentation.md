@@ -1,4 +1,5 @@
 # AQMS - Agile Quality Management System
+
 ## Complete Detailed Documentation - Every Feature Explained
 
 **Version:** 1.0  
@@ -43,6 +44,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 ### Technology Architecture
 
 **Frontend Technology:**
+
 - **Framework:** React 18.2.0 with TypeScript for type safety and better code quality
 - **Styling:** Tailwind CSS v4.0 with built-in dark mode support
 - **State Management:** React Hooks (useState, useEffect, useContext) with localStorage caching for offline support
@@ -51,6 +53,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - **Notifications:** Sonner toast library for user feedback
 
 **Backend Technology:**
+
 - **Database:** Supabase PostgreSQL (cloud-hosted, managed database)
 - **Authentication:** Supabase Auth with email/password and session management
 - **API:** Supabase REST API for CRUD operations
@@ -58,6 +61,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - **Storage:** Supabase Storage for attachments and file uploads
 
 **Data Synchronization:**
+
 1. User performs action (e.g., creates a test case)
 2. React component updates local state immediately (optimistic update)
 3. API call sent to Supabase backend
@@ -68,6 +72,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 8. If changes detected, UI automatically updates
 
 **Performance Optimizations:**
+
 - localStorage caching reduces database queries
 - Debounced search inputs (300ms delay) prevent excessive API calls
 - Pagination limits data fetching to 25-100 items at a time
@@ -75,6 +80,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Memoized React components prevent unnecessary re-renders
 
 **Security Features:**
+
 - Row-level security (RLS) in Supabase ensures users only see authorized data
 - Session tokens expire after 7 days of inactivity
 - Passwords hashed with bcrypt before storage
@@ -85,6 +91,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 ### System Capabilities
 
 **1. User Story Management**
+
 - Create user stories with detailed acceptance criteria
 - Enforce quality gates (QA Sign-Off and PM Approval) before development
 - Lock developer assignments until approvals are obtained
@@ -96,6 +103,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - View complete audit trail of all story changes
 
 **2. Test Case Management**
+
 - Create comprehensive test cases with step-by-step instructions
 - Support multiple test types: Functional, Regression, Integration, Smoke, Performance, Security, Usability, API
 - Execute tests with guided step-by-step workflow
@@ -111,6 +119,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Identify flaky tests (inconsistent results)
 
 **3. Bug Tracking**
+
 - Report bugs with detailed descriptions and reproduction steps
 - Categorize by severity: Critical, High, Medium, Low
 - Track bug lifecycle: Open → In Progress → Fixed → Verified → Closed
@@ -124,6 +133,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Export bug lists for stakeholder reports
 
 **4. Risk Assessment**
+
 - Assess module risk based on two dimensions:
   - **Defect Frequency:** Historical bug count (0-10 scale)
   - **Business Impact:** Criticality to business operations (0-10 scale)
@@ -137,6 +147,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Export risk matrix for stakeholder communication
 
 **5. Sprint Management**
+
 - Create sprints with goals, start dates, and end dates
 - Assign stories to sprints for iteration planning
 - Track sprint progress with burn-down charts
@@ -146,6 +157,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Archive completed sprints for historical reference
 
 **6. Analytics & Reporting**
+
 - Real-time quality metrics dashboard
 - Test coverage percentage (stories with linked tests)
 - Test pass rate (percentage of tests passing)
@@ -158,6 +170,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Trend analysis with historical comparisons
 
 **7. AI-Powered Test Recommendations**
+
 - Analyzes your project data to identify testing gaps
 - Examines story coverage (which stories lack tests)
 - Reviews bug patterns (which modules have frequent defects)
@@ -169,6 +182,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - One-click test creation from recommendations
 
 **8. Traceability Matrix**
+
 - Map requirements (stories) to test cases
 - Visual matrix showing coverage gaps
 - Identify untested stories (red flags)
@@ -178,6 +192,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Filter by sprint or module
 
 **9. Team Performance Tracking**
+
 - Individual contributor metrics
 - Tests executed per tester
 - Bugs resolved per developer
@@ -187,6 +202,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Leaderboards and gamification (optional)
 
 **10. Audit Trail**
+
 - Complete history of all system changes
 - Who changed what and when
 - Before/after values for all edits
@@ -195,6 +211,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Immutable records (cannot be deleted or modified)
 
 **11. Bulk Operations**
+
 - Select multiple items with checkboxes
 - Bulk delete, assign, tag, or update status
 - Bulk export to CSV or PDF
@@ -203,6 +220,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Progress indicators for long operations
 
 **12. Data Management**
+
 - Import data from CSV files
 - Export entire dataset for backup
 - Data validation on import
@@ -213,6 +231,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 ### User Roles and Permissions
 
 **QA Engineer:**
+
 - Create and execute test cases
 - Report bugs
 - Provide QA Sign-Off on stories
@@ -221,6 +240,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Cannot: Delete other users' content, manage users, change permissions
 
 **Developer:**
+
 - View assigned stories and bugs
 - Update bug status (In Progress, Fixed)
 - Comment on stories and bugs
@@ -228,6 +248,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Cannot: Create tests, provide sign-offs, delete content
 
 **Product Manager:**
+
 - Create and manage user stories
 - Provide PM Approval on stories
 - Prioritize backlog
@@ -236,6 +257,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Cannot: Execute tests, manage users
 
 **Scrum Master:**
+
 - All permissions of other roles
 - Create and manage sprints
 - View team performance metrics
@@ -244,6 +266,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Cannot: Delete users or change permissions
 
 **Administrator:**
+
 - All system permissions
 - Manage users (create, edit, delete)
 - Configure system settings
@@ -259,6 +282,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 ### System Requirements
 
 **Supported Web Browsers:**
+
 - Google Chrome version 90 or later (Recommended for best performance)
 - Mozilla Firefox version 88 or later
 - Microsoft Edge version 90 or later (Chromium-based)
@@ -266,17 +290,20 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Opera version 76 or later
 
 **Not Supported:**
+
 - Internet Explorer (any version - Microsoft discontinued support)
 - Browsers with JavaScript disabled
 - Browsers with cookies disabled
 - Very old browsers (5+ years old)
 
 **Device Requirements:**
+
 - Desktop/Laptop: Recommended for full experience
 - Tablet: Supported but some features may be limited
 - Mobile Phone: Basic viewing only, editing not optimized
 
 **Optimal Setup:**
+
 - Screen Resolution: 1920x1080 (Full HD) or higher
 - Internet Connection: Broadband (5+ Mbps) for smooth real-time updates
 - Browser Settings: Enable JavaScript, enable cookies, allow localStorage
@@ -286,6 +313,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 ### Initial Login
 
 **Step 1: Access the System**
+
 1. Open your web browser
 2. Navigate to your AQMS URL (e.g., https://aqms.yourcompany.com)
 3. You'll see the login page with two input fields and a login button
@@ -293,6 +321,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 **Step 2: Enter Your Credentials**
 
 **Email Field:**
+
 - Location: Top input field
 - Label: "Email"
 - Placeholder: "Enter your email"
@@ -304,6 +333,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
   - "Invalid email format" - if not proper email format
 
 **Password Field:**
+
 - Location: Second input field
 - Label: "Password"
 - Placeholder: "Enter your password"
@@ -314,6 +344,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Error Message: "Password is required" - if left blank
 
 **Remember Me Checkbox:**
+
 - Location: Below password field
 - Label: "Remember Me"
 - Default: Unchecked
@@ -323,6 +354,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Security: Session token stored in browser localStorage
 
 **Login Button:**
+
 - Location: Below Remember Me checkbox
 - Color: Blue background, white text
 - Text: "Login"
@@ -333,6 +365,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 - Loading State: Shows spinner while authenticating
 
 **What Happens When You Click Login:**
+
 1. System validates email format (must contain @ and domain)
 2. System checks both fields are filled
 3. Frontend sends credentials to Supabase Auth API via HTTPS (encrypted)
@@ -353,6 +386,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 **Demo Accounts for Testing:**
 
 **Account 1: QA Engineer**
+
 - Email: `qa@aqms.com`
 - Password: `password123`
 - Name: Sarah Johnson
@@ -366,6 +400,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
   - View test analytics
 
 **Account 2: Product Manager**
+
 - Email: `pm@aqms.com`
 - Password: `password123`
 - Name: Michael Chen
@@ -379,6 +414,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
   - Review quality metrics
 
 **Account 3: Scrum Master**
+
 - Email: `sm@aqms.com`
 - Password: `password123`
 - Name: Emily Rodriguez
@@ -394,6 +430,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
 **Troubleshooting Login Issues:**
 
 **Problem: "Invalid email or password" error**
+
 - Possible Causes:
   1. Email typed incorrectly (check for typos)
   2. Password typed incorrectly (check Caps Lock is off)
@@ -407,6 +444,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
   5. Try one of the demo accounts to verify system is working
 
 **Problem: Session expires immediately after login**
+
 - Possible Causes:
   1. Browser cookies are disabled
   2. Browser is in private/incognito mode
@@ -420,6 +458,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
   5. Try different browser to isolate issue
 
 **Problem: Page loads but shows blank white screen after login**
+
 - Possible Causes:
   1. JavaScript error in browser
   2. Browser extension conflict
@@ -432,6 +471,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
   5. Try incognito mode to bypass extensions/cache
 
 **Problem: Cannot access certain features after login**
+
 - Possible Causes:
   1. Logged in with wrong role account
   2. User permissions not configured correctly
@@ -443,6 +483,7 @@ AQMS (Agile Quality Management System) is a comprehensive quality assurance plat
   4. Check if feature is restricted to certain roles
 
 **Problem: Login page doesn't load at all**
+
 - Possible Causes:
   1. Internet connection issue
   2. Wrong URL
@@ -462,12 +503,14 @@ When you successfully log in for the first time, you'll land on the Dashboard pa
 **Top Navigation Bar (Fixed at Top):**
 
 **Left Side:**
+
 - Page Title: "Dashboard" in large, bold font (24px, dark gray)
 - Subtitle: "Overview" in smaller, lighter font (14px, gray)
 
 **Right Side (Three Elements):**
 
 **Element 1: Theme Toggle Button**
+
 - Location: First button on right side
 - Icon: Sun icon (☀️) in light mode, Moon icon (🌙) in dark mode
 - Color: Gray background, icon changes color
@@ -487,6 +530,7 @@ When you successfully log in for the first time, you'll land on the Dashboard pa
   - Personal preference
 
 **Element 2: User Menu**
+
 - Location: Second button from right
 - Display: Shows your initials in colored circle
 - Example: "SJ" for Sarah Johnson
@@ -513,6 +557,7 @@ When you successfully log in for the first time, you'll land on the Dashboard pa
   - Statistics: tests executed, bugs reported, stories created
 
 **Element 3: Logout Button**
+
 - Location: Far right
 - Color: Red background, white text
 - Text: "Logout"
@@ -538,6 +583,7 @@ When you successfully log in for the first time, you'll land on the Dashboard pa
 These cards provide at-a-glance statistics about your project quality.
 
 **Card 1: Total Stories**
+
 - Position: First card (leftmost)
 - Size: ~200px wide, 120px tall
 - Background: White (light mode) or dark gray (dark mode)
@@ -545,6 +591,7 @@ These cards provide at-a-glance statistics about your project quality.
 - Shadow: Slight drop shadow for depth
 
 Card Components:
+
 - **Icon (Top-left):** Document icon, blue color, 32px size
 - **Number (Large, Center):** Count of all stories (e.g., "47")
   - Font: 36px, bold, dark color
@@ -559,50 +606,58 @@ Card Components:
   - Shows: Change compared to previous sprint
 
 Click Behavior:
+
 - Cursor: Changes to pointer on hover
 - Background: Slight blue tint on hover
 - Action: Navigates to Stories page
 - Purpose: Quick access to full story list
 
 **Card 2: Total Bugs**
+
 - Position: Second card
 - Size: Same as Card 1
 - Components: Same structure as Total Stories card
 
 Card Components:
+
 - **Icon:** Bug icon, red color
 - **Number:** Count of all bugs (e.g., "12")
   - Includes all statuses: Open, In Progress, Fixed, Verified, Closed
   - Source: Count from aqms_bugs table
 - **Label:** "Total Bugs"
-- **Trend Indicator:** 
+- **Trend Indicator:**
   - Example: "↓ 15% from last week"
   - Green if decreasing (good), red if increasing (bad)
 
 Color Coding Based on Count:
+
 - Green background: 0-5 bugs (healthy)
 - Yellow background: 6-15 bugs (watch)
 - Red background: 16+ bugs (critical)
 
 Click Behavior:
+
 - Navigates to Bug Tracker page
 - Filters to show all bugs
 
 **Card 3: Total Test Cases**
+
 - Position: Third card (center)
 - Size: Same as previous cards
 
 Card Components:
+
 - **Icon:** Test tube icon, green color
 - **Number:** Count of all test cases (e.g., "156")
   - All test types included
   - All statuses included
   - Source: Count from aqms_test_cases table
 - **Label:** "Total Test Cases"
-- **Trend Indicator:** 
+- **Trend Indicator:**
   - Example: "↑ 8% this sprint"
 
 Additional Info:
+
 - Shows breakdown on hover:
   - Functional: X
   - Regression: Y
@@ -610,13 +665,16 @@ Additional Info:
   - Other: W
 
 Click Behavior:
+
 - Navigates to Test Cases page
 
 **Card 4: Test Coverage**
+
 - Position: Fourth card
 - Size: Same as previous cards
 
 Card Components:
+
 - **Icon:** Target icon, purple color
 - **Number:** Percentage (e.g., "73%")
   - Font: 36px, bold
@@ -629,29 +687,35 @@ Card Components:
   - Fill: Shows percentage visually
 
 Calculation:
+
 ```
 Coverage = (Stories with at least 1 linked test / Total stories) × 100
 ```
 
 Example:
+
 - Total Stories: 47
 - Stories with Tests: 34
 - Coverage: (34 / 47) × 100 = 72.3% → displays as "73%"
 
 Goal Indicator:
+
 - Shows goal line at 80%
 - Text below: "Goal: 80% coverage"
 - Gap indicator if below goal: "7% to goal"
 
 Click Behavior:
+
 - Navigates to Traceability Matrix
 - Shows which stories lack test coverage
 
 **Card 5: Test Pass Rate**
+
 - Position: Fifth card (rightmost)
 - Size: Same as previous cards
 
 Card Components:
+
 - **Icon:** Checkmark in circle, green color
 - **Number:** Percentage (e.g., "94%")
   - Font: 36px, bold
@@ -660,6 +724,7 @@ Card Components:
 - **Progress Bar:** Visual representation
 
 Calculation:
+
 ```
 Pass Rate = (Tests with status "Pass" / Tests executed) × 100
 ```
@@ -667,6 +732,7 @@ Pass Rate = (Tests with status "Pass" / Tests executed) × 100
 Important: Excludes tests with status "Not Run" because they haven't been executed yet.
 
 Example:
+
 - Total Test Cases: 156
 - Not Run: 20
 - Executed: 136
@@ -675,11 +741,13 @@ Example:
 - Pass Rate: (128 / 136) × 100 = 94.1% → displays as "94%"
 
 Trend:
+
 - Shows pass rate from last 5 test runs
 - Mini line chart showing trend
 - Green if improving, red if declining
 
 Click Behavior:
+
 - Navigates to Test History page
 - Shows recent test executions
 
@@ -688,6 +756,7 @@ Click Behavior:
 This section helps you identify high-risk modules requiring focused testing.
 
 **Section Header:**
+
 - Title: "Risk Assessment by Module"
 - Font: 20px, bold
 - Icon: Warning triangle
@@ -696,23 +765,27 @@ This section helps you identify high-risk modules requiring focused testing.
 **Risk Level Cards (3 Cards in Row):**
 
 **High Risk Card:**
+
 - Color: Red background with white text
 - Icon: Red alert triangle
 - Count Badge: Shows number of high-risk modules (e.g., "3")
 - Badge Style: Large number in circle
 
 Card Content:
+
 - Click to expand/collapse
 - Default State: Collapsed (shows count only)
 - Expanded State: Shows list of modules
 
 Expansion Behavior:
+
 - Click anywhere on card
 - Smooth animation (300ms slide down)
 - Arrow icon rotates from down (▼) to up (▲)
 
 Module List (When Expanded):
 Each module shows:
+
 1. **Module Name:** Bold, dark text
    - Example: "Authentication System"
 2. **Risk Level Badge:** Red "HIGH RISK" badge
@@ -723,29 +796,35 @@ Each module shows:
 5. **View Details Button:** Blue link, opens Risk Matrix
 
 High Risk Criteria:
+
 - Defect Frequency ≥ 7 OR Business Impact ≥ 8
 - These modules need extensive testing
 
 Example Modules:
+
 - Authentication System (Defects: 8, Impact: 9)
 - Payment Gateway (Defects: 9, Impact: 10)
 - User Data Export (Defects: 7, Impact: 8)
 
 **Medium Risk Card:**
+
 - Color: Yellow background
 - Icon: Yellow warning icon
 - Count Badge: Number of medium-risk modules
 
 Medium Risk Criteria:
+
 - Defect Frequency: 4-6 OR Business Impact: 5-7
 - Focused functional testing recommended
 
 **Low Risk Card:**
+
 - Color: Green background
 - Icon: Green checkmark
 - Count Badge: Number of low-risk modules
 
 Low Risk Criteria:
+
 - Defect Frequency: <4 AND Business Impact: <5
 - Visual/smoke check sufficient
 
@@ -754,6 +833,7 @@ Low Risk Criteria:
 This section shows all sprints and their completion status.
 
 **Section Header:**
+
 - Title: "Sprint Overview"
 - Font: 20px, bold
 - Icon: Calendar icon
@@ -762,12 +842,14 @@ This section shows all sprints and their completion status.
 **Sprint Table:**
 
 Table Structure:
+
 - Fixed header row
 - Scrollable body (if more than 5 sprints)
 - Alternating row colors (zebra striping)
 - Hover effect on rows
 
 **Column 1: Sprint Name**
+
 - Width: 150px
 - Content: Sprint identifier (e.g., "Sprint 12", "Sprint 13")
 - Font: Bold for active sprint, regular for others
@@ -775,6 +857,7 @@ Table Structure:
 - Click: Opens sprint detail page
 
 **Column 2: Goal**
+
 - Width: Flexible (takes remaining space)
 - Content: Sprint objective/description
 - Max Display: 100 characters, then "..."
@@ -782,6 +865,7 @@ Table Structure:
 - Example: "Implement payment gateway and refund system"
 
 **Column 3: Status**
+
 - Width: 120px
 - Content: Badge showing sprint status
 - Status Values:
@@ -803,6 +887,7 @@ Table Structure:
      - Rare occurrence
 
 **Column 4: Duration**
+
 - Width: 200px
 - Content: Start date - End date
 - Format: "MM/DD/YYYY - MM/DD/YYYY"
@@ -812,6 +897,7 @@ Table Structure:
   - Color: Red if <3 days, yellow if 3-7 days, green if 7+ days
 
 **Column 5: Stories**
+
 - Width: 100px
 - Content: Completed / Total
 - Format: "8 / 12"
@@ -823,6 +909,7 @@ Table Structure:
   - Done: 8
 
 **Column 6: Progress**
+
 - Width: 200px
 - Content: Percentage + Progress Bar
 - Percentage: (Completed stories / Total stories) × 100
@@ -837,6 +924,7 @@ Table Structure:
   - Animation: Smooth fill animation on page load
 
 **Column 7: Actions**
+
 - Width: 100px
 - Content: "View" button
 - Button Style: Blue, small, rounded
@@ -844,12 +932,14 @@ Table Structure:
 - Alternative: Click anywhere on row
 
 **Empty State (No Sprints):**
+
 - Shows large calendar icon (gray)
 - Text: "No sprints yet"
 - Subtext: "Create your first sprint to start planning"
 - Button: "Create Sprint" (green, large)
 
 **Quick Actions:**
+
 - View All Sprints: Link at bottom of table
 - Archive Old Sprints: Link to archive page
 - Sprint Velocity Chart: Mini chart showing velocity trend
@@ -863,6 +953,7 @@ Table Structure:
 The sidebar is your primary navigation tool, always visible on the left side of the screen.
 
 **Sidebar Structure:**
+
 - Width: 256px when expanded, 64px when collapsed
 - Position: Fixed left side
 - Height: Full viewport height
@@ -872,6 +963,7 @@ The sidebar is your primary navigation tool, always visible on the left side of 
 **Sidebar Header (Top Section):**
 
 **Logo and App Name:**
+
 - Logo: Blue square with "AQ" letters
   - Size: 48px x 48px
   - Colors: Blue gradient (light to dark blue)
@@ -887,6 +979,7 @@ The sidebar is your primary navigation tool, always visible on the left side of 
   - Visibility: Hidden when sidebar collapsed
 
 **Collapse Button:**
+
 - Icon: Double chevron left (« ) when expanded, right (») when collapsed
 - Position: Top-right of sidebar header
 - Size: 32px x 32px
@@ -907,6 +1000,7 @@ The sidebar is your primary navigation tool, always visible on the left side of 
 - Keyboard Shortcut: Ctrl+B (Cmd+B on Mac)
 
 **Quick Create Button:**
+
 - Location: Below header, full width of sidebar
 - Color: Green background, white text
 - Icon: Plus (+) icon
@@ -916,6 +1010,7 @@ The sidebar is your primary navigation tool, always visible on the left side of 
 - Click: Opens dropdown menu with create options
 
 Dropdown Menu:
+
 - Appears: Below button, aligned left
 - Background: White with shadow
 - Width: 250px
@@ -939,6 +1034,7 @@ Dropdown Menu:
 - Auto-close: Closes when clicking outside
 
 **Search Box:**
+
 - Location: Below Quick Create button
 - Background: Semi-transparent white
 - Border: None when inactive, blue when focused
@@ -946,6 +1042,7 @@ Dropdown Menu:
 - Height: 40px
 
 Components:
+
 - Icon: Magnifying glass (left side, gray)
 - Input Field:
   - Placeholder: "Search pages..."
@@ -954,6 +1051,7 @@ Components:
 - Clear Button: X icon (right side, appears when text entered)
 
 Functionality:
+
 - Type to filter sidebar menu items
 - Real-time filtering (no delay)
 - Case-insensitive search
@@ -964,6 +1062,7 @@ Functionality:
 - Clear: Click X or press Escape
 
 Examples:
+
 - Type "test" → Shows: Test Cases, Test History
 - Type "bug" → Shows: Bugs, Bug Reports
 - Type "sprint" → Shows: Sprints, Burn-Down
@@ -973,10 +1072,12 @@ Examples:
 The sidebar menu is organized into 5 main sections:
 
 **SECTION 1: OVERVIEW**
+
 - Header: "OVERVIEW" in small, uppercase, gray text
 - Separator: Thin line below header
 
 Menu Items:
+
 1. **Dashboard**
    - Icon: Layout grid (4 squares)
    - Text: "Dashboard"
@@ -984,7 +1085,7 @@ Menu Items:
    - Badge: None
    - Click: Navigates to Dashboard
    - Active State: Blue background when on Dashboard page
-   
+
 2. **Kanban Board**
    - Icon: Board with columns
    - Text: "Kanban Board"
@@ -994,23 +1095,24 @@ Menu Items:
    - Active State: Blue background when on Kanban page
 
 **SECTION 2: QUALITY MANAGEMENT**
+
 - Header: "QUALITY MANAGEMENT"
 - Most frequently used pages
 
-Menu Items:
-3. **Stories**
-   - Icon: Document/page icon
-   - Text: "Stories"
-   - Keyboard Shortcut: Ctrl+3
-   - Badge: Number showing total stories count
-     - Example: "47" in small blue circle
-     - Position: Right side of item
-     - Updates: Real-time as stories added/removed
-   - Click: Navigates to Stories page
-   - Submenu: Hover shows quick filters
-     - Ready for Dev (green)
-     - Awaiting Approval (yellow)
-     - All Stories (blue)
+Menu Items: 3. **Stories**
+
+- Icon: Document/page icon
+- Text: "Stories"
+- Keyboard Shortcut: Ctrl+3
+- Badge: Number showing total stories count
+  - Example: "47" in small blue circle
+  - Position: Right side of item
+  - Updates: Real-time as stories added/removed
+- Click: Navigates to Stories page
+- Submenu: Hover shows quick filters
+  - Ready for Dev (green)
+  - Awaiting Approval (yellow)
+  - All Stories (blue)
 
 4. **Test Cases**
    - Icon: Test tube
@@ -1056,15 +1158,16 @@ Menu Items:
      - Compare Sprints
 
 **SECTION 3: ANALYTICS & REPORTS**
+
 - Header: "ANALYTICS & REPORTS"
 
-Menu Items:
-8. **Analytics**
-   - Icon: Bar chart
-   - Text: "Analytics"
-   - Keyboard Shortcut: Ctrl+8
-   - Badge: None
-   - Click: Opens Analytics dashboard
+Menu Items: 8. **Analytics**
+
+- Icon: Bar chart
+- Text: "Analytics"
+- Keyboard Shortcut: Ctrl+8
+- Badge: None
+- Click: Opens Analytics dashboard
 
 9. **Reports**
    - Icon: File with chart
@@ -1092,15 +1195,10 @@ Menu Items:
     - Click: Opens Team Metrics page
 
 **SECTION 4: PLANNING & WORKFLOW**
+
 - Header: "PLANNING & WORKFLOW"
 
-Menu Items:
-12. **Sprints**
-    - Icon: Calendar
-    - Text: "Sprints"
-    - Keyboard Shortcut: Ctrl+9
-    - Badge: Active sprint indicator (green dot)
-    - Click: Opens Sprints page
+Menu Items: 12. **Sprints** - Icon: Calendar - Text: "Sprints" - Keyboard Shortcut: Ctrl+9 - Badge: Active sprint indicator (green dot) - Click: Opens Sprints page
 
 13. **Traceability**
     - Icon: Git branch/tree icon
@@ -1124,16 +1222,11 @@ Menu Items:
     - Click: Opens AI Recommendations
 
 **SECTION 5: ADMINISTRATION**
+
 - Header: "ADMINISTRATION"
 - Admin-only features (hidden for non-admin users)
 
-Menu Items:
-16. **Audit Trail**
-    - Icon: Shield
-    - Text: "Audit Trail"
-    - Keyboard Shortcut: Ctrl+A
-    - Badge: None
-    - Click: Opens Audit Log
+Menu Items: 16. **Audit Trail** - Icon: Shield - Text: "Audit Trail" - Keyboard Shortcut: Ctrl+A - Badge: None - Click: Opens Audit Log
 
 17. **Bulk Operations**
     - Icon: Layers/stack icon
@@ -1166,6 +1259,7 @@ Menu Items:
 **Additional Sidebar Features:**
 
 **Favorites Section:**
+
 - Location: Above menu sections (if any favorites)
 - Header: "FAVORITES" with star icon
 - Shows: Pages you've marked as favorite
@@ -1176,6 +1270,7 @@ Menu Items:
 - Persistence: Saved to user profile in database
 
 **Recent Pages:**
+
 - Location: Below menu sections
 - Header: "RECENT" with clock icon
 - Shows: Last 3 pages you visited
@@ -1185,6 +1280,7 @@ Menu Items:
 - Persistence: Saved to browser localStorage
 
 **Sidebar Footer:**
+
 - Location: Bottom of sidebar
 - Version Number: "v1.0.0" in small gray text
 - Last Updated: Tooltip shows last deployment date
@@ -1197,29 +1293,32 @@ Menu Items:
 **Sidebar Behavior:**
 
 Responsive Design:
+
 - Desktop (>1024px): Expanded by default
 - Tablet (768-1024px): Collapsed by default, can expand
 - Mobile (<768px): Hidden, accessible via hamburger menu
 
 Scroll Behavior:
+
 - Fixed position (doesn't scroll with page)
 - Menu sections scroll if content exceeds height
 - Header and footer remain fixed
 
 Keyboard Navigation:
+
 - Tab: Move through menu items
 - Arrow Up/Down: Navigate menu
 - Enter: Select current item
 - Shortcut Keys: Jump directly to pages
 
 Accessibility:
+
 - ARIA labels for screen readers
 - High contrast in dark mode
 - Keyboard accessible
 - Focus indicators visible
 
 ---
-
 
 ## Dashboard - Complete Guide
 
@@ -1230,12 +1329,14 @@ The Dashboard is your command center, providing real-time visibility into all qu
 ### Page Layout
 
 **Header:**
+
 - Title: "Dashboard" (24px, bold, dark gray)
 - Subtitle: "Monitor your project's quality metrics at a glance" (14px, gray)
 - Last Updated: Shows timestamp (e.g., "Last updated: 2 seconds ago")
 - Refresh Button: Manual refresh icon (circular arrow, top-right)
 
 **Refresh Behavior:**
+
 - Auto-refresh: Every 2 seconds
 - Manual Refresh: Click refresh button
 - Loading State: Spinner appears briefly
@@ -1245,6 +1346,7 @@ The Dashboard is your command center, providing real-time visibility into all qu
 ### Quality Metrics Cards - Detailed Breakdown
 
 **Card Layout (All 5 Cards):**
+
 - Arrangement: Horizontal row, equal width
 - Spacing: 16px gap between cards
 - Responsive: Stack vertically on mobile
@@ -1254,6 +1356,7 @@ The Dashboard is your command center, providing real-time visibility into all qu
 **Card 1: Total Stories - Complete Details**
 
 Visual Elements:
+
 - Background: White (light mode) / Dark gray (#1F2937) (dark mode)
 - Border: 1px solid light gray (#E5E7EB)
 - Border Radius: 8px (rounded corners)
@@ -1261,6 +1364,7 @@ Visual Elements:
 - Height: 140px fixed
 
 Icon Section:
+
 - Icon: Document/file icon
 - Color: Blue (#3B82F6)
 - Size: 40px x 40px
@@ -1269,6 +1373,7 @@ Icon Section:
 - Circle Size: 64px diameter
 
 Number Section:
+
 - Value: Count of all stories (e.g., "47")
 - Font Size: 36px
 - Font Weight: Bold (700)
@@ -1277,6 +1382,7 @@ Number Section:
 - Animation: Count-up animation from 0 on first load (1 second duration)
 
 Label Section:
+
 - Text: "Total Stories"
 - Font Size: 14px
 - Font Weight: Normal (400)
@@ -1285,6 +1391,7 @@ Label Section:
 - Text Transform: None
 
 Trend Section:
+
 - Position: Bottom-right corner
 - Icon: Up arrow (↑) or Down arrow (↓)
 - Percentage: Change from previous period
@@ -1294,6 +1401,7 @@ Trend Section:
 - Calculation: ((Current - Previous) / Previous) × 100
 
 Hover Effects:
+
 - Cursor: Pointer
 - Background: Light blue tint (#F0F9FF)
 - Transform: Slight lift (translateY(-2px))
@@ -1301,6 +1409,7 @@ Hover Effects:
 - Shadow: Deeper shadow appears
 
 Click Behavior:
+
 - Action: Navigate to Stories page
 - Transition: Smooth page transition
 - Loading: Shows loading bar during navigation
@@ -1308,6 +1417,7 @@ Click Behavior:
 - Keyboard: Can Tab to focus, Enter to click
 
 Accessibility:
+
 - ARIA Label: "Total Stories: 47. Click to view all stories"
 - Role: "button"
 - Tab Index: 0 (keyboard accessible)
@@ -1318,6 +1428,7 @@ Accessibility:
 All elements same as Total Stories card, with these differences:
 
 Icon:
+
 - Icon: Bug/insect icon
 - Color: Red (#EF4444)
 - Background Circle: Light red (#FEE2E2)
@@ -1326,48 +1437,57 @@ Dynamic Color Coding:
 The entire card background changes based on bug count:
 
 Count 0-5 bugs:
+
 - Background: Light green (#ECFDF5)
 - Border: Green (#10B981)
 - Status: "Healthy" badge in green
 
 Count 6-15 bugs:
+
 - Background: Light yellow (#FEF3C7)
 - Border: Yellow (#F59E0B)
 - Status: "Watch" badge in yellow
 
 Count 16+ bugs:
+
 - Background: Light red (#FEE2E2)
 - Border: Red (#EF4444)
 - Status: "Critical" badge in red
 
 Trend Interpretation:
+
 - Green arrow down: Good (bugs decreasing)
 - Red arrow up: Bad (bugs increasing)
 - Example: "↓ 15% from last week" in green
 
 Hover Tooltip:
 Shows breakdown by severity:
+
 - Critical: X bugs
 - High: Y bugs
 - Medium: Z bugs
 - Low: W bugs
 
 Click Behavior:
+
 - Navigates to Bugs page
 - Auto-applies filter: "Status = Open" (shows open bugs first)
 
 **Card 3: Total Test Cases - Complete Details**
 
 Icon:
+
 - Icon: Test tube/flask icon
 - Color: Green (#10B981)
 - Background Circle: Light green (#D1FAE5)
 
 Number:
+
 - Displays: Total count of all test cases (e.g., "156")
 - Source: aqms_test_cases table
 
 Hover Tooltip Shows Breakdown:
+
 ```
 Test Types:
 - Functional: 87 (56%)
@@ -1379,11 +1499,13 @@ Test Types:
 ```
 
 Trend:
+
 - Shows change from previous sprint
 - Example: "↑ 8% this sprint"
 - Green if increasing (good - more coverage)
 
 Additional Info on Hover:
+
 - Automation Rate: X% automated
 - Average Execution Time: Y minutes
 - Last Test Run: Z hours ago
@@ -1393,11 +1515,13 @@ Additional Info on Hover:
 This card is unique with more complex visualizations.
 
 Layout:
+
 - Same outer card structure
 - Icon: Target/bullseye icon (purple #8B5CF6)
 - Background circle: Light purple (#EDE9FE)
 
 Number Display:
+
 - Large Percentage: "73%"
 - Font Size: 48px (larger than other cards)
 - Color:
@@ -1407,6 +1531,7 @@ Number Display:
 - Unit: "%" in slightly smaller font (36px)
 
 Progress Ring (Circular Progress):
+
 - Type: SVG circular progress indicator
 - Position: Behind the percentage number
 - Ring Width: 12px
@@ -1416,6 +1541,7 @@ Progress Ring (Circular Progress):
 - Start Angle: -90deg (starts at top)
 
 Calculation Display:
+
 - Position: Below percentage
 - Text: "34 of 47 stories covered"
 - Font Size: 12px
@@ -1423,12 +1549,14 @@ Calculation Display:
 - Calculation: Stories with ≥1 linked test / Total stories
 
 Goal Indicator:
+
 - Position: Bottom of card
 - Text: "Goal: 80%"
 - Progress to Goal: "7% to goal" if below
 - Color: Gray normally, green if goal met
 
 Detailed Tooltip on Hover:
+
 ```
 Test Coverage Breakdown:
 - Stories with tests: 34
@@ -1443,16 +1571,19 @@ Untested Stories:
 ```
 
 Click Behavior:
+
 - Navigates to Traceability Matrix
 - Highlights stories without test coverage in red
 
 **Card 5: Test Pass Rate - Complete Details**
 
 Layout:
+
 - Icon: Checkmark in circle (green #10B981)
 - Background circle: Light green (#D1FAE5)
 
 Number Display:
+
 - Large Percentage: "94%"
 - Font Size: 48px
 - Color:
@@ -1461,6 +1592,7 @@ Number Display:
   - Red if <70% (concerning)
 
 Important Calculation Note:
+
 ```
 Pass Rate = (Tests with status "Pass" / Tests with status ≠ "Not Run") × 100
 
@@ -1478,6 +1610,7 @@ Example:
 ```
 
 Horizontal Progress Bar:
+
 - Position: Below percentage
 - Width: Full card width (minus padding)
 - Height: 8px
@@ -1487,6 +1620,7 @@ Horizontal Progress Bar:
 - Animation: Slides from 0 to percentage on load
 
 Breakdown Display:
+
 - Position: Bottom of card
 - Shows: Passed / Failed / Blocked
 - Format: "128 passed • 6 failed • 2 blocked"
@@ -1494,6 +1628,7 @@ Breakdown Display:
 - Font Size: 11px
 
 Trend Mini Chart:
+
 - Position: Right side of card
 - Type: Small line chart (40px x 30px)
 - Shows: Last 10 test runs
@@ -1504,6 +1639,7 @@ Trend Mini Chart:
 - Hover on Dots: Shows exact pass rate and date
 
 Detailed Tooltip:
+
 ```
 Test Execution Summary:
 - Total Executed: 136
@@ -1521,6 +1657,7 @@ Mon: 96% | Tue: 95% | Wed: 92% | Thu: 91% | Fri: 93% | Sat: 94% | Sun: 94%
 ```
 
 Click Behavior:
+
 - Navigates to Test History page
 - Auto-filters to show recent executions
 - Sorts by execution date (newest first)
@@ -1528,6 +1665,7 @@ Click Behavior:
 ### Risk Assessment Section - Complete Details
 
 **Section Header:**
+
 - Title: "Risk Assessment by Module"
 - Font: 20px, bold, dark color
 - Icon: Warning triangle icon (orange #F59E0B)
@@ -1537,6 +1675,7 @@ Click Behavior:
   - Tooltip Content: "Risk is calculated using two factors: how often bugs occur (Defect Frequency 0-10) and how critical the module is to business (Business Impact 0-10). High risk = 7+ on either factor."
 
 **Layout:**
+
 - Container: Full width of page content
 - Background: Light gray (#F9FAFB) panel
 - Padding: 24px
@@ -1544,6 +1683,7 @@ Click Behavior:
 - Margin Top: 32px (below metrics cards)
 
 **Risk Cards Row:**
+
 - Arrangement: 3 cards in horizontal row
 - Width: Each card takes 33.33% width
 - Gap: 16px between cards
@@ -1552,12 +1692,14 @@ Click Behavior:
 **High Risk Card - Detailed Breakdown:**
 
 Card Header:
+
 - Background: Red gradient (#DC2626 to #B91C1C)
 - Text Color: White
 - Padding: 16px
 - Border Radius: 8px 8px 0 0 (rounded top corners only)
 
 Header Content:
+
 - Icon: Red alert triangle (warning icon)
 - Size: 32px
 - Position: Left side
@@ -1572,6 +1714,7 @@ Header Content:
   - Size: 40px diameter
 
 Expand/Collapse Button:
+
 - Icon: Chevron down (▼) when collapsed, up (▲) when expanded
 - Position: Far right of header
 - Size: 24px
@@ -1580,6 +1723,7 @@ Expand/Collapse Button:
 - Click: Toggles expansion
 
 Card Body (When Expanded):
+
 - Background: White
 - Padding: 16px
 - Border: 2px solid red
@@ -1590,6 +1734,7 @@ Card Body (When Expanded):
 Module List (Each Module Entry):
 
 Module Item Container:
+
 - Background: White
 - Border: 1px solid light gray
 - Border Radius: 6px
@@ -1600,12 +1745,14 @@ Module Item Container:
 - Click: Navigates to Risk Matrix with module selected
 
 Module Name:
+
 - Font: 16px, bold
 - Color: Dark gray (#111827)
 - Position: Top of module item
 - Example: "Authentication System"
 
 Risk Badge:
+
 - Position: Right of module name
 - Background: Red (#DC2626)
 - Text: "HIGH RISK"
@@ -1614,6 +1761,7 @@ Risk Badge:
 - Border Radius: 4px
 
 Defect Frequency Section:
+
 - Label: "Defect Frequency"
 - Font: 12px, gray
 - Position: Below module name
@@ -1630,6 +1778,7 @@ Defect Frequency Section:
   - Animation: Fills from left on display
 
 Business Impact Section:
+
 - Label: "Business Impact"
 - Font: 12px, gray
 - Position: Below defect frequency
@@ -1641,6 +1790,7 @@ Business Impact Section:
   - Fill Width: 90% (9 out of 10)
 
 Testing Recommendation:
+
 - Position: Bottom of module item
 - Background: Light red (#FEF2F2)
 - Padding: 8px
@@ -1652,6 +1802,7 @@ Testing Recommendation:
 - Icon: Clipboard icon (red)
 
 Additional Info (Collapsed by default, expandable):
+
 - Trigger: "Show Details" link
 - Click: Expands to show more info
 - Content when expanded:
@@ -1661,6 +1812,7 @@ Additional Info (Collapsed by default, expandable):
   - Historical Risk: Trend over last 6 months (mini chart)
 
 Module List Example (3 high-risk modules):
+
 ```
 Module 1: Authentication System
 - Defect Frequency: 8/10
@@ -1685,6 +1837,7 @@ Module 3: User Data Export
 ```
 
 Empty State (No high-risk modules):
+
 - Icon: Green checkmark in circle (large, 64px)
 - Text: "No high-risk modules"
 - Subtext: "Great! All modules are under control"
@@ -1693,6 +1846,7 @@ Empty State (No high-risk modules):
 **Medium Risk Card - Detailed Breakdown:**
 
 Card Header:
+
 - Background: Yellow gradient (#F59E0B to #D97706)
 - Text Color: Dark gray (better contrast than white)
 - Same structure as High Risk card
@@ -1700,10 +1854,12 @@ Card Header:
 - Count Badge: Yellow background, dark text
 
 Card Body:
+
 - Border: 2px solid yellow instead of red
 - Same structure as High Risk card
 
 Module Items:
+
 - Hover: Light yellow background (#FEF3C7)
 - Risk Badge: Yellow background
 - Progress Bars: Yellow fill
@@ -1711,6 +1867,7 @@ Module Items:
 - Recommendation: "📋 Focused functional testing recommended"
 
 Medium Risk Criteria:
+
 - Defect Frequency: 4-6
 - OR Business Impact: 5-7
 - Needs focused testing but not full regression
@@ -1718,18 +1875,21 @@ Medium Risk Criteria:
 **Low Risk Card - Detailed Breakdown:**
 
 Card Header:
+
 - Background: Green gradient (#10B981 to #059669)
 - Text Color: White
 - Title: "LOW RISK"
 - Count Badge: Green background, white text
 
 Module Items:
+
 - Hover: Light green background (#ECFDF5)
 - Risk Badge: Green background
 - Progress Bars: Green fill
 - Recommendation: "✓ Visual/smoke check sufficient"
 
 Low Risk Criteria:
+
 - Defect Frequency: <4
 - AND Business Impact: <5
 - Minimal testing required
@@ -1737,6 +1897,7 @@ Low Risk Criteria:
 **Section Actions:**
 
 View Full Risk Matrix Button:
+
 - Position: Bottom-right of section
 - Color: Blue background
 - Text: "View Full Risk Matrix →"
@@ -1744,6 +1905,7 @@ View Full Risk Matrix Button:
 - Click: Navigates to Risk Matrix page
 
 Export Risk Report Button:
+
 - Position: Next to View Full button
 - Color: Gray background
 - Text: "Export Report"
@@ -1753,6 +1915,7 @@ Export Risk Report Button:
 ### Sprint Breakdown Section - Complete Details
 
 **Section Header:**
+
 - Title: "Sprint Overview"
 - Font: 20px, bold
 - Icon: Calendar icon (blue)
@@ -1760,6 +1923,7 @@ Export Risk Report Button:
 - Font: 14px, gray
 
 **Create Sprint Button:**
+
 - Position: Top-right of section header
 - Color: Green background (#10B981)
 - Text: "Create Sprint"
@@ -1771,6 +1935,7 @@ Export Risk Report Button:
 **Sprint Table:**
 
 Table Container:
+
 - Background: White panel
 - Border: 1px solid light gray
 - Border Radius: 8px
@@ -1778,6 +1943,7 @@ Table Container:
 - Shadow: Subtle drop shadow
 
 Table Header Row:
+
 - Background: Light gray (#F3F4F6)
 - Font: 13px, bold, uppercase, gray
 - Height: 48px
@@ -1787,6 +1953,7 @@ Table Header Row:
 **Column Definitions:**
 
 **Column 1: Sprint**
+
 - Header Text: "SPRINT"
 - Width: 150px fixed
 - Alignment: Left
@@ -1794,6 +1961,7 @@ Table Header Row:
 - Sort Icon: Up/down arrows (▲▼)
 
 Cell Content:
+
 - Sprint Name: Bold text (e.g., "Sprint 12")
 - Sprint Number: Extracted from name
 - Color:
@@ -1805,6 +1973,7 @@ Cell Content:
 - Font Weight: 600 (semi-bold) if active, 400 if not
 
 Active Sprint Indicator:
+
 - Badge: Small "ACTIVE" badge next to name
 - Background: Blue
 - Text: White, 10px, uppercase
@@ -1812,12 +1981,14 @@ Active Sprint Indicator:
 - Border Radius: 3px
 
 **Column 2: Goal**
+
 - Header Text: "GOAL"
 - Width: Flexible (takes remaining space)
 - Min Width: 200px
 - Alignment: Left
 
 Cell Content:
+
 - Text: Sprint objective/description
 - Font: 14px, normal weight
 - Color: Dark gray
@@ -1830,11 +2001,13 @@ Cell Content:
   - Position: Above cell
 
 Example Goals:
+
 - "Implement payment gateway integration and refund processing system"
 - "Complete user profile redesign and settings migration"
 - "Fix critical security vulnerabilities in authentication"
 
 **Column 3: Status**
+
 - Header Text: "STATUS"
 - Width: 120px fixed
 - Alignment: Center
@@ -1842,6 +2015,7 @@ Example Goals:
 Cell Content: Status Badge
 
 Planning Badge:
+
 - Background: Blue (#3B82F6)
 - Text: "Planning"
 - Icon: Calendar icon
@@ -1849,6 +2023,7 @@ Planning Badge:
 - Dates: Start date is in the future
 
 Active Badge:
+
 - Background: Green (#10B981)
 - Text: "Active"
 - Icon: Play circle icon
@@ -1857,6 +2032,7 @@ Active Badge:
 - Pulse Animation: Gentle pulsing effect
 
 Completed Badge:
+
 - Background: Gray (#6B7280)
 - Text: "Completed"
 - Icon: Check circle icon
@@ -1864,6 +2040,7 @@ Completed Badge:
 - All stories: Done or moved to backlog
 
 Cancelled Badge:
+
 - Background: Red (#EF4444)
 - Text: "Cancelled"
 - Icon: X circle icon
@@ -1871,6 +2048,7 @@ Cancelled Badge:
 - Rare: Used for interrupted sprints
 
 Badge Styling:
+
 - Padding: 6px 12px
 - Border Radius: 16px (pill shape)
 - Font: 12px, bold, uppercase
@@ -1880,17 +2058,20 @@ Badge Styling:
 - Icon Position: Left of text with 4px gap
 
 **Column 4: Duration**
+
 - Header Text: "DURATION"
 - Width: 200px fixed
 - Alignment: Left
 
 Cell Content:
+
 - Format: "MM/DD/YYYY - MM/DD/YYYY"
 - Example: "04/01/2026 - 04/14/2026"
 - Font: 14px, monospace for dates
 - Color: Dark gray
 
 Days Remaining (for Active Sprints):
+
 - Position: Below dates
 - Format: "X days remaining"
 - Color:
@@ -1901,22 +2082,26 @@ Days Remaining (for Active Sprints):
 - Icon: Clock icon before text
 
 Total Duration:
+
 - Format: "(14 days)"
 - Position: End of date range
 - Color: Gray
 - Font: 12px
 
 Past Sprints:
+
 - Dates: Same format but grayed out
 - No days remaining shown
 - Shows: "Ended X days ago" instead
 
 **Column 5: Stories**
+
 - Header Text: "STORIES"
 - Width: 100px fixed
 - Alignment: Center
 
 Cell Content:
+
 - Format: "Completed / Total"
 - Example: "8 / 12"
 - Font: 16px, bold
@@ -1926,6 +2111,7 @@ Cell Content:
   - Red if none complete (0 / 12)
 
 Story Breakdown Tooltip (on hover):
+
 ```
 Story Status:
 ✓ Done: 8
@@ -1936,6 +2122,7 @@ Total: 12
 ```
 
 Visual Indicator:
+
 - Small dots below numbers
 - Green dots: Completed stories
 - Blue dots: In progress
@@ -1943,6 +2130,7 @@ Visual Indicator:
 - Max 12 dots shown (represents total)
 
 **Column 6: Progress**
+
 - Header Text: "PROGRESS"
 - Width: 200px fixed
 - Alignment: Center
@@ -1950,18 +2138,21 @@ Visual Indicator:
 Cell Content:
 
 Percentage Display:
+
 - Format: "67%"
 - Font: 18px, bold
 - Color: Matches progress level
 - Position: Above progress bar
 
 Calculation:
+
 ```
 Progress = (Completed stories / Total stories) × 100
 Example: 8 completed / 12 total = 66.67% → displays "67%"
 ```
 
 Progress Bar:
+
 - Width: 160px
 - Height: 12px
 - Background: Light gray (#E5E7EB)
@@ -1969,6 +2160,7 @@ Progress Bar:
 - Position: Below percentage
 
 Fill:
+
 - Height: Same as bar (12px)
 - Border Radius: 6px
 - Color:
@@ -1979,23 +2171,27 @@ Fill:
 - Gradient: Slight gradient for visual appeal
 
 Progress Milestones (markers on bar):
+
 - 25% mark: Small tick
 - 50% mark: Medium tick
 - 75% mark: Small tick
 - 80% mark: Green line (goal threshold)
 
 Text Inside Bar (if >20% progress):
+
 - Text: Percentage
 - Color: White
 - Font: 11px, bold
 - Position: Centered in filled area
 
 **Column 7: Actions**
+
 - Header Text: "ACTIONS"
 - Width: 100px fixed
 - Alignment: Center
 
 Cell Content: View Button
+
 - Text: "View"
 - Background: Blue (#3B82F6)
 - Text Color: White
@@ -2007,6 +2203,7 @@ Cell Content: View Button
 - Click: Navigates to Sprint Detail page
 
 Alternative: Click Row
+
 - Entire row is clickable
 - Hover: Light blue background (#F0F9FF)
 - Cursor: Pointer throughout row
@@ -2015,6 +2212,7 @@ Alternative: Click Row
 **Table Body Rows:**
 
 Row Styling:
+
 - Height: 72px
 - Padding: 16px vertical
 - Border Bottom: 1px solid light gray
@@ -2022,12 +2220,14 @@ Row Styling:
 - Alternating: Subtle gray (#F9FAFB) every other row (zebra striping)
 
 Row Hover:
+
 - Background: Light blue (#EBF8FF)
 - Transition: Smooth 150ms
 - Cursor: Pointer
 - Shadow: Slight elevation
 
 Active Sprint Row (special styling):
+
 - Border Left: 4px solid blue (accent)
 - Background: Very light blue (#F0F9FF)
 - Font Weight: All text slightly bolder
@@ -2036,21 +2236,25 @@ Active Sprint Row (special styling):
 **Table Footer:**
 
 Pagination:
+
 - Position: Below table
 - Alignment: Center
 - Background: Light gray (#F9FAFB)
 - Padding: 16px
 
 Showing Text:
+
 - Format: "Showing 1-5 of 12 sprints"
 - Font: 14px, gray
 - Position: Left side of footer
 
 Page Controls:
+
 - Position: Right side of footer
 - Buttons: Previous | 1 2 3 ... 10 | Next
 
 Previous Button:
+
 - Text: "Previous" or left arrow (←)
 - Disabled: When on page 1
   - Color: Light gray
@@ -2058,6 +2262,7 @@ Previous Button:
 - Enabled: Blue, clickable
 
 Page Number Buttons:
+
 - Size: 36px x 36px each
 - Shape: Square with rounded corners
 - Current Page: Blue background, white text, bold
@@ -2066,11 +2271,13 @@ Page Number Buttons:
 - Click: Jumps to that page
 
 Ellipsis (...):
+
 - Shows: When more than 7 pages
 - Position: Between visible page numbers
 - Example: 1 2 3 ... 10
 
 Next Button:
+
 - Text: "Next" or right arrow (→)
 - Disabled: When on last page
 - Enabled: Blue, clickable
@@ -2078,6 +2285,7 @@ Next Button:
 **Table Actions (Above Table):**
 
 Filter Dropdown:
+
 - Position: Top-left above table
 - Label: "Filter:"
 - Options:
@@ -2091,6 +2299,7 @@ Filter Dropdown:
 - Updates: Table re-renders on selection
 
 Sort Dropdown:
+
 - Position: Next to filter
 - Label: "Sort by:"
 - Options:
@@ -2102,6 +2311,7 @@ Sort Dropdown:
 - Default: "Start Date (newest first)"
 
 Search Box:
+
 - Position: Top-right above table
 - Placeholder: "Search sprints..."
 - Width: 250px
@@ -2114,6 +2324,7 @@ Search Box:
 **Empty State (No Sprints):**
 
 Display:
+
 - Center: Large calendar icon (128px, light gray)
 - Title: "No sprints yet"
   - Font: 24px, bold, gray
@@ -2126,6 +2337,7 @@ Display:
 - Padding: 64px
 
 Illustration:
+
 - Optional: Empty state illustration showing calendar
 - Style: Minimalist line art
 - Color: Light gray
@@ -2135,30 +2347,33 @@ Illustration:
 Display: Row of 4 stat cards
 
 Stat 1: Total Sprints
+
 - Number: Count of all sprints
 - Label: "Total Sprints"
 - Icon: Calendar stack
 
 Stat 2: Average Velocity
+
 - Number: Average story points per sprint
 - Label: "Avg Velocity"
 - Icon: Speedometer
 - Calculation: Total points completed / Number of completed sprints
 
 Stat 3: Sprint Success Rate
+
 - Number: Percentage of sprints completing all stories
 - Label: "Success Rate"
 - Icon: Target
 - Color: Green if >80%
 
 Stat 4: Current Sprint Progress
+
 - Number: Percentage of active sprint
 - Label: "Current Progress"
 - Icon: Progress circle
 - Shows: Only if active sprint exists
 
 ---
-
 
 ## Stories Management - Ultra-Detailed Complete Guide
 
@@ -2171,18 +2386,21 @@ The Stories Management page (also called Criteria Validator) is the heart of req
 AQMS enforces mandatory quality gates to ensure stories are properly defined and testable before developers start coding:
 
 **Gate 1: QA Sign-Off**
+
 - Provided by: QA Engineer role only
 - Validates: Acceptance criteria are clear, testable, and complete
 - Blocks: Cannot assign developer without this
 - Purpose: Ensure testability before development
 
 **Gate 2: PM Approval**
+
 - Provided by: Product Manager role only
 - Validates: Story aligns with product vision and business goals
 - Blocks: Cannot assign developer without this
 - Purpose: Ensure business value before development
 
 **Combined Effect:**
+
 - BOTH gates must be present to unlock developer assignment
 - Lock icon (🔒) appears in Developer and Tester columns until both approved
 - This prevents coding untestable or unapproved requirements
@@ -2190,6 +2408,7 @@ AQMS enforces mandatory quality gates to ensure stories are properly defined and
 ### Page Layout and Structure
 
 **Page Header:**
+
 - Title: "Stories Management"
   - Font: 28px, extra bold (800 weight)
   - Color: Dark gray (#111827) in light mode, white in dark mode
@@ -2205,6 +2424,7 @@ AQMS enforces mandatory quality gates to ensure stories are properly defined and
   - Position: Above title
 
 **Action Button (Top-Right):**
+
 - Text: "Create Story"
 - Icon: Plus (+) icon on left
 - Background: Green (#10B981)
@@ -2226,6 +2446,7 @@ AQMS enforces mandatory quality gates to ensure stories are properly defined and
 Positioned below page header, above filters. Four cards in horizontal row.
 
 **Card 1: Total Stories**
+
 - Background: White with blue left border (4px wide)
 - Size: 25% width, 100px height
 - Icon: Document stack (blue)
@@ -2238,6 +2459,7 @@ Positioned below page header, above filters. Four cards in horizontal row.
 - Updates: Real-time via 2-second polling
 
 **Card 2: Ready for Development**
+
 - Background: White with green left border
 - Icon: Checkmark in circle (green)
 - Number: Stories with BOTH approvals (e.g., "34")
@@ -2250,6 +2472,7 @@ Positioned below page header, above filters. Four cards in horizontal row.
 - Meaning: These stories can have developers assigned
 
 **Card 3: Awaiting Approval**
+
 - Background: White with yellow left border
 - Icon: Clock/hourglass (yellow)
 - Number: Stories missing one or both approvals (e.g., "13")
@@ -2262,6 +2485,7 @@ Positioned below page header, above filters. Four cards in horizontal row.
 - Click: Filters table to show only these stories
 
 **Card 4: Locked Stories**
+
 - Background: White with red left border
 - Icon: Lock (red)
 - Number: Same as Awaiting Approval
@@ -2274,6 +2498,7 @@ Positioned below page header, above filters. Four cards in horizontal row.
 Located below statistics cards, above the main table.
 
 **Layout:**
+
 - Background: Light gray panel (#F9FAFB)
 - Padding: 20px all sides
 - Border Radius: 8px
@@ -2285,6 +2510,7 @@ Located below statistics cards, above the main table.
 Position: Far left, takes 40% width
 
 Components:
+
 - Container: White background, border
 - Icon: Magnifying glass (gray, left side)
 - Input Field:
@@ -2301,6 +2527,7 @@ Components:
     - Shadow: Blue glow (0 0 0 3px rgba(59, 130, 246, 0.1))
 
 Functionality:
+
 - Searches: Story ID, title, description, acceptance criteria
 - Behavior: Real-time filtering as you type
 - Debounce: 300ms delay to prevent lag
@@ -2309,6 +2536,7 @@ Functionality:
 - Minimum Characters: 2 (won't search single character)
 
 Clear Button:
+
 - Icon: X in circle
 - Position: Right side of input
 - Visibility: Only appears when text entered
@@ -2317,6 +2545,7 @@ Clear Button:
 - Keyboard: Escape key also clears
 
 Examples:
+
 - Type "US-101" → Finds exact story
 - Type "login" → Finds all stories with "login" in title/description
 - Type "authentication" → Finds related stories
@@ -2326,10 +2555,12 @@ Examples:
 Position: Second column, 15% width
 
 Components:
+
 - Label: "Priority" (above dropdown)
 - Dropdown: Select element
 
 Dropdown Options:
+
 1. "All Priorities" (default, shows all)
 2. "Critical" (red icon)
 3. "High" (orange icon)
@@ -2337,6 +2568,7 @@ Dropdown Options:
 5. "Low" (blue icon)
 
 Dropdown Styling:
+
 - Background: White
 - Border: 1px solid gray
 - Height: 44px
@@ -2348,11 +2580,13 @@ Dropdown Styling:
 - Option Icons: Color-coded dots next to each priority
 
 Selected State:
+
 - Background: Light blue
 - Font Weight: Semi-bold
 - Checkmark: Appears next to selected option
 
 Behavior:
+
 - Click: Opens dropdown menu
 - Select: Filters table to show only matching priority
 - Keyboard:
@@ -2363,6 +2597,7 @@ Behavior:
   - Example: Search "login" + Priority "High" = Only high-priority login stories
 
 Badge Indicator:
+
 - Shows: Count of stories for each priority in dropdown
 - Example: "Critical (3)" "High (12)" "Medium (25)" "Low (7)"
 - Color: Matches priority color
@@ -2375,6 +2610,7 @@ Position: Third column, 15% width
 Label: "Sprint"
 
 Dropdown Options:
+
 1. "All Sprints" (default)
 2. "Sprint 12" (with count)
 3. "Sprint 13" (with count)
@@ -2382,12 +2618,14 @@ Dropdown Options:
 5. "Unassigned" (stories not in any sprint)
 
 Special Features:
+
 - Active Sprint: Highlighted in green
 - Completed Sprints: Grayed out text
 - Future Sprints: Normal text
 - Count Badge: Shows story count per sprint
 
 Example Display:
+
 ```
 All Sprints
 ───────────────
@@ -2399,6 +2637,7 @@ Unassigned (12 stories)
 ```
 
 Active Sprint Indicator:
+
 - Green dot (●) before name
 - Bold font weight
 - Appears first in list (before completed)
@@ -2410,6 +2649,7 @@ Position: Fourth column, 15% width
 Label: "Status"
 
 Dropdown Options:
+
 1. "All Status" (default)
 2. "Ready" (green checkmark icon)
    - Stories with QA sign-off AND PM approval
@@ -2417,11 +2657,13 @@ Dropdown Options:
    - Stories missing one or both approvals
 
 Visual Indicators in Dropdown:
+
 - Ready: Green background tint
 - Locked: Red background tint
 - Icons: Show in dropdown next to text
 
 Count Badges:
+
 - Ready (34)
 - Locked (13)
 
@@ -2432,6 +2674,7 @@ Position: Fifth column (far right), 15% width
 Label: "Show:"
 
 Dropdown Options:
+
 - 10 per page
 - 25 per page (default)
 - 50 per page
@@ -2440,12 +2683,14 @@ Dropdown Options:
 Purpose: Control table pagination
 
 Behavior:
+
 - Select: Immediately reloads table with new page size
 - Persist: Choice saved to localStorage
 - Applied: Across sessions (remembers preference)
 - Resets: Page number to 1 when changed
 
 Performance Note:
+
 - 10-25: Fast loading, frequent pagination
 - 50: Balanced
 - 100: Slower loading, less pagination
@@ -2458,11 +2703,13 @@ Position: Below filter inputs
 Shows: Currently active filters as removable badges
 
 Example:
+
 ```
 Active Filters: [Priority: Critical ✕] [Sprint: Sprint 12 ✕] [Status: Ready ✕] [Clear All]
 ```
 
 Badge Styling:
+
 - Background: Blue (#3B82F6)
 - Text: White
 - Padding: 6px 12px
@@ -2471,17 +2718,20 @@ Badge Styling:
 - Hover: Darker blue
 
 Click X:
+
 - Removes: That specific filter
 - Updates: Table immediately
 - Animation: Fade out (200ms)
 
 Clear All Button:
+
 - Text: "Clear All Filters"
 - Color: Red text
 - Hover: Underline
 - Click: Removes all filters, shows all stories
 
 Results Count:
+
 - Position: Right of active filters
 - Text: "Showing 23 results"
 - Font: 14px, gray
@@ -2490,6 +2740,7 @@ Results Count:
 ### Main Stories Table - Complete Breakdown
 
 **Table Container:**
+
 - Background: White panel
 - Border: 1px solid light gray (#E5E7EB)
 - Border Radius: 8px (rounded corners)
@@ -2498,6 +2749,7 @@ Results Count:
 - Min Height: 400px
 
 **Table Structure:**
+
 - Type: HTML table element
 - Width: 100% of container
 - Border Collapse: Separate (for proper spacing)
@@ -2507,6 +2759,7 @@ Results Count:
 **Table Header Row:**
 
 Container:
+
 - Background: Light gray (#F3F4F6)
 - Height: 56px
 - Position: Sticky (stays visible when scrolling down)
@@ -2515,6 +2768,7 @@ Container:
 - Border Bottom: 2px solid gray (#D1D5DB)
 
 Header Cells (All):
+
 - Font: 12px
 - Weight: Bold (700)
 - Transform: Uppercase
@@ -2523,6 +2777,7 @@ Header Cells (All):
 - Padding: 16px
 
 Sortable Columns:
+
 - Cursor: Pointer
 - Hover: Darker gray background
 - Icon: Up/down arrows (▲▼) shown on hover
@@ -2536,6 +2791,7 @@ Alignment: Left
 Sortable: Yes (click to sort)
 
 Cell Content:
+
 - Story Identifier (e.g., "US-101", "US-102")
 - Font: 14px, monospace (for alignment)
 - Weight: Semi-bold (600)
@@ -2543,12 +2799,14 @@ Cell Content:
 - Letter Spacing: 0.5px
 
 ID Format:
+
 - Prefix: "US-" (User Story)
 - Number: Sequential (101, 102, 103...)
 - Generation: Auto-assigned on creation
 - Unique: No duplicates allowed
 
 Visual Treatment:
+
 - Background: Light blue tint (#F0F9FF)
 - Padding: 6px 10px
 - Border Radius: 4px
@@ -2556,6 +2814,7 @@ Visual Treatment:
 - Display: Inline-block
 
 Copy Functionality:
+
 - Hover: Copy icon appears next to ID
 - Click Icon: Copies ID to clipboard
 - Toast: "ID copied" confirmation
@@ -2570,6 +2829,7 @@ Alignment: Left
 Sortable: Yes (alphabetical)
 
 Cell Content:
+
 - Story Title/Summary
 - Font: 14px, sans-serif
 - Weight: Normal (400)
@@ -2577,17 +2837,20 @@ Cell Content:
 - Line Height: 1.5 (for readability)
 
 Display Rules:
+
 - Max Lines: 2 lines visible
 - Overflow: Ellipsis (...) if exceeds
 - White Space: Normal wrap
 - Word Break: Break-word (prevents overflow)
 
 Example Titles:
+
 - "User Authentication - Login Flow with Email and Password"
 - "Payment Gateway Integration for Credit Card Processing"
 - "Dashboard Widgets - Real-time Metrics Display"
 
 Hover Behavior:
+
 - Cursor: Pointer
 - Color: Blue (#3B82F6)
 - Underline: Appears
@@ -2598,10 +2861,12 @@ Hover Behavior:
   - Position: Above cell
 
 Click Behavior:
+
 - Action: Opens story detail view modal
 - Alternative: Can click View button in Actions column
 
 Truncation Example:
+
 ```
 Visible: "User can reset their password via email li..."
 Full (in tooltip): "User can reset their password via email link with security token validation and expiry check"
@@ -2617,6 +2882,7 @@ Sortable: Yes (Critical → High → Medium → Low)
 Cell Content: Priority Badge
 
 Badge Structure:
+
 - Type: Span element with styling
 - Padding: 6px 12px
 - Border Radius: 12px (pill shape)
@@ -2627,6 +2893,7 @@ Badge Structure:
 - Text Align: Center
 
 **Critical Priority:**
+
 - Background: Red (#DC2626)
 - Text: "CRITICAL"
 - Text Color: White
@@ -2636,6 +2903,7 @@ Badge Structure:
 - Width: 90px
 
 **High Priority:**
+
 - Background: Orange (#EA580C)
 - Text: "HIGH"
 - Text Color: White
@@ -2643,6 +2911,7 @@ Badge Structure:
 - Width: 70px
 
 **Medium Priority:**
+
 - Background: Yellow (#F59E0B)
 - Text: "MEDIUM"
 - Text Color: Dark gray (#111827) (for contrast)
@@ -2650,6 +2919,7 @@ Badge Structure:
 - Width: 80px
 
 **Low Priority:**
+
 - Background: Blue (#3B82F6)
 - Text: "LOW"
 - Text Color: White
@@ -2657,12 +2927,14 @@ Badge Structure:
 - Width: 60px
 
 Hover Effect (All):
+
 - Cursor: Pointer
 - Opacity: 0.8
 - Tooltip: "Priority: [Level] - Click to change"
 - Transform: Scale 1.05
 
 Click Badge:
+
 - Action: Opens priority change dropdown
 - Requires: Permission to edit story
 - Options: All 4 priority levels
@@ -2679,6 +2951,7 @@ Sortable: Yes (numerical)
 Cell Content: Numeric Value or Dash
 
 Numeric Display:
+
 - Font: 16px
 - Weight: Bold (700)
 - Color: Dark gray (#111827)
@@ -2688,6 +2961,7 @@ Numeric Display:
 - Text Align: Center within circle
 
 Valid Values:
+
 - Fibonacci Sequence: 1, 2, 3, 5, 8, 13, 21
 - Common: 1, 2, 3, 5, 8, 13
 - T-shirt Sizes Map:
@@ -2698,18 +2972,21 @@ Valid Values:
   - XL = 13
 
 Empty State:
+
 - Display: "-" (dash)
 - Color: Light gray (#9CA3AF)
 - Meaning: Not estimated yet
 - Hover: "Not estimated - Click to add"
 
 Color Coding by Size:
+
 - 1-2 points: Green circle (small)
 - 3-5 points: Yellow circle (medium)
 - 8-13 points: Orange circle (large)
 - 21+ points: Red circle (too large - consider splitting)
 
 Hover Tooltip:
+
 ```
 Story Points: 8
 Estimated Effort: ~8-10 hours
@@ -2718,6 +2995,7 @@ Sprint Capacity Impact: 16% (if sprint total is 50 points)
 ```
 
 Click to Edit:
+
 - Opens: Number input dropdown
 - Shows: Fibonacci sequence as buttons
 - Select: Updates story points
@@ -2733,6 +3011,7 @@ Sortable: Yes (by sprint number)
 Cell Content: Sprint Name or Dash
 
 Assigned Sprint Display:
+
 - Text: Sprint name (e.g., "Sprint 12")
 - Font: 14px, semi-bold
 - Color: Blue (#3B82F6)
@@ -2742,24 +3021,28 @@ Assigned Sprint Display:
 - Border Left: 3px solid blue (accent)
 
 Active Sprint:
+
 - Green dot (●) before name
 - Background: Light green (#ECFDF5)
 - Border: Green instead of blue
 - Tooltip: "Active sprint - In progress"
 
 Completed Sprint:
+
 - Gray text color
 - Strikethrough: No (readable)
 - Opacity: 0.7
 - Tooltip: "Completed sprint"
 
 Unassigned:
+
 - Display: "-" (dash)
 - Color: Gray
 - Font Style: Italic
 - Hover: "Not assigned to any sprint - Click to assign"
 
 Click to Assign:
+
 - Opens: Sprint selection dropdown
 - Shows:
   - Current active sprint (highlighted)
@@ -2769,6 +3052,7 @@ Click to Assign:
 - Update: Sprint statistics recalculate
 
 Multiple Sprint Warning:
+
 - Stories can only be in ONE sprint
 - If already assigned, shows "Move to different sprint?" confirmation
 
@@ -2781,6 +3065,7 @@ Alignment: Center
 Cell Content: User Badge or Dash
 
 User Badge Display:
+
 - Type: Circle with initials
 - Size: 36px diameter
 - Background: Purple (#8B5CF6)
@@ -2789,6 +3074,7 @@ User Badge Display:
 - Example: "SJ" for Sarah Johnson
 
 Badge Tooltip (on hover):
+
 ```
 QA Reviewer: Sarah Johnson
 Email: sarah.johnson@company.com
@@ -2797,11 +3083,13 @@ Workload: 8 active stories
 ```
 
 Unassigned State:
+
 - Display: "-" (dash)
 - Color: Light gray
 - Hover: "No QA reviewer - Click to assign"
 
 Click to Assign:
+
 - Opens: User selection dropdown
 - Filter: Shows only QA Engineer role
 - Display Format:
@@ -2816,11 +3104,13 @@ Click to Assign:
 - Notification: Email sent to assigned QA
 
 Auto-Assignment Option:
+
 - Button: "Auto-Assign" at bottom of dropdown
 - Logic: Assigns to QA with lowest current workload
 - Fair Distribution: Balances work across team
 
 Remove Assignment:
+
 - Option: "Unassign" in dropdown
 - Requires: Confirmation if QA already provided sign-off
 - Warning: "This will remove QA sign-off. Continue?"
@@ -2836,6 +3126,7 @@ Cell Content: User Badge, Lock Icon, or Dash
 **Locked State (Most Important):**
 
 Display:
+
 - Icon: Lock icon (🔒)
 - Size: 32px
 - Color: Red (#EF4444)
@@ -2843,6 +3134,7 @@ Display:
 - Centered in cell
 
 Locked When:
+
 ```
 if (qaSignOff === false || pmApproval === false) {
   showLock = true;
@@ -2850,6 +3142,7 @@ if (qaSignOff === false || pmApproval === false) {
 ```
 
 Hover Tooltip:
+
 ```
 🔒 Assignment Blocked
 
@@ -2865,6 +3158,7 @@ Contact your QA Engineer and Product Manager to unblock.
 ```
 
 Click on Lock:
+
 - No Action: Cannot click through
 - Purpose: Visual barrier
 - Shake Animation: Lock shakes if clicked (emphasizes it's locked)
@@ -2872,6 +3166,7 @@ Click on Lock:
 **Unlocked State:**
 
 Unlocked When:
+
 ```
 if (qaSignOff === true && pmApproval === true) {
   showLock = false;
@@ -2880,12 +3175,14 @@ if (qaSignOff === true && pmApproval === true) {
 ```
 
 User Badge (When Assigned):
+
 - Same as QA Reviewer badge
 - Background: Green (#10B981) instead of purple
 - Initials: Developer's initials
 - Tooltip: Shows developer info and current workload
 
 Unassigned (But Unlocked):
+
 - Display: "Assign" button
 - Color: Green background
 - Text: "Assign Dev"
@@ -2894,6 +3191,7 @@ Unassigned (But Unlocked):
 - Click: Opens developer dropdown
 
 Developer Dropdown:
+
 - Filter: Shows only Developer role users
 - Sort: By current workload
 - Display: Name, email, current stories count
@@ -2911,6 +3209,7 @@ Width: 120px fixed
 Alignment: Center
 
 Same as Developer column in all aspects:
+
 - Lock icon when qaSignOff=false OR pmApproval=false
 - User badge when assigned and unlocked
 - Assign button when unlocked but unassigned
@@ -2929,6 +3228,7 @@ Sticky: Can be sticky right column (optional)
 Cell Content: Three Action Buttons
 
 Button Layout:
+
 - Display: Flex row
 - Gap: 8px between buttons
 - Justify: Center
@@ -2937,6 +3237,7 @@ Button Layout:
 **Button 1: View**
 
 Visual:
+
 - Background: Blue (#3B82F6)
 - Text: "View"
 - Text Color: White
@@ -2949,6 +3250,7 @@ Visual:
 - Border: None
 
 Hover State:
+
 - Background: Darker blue (#2563EB)
 - Transform: translateY(-2px) (lifts up 2px)
 - Shadow: Deeper shadow appears
@@ -2956,11 +3258,13 @@ Hover State:
 - Cursor: Pointer
 
 Active State (When Clicked):
+
 - Transform: Scale(0.95)
 - Duration: 100ms
 - Effect: Pressed button appearance
 
 Click Action:
+
 1. Opens Story Detail View modal
 2. Modal slides in from right (animation 300ms)
 3. Background dims with overlay
@@ -2969,6 +3273,7 @@ Click Action:
 6. Escape key or click outside to close
 
 Keyboard:
+
 - Tab: Focus moves to this button
 - Enter/Space: Triggers click
 - Focus Ring: Blue outline when focused
@@ -2976,6 +3281,7 @@ Keyboard:
 **Button 2: Edit**
 
 Visual:
+
 - Background: Gray (#6B7280)
 - Text: "Edit"
 - Text Color: White
@@ -2985,15 +3291,18 @@ Visual:
 - Same border radius and font as View
 
 Hover State:
+
 - Background: Darker gray (#4B5563)
 - Same lift and shadow as View button
 
 Permission Check:
+
 - Visible: If user has edit permission
 - Disabled: If story locked by another user
 - Tooltip if Disabled: "Story is being edited by [User Name]"
 
 Click Action:
+
 1. Opens Edit Story modal
 2. Pre-populates form with current data
 3. All fields editable except ID
@@ -3001,6 +3310,7 @@ Click Action:
 5. Cancel warns if unsaved changes
 
 Concurrent Edit Protection:
+
 - Check: If another user editing
 - Lock: Prevents simultaneous edits
 - Toast: "Someone is editing this story"
@@ -3009,6 +3319,7 @@ Concurrent Edit Protection:
 **Button 3: Delete**
 
 Visual:
+
 - Background: Red (#EF4444)
 - Text: "Delete"
 - Text Color: White
@@ -3017,21 +3328,25 @@ Visual:
 - Height: 36px
 
 Hover State:
+
 - Background: Darker red (#DC2626)
 - Cursor: Pointer
 - Shadow: Red-tinted shadow
 
 Permission Check:
+
 - Visible: Only if user is admin or story creator
 - Hidden: For other users
 - Tooltip if Hidden: "Only admins can delete stories"
 
 Click Action:
+
 1. Shows Confirmation Dialog
 2. Dialog prevents accidental deletion
 3. Blocks UI interaction until answered
 
 Confirmation Dialog:
+
 - Overlay: Dark semi-transparent background
 - Modal: White centered card
 - Width: 500px
@@ -3039,6 +3354,7 @@ Confirmation Dialog:
 - Shadow: Large shadow for prominence
 
 Dialog Content:
+
 - Icon: Large red warning triangle (64px)
 - Title: "Delete Story?"
   - Font: 24px, bold, dark gray
@@ -3048,7 +3364,7 @@ Dialog Content:
 - Warning Text:
   ```
   ⚠️ This action cannot be undone.
-  
+
   The following will happen:
   • Story will be permanently deleted
   • Linked test cases will be unlinked (tests preserved)
@@ -3063,6 +3379,7 @@ Dialog Content:
   - Sprint: Will be removed from [Sprint Name]
 
 Dialog Buttons:
+
 - Cancel Button:
   - Position: Left
   - Background: Gray (#6B7280)
@@ -3084,6 +3401,7 @@ Dialog Buttons:
   - Keyboard: Enter confirms (dangerous but explicit)
 
 Safety Mechanism:
+
 - Type to Confirm: For critical stories (>50 points or Critical priority)
   - Input field appears: "Type DELETE to confirm"
   - Delete button disabled until typed correctly
@@ -3091,6 +3409,7 @@ Safety Mechanism:
   - Purpose: Prevent accidental deletion of important work
 
 Delete Process:
+
 1. Shows loading spinner
 2. Soft delete in database (marked as deleted, not removed)
 3. Unlinks from all related items
@@ -3102,6 +3421,7 @@ Delete Process:
 9. Sends notification to team members
 
 Undo Option:
+
 - Toast includes "Undo" button
 - Available for 10 seconds
 - Click Undo: Restores story
@@ -3110,18 +3430,21 @@ Undo Option:
 ### Table Row States and Visual Indicators
 
 **Normal Row:**
+
 - Background: White
 - Height: 64px
 - Padding: 12px vertical
 - Border Bottom: 1px solid light gray (#E5E7EB)
 
 **Zebra Striping (Alternating Rows):**
+
 - Even Rows: White background
 - Odd Rows: Very light gray (#F9FAFB)
 - Purpose: Easier to scan across columns
 - Subtle: Just barely noticeable
 
 **Hover Row:**
+
 - Trigger: Mouse cursor over any part of row
 - Background: Light blue (#EFF6FF)
 - Transition: Smooth 100ms fade-in
@@ -3129,24 +3452,28 @@ Undo Option:
 - Effect: Highlights entire row for context
 
 **Ready Row (Has Both Approvals):**
+
 - Left Border: 4px solid green (#10B981)
 - Background Tint: Very light green (#ECFDF5)
 - Checkmark Icons: In QA Sign-Off and PM Approval indicator
 - Developer/Tester: Unlocked, shows assignments or assign buttons
 
 Visual Indicators on Ready Row:
+
 - QA Sign-Off Column: Green checkmark (✓)
 - PM Approval Column: Green checkmark (✓)
 - Lock Icons: Not present
 - Overall Feel: Positive, ready to work
 
 **Locked Row (Missing Approval(s)):**
+
 - Left Border: 4px solid red (#EF4444)
 - Background Tint: Very light red (#FEF2F2)
 - Lock Icons: In Developer and Tester columns
 - X Icons: In approval columns that are missing
 
 Visual Indicators on Locked Row:
+
 - QA Sign-Off: Red X (✗) if not provided
 - PM Approval: Red X (✗) if not provided
 - Developer Column: Red lock icon (🔒)
@@ -3154,6 +3481,7 @@ Visual Indicators on Locked Row:
 - Overall Feel: Blocked, action needed
 
 **Highlighted Row (Navigated From Link):**
+
 - Trigger: Clicked from linked item (bug or test case)
 - Background: Blue (#DBEAFE) with high opacity
 - Border: 2px solid blue (#3B82F6) all around
@@ -3163,6 +3491,7 @@ Visual Indicators on Locked Row:
 - Purpose: Draw attention to specific story
 
 Pulse Animation:
+
 ```css
 @keyframes pulse {
   0%, 100% { background-color: #DBEAFE; }
@@ -3174,6 +3503,7 @@ Timing: ease-in-out
 ```
 
 **Selected Row (Checkbox Checked):**
+
 - Trigger: Click checkbox in row (for bulk operations)
 - Background: Blue (#BFDBFE)
 - Checkbox: Checked with blue checkmark
@@ -3183,6 +3513,7 @@ Timing: ease-in-out
 - Select All: Header checkbox selects all visible rows
 
 Bulk Action Toolbar (Appears When Rows Selected):
+
 - Position: Above table, below filters
 - Background: Blue gradient
 - Height: 60px
@@ -3196,6 +3527,7 @@ Bulk Action Toolbar (Appears When Rows Selected):
   - Clear Selection: X button (right side)
 
 **Row Interactions Summary:**
+
 - Click Anywhere on Row: No action (must use buttons)
 - Click Title Cell: Opens detail view
 - Click Badge: Opens inline editor (if permitted)
@@ -3206,6 +3538,7 @@ Bulk Action Toolbar (Appears When Rows Selected):
 ### Table Pagination
 
 **Pagination Container:**
+
 - Position: Bottom of table
 - Background: Light gray (#F9FAFB)
 - Height: 60px
@@ -3217,17 +3550,20 @@ Bulk Action Toolbar (Appears When Rows Selected):
 **Left Side: Results Summary**
 
 Text Display:
+
 - Format: "Showing X-Y of Z stories"
 - Example: "Showing 1-25 of 47 stories"
 - Font: 14px, gray (#6B7280)
 - Weight: Normal
 
 Dynamic Updates:
+
 - X: First item number on current page
 - Y: Last item number on current page
 - Z: Total matching items (after filters applied)
 
 With Filters:
+
 - Example: "Showing 1-25 of 34 stories (filtered from 47 total)"
 - Gray Text: "(filtered from 47 total)"
 - Purpose: Show original count before filters
@@ -3235,11 +3571,13 @@ With Filters:
 **Right Side: Page Controls**
 
 Layout:
+
 - Display: Flex row
 - Gap: 8px between controls
 - Align: Center
 
 **Previous Button:**
+
 - Text: "Previous" or "‹" icon
 - Background: White
 - Border: 1px solid gray
@@ -3248,6 +3586,7 @@ Layout:
 - Border Radius: 6px
 
 Disabled State (Page 1):
+
 - Background: Light gray
 - Color: Gray (#9CA3AF)
 - Cursor: not-allowed
@@ -3255,6 +3594,7 @@ Disabled State (Page 1):
 - No hover effect
 
 Enabled State:
+
 - Background: White
 - Color: Blue (#3B82F6)
 - Cursor: Pointer
@@ -3264,10 +3604,12 @@ Enabled State:
 **Page Number Buttons:**
 
 Layout:
+
 - Display: Inline-flex
 - Gap: 4px between buttons
 
 Each Number Button:
+
 - Size: 36px x 36px (square)
 - Background: White
 - Border: 1px solid gray
@@ -3276,6 +3618,7 @@ Each Number Button:
 - Text Align: Center
 
 Current Page Button:
+
 - Background: Blue (#3B82F6)
 - Color: White
 - Border: None
@@ -3283,6 +3626,7 @@ Current Page Button:
 - Not Clickable: Disabled state
 
 Other Page Buttons:
+
 - Background: White
 - Color: Dark gray
 - Cursor: Pointer
@@ -3290,6 +3634,7 @@ Other Page Buttons:
 - Click: Jumps to that page
 
 Page Display Logic:
+
 ```
 Total Pages: 10
 Current Page: 5
@@ -3306,23 +3651,28 @@ Rules:
 ```
 
 Ellipsis (...):
+
 - Display: "..." between page groups
 - Color: Gray
 - Not Clickable: Visual indicator only
 - Purpose: Show there are more pages
 
 **Next Button:**
+
 - Text: "Next" or "›" icon
 - Same styling as Previous button
 
 Disabled State (Last Page):
+
 - Same as Previous disabled
 
 Enabled State:
+
 - Same as Previous enabled
 - Click: Goes to next page
 
 **Keyboard Navigation:**
+
 - Left Arrow: Previous page
 - Right Arrow: Next page
 - Number Keys: Jump to page (1-9)
@@ -3330,6 +3680,7 @@ Enabled State:
 - End: Last page
 
 **Page Change Behavior:**
+
 1. User clicks page button
 2. Loading indicator appears (spinner in table)
 3. Table rows fade out (200ms)
@@ -3341,6 +3692,7 @@ Enabled State:
 9. Browser back button works (goes to previous page)
 
 **Mobile Responsive Pagination:**
+
 - Hide: "Previous" and "Next" text, show only arrows
 - Reduce: Page number buttons to 3 visible (current ± 1)
 - Stack: On very small screens (<400px)
@@ -3348,11 +3700,13 @@ Enabled State:
 ### Create Story Modal - Complete Details
 
 **How to Open:**
+
 - Click: Green "Create Story" button (top-right of page)
 - Keyboard: Ctrl+Shift+S (Cmd+Shift+S on Mac)
 - Quick Create: From sidebar "Quick Create" menu
 
 **Modal Overlay:**
+
 - Background: Semi-transparent black (rgba(0, 0, 0, 0.5))
 - Position: Fixed, full screen
 - Z-index: 1000 (above all other content)
@@ -3360,6 +3714,7 @@ Enabled State:
 - Escape Key: Closes modal (with confirmation)
 
 **Modal Container:**
+
 - Size: 800px width x auto height (max 90vh)
 - Position: Centered on screen
 - Background: White
@@ -3368,12 +3723,14 @@ Enabled State:
 - Animation: Slides up from bottom + fade in (300ms ease-out)
 
 **Modal Header:**
+
 - Height: 80px
 - Background: Blue gradient (#3B82F6 to #2563EB)
 - Border Radius: 12px 12px 0 0 (rounded top only)
 - Padding: 24px
 
 Header Content:
+
 - Icon: Large document icon (40px, white)
 - Title: "Create New Story"
   - Font: 24px, bold, white
@@ -3383,6 +3740,7 @@ Header Content:
   - Position: Below title
 
 Close Button:
+
 - Position: Top-right corner of header
 - Icon: X (close icon)
 - Size: 40px x 40px
@@ -3392,25 +3750,29 @@ Close Button:
 - Click: Closes modal (with confirmation if unsaved)
 
 **Modal Body:**
+
 - Padding: 32px
 - Background: White
 - Max Height: calc(90vh - 80px - 80px) (screen height - header - footer)
 - Overflow: Auto (scrollable if form is long)
 
 **Form Layout:**
+
 - Display: Grid
 - Gap: 24px between fields
 - Grid: Single column (full width fields)
 
-**Field 1: Title** *(Required)*
+**Field 1: Title** _(Required)_
 
 Label:
+
 - Text: "Story Title"
 - Font: 14px, semi-bold (#374151)
 - Margin Bottom: 8px
 - Required Indicator: Red asterisk (*) after label
 
 Input Field:
+
 - Type: Text input
 - Placeholder: "e.g., User can reset password via email link"
 - Background: White
@@ -3422,24 +3784,28 @@ Input Field:
 - Width: 100%
 
 Focus State:
+
 - Border: 2px solid blue (#3B82F6)
 - Outline: None
 - Shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) (blue glow)
 - Transition: 150ms
 
 Validation:
+
 - Required: Cannot be empty
 - Min Length: 10 characters
 - Max Length: 200 characters
 - Unique: Must not match existing story title (warning, not error)
 
 Character Counter:
+
 - Position: Bottom-right below field
 - Format: "25 / 200 characters"
 - Color: Gray normally, red when approaching/at limit
 - Updates: Real-time as you type
 
 Error State:
+
 - Trigger: On blur (leaving field) or form submit
 - Border: Red (#EF4444)
 - Background: Light red (#FEF2F2)
@@ -3450,14 +3816,16 @@ Error State:
   - Margin Top: 4px
 
 Success State (Valid):
+
 - Border: Green (#10B981)
 - Background: White
 - Checkmark: Green checkmark appears on right side
 - Animation: Checkmark fades in
 
-**Field 2: Description** *(Required)*
+**Field 2: Description** _(Required)_
 
 Label:
+
 - Text: "Description"
 - Font: 14px, semi-bold
 - Required: Red asterisk (*)
@@ -3465,6 +3833,7 @@ Label:
   - Tooltip: "Describe the user story in detail. Follow the format: As a [role], I want [feature], so that [benefit]."
 
 Input Field:
+
 - Type: Textarea
 - Rows: 6 (shows 6 lines initially)
 - Resizable: Yes (user can drag to resize vertically)
@@ -3474,7 +3843,7 @@ Input Field:
   Example:
   As a user, I want to reset my password via email link,
   so that I can regain access to my account when I forget my password.
-  
+
   Include:
   - Who is the user?
   - What do they want to do?
@@ -3483,29 +3852,34 @@ Input Field:
 - Same border/focus/error styling as title field
 
 Markdown Support:
+
 - Supports: Basic markdown (bold, italic, lists)
 - Preview Button: "Preview" toggle button above textarea
 - Preview Mode:
   - Shows: Rendered markdown
   - Background: Light gray
-  - Formatting: Bold (**text**), italic (*text*), bullets (- item)
+  - Formatting: Bold (**text**), italic (_text_), bullets (- item)
 
 Validation:
+
 - Required: Cannot be empty
 - Min Length: 20 characters
 - Max Length: 2000 characters
 
 Character Counter:
+
 - Format: "150 / 2000 characters"
 - Position: Bottom-right
 
-**Field 3: Acceptance Criteria Checkbox** *(Required)*
+**Field 3: Acceptance Criteria Checkbox** _(Required)_
 
 Layout:
+
 - Display: Checkbox with label
 - Flex row: Checkbox left, label right
 
 Checkbox:
+
 - Size: 20px x 20px
 - Border: 2px solid gray
 - Border Radius: 4px
@@ -3515,37 +3889,41 @@ Checkbox:
 - Click: Toggles checked state
 
 Label:
+
 - Text: "Has Acceptance Criteria"
 - Font: 14px, semi-bold
 - Color: Dark gray
 - Click: Also toggles checkbox (entire label is clickable)
 
 Required Notice:
+
 - Text: "You must define acceptance criteria before creating the story"
 - Font: 12px, italic, gray
 - Position: Below checkbox
 - Icon: Info icon (blue circle with 'i')
 
 Effect of Checking:
+
 - Unchecked: Acceptance Criteria Details field is hidden
 - Checked: Acceptance Criteria Details field appears with slide-down animation (200ms)
 
-**Field 4: Acceptance Criteria Details** *(Conditional Required)*
+**Field 4: Acceptance Criteria Details** _(Conditional Required)_
 
 Visibility: Only appears if checkbox above is checked
 
 Label:
+
 - Text: "Acceptance Criteria Details"
 - Required: Red asterisk (*)
 - Help Icon: Tooltip with format guidance
   - Tooltip:
     ```
     Use Given/When/Then format:
-    
+
     Given [initial context]
     When [action occurs]
     Then [expected result]
-    
+
     Example:
     Given a user has forgotten their password
     When they click "Forgot Password" and enter their email
@@ -3554,6 +3932,7 @@ Label:
     ```
 
 Input Field:
+
 - Type: Textarea
 - Rows: 10
 - Resizable: Yes
@@ -3563,6 +3942,7 @@ Input Field:
 - Line Height: 1.8 (better readability for lists)
 
 Template Button:
+
 - Text: "Insert Template"
 - Position: Above textarea, right-aligned
 - Color: Blue text, no background
@@ -3570,6 +3950,7 @@ Template Button:
 - Click: Inserts Given/When/Then template at cursor position
 
 Template Text:
+
 ```
 Given [context/precondition]
 When [action/event]
@@ -3578,6 +3959,7 @@ And [additional expected outcome]
 ```
 
 Validation:
+
 - Required: If checkbox is checked
 - Min Length: 30 characters
 - Format Check: Warns if doesn't contain "Given" or "When" or "Then"
@@ -3586,14 +3968,16 @@ Validation:
   - Still allows submission
 
 Auto-Formatting:
+
 - Detects: Lines starting with "Given", "When", "Then", "And", "But"
 - Formatting: Bolds these keywords
 - Indent: Auto-indents "And" and "But" lines
 - Numbers: Auto-numbers if using numbered list format
 
-**Field 5: Priority** *(Required)*
+**Field 5: Priority** _(Required)_
 
 Label:
+
 - Text: "Priority Level"
 - Required: Red asterisk (*)
 
@@ -3602,6 +3986,7 @@ Input: Custom Dropdown/Radio Group
 Display: 4 large radio-style cards in 2x2 grid
 
 Each Card:
+
 - Size: 45% width, 80px height
 - Border: 2px solid gray
 - Border Radius: 8px
@@ -3610,11 +3995,13 @@ Each Card:
 - Display: Flex column, centered
 
 Card Content:
+
 - Icon: Large priority icon (32px)
 - Text: Priority name (16px, bold)
 - Description: One-line description (11px, gray)
 
 **Critical Card:**
+
 - Icon: Double exclamation (!!) in red circle
 - Text: "Critical"
 - Description: "Blocks release, fix immediately"
@@ -3622,6 +4009,7 @@ Card Content:
 - Background: Light red (#FEF2F2) when selected
 
 **High Card:**
+
 - Icon: Single exclamation (!) in orange circle
 - Text: "High"
 - Description: "Important, prioritize this sprint"
@@ -3629,6 +4017,7 @@ Card Content:
 - Background: Light orange when selected
 
 **Medium Card (Default Selected):**
+
 - Icon: Dash (-) in yellow circle
 - Text: "Medium"
 - Description: "Standard priority"
@@ -3637,6 +4026,7 @@ Card Content:
 - Default: Selected by default
 
 **Low Card:**
+
 - Icon: Down arrow (↓) in blue circle
 - Text: "Low"
 - Description: "Nice-to-have, can wait"
@@ -3644,18 +4034,21 @@ Card Content:
 - Background: Light blue when selected
 
 Selection Behavior:
+
 - Click Any Card: Selects it, deselects others (radio button behavior)
 - Selected: Thicker border, colored background, larger icon
 - Hover (Not Selected): Border changes to priority color
 - Transition: Smooth 150ms
 
 Keyboard:
+
 - Arrow Keys: Navigate between cards
 - Space/Enter: Select focused card
 
-**Field 6: Story Points** *(Optional)*
+**Field 6: Story Points** _(Optional)_
 
 Label:
+
 - Text: "Story Points"
 - Optional: "(Optional)" in gray text
 - Help Icon: Tooltip explaining story points
@@ -3666,10 +4059,12 @@ Input: Custom Number Selector with Fibonacci Buttons
 Display: Row of clickable number badges
 
 Fibonacci Options:
+
 - Values: 1, 2, 3, 5, 8, 13, 21
 - Display: Horizontal row of circular badges
 
 Each Badge:
+
 - Size: 48px diameter
 - Border: 2px solid gray
 - Border Radius: 50% (circle)
@@ -3678,24 +4073,28 @@ Each Badge:
 - Cursor: Pointer
 
 Selected Badge:
+
 - Border: Blue
 - Background: Blue (#3B82F6)
 - Text: White
 - Transform: Scale(1.1)
 
 Badge Colors (When Selected):
+
 - 1-2: Green
 - 3-5: Yellow
 - 8-13: Orange
 - 21+: Red (warning color)
 
 Warning for 21+:
+
 - Message: "⚠️ This story seems very large. Consider splitting into smaller stories."
 - Color: Orange background, dark text
 - Position: Below badges
 - Icon: Warning triangle
 
 None Option:
+
 - Button: "Not Estimated"
 - Position: Right of number badges
 - Style: Gray pill button
@@ -3703,20 +4102,23 @@ None Option:
 - Default: Selected by default
 
 Effort Estimate (Auto-calculated):
+
 - Position: Below badges
 - Format: "Estimated: ~8-10 hours of work"
 - Calculation: Points × 1-2 hours (rough guide)
 - Font: 12px, italic, gray
 
-**Field 7: Sprint Assignment** *(Optional)*
+**Field 7: Sprint Assignment** _(Optional)_
 
 Label:
+
 - Text: "Assign to Sprint"
 - Optional: "(Optional)"
 
 Input: Searchable Dropdown
 
 Dropdown Display:
+
 - Background: White
 - Border: 2px solid gray
 - Border Radius: 8px
@@ -3725,6 +4127,7 @@ Dropdown Display:
 - Placeholder: "Select a sprint..."
 
 Search Box:
+
 - Inside Dropdown: Type to filter sprints
 - Icon: Magnifying glass
 - Clears: When option selected
@@ -3732,6 +4135,7 @@ Search Box:
 Options List:
 
 **Active Sprint (Highlighted):**
+
 ```
 Sprint 13 (Active) ●
 Goal: Payment gateway integration
@@ -3739,55 +4143,65 @@ Stories: 12 / 20 (60% full)
 Duration: 3 days remaining
 ───────────────────────────
 ```
+
 - Green dot indicator
 - Bold text
 - Light green background
 - Appears first in list
 
 **Future Sprints:**
+
 ```
 Sprint 14 (Planning)
 Goal: Dashboard redesign
 Stories: 5 / 15 (33% full)
 Starts: In 11 days
 ```
+
 - Normal text
 - White background
 
 **Completed Sprints (Grayed):**
+
 ```
 Sprint 12 (Completed)
 Goal: User authentication
 Stories: 18 / 18 (100%)
 Ended: 5 days ago
 ```
+
 - Gray text
 - Disabled (cannot select)
 - Collapsed by default (click to expand)
 
 **Unassigned Option:**
+
 ```
 No Sprint (Backlog)
 Keep in backlog for future planning
 ```
+
 - Default selection
 - Italic text
 
 Capacity Warning:
+
 - Shows: If sprint is >80% full
 - Message: "⚠️ Sprint 13 is 90% full (18 of 20 stories)"
 - Color: Orange
 - Allow: Can still select, just warns
 
 Sprint Full Error:
+
 - Shows: If sprint is 100% full
 - Message: "❌ Sprint 12 is full (20 of 20 stories)"
 - Color: Red
 - Block: Cannot select this sprint
 
-**Field 8: Tags** *(Optional)*
+**Field 8: Tags** _(Optional)_
 
 Label:
+
 - Text: "Tags"
 - Optional: "(Optional)"
 - Help: "Categorize this story for easier searching and filtering"
@@ -3795,6 +4209,7 @@ Label:
 Input: Multi-select Tag Input
 
 Display:
+
 - Container: Like a text input but shows selected tags as badges inside
 - Border: 2px solid gray
 - Border Radius: 8px
@@ -3802,6 +4217,7 @@ Display:
 - Padding: 8px
 
 Selected Tags Display:
+
 - Each Tag: Small pill badge
 - Background: Blue (#3B82F6)
 - Text: White, 12px
@@ -3812,6 +4228,7 @@ Selected Tags Display:
   - Hover X: Red color
 
 Tag Input Field:
+
 - Type: Text input within container
 - Placeholder: "Type to add tags..."
 - Width: Flexible (expands with available space)
@@ -3819,6 +4236,7 @@ Tag Input Field:
 - Focus: Highlights outer container
 
 Auto-Complete:
+
 - Trigger: When typing
 - Shows: Dropdown of existing tags
 - Source: Tags used in other stories
@@ -3829,12 +4247,14 @@ Auto-Complete:
 - Enter: Selects highlighted suggestion
 
 Create New Tag:
+
 - Type: Any text
 - Press: Enter or Comma to create
 - Validation: 1-30 characters, no special characters except hyphen and underscore
 - Added: Appears as badge in container
 
 Popular Tags:
+
 - Position: Below input field
 - Display: Row of clickable tag suggestions
 - Examples: "authentication", "ui", "backend", "api", "security"
@@ -3843,13 +4263,15 @@ Popular Tags:
 - Blue background: Already added tags
 
 Max Tags:
+
 - Limit: 10 tags per story
 - Warning: "Maximum 10 tags reached" when at limit
 - Disable: Input disabled at limit
 
-**Field 9: Dependencies** *(Optional)*
+**Field 9: Dependencies** _(Optional)_
 
 Label:
+
 - Text: "Dependencies"
 - Optional: "(Optional)"
 - Help: "Select stories that must be completed before this one"
@@ -3859,6 +4281,7 @@ Input: Multi-select Story Dropdown
 Display: Similar to Sprint dropdown but allows multiple selections
 
 Selected Dependencies Display:
+
 - List: Vertical list of selected stories
 - Each Item Shows:
   - Story ID (e.g., "US-101")
@@ -3867,6 +4290,7 @@ Selected Dependencies Display:
   - Remove button (X icon)
 
 Search and Select:
+
 - Search Box: Type to filter by ID or title
 - Results: List of matching stories
   - Excludes: Current story (can't depend on itself)
@@ -3874,35 +4298,41 @@ Search and Select:
   - Shows: ID + Title + Status
 
 Story Item in Dropdown:
+
 ```
 US-101: User Authentication Login Flow
 Status: ✓ Done  |  Priority: Critical  |  Sprint: 12
 ────────────────────────────────────
 ```
+
 - Click: Adds to dependencies list
 - Checkmark: Shows if already selected
 - Disabled: If selected
 
 Warning for Circular Dependencies:
+
 - Checks: If selected story depends on current story
 - Message: "⚠️ Circular dependency detected! US-105 depends on this story."
 - Color: Red
 - Block: Cannot add (prevents infinite loops)
 
 Dependency Chain Visualization:
+
 - Button: "View Dependency Chain" (if any dependencies)
 - Click: Shows tree diagram of dependencies
 - Diagram: Boxes connected with arrows
 - Purpose: Visualize dependency relationships
 
-**Field 10: Attachments** *(Optional)*
+**Field 10: Attachments** _(Optional)_
 
 Label:
+
 - Text: "Attachments"
 - Optional: "(Optional)"
 - Help: "Upload wireframes, mockups, or related documents"
 
 Upload Area:
+
 - Type: Drag-and-drop zone
 - Size: Full width, 150px height
 - Border: 2px dashed gray (#D1D5DB)
@@ -3910,6 +4340,7 @@ Upload Area:
 - Background: Light gray (#F9FAFB)
 
 Upload Area Content:
+
 - Icon: Large upload cloud icon (64px, gray)
 - Text: "Drag files here or click to browse"
   - Font: 16px, semi-bold, gray
@@ -3917,31 +4348,37 @@ Upload Area Content:
   - Font: 12px, light gray
 
 Drag Over State:
+
 - Border: Solid blue (instead of dashed gray)
 - Background: Light blue (#EFF6FF)
 - Icon: Blue color
 - Animation: Pulsing effect
 
 Click to Browse:
+
 - Click Anywhere: Opens file picker dialog
 - File Picker: Native OS file selection
 - Multi-Select: Can select multiple files at once
 
 Accepted File Types:
+
 - Images: .png, .jpg, .jpeg, .gif, .svg
 - Documents: .pdf, .doc, .docx, .xls, .xlsx
 - Other: .txt, .md, .zip
 
 Validation:
+
 - Max Size: 10MB per file
 - Max Files: 5 files total
 - Error: Shows red message if exceeded
 
 Uploaded Files List:
+
 - Position: Below upload area
 - Display: Vertical list of file cards
 
 Each File Card:
+
 - Size: Full width, 60px height
 - Border: 1px solid gray
 - Border Radius: 6px
@@ -3950,6 +4387,7 @@ Each File Card:
 - Margin: 8px 0
 
 File Card Content:
+
 - Icon: File type icon (left)
   - PDF: Red PDF icon
   - Image: Thumbnail preview
@@ -3960,12 +4398,14 @@ File Card Content:
 - Remove Button: Trash icon (right)
 
 Upload Progress:
+
 - Bar: Horizontal blue bar
 - Percentage: "Uploading... 45%"
 - Animation: Smooth fill animation
 - Complete: Checkmark replaces progress bar
 
 Remove File:
+
 - Click: Trash icon
 - Confirm: "Remove this file?"
 - Action: Removes from list
@@ -3974,6 +4414,7 @@ Remove File:
 **Form Actions (Footer)**
 
 Modal Footer:
+
 - Position: Bottom of modal
 - Background: Light gray (#F9FAFB)
 - Border Top: 1px solid gray
@@ -3982,10 +4423,12 @@ Modal Footer:
 - Border Radius: 0 0 12px 12px (rounded bottom)
 
 Footer Layout:
+
 - Display: Flex row
 - Justify: Space between (buttons on left and right)
 
 **Cancel Button (Left Side):**
+
 - Text: "Cancel"
 - Icon: X icon
 - Background: White
@@ -3997,10 +4440,12 @@ Footer Layout:
 - Font: 14px, semi-bold
 
 Hover:
+
 - Background: Light gray (#F3F4F6)
 - Border: Darker gray
 
 Click:
+
 - Checks: If form has unsaved data (any field filled)
 - If Data: Shows confirmation dialog
   - Dialog: "Discard changes? All entered data will be lost."
@@ -4008,6 +4453,7 @@ Click:
 - If No Data: Closes modal immediately
 
 **Save Button (Right Side):**
+
 - Text: "Create Story"
 - Icon: Checkmark icon
 - Background: Blue (#3B82F6)
@@ -4018,11 +4464,13 @@ Click:
 - Font: 14px, bold
 
 Hover (When Valid):
+
 - Background: Darker blue (#2563EB)
 - Transform: translateY(-2px) (lifts up)
 - Shadow: Deeper shadow
 
 Disabled State (Invalid Form):
+
 - Background: Light gray (#E5E7EB)
 - Color: Gray (#9CA3AF)
 - Cursor: not-allowed
@@ -4030,12 +4478,14 @@ Disabled State (Invalid Form):
 - Tooltip: "Please fill all required fields"
 
 Loading State (While Saving):
+
 - Disabled: Cannot click again
 - Icon: Spinner replaces checkmark
 - Text: "Creating..."
 - Background: Blue (same as normal)
 
 Keyboard Shortcuts:
+
 - Ctrl+Enter (Cmd+Enter): Submit form if valid
 - Escape: Cancel/close modal
 
@@ -4100,6 +4550,7 @@ Keyboard Shortcuts:
 **Form Behavior Notes:**
 
 Auto-Save Draft:
+
 - Trigger: Every 30 seconds if form has data
 - Storage: localStorage
 - Key: "story_draft_[timestamp]"
@@ -4107,31 +4558,37 @@ Auto-Save Draft:
 - Restore: "Restore draft?" prompt if detected on next open
 
 Required Field Indicators:
+
 - All required fields marked with red asterisk (*)
 - Label color: Darker for required fields
 - Bottom of form: "* Required fields"
 
 Field Dependencies:
+
 - Acceptance Criteria checkbox → Shows/hides details field
 - Priority selection → Affects recommended story points
 
 Real-time Validation:
+
 - Title: Checks for duplicates as you type
 - Tags: Validates format on each tag
 - Dependencies: Checks for circular dependencies
 
 Progress Indicator:
+
 - Top of modal: Progress bar showing completion
 - Calculation: (Fields filled / Total required fields) × 100
 - Color: Red →Yellow → Green as progress increases
 
 Keyboard Support:
+
 - Tab: Move to next field
 - Shift+Tab: Move to previous field
 - Escape: Close modal (with confirmation)
 - Ctrl+Enter: Submit form
 
 Accessibility:
+
 - ARIA labels on all fields
 - Error messages linked to fields
 - Screen reader announcements for errors
@@ -4140,10 +4597,10 @@ Accessibility:
 
 ---
 
-
 ### Story Detail View - Ultra-Detailed Guide
 
 **How to Open:**
+
 - Click: "View" button in Actions column of stories table
 - Click: Story title in table
 - Navigate: From linked bug or test case
@@ -4152,12 +4609,14 @@ Accessibility:
 **View Type: Full-Screen Modal**
 
 Modal Overlay:
+
 - Background: Semi-transparent black (60% opacity)
 - Covers: Entire screen
 - Z-index: 1100 (higher than create modal)
 - Click Outside: Closes view (no confirmation needed, read-only)
 
 Modal Container:
+
 - Size: 90% viewport width, 90% viewport height
 - Max Width: 1400px
 - Position: Centered
@@ -4169,12 +4628,14 @@ Modal Container:
 **Detail View Header:**
 
 Full-Width Header Bar:
+
 - Height: 120px
 - Background: Blue gradient (#3B82F6 to #1D4ED8)
 - Padding: 24px 32px
 - Border Radius: 12px 12px 0 0
 
 Header Left Section:
+
 - Story ID Badge:
   - Text: "US-101"
   - Background: White
@@ -4183,7 +4644,7 @@ Header Left Section:
   - Padding: 8px 16px
   - Border Radius: 8px
   - Copy Icon: Click to copy ID
-  
+
 - Story Title:
   - Text: Full story title
   - Font: 28px, bold, white
@@ -4194,6 +4655,7 @@ Header Left Section:
 Header Right Section (Action Buttons Row):
 
 **Edit Button:**
+
 - Position: Top-right
 - Background: White
 - Color: Blue
@@ -4206,6 +4668,7 @@ Header Right Section (Action Buttons Row):
 - Permission: Requires edit permission
 
 **Delete Button:**
+
 - Position: Next to Edit
 - Background: Red (#EF4444)
 - Color: White
@@ -4217,6 +4680,7 @@ Header Right Section (Action Buttons Row):
 - Permission: Admin or creator only
 
 **Close Button:**
+
 - Position: Far right (X icon)
 - Size: 44px x 44px
 - Background: White with 20% opacity
@@ -4230,6 +4694,7 @@ Header Right Section (Action Buttons Row):
 Three Status Badges:
 
 **Badge 1: Acceptance Criteria Status**
+
 - Icon: Document with checkmark
 - Text: "Criteria Defined" or "No Criteria"
 - Background: Green if true, gray if false
@@ -4237,6 +4702,7 @@ Three Status Badges:
 - Font: 12px, bold, uppercase
 
 **Badge 2: QA Sign-Off Status**
+
 - Icon: User with checkmark
 - Text: "QA Approved" or "Awaiting QA"
 - Background: Green if approved, yellow if pending
@@ -4244,12 +4710,14 @@ Three Status Badges:
   - Example: "Approved by Sarah J."
 
 **Badge 3: PM Approval Status**
+
 - Icon: Star or checkmark
 - Text: "PM Approved" or "Awaiting PM"
 - Background: Green if approved, yellow if pending
 - PM Name: Shows who approved (if approved)
 
 Overall Status Indicator:
+
 - Position: Far right of badges
 - Large Badge: "READY" or "LOCKED"
 - READY:
@@ -4272,6 +4740,7 @@ Scrollable content area with multiple sections:
 **Section 1: Description**
 
 Section Header:
+
 - Title: "Description"
 - Font: 18px, bold, dark gray
 - Icon: Document icon (blue)
@@ -4280,17 +4749,19 @@ Section Header:
 - Margin Bottom: 16px
 
 Content:
+
 - Text: Full story description
 - Font: 15px, line height 1.8
 - Color: Dark gray (#374151)
 - White Space: Preserve line breaks
 - Markdown: Rendered if formatted
   - Bold: **text** → <strong>
-  - Italic: *text* → <em>
+  - Italic: _text_ → <em>
   - Lists: - item → bullet points
   - Links: [text](url) → clickable links
 
 Empty State:
+
 - Text: "No description provided"
 - Color: Light gray
 - Font Style: Italic
@@ -4298,6 +4769,7 @@ Empty State:
 **Section 2: Acceptance Criteria**
 
 Section Header:
+
 - Title: "Acceptance Criteria"
 - Icon: Checklist icon (green)
 - Badge: Shows count (e.g., "5 criteria")
@@ -4305,6 +4777,7 @@ Section Header:
 Content Display:
 
 Given/When/Then Format:
+
 - Each criterion on separate line
 - Keywords highlighted:
   - "Given": Bold, blue color
@@ -4313,6 +4786,7 @@ Given/When/Then Format:
   - "And": Bold, gray color
 
 Checkbox List (Interactive):
+
 - Each criterion has checkbox
 - Click checkbox: Marks as verified (for testing)
 - Checked: Green checkmark, strikethrough text
@@ -4320,6 +4794,7 @@ Checkbox List (Interactive):
 - Not Persistent: Resets when modal closes
 
 Example Display:
+
 ```
 ✓ Given a user has forgotten their password
 ✓ When they click "Forgot Password"
@@ -4329,11 +4804,13 @@ Example Display:
 ```
 
 Progress Indicator:
+
 - Shows: X of Y criteria verified
 - Bar: Green progress bar
 - Percentage: "60% verified"
 
 Empty State:
+
 - Warning: "⚠️ No acceptance criteria defined"
 - Color: Orange background panel
 - Action: "Add Criteria" button
@@ -4342,6 +4819,7 @@ Empty State:
 **Section 3: Test Coverage**
 
 Section Header:
+
 - Title: "Test Coverage"
 - Icon: Test tube icon
 - Badge: Coverage percentage
@@ -4351,6 +4829,7 @@ Section Header:
 Content: List of Linked Test Cases
 
 Test Case Card (For Each Linked Test):
+
 - Background: Light gray panel
 - Border Left: 4px colored based on status
   - Green: Pass
@@ -4362,6 +4841,7 @@ Test Case Card (For Each Linked Test):
 - Hover: Slight shadow
 
 Card Content:
+
 - Test ID: Bold, clickable
   - Example: "TC-045"
   - Click: Navigates to test detail (highlights test)
@@ -4379,6 +4859,7 @@ Card Content:
   - Unlink: Gray button (X icon)
 
 Link Test Button:
+
 - Position: Bottom of section
 - Text: "+ Link Test Case"
 - Color: Blue
@@ -4386,6 +4867,7 @@ Link Test Button:
 - Click: Opens test selection dropdown
 
 Test Selection Dropdown:
+
 - Search: Type to filter tests
 - List: All available test cases
 - Exclude: Already linked tests
@@ -4394,6 +4876,7 @@ Test Selection Dropdown:
 - Update: Test appears in list with animation
 
 Empty State (No Tests):
+
 - Icon: Warning triangle (orange)
 - Text: "No test cases linked to this story"
 - Subtext: "Link tests to ensure this story is properly validated"
@@ -4401,6 +4884,7 @@ Empty State (No Tests):
 - Background: Light orange panel
 
 Coverage Calculation:
+
 - Display: "3 test cases linked"
 - Target: Shows recommended count
   - Example: "Recommended: 5 tests for Medium priority story"
@@ -4410,6 +4894,7 @@ Coverage Calculation:
 **Section 4: Related Bugs**
 
 Section Header:
+
 - Title: "Related Bugs"
 - Icon: Bug icon (red)
 - Badge: Bug count
@@ -4419,6 +4904,7 @@ Section Header:
 Content: List of Linked Bugs
 
 Bug Card (For Each Linked Bug):
+
 - Background: White
 - Border: 1px solid based on severity
   - Red border: Critical/High
@@ -4428,6 +4914,7 @@ Bug Card (For Each Linked Bug):
 - Margin: 8px 0
 
 Card Content:
+
 - Bug ID: Bold, clickable, red color
   - Example: "BUG-012"
   - Click: Navigates to bug detail
@@ -4449,18 +4936,21 @@ Card Content:
   - Unlink: Gray button (X icon)
 
 Link Bug Button:
+
 - Text: "+ Link Bug"
 - Color: Red
 - Icon: Plus icon
 - Click: Opens bug selection dropdown
 
 Bug Selection Dropdown:
+
 - Similar to test selection
 - Shows: Bug ID + Title + Severity + Status
 - Filter: Can filter by severity/status
 - Exclude: Already linked bugs
 
 Empty State (No Bugs):
+
 - Icon: Green checkmark in circle
 - Text: "No bugs reported for this story"
 - Subtext: "Great! This story has no known issues"
@@ -4470,6 +4960,7 @@ Empty State (No Bugs):
 - Background: Light green panel
 
 Bug Statistics:
+
 - Open Bugs: Count with red badge
 - Resolved Bugs: Count with green badge
 - Average Resolution Time: "3.5 days"
@@ -4477,23 +4968,27 @@ Bug Statistics:
 **Section 5: Comments & Collaboration**
 
 Section Header:
+
 - Title: "Comments"
 - Icon: Chat bubble icon
 - Badge: Comment count
   - Example: "8 comments"
 
 Comment List:
+
 - Order: Chronological (oldest to newest)
 - Scrollable: Max height 400px
 - Loading: "Load More" button if >10 comments
 
 Each Comment Card:
+
 - Background: Light gray (#F9FAFB)
 - Border Radius: 8px
 - Padding: 16px
 - Margin: 12px 0
 
 Comment Header:
+
 - Avatar: User profile picture or initials
   - Size: 40px circle
   - Color: Random but consistent per user
@@ -4507,6 +5002,7 @@ Comment Header:
     - "05/10/2026 2:30 PM"
 
 Comment Body:
+
 - Text: Comment content
 - Font: 14px, line height 1.6
 - Markdown: Supports basic formatting
@@ -4516,6 +5012,7 @@ Comment Body:
 - Max Length: 2000 characters
 
 Comment Actions:
+
 - Position: Bottom-right of comment
 - Buttons (Only for comment author):
   - Edit: Pencil icon
@@ -4527,16 +5024,19 @@ Comment Actions:
     - Confirm: Comment removed with fade-out
 
 Reactions (Optional Feature):
+
 - Icons: 👍 👎 ❤️ 😊
 - Count: Shows number of each reaction
 - Click: Adds your reaction
 - Hover: Shows who reacted
 
 Add Comment Section:
+
 - Position: Bottom of comments
 - Always Visible: Sticky at bottom
 
 Comment Input:
+
 - Type: Textarea
 - Placeholder: "Add a comment..."
 - Border: 2px solid gray
@@ -4547,15 +5047,17 @@ Comment Input:
 - Max Height: 200px, then scrolls
 
 Formatting Toolbar (Above Textarea):
+
 - Buttons: Bold, Italic, Link, Mention
 - Bold: Adds **text**
-- Italic: Adds *text*
+- Italic: Adds _text_
 - Link: Opens URL input dialog
 - Mention: Opens user picker dropdown
   - Type @: Auto-opens user picker
   - Select: Inserts @username
 
 Post Comment Button:
+
 - Text: "Post Comment"
 - Color: Blue background
 - Icon: Send icon
@@ -4564,6 +5066,7 @@ Post Comment Button:
 - Keyboard: Ctrl+Enter to post
 
 Comment Guidelines:
+
 - Link: "Comment guidelines" below input
 - Click: Opens tooltip
   - "Be respectful and professional"
@@ -4582,17 +5085,20 @@ Border Radius: 8px
 Padding: 20px
 
 **Priority:**
+
 - Label: "Priority"
 - Display: Large colored badge
 - Click: Change priority dropdown (if permitted)
 
 **Story Points:**
+
 - Label: "Estimated Effort"
 - Display: Large number in circle
 - Sub-text: "story points"
 - Conversion: "~8-10 hours"
 
 **Sprint:**
+
 - Label: "Sprint"
 - Display: Sprint name with link
   - Example: "Sprint 12" (clickable)
@@ -4603,6 +5109,7 @@ Padding: 20px
   - Progress bar: Sprint completion
 
 **Created:**
+
 - Label: "Created"
 - Date: "04/28/2026"
 - Time: "2:30 PM"
@@ -4610,6 +5117,7 @@ Padding: 20px
   - User avatar + name
 
 **Last Modified:**
+
 - Label: "Last Updated"
 - Date: Relative time ("3 hours ago")
 - By: "Modified by Sarah Johnson"
@@ -4624,6 +5132,7 @@ Padding: 20px
 Margin Top: 16px
 
 **QA Reviewer Section:**
+
 - Label: "QA Reviewer"
 - Display: User card
   - Avatar: 48px circle
@@ -4632,6 +5141,7 @@ Margin Top: 16px
   - Workload: "8 active stories"
 
 Status: QA Sign-Off
+
 - If Not Signed:
   - Badge: "AWAITING QA SIGN-OFF" (yellow)
   - Button: "Provide QA Sign-Off" (purple)
@@ -4646,14 +5156,17 @@ Status: QA Sign-Off
     - Warning: "This will lock developer assignment"
 
 Change QA Reviewer:
+
 - Button: "Change Reviewer"
 - Click: Opens user picker
 - Updates: Removes sign-off if changing
 
 **Developer Section:**
+
 - Label: "Assigned Developer"
 
 If Locked (No Approvals):
+
 - Display: Large lock icon
 - Background: Light red
 - Text: "LOCKED - Awaiting Approvals"
@@ -4662,11 +5175,13 @@ If Locked (No Approvals):
   - "❌ PM Approval"
 
 If Unlocked and Assigned:
+
 - User Card: Same as QA Reviewer
 - Workload: Current story count
 - Button: "Change Developer"
 
 If Unlocked and Unassigned:
+
 - Text: "No developer assigned"
 - Button: "Assign Developer" (green, large)
 - Click: Opens developer picker
@@ -4675,6 +5190,7 @@ If Unlocked and Unassigned:
   - Capacity indicator: Green/Yellow/Red
 
 **Tester Section:**
+
 - Same structure as Developer
 - Label: "Assigned Tester"
 - Unlocks: When both approvals present
@@ -4688,11 +5204,13 @@ Padding: 20px
 Margin Top: 16px
 
 PM Assignment:
+
 - Label: "Product Manager"
 - Display: PM user card
 - Auto-Assigned: Based on story creator or project PM
 
 Approval Status:
+
 - If Not Approved:
   - Badge: "AWAITING PM APPROVAL" (yellow)
   - Icon: Hourglass
@@ -4719,6 +5237,7 @@ Approval Status:
     - Warning: "This will lock developer assignment"
 
 Approval Comments:
+
 - Field: Optional PM comments on approval
 - Example: "Approved - Aligns with Q2 goals"
 - Display: Italic text below approval badge
@@ -4731,6 +5250,7 @@ Padding: 20px
 Margin Top: 16px
 
 Tags List:
+
 - Display: Horizontal wrapping list of tag badges
 - Each Tag:
   - Background: Blue (#3B82F6)
@@ -4744,6 +5264,7 @@ Tags List:
     - Example: "authentication (8 stories)"
 
 Add Tag:
+
 - Button: "+ Add Tag"
 - Color: Blue text, no background
 - Click: Opens tag input
@@ -4752,11 +5273,13 @@ Add Tag:
   - Updates: Immediately visible
 
 Remove Tag:
+
 - Hover Tag: X icon appears
 - Click X: Removes tag
 - Confirm: "Remove tag 'authentication'?"
 
 Empty State:
+
 - Text: "No tags"
 - Subtext: "Add tags to categorize this story"
 - Button: "+ Add First Tag"
@@ -4768,10 +5291,12 @@ Padding: 20px
 Margin Top: 16px
 
 Depends On (Blockers):
+
 - Label: "This story depends on:"
 - List: Vertical list of dependency cards
 
 Each Dependency Card:
+
 - Story ID: Link (e.g., "US-098")
 - Story Title: Truncated to 2 lines
 - Status Badge: Done/In Progress/To Do
@@ -4784,6 +5309,7 @@ Each Dependency Card:
     - Color: Green
 
 Dependency Graph Link:
+
 - Button: "View Dependency Chain"
 - Icon: Tree diagram icon
 - Click: Opens visual dependency graph
@@ -4791,16 +5317,19 @@ Dependency Graph Link:
   - Interactive: Click nodes to navigate
 
 Add Dependency:
+
 - Button: "+ Add Dependency"
 - Click: Opens story picker
 - Validation: Checks for circular dependencies
 
 Empty State:
+
 - Text: "No dependencies"
 - Icon: Green checkmark
 - Subtext: "This story can be worked on independently"
 
 Blocked By (Reverse Dependencies):
+
 - Label: "Stories blocked by this:"
 - Shows: Stories that depend on current story
 - Purpose: Know impact of delays
@@ -4816,6 +5345,7 @@ Max Height: 400px
 Scroll: If exceeds max height
 
 Activity Timeline:
+
 - Display: Vertical timeline with events
 - Order: Newest first
 - Icons: Different for each event type
@@ -4823,6 +5353,7 @@ Activity Timeline:
 Event Types:
 
 **Created Event:**
+
 - Icon: Plus in circle (blue)
 - Text: "Story created"
 - By: User name
@@ -4830,6 +5361,7 @@ Event Types:
 - Color: Blue
 
 **Edited Event:**
+
 - Icon: Pencil (gray)
 - Text: "Story updated"
 - Changes: Shows what changed
@@ -4839,6 +5371,7 @@ Event Types:
 - Timestamp: Relative time
 
 **Approval Event:**
+
 - Icon: Checkmark (green)
 - Text: "QA Sign-Off provided" or "PM Approval granted"
 - By: User name
@@ -4846,12 +5379,14 @@ Event Types:
 - Color: Green
 
 **Assignment Event:**
+
 - Icon: User plus (purple)
 - Text: "Assigned to [Developer Name]"
 - By: Who assigned
 - Timestamp: Relative time
 
 **Status Change Event:**
+
 - Icon: Arrow right (blue)
 - Text: "Status changed from [Old] to [New]"
 - Example: "Changed from To Do to In Progress"
@@ -4859,18 +5394,21 @@ Event Types:
 - Timestamp: Relative time
 
 **Test Linked Event:**
+
 - Icon: Test tube (green)
 - Text: "Test case TC-045 linked"
 - By: User name
 - Timestamp: Relative time
 
 **Bug Linked Event:**
+
 - Icon: Bug (red)
 - Text: "Bug BUG-012 linked"
 - By: User name
 - Timestamp: Relative time
 
 **Comment Event:**
+
 - Icon: Chat bubble (gray)
 - Text: "Comment added"
 - Preview: First 50 chars of comment
@@ -4878,11 +5416,13 @@ Event Types:
 - Timestamp: Relative time
 
 View Full History:
+
 - Button: "View Complete History"
 - Click: Expands to show all events
 - Or: Opens dedicated history modal
 
 Export History:
+
 - Button: "Export Activity Log"
 - Format: CSV or PDF
 - Includes: All events with timestamps
@@ -4890,6 +5430,7 @@ Export History:
 **Bottom Action Bar:**
 
 Sticky bar at bottom of modal:
+
 - Background: White
 - Border Top: 1px solid gray
 - Height: 60px
@@ -4897,12 +5438,14 @@ Sticky bar at bottom of modal:
 - Shadow: Subtle upward shadow
 
 Left Side:
+
 - Text: "Story US-101"
 - Breadcrumb: Home > Stories > US-101
 
 Right Side Buttons:
 
 **Previous Story Button:**
+
 - Icon: Left arrow
 - Text: "Previous"
 - Color: Gray
@@ -4912,6 +5455,7 @@ Right Side Buttons:
 - Tooltip: Shows previous story ID
 
 **Next Story Button:**
+
 - Icon: Right arrow
 - Text: "Next"
 - Color: Gray
@@ -4921,6 +5465,7 @@ Right Side Buttons:
 - Tooltip: Shows next story ID
 
 **Copy Link Button:**
+
 - Icon: Link icon
 - Text: "Copy Link"
 - Color: Blue text
@@ -4929,6 +5474,7 @@ Right Side Buttons:
 - URL Format: /stories/US-101
 
 **Close Button:**
+
 - Text: "Close"
 - Color: Gray
 - Icon: X icon
@@ -4936,12 +5482,14 @@ Right Side Buttons:
 - Keyboard: Escape key
 
 Navigation Behavior:
+
 - Story List: Maintains position in list
 - Filters: Preserved when returning
 - URL: Updates with each story viewed
 - History: Browser back/forward works
 
 **Keyboard Shortcuts (While Detail View Open):**
+
 - Escape: Close view
 - Left Arrow: Previous story
 - Right Arrow: Next story
@@ -4954,15 +5502,18 @@ Navigation Behavior:
 **Responsive Behavior:**
 
 Desktop (>1024px):
+
 - Two-column layout as described
 - Left 60%, Right 40%
 
 Tablet (768-1024px):
+
 - Two columns but narrower
 - Right sidebar reduces to 35%
 - Some panels collapse by default
 
 Mobile (<768px):
+
 - Single column layout
 - Sidebar panels appear below main content
 - Full-screen modal (100% width)
@@ -4980,6 +5531,7 @@ The Test Cases Management page is your comprehensive test management hub where Q
 ### Core Concepts
 
 **Test Case Lifecycle:**
+
 1. **Creation:** QA creates test with steps and expected results
 2. **Linking:** Test linked to user story for traceability
 3. **Assignment:** Test assigned to QA engineer
@@ -4990,48 +5542,56 @@ The Test Cases Management page is your comprehensive test management hub where Q
 **Test Types Explained:**
 
 **Functional:**
+
 - Purpose: Verify feature works as designed
 - Example: "Verify user can login with valid credentials"
 - When: After feature development
 - Frequency: Every release
 
 **Regression:**
+
 - Purpose: Ensure old features still work after changes
 - Example: "Re-test login after password policy change"
 - When: After any code change
 - Frequency: Every sprint
 
 **Integration:**
+
 - Purpose: Test multiple components working together
 - Example: "Verify login connects to database and creates session"
 - When: After component integration
 - Frequency: Major releases
 
 **Smoke:**
+
 - Purpose: Quick sanity check of critical paths
 - Example: "Can access login page and dashboard loads"
 - When: After deployment
 - Frequency: Every deployment
 
 **Performance:**
+
 - Purpose: Verify speed and scalability
 - Example: "Login completes in <2 seconds under 1000 concurrent users"
 - When: Before major releases
 - Frequency: Quarterly or before launches
 
 **Security:**
+
 - Purpose: Find vulnerabilities
 - Example: "Verify SQL injection protection on login form"
 - When: Before any release
 - Frequency: Every release + periodic audits
 
 **Usability:**
+
 - Purpose: Ensure user-friendly experience
 - Example: "Verify login error messages are clear and helpful"
 - When: After UI changes
 - Frequency: Major UI updates
 
 **API:**
+
 - Purpose: Test backend endpoints directly
 - Example: "POST /api/auth/login returns JWT token"
 - When: After API changes
@@ -5040,6 +5600,7 @@ The Test Cases Management page is your comprehensive test management hub where Q
 ### Page Layout
 
 **Page Header:**
+
 - Title: "Test Cases Management"
   - Font: 28px, extra bold
   - Icon: Test tube icon (green)
@@ -5048,6 +5609,7 @@ The Test Cases Management page is your comprehensive test management hub where Q
 - Breadcrumb: Home > Quality Management > Test Cases
 
 **Create Test Case Button:**
+
 - Position: Top-right
 - Background: Green (#10B981)
 - Text: "Create Test Case"
@@ -5061,6 +5623,7 @@ The Test Cases Management page is your comprehensive test management hub where Q
 Four cards showing test metrics:
 
 **Card 1: Total Test Cases**
+
 - Icon: Test tube icon
 - Number: Total count (e.g., "156")
 - Label: "Total Test Cases"
@@ -5068,6 +5631,7 @@ Four cards showing test metrics:
 - Click: No action (display only)
 
 **Card 2: Pass Rate**
+
 - Icon: Checkmark in circle
 - Number: Percentage (e.g., "94%")
 - Calculation: (Passed / Executed) × 100
@@ -5079,6 +5643,7 @@ Four cards showing test metrics:
 - Click: Filters to show passed tests
 
 **Card 3: Not Run**
+
 - Icon: Circle with dash
 - Number: Count never executed (e.g., "20")
 - Label: "Not Run"
@@ -5087,6 +5652,7 @@ Four cards showing test metrics:
 - Click: Filters to show unexecuted tests
 
 **Card 4: Failed Tests**
+
 - Icon: X in circle
 - Number: Currently failing (e.g., "6")
 - Label: "Failed Tests"
@@ -5094,22 +5660,24 @@ Four cards showing test metrics:
 - Pulse: Gentle pulsing if any critical failures
 - Click: Filters to show failed tests
 
-
 ### Filter Section (Additional Filters):
 
 **Items Per Page:**
+
 - 10, 25, 50, 100 options
 - Default: 25
 
 ### Test Cases Table Continued
 
 **Row States:**
+
 - Normal: White background
 - Hover: Light blue
 - Highlighted: Blue pulse (from navigation)
 - Selected: Blue background (bulk operations)
 
 **Pagination:**
+
 - Same as Stories table
 - Previous/Next buttons
 - Page numbers
@@ -5117,41 +5685,47 @@ Four cards showing test metrics:
 
 ---
 
-## Bug Tracker - Complete Detailed Guide  
+## Bug Tracker - Complete Detailed Guide
 
 ### Bug Lifecycle States Explained:
 
 **1. Open** (Red)
+
 - Initial state when bug reported
 - Awaiting assignment
 - Not yet being worked on
 - Action: Assign to developer
 
 **2. In Progress** (Yellow)
+
 - Developer assigned and working
 - Fix in development
 - Cannot assign to another dev without unassigning first
 - Action: Mark as Fixed when complete
 
 **3. Fixed** (Green)
+
 - Developer completed fix
 - Code merged/deployed
 - Awaiting QA verification
 - Action: QA verifies fix
 
 **4. Verified** (Dark Green)
+
 - QA confirmed fix works
 - Ready to close
 - Regression tests passed
 - Action: Close bug
 
 **5. Closed** (Gray)
+
 - Bug officially resolved
 - No longer appears in active counts
 - Archived in history
 - Action: Can reopen if issue returns
 
 **6. Reopened** (Orange)
+
 - Bug returned after being closed
 - Higher priority than new bugs
 - Assigned back to original developer
@@ -5160,6 +5734,7 @@ Four cards showing test metrics:
 ### Page Statistics Cards:
 
 **Card 1: Total Bugs**
+
 - All bugs regardless of status
 - Icon: Bug (red)
 - Number: Count (e.g., "45")
@@ -5167,6 +5742,7 @@ Four cards showing test metrics:
 - No click action
 
 **Card 2: Open Bugs**
+
 - Status = Open OR Reopened
 - Red badge
 - Pulsing animation if >10 or any Critical
@@ -5174,6 +5750,7 @@ Four cards showing test metrics:
 - Click: Filters to open bugs only
 
 **Card 3: In Progress**
+
 - Currently being fixed
 - Yellow badge
 - Shows count
@@ -5181,6 +5758,7 @@ Four cards showing test metrics:
 - Click: Filters to in-progress
 
 **Card 4: Resolution Rate**
+
 - Formula: (Fixed + Verified + Closed) / Total × 100
 - Example: (35 / 45) × 100 = 78%
 - Color:
@@ -5193,6 +5771,7 @@ Four cards showing test metrics:
 ### Filters (6 filters):
 
 **1. Search Box**
+
 - Width: 35%
 - Placeholder: "Search bugs by ID, title, or description..."
 - Searches: Bug ID, title, description, reproduction steps
@@ -5200,6 +5779,7 @@ Four cards showing test metrics:
 - Clear button
 
 **2. Severity Dropdown**
+
 - Label: "Severity"
 - Options:
   - All Severities
@@ -5211,6 +5791,7 @@ Four cards showing test metrics:
 - Multi-select enabled
 
 **3. Status Dropdown**
+
 - Label: "Status"
 - Options:
   - All Status
@@ -5224,17 +5805,20 @@ Four cards showing test metrics:
 - Count shown
 
 **4. Priority Dropdown**
+
 - Separate from severity
 - Same options: Critical/High/Medium/Low
 - Allows Critical severity + Low priority
 
 **5. Assigned To Dropdown**
+
 - All developers listed
 - Shows current workload: "John Doe (12 bugs)"
 - "Unassigned" option
 - Sorted by workload
 
 **6. Story Filter**
+
 - All stories in dropdown
 - "Unlinked" option for bugs not tied to stories
 - Searchable
@@ -5242,6 +5826,7 @@ Four cards showing test metrics:
 ### Bug Table (9 Columns):
 
 **Column 1: Bug ID**
+
 - Width: 110px
 - Format: "BUG-001", "BUG-045"
 - Font: Monospace, red color
@@ -5251,6 +5836,7 @@ Four cards showing test metrics:
 - Click icon: Copies to clipboard
 
 **Column 2: Title**
+
 - Width: Flexible (25%)
 - Font: 14px
 - Bold: If status = Open/Reopened/In Progress
@@ -5260,10 +5846,12 @@ Four cards showing test metrics:
 - Click: Opens bug detail view
 
 **Column 3: Severity**
+
 - Width: 110px
 - Centered
 
 Critical Badge:
+
 - Background: Red (#DC2626)
 - Text: "CRITICAL"
 - Icon: Double exclamation (!!)
@@ -5271,65 +5859,77 @@ Critical Badge:
 - Border: Thick red border
 
 High Badge:
+
 - Background: Orange (#EA580C)
 - Text: "HIGH"
 - Icon: Single exclamation (!)
 
 Medium Badge:
+
 - Background: Yellow (#F59E0B)
 - Text: "MEDIUM"
 - Icon: Dash (-)
 - Text Color: Dark (for contrast)
 
 Low Badge:
+
 - Background: Blue (#3B82F6)
 - Text: "LOW"
 - Icon: Down arrow (↓)
 
 **Column 4: Priority**
+
 - Width: 110px
 - Same badge styling as Severity
 - Independent from severity
 - Can have Critical severity + Low priority
 
 **Column 5: Status**
+
 - Width: 130px
 - Centered
 
 Open Badge:
+
 - Background: Red
 - Icon: Circle outline
 - Text: "OPEN"
 
 In Progress Badge:
+
 - Background: Yellow (#F59E0B)
 - Icon: Spinning gear
 - Text: "IN PROGRESS"
 - Animation: Subtle rotation
 
 Fixed Badge:
+
 - Background: Green (#10B981)
 - Icon: Wrench
 - Text: "FIXED"
 
 Verified Badge:
+
 - Background: Dark Green (#059669)
 - Icon: Checkmark in circle
 - Text: "VERIFIED"
 
 Closed Badge:
+
 - Background: Gray (#6B7280)
 - Icon: X in circle
 - Text: "CLOSED"
 - Opacity: 0.7
 
 Reopened Badge:
+
 - Background: Orange (#F97316)
 - Icon: Circular arrow
 - Text: "REOPENED"
 - Border: Thick orange
 
 **Column 6: Story**
+
 - Width: 120px
 - Story ID Link: "US-101"
 - Font: Monospace
@@ -5339,10 +5939,12 @@ Reopened Badge:
 - Empty: Shows "-" if no linked story
 
 **Column 7: Assigned To**
+
 - Width: 130px
 - Centered
 
 If Assigned:
+
 - User Badge: Initials in green circle
 - Size: 36px diameter
 - Background: Green (#10B981)
@@ -5356,26 +5958,31 @@ If Assigned:
   ```
 
 If Unassigned:
+
 - Text: "-"
 - Color: Light gray
 - Hover: "Click to assign"
 - Click: Opens developer picker dropdown
 
 **Column 8: Reported**
+
 - Width: 140px
 
 Date:
+
 - Format: "MM/DD/YYYY"
 - Example: "05/08/2026"
 - Font: 13px, monospace
 
 Relative Time (below date):
+
 - Format: "X days ago"
 - Example: "3 days ago"
 - Font: 11px, gray
 - Italic
 
 Tooltip (on hover):
+
 ```
 Reported: 05/08/2026 at 2:30 PM
 Reporter: Sarah Johnson (QA Engineer)
@@ -5384,10 +5991,12 @@ Browser: Chrome 120
 ```
 
 **Column 9: Actions**
+
 - Width: 280px
 - Three buttons in row:
 
 **View Button:**
+
 - Background: Blue (#3B82F6)
 - Icon: Eye
 - Text: "View"
@@ -5396,6 +6005,7 @@ Browser: Chrome 120
 - Always available
 
 **Edit Button:**
+
 - Background: Gray (#6B7280)
 - Icon: Pencil
 - Text: "Edit"
@@ -5403,6 +6013,7 @@ Browser: Chrome 120
 - Permission: Assigned developer or admin
 
 **Delete Button:**
+
 - Background: Red (#EF4444)
 - Icon: Trash
 - Text: "Delete"
@@ -5415,6 +6026,7 @@ Browser: Chrome 120
 **Modal: 800px width, scrollable**
 
 **Header:**
+
 - Background: Red gradient
 - Icon: Large bug icon (white, 40px)
 - Title: "Report New Bug"
@@ -5424,6 +6036,7 @@ Browser: Chrome 120
 **Form Fields (13 required + optional):**
 
 **Field 1: Bug Title*** (Required)
+
 - Label: "Bug Title" with red asterisk
 - Type: Text input
 - Min Length: 10 characters
@@ -5439,6 +6052,7 @@ Browser: Chrome 120
 - Border: 2px solid gray, red on error
 
 **Field 2: Description*** (Required)
+
 - Label: "Detailed Description"
 - Type: Textarea
 - Rows: 6
@@ -5455,6 +6069,7 @@ Browser: Chrome 120
 - Validation: Cannot be empty
 
 **Field 3: Steps to Reproduce*** (Required)
+
 - Label: "Steps to Reproduce"
 - Help Icon: Tooltip
   - "Provide detailed steps so developers can recreate the bug. Be specific!"
@@ -5475,6 +6090,7 @@ Browser: Chrome 120
 - Error: "Please provide at least 2 reproduction steps"
 
 **Field 4: Expected Behavior*** (Required)
+
 - Label: "Expected Behavior"
 - Description: "What should happen?"
 - Type: Textarea
@@ -5484,6 +6100,7 @@ Browser: Chrome 120
 - Example: "Login button should submit form and redirect to dashboard"
 
 **Field 5: Actual Behavior*** (Required)
+
 - Label: "Actual Behavior"
 - Description: "What actually happened?"
 - Type: Textarea
@@ -5495,10 +6112,12 @@ Browser: Chrome 120
   - If checked: Shows additional field for exact error text
 
 **Field 6: Severity*** (Required)
+
 - Label: "Severity Level"
 - Type: Radio button cards (4 options, 2x2 grid)
 
 Critical Card:
+
 - Icon: Red double exclamation
 - Title: "CRITICAL"
 - Description: "System down, data loss, security breach"
@@ -5507,6 +6126,7 @@ Critical Card:
 - Background: Light red when selected
 
 High Card:
+
 - Icon: Orange exclamation
 - Title: "HIGH"
 - Description: "Major feature broken, workaround difficult"
@@ -5514,6 +6134,7 @@ High Card:
 - Border: Orange when selected
 
 Medium Card:
+
 - Icon: Yellow dash
 - Title: "MEDIUM"
 - Description: "Feature impaired, workaround exists"
@@ -5522,6 +6143,7 @@ Medium Card:
 - Default Selected
 
 Low Card:
+
 - Icon: Blue down arrow
 - Title: "LOW"
 - Description: "Minor issue, cosmetic problem"
@@ -5529,6 +6151,7 @@ Low Card:
 - Border: Blue when selected
 
 **Field 7: Priority*** (Required)
+
 - Label: "Fix Priority"
 - Note: "Priority may differ from severity based on business needs"
 - Same 4-card layout as Severity
@@ -5539,6 +6162,7 @@ Low Card:
   - Not customer-facing
 
 **Field 8: Environment** (Optional but recommended)
+
 - Label: "Environment(s) Affected"
 - Type: Checkboxes (can select multiple)
 - Options:
@@ -5552,10 +6176,12 @@ Low Card:
   - "⚠️ Production bug - Consider higher priority"
 
 **Field 9: Browser/Device** (Optional but recommended)
+
 - Label: "Browser & Device Details"
 - Two sub-fields:
 
 Browser Dropdown (multi-select):
+
 - Chrome (with version input)
 - Firefox (with version)
 - Safari (with version)
@@ -5564,11 +6190,13 @@ Browser Dropdown (multi-select):
 - Can select multiple browsers
 
 Device Checkboxes:
+
 - ☐ Desktop
 - ☐ Tablet
 - ☐ Mobile
 
 Operating System:
+
 - Windows
 - macOS
 - Linux
@@ -5576,11 +6204,13 @@ Operating System:
 - Android
 
 Example filled:
+
 - Chrome 120
 - Desktop
 - Windows 11
 
 **Field 10: Screenshot/Recording** (Highly Recommended)
+
 - Label: "Visual Evidence"
 - Description: "Screenshots or screen recordings help significantly"
 - Upload Zone:
@@ -5599,6 +6229,7 @@ Example filled:
 - Pro Tip: "Mark important areas with arrows or highlights before uploading"
 
 **Field 11: Console Errors** (Optional)
+
 - Label: "Console Errors/Logs"
 - Checkbox: "Include console errors"
 - If checked: Shows code block textarea
@@ -5609,6 +6240,7 @@ Example filled:
 - Copy-Paste Helper: "Press F12 → Console tab → Copy errors"
 
 **Field 12: Link to Story** (Optional)
+
 - Label: "Related Story"
 - Dropdown: Searchable
 - Shows: Story ID + Title
@@ -5618,6 +6250,7 @@ Example filled:
 - Purpose: Links bug to feature requirement
 
 **Field 13: Link to Test Case** (Optional)
+
 - Label: "Test Case That Found Bug"
 - Dropdown: Searchable
 - Shows: Test ID + Title
@@ -5626,6 +6259,7 @@ Example filled:
 - Purpose: Traceability to test coverage
 
 **Field 14: Assign To** (Optional)
+
 - Label: "Assign to Developer"
 - Dropdown: All developers
 - Shows:
@@ -5637,6 +6271,7 @@ Example filled:
 - Auto-assign option: "Auto-assign to module owner"
 
 **Field 15: Tags** (Optional)
+
 - Label: "Tags"
 - Multi-tag input
 - Type and press Enter
@@ -5653,6 +6288,7 @@ Example filled:
 **Form Actions:**
 
 **Report Bug Button:**
+
 - Position: Bottom-right
 - Background: Red (#EF4444)
 - Text: "Report Bug"
@@ -5663,6 +6299,7 @@ Example filled:
 - Keyboard: Ctrl+Enter
 
 Validation Process:
+
 1. Check all required fields filled
 2. Validate minimum lengths
 3. Check at least 2 reproduction steps
@@ -5678,6 +6315,7 @@ Validation Process:
    - Text: "Reporting..."
 
 Success Process:
+
 1. Generate Bug ID (e.g., BUG-156)
 2. Upload attachments first
 3. Save bug to database
@@ -5696,6 +6334,7 @@ Success Process:
 9. Clear form for next use
 
 **Cancel Button:**
+
 - Position: Bottom-left
 - Background: Gray
 - Text: "Cancel"
@@ -5715,6 +6354,7 @@ Success Process:
 **Opens full-screen when clicking module bubble or row**
 
 **Header Section:**
+
 - Module Name (large, bold)
 - Risk Level Badge (large)
 - Owner Avatar and name
@@ -5723,6 +6363,7 @@ Success Process:
 **Risk Scores Panel:**
 
 **Defect Frequency:**
+
 - Current Score: Large number (0-10)
 - Calculation Display:
   - "8 bugs in last 90 days"
@@ -5731,6 +6372,7 @@ Success Process:
 - Edit: Recalculation button
 
 **Business Impact:**
+
 - Current Score: Large number (0-10)
 - Justification: Text explanation
 - Last Assessed: Date and assessor
@@ -5739,7 +6381,8 @@ Success Process:
 
 **Testing Recommendation:**
 Based on risk level:
-- High Risk: 
+
+- High Risk:
   - "Full regression testing required"
   - Minimum tests: 20+
   - Frequency: Every sprint
@@ -5756,18 +6399,21 @@ Based on risk level:
   - Coverage target: 50%
 
 **Related Bugs Section:**
+
 - Table of all bugs in this module
 - Columns: Bug ID, Title, Severity, Status, Date
 - Filter by status
 - "Report Bug in This Module" button
 
 **Test Cases Section:**
+
 - All tests linked to module
 - Coverage percentage
 - Pass rate
 - "Create Test for This Module" button
 
 **Risk History Chart:**
+
 - Line graph showing risk over time
 - X-axis: Time (last 6 months)
 - Y-axis: Risk score (0-10)
@@ -5778,6 +6424,7 @@ Based on risk level:
 - Annotations: Events that changed risk
 
 **Actions Available:**
+
 - Update Business Impact: Opens score form
 - View All Tests: Filters to this module
 - View All Bugs: Filters to this module
@@ -5789,6 +6436,7 @@ Based on risk level:
 THIS DOCUMENTATION CONTINUES WITH ALL REMAINING FEATURES IN THE SAME EXTREME DETAIL.
 
 Due to length constraints, the complete documentation includes all remaining sections:
+
 - Burn-Down Chart (complete guide)
 - Analytics Dashboard (every metric explained)
 - Reports (all report types)
@@ -5817,18 +6465,20 @@ Each section follows the same ultra-detailed pattern:
 
 The complete AQMS documentation provides EXHAUSTIVE coverage of the entire system.
 
-
 ## Burn-Down Chart - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 The Burn-Down Chart tracks sprint progress by showing how much work remains over time. It helps identify if the team is on track to complete the sprint.
 
 ### Page Header
+
 - Title: "Burn-Down Chart"
 - Subtitle: "Track sprint progress and velocity"
 - Icon: Trending down arrow (blue)
 
 ### Sprint Selector
+
 - Dropdown: "Select Sprint"
 - Shows all sprints with status
 - Active sprint pre-selected
@@ -5840,18 +6490,21 @@ The Burn-Down Chart tracks sprint progress by showing how much work remains over
 **Chart Type:** Line graph with dual axes
 
 **X-Axis (Horizontal):**
+
 - Label: "Sprint Days"
 - Values: Day 1, Day 2, ... Day 14 (sprint length)
 - Today marker: Vertical blue line showing current day
 - Weekends: Shaded gray background
 
 **Y-Axis (Vertical):**
+
 - Label: "Story Points Remaining"
 - Range: 0 to Total Sprint Points
 - Grid lines: Every 5 points
 - Format: Integer values only
 
 **Ideal Burn-Down Line:**
+
 - Color: Gray dashed line
 - Start: Total sprint points (Day 0)
 - End: 0 points (Last day)
@@ -5860,6 +6513,7 @@ The Burn-Down Chart tracks sprint progress by showing how much work remains over
 - Formula: Points - (Points / Days × Current Day)
 
 **Actual Burn-Down Line:**
+
 - Color: Blue solid line
 - Thickness: 3px
 - Data points: Daily story point totals
@@ -5868,6 +6522,7 @@ The Burn-Down Chart tracks sprint progress by showing how much work remains over
 - Calculation: Sum of incomplete story points each day
 
 **Status Indicator:**
+
 - Green zone: Actual line BELOW ideal (ahead)
 - Yellow zone: Actual line NEAR ideal (on track)
 - Red zone: Actual line ABOVE ideal (behind)
@@ -5876,29 +6531,34 @@ The Burn-Down Chart tracks sprint progress by showing how much work remains over
 ### Statistics Panel (Right Side)
 
 **Total Sprint Points:**
+
 - Large number display
 - Example: "50 points"
 - Source: Sum of all story points in sprint
 
 **Points Completed:**
+
 - Number with percentage
 - Example: "32 points (64%)"
 - Green text if >60%
 - Calculation: Completed story points
 
 **Points Remaining:**
+
 - Number with days left
 - Example: "18 points (5 days left)"
 - Red if unlikely to finish
 - Calculation: Total - Completed
 
 **Current Velocity:**
+
 - Points per day
 - Example: "6.4 points/day"
 - Calculation: Completed points / Days elapsed
 - Trend arrow: ↑ improving, ↓ slowing
 
 **Projected Completion:**
+
 - Estimated finish date
 - Example: "On track to finish 1 day early"
 - Colors:
@@ -5908,6 +6568,7 @@ The Burn-Down Chart tracks sprint progress by showing how much work remains over
 - Calculation: Remaining / Velocity
 
 **Scope Changes:**
+
 - Count of stories added/removed mid-sprint
 - Warning if >20% change
 - Example: "+2 added, -1 removed"
@@ -5917,6 +6578,7 @@ The Burn-Down Chart tracks sprint progress by showing how much work remains over
 Below chart, shows each day:
 
 **Columns:**
+
 - Day: "Day 1", "Day 2", etc.
 - Date: "05/01/2026"
 - Points Completed: How many finished that day
@@ -5925,11 +6587,13 @@ Below chart, shows each day:
 - Notes: Any sprint events (holidays, blockers)
 
 **Row Highlighting:**
+
 - Today: Blue background
 - Weekends: Gray background
 - No work days: Red if points should've decreased
 
 ### Export Options
+
 - Download Chart as PNG
 - Export Data as CSV
 - Include in Sprint Report
@@ -5939,9 +6603,11 @@ Below chart, shows each day:
 ## Analytics - Ultra-Detailed Complete Guide
 
 ### Page Overview
+
 Real-time quality metrics dashboard with customizable date ranges and filters.
 
 ### Page Header
+
 - Title: "Analytics Dashboard"
 - Subtitle: "Quality metrics and trends"
 - Date Range Picker (top-right)
@@ -5949,6 +6615,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ### Date Range Selector
 
 **Preset Ranges:**
+
 - Today
 - Last 7 Days (default)
 - Last 30 Days
@@ -5958,6 +6625,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Custom Range
 
 **Custom Range Picker:**
+
 - Start Date: Calendar popup
 - End Date: Calendar popup
 - Apply button
@@ -5966,6 +6634,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ### Primary Metrics Cards (Top Row - 4 Cards)
 
 **Card 1: Test Coverage**
+
 - Large percentage: "73%"
 - Calculation: (Stories with tests / Total stories) × 100
 - Progress circle visualization
@@ -5974,6 +6643,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Click: Opens coverage detail
 
 **Card 2: Test Pass Rate**
+
 - Large percentage: "94%"
 - Calculation: (Passed tests / Executed tests) × 100
 - Line chart showing last 30 days
@@ -5981,6 +6651,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Click: Opens test history
 
 **Card 3: Bug Density**
+
 - Number per module: "2.3 bugs/module"
 - Calculation: Total bugs / Number of modules
 - Bar chart by severity
@@ -5988,6 +6659,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Click: Opens bug analysis
 
 **Card 4: Velocity**
+
 - Points per sprint: "48 pts"
 - Average over last 5 sprints
 - Trend line showing increase/decrease
@@ -5997,6 +6669,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ### Test Execution Trends (Line Chart)
 
 **Chart shows:**
+
 - X-axis: Date (selected range)
 - Y-axis: Number of tests
 - Three lines:
@@ -6007,6 +6680,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Legend: Toggleable lines
 
 **Insights Panel (Right of Chart):**
+
 - Peak testing day
 - Average tests/day
 - Failure rate trend
@@ -6015,6 +6689,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ### Bug Analysis Section
 
 **Bug Trend Chart:**
+
 - Stacked area chart
 - Layers:
   - Critical (red)
@@ -6025,12 +6700,14 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Hover: Breakdown by severity
 
 **Bug Lifecycle Metrics:**
+
 - Average time to fix
 - Average time to verify
 - Resolution rate
 - Reopen rate
 
 **Top Bug Modules:**
+
 - Bar chart of modules with most bugs
 - Click bar: Filter to that module
 - Color coded by risk level
@@ -6038,6 +6715,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ### Coverage Heatmap
 
 **Grid showing:**
+
 - Rows: Modules
 - Columns: Test types
 - Cells: Test count
@@ -6051,6 +6729,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ### Team Performance Metrics
 
 **Tests Executed by Person:**
+
 - Bar chart
 - X-axis: Team member names
 - Y-axis: Test count
@@ -6058,16 +6737,19 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Shows last 30 days
 
 **Bugs Reported by Person:**
+
 - Similar bar chart
 - Identifies most active reporters
 
 **Bugs Fixed by Developer:**
+
 - Bar chart of developer productivity
 - Average resolution time shown
 
 ### Quality Trends Dashboard
 
 **Quality Score:**
+
 - Composite metric (0-100)
 - Formula: (Coverage × 0.3) + (Pass Rate × 0.4) + ((100 - Bug Density) × 0.3)
 - Large gauge visualization
@@ -6075,12 +6757,14 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Historical trend line
 
 **Defect Discovery Rate:**
+
 - Bugs found per day/week
 - Line chart
 - Early vs. late sprint discovery
 - Ideal: More bugs early in sprint
 
 **Test Automation Rate:**
+
 - Percentage of automated tests
 - Pie chart: Automated vs. Manual
 - Trend over time
@@ -6089,31 +6773,37 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ### Filters (Apply to All Metrics)
 
 **Sprint Filter:**
+
 - Dropdown of all sprints
 - "All Sprints" option
 - Updates all charts
 
 **Module Filter:**
+
 - Multi-select dropdown
 - Filter metrics to specific modules
 
 **Test Type Filter:**
+
 - Checkboxes for test types
 - Apply to test-related metrics
 
 **Team Member Filter:**
+
 - Multi-select developers/QA
 - Filter to individual performance
 
 ### Export and Reporting
 
 **Export Options:**
+
 - Export Dashboard as PDF
 - Export All Data as CSV
 - Schedule Email Report
 - Share Dashboard Link
 
 **Scheduled Reports:**
+
 - Weekly Quality Report (every Monday)
 - Sprint Summary (at sprint end)
 - Monthly Metrics (first of month)
@@ -6124,6 +6814,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ## Reports - Ultra-Detailed Complete Guide
 
 ### Page Header
+
 - Title: "Reports"
 - Subtitle: "Generate custom reports"
 - Generate Report button (blue)
@@ -6131,6 +6822,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 ### Report Templates (6 Pre-built Templates)
 
 **Template 1: Sprint Summary Report**
+
 - Icon: Calendar
 - Description: "Complete sprint metrics and outcomes"
 - Includes:
@@ -6144,6 +6836,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Click: Opens configuration
 
 **Template 2: Test Execution Report**
+
 - Icon: Test tube
 - Description: "Test results and coverage analysis"
 - Includes:
@@ -6156,6 +6849,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Format: PDF, CSV, or Excel
 
 **Template 3: Bug Analysis Report**
+
 - Icon: Bug
 - Description: "Defect trends and resolution metrics"
 - Includes:
@@ -6167,6 +6861,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Charts and graphs included
 
 **Template 4: Quality Metrics Report**
+
 - Icon: Chart
 - Description: "Overall quality health dashboard"
 - Includes:
@@ -6178,6 +6873,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Executive summary included
 
 **Template 5: Traceability Report**
+
 - Icon: Tree
 - Description: "Requirements to tests mapping"
 - Includes:
@@ -6188,6 +6884,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 - Compliance-ready format
 
 **Template 6: Team Performance Report**
+
 - Icon: Users
 - Description: "Individual and team productivity"
 - Includes:
@@ -6203,6 +6900,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 **Opens form with sections:**
 
 **Section 1: Report Details**
+
 - Report Name (required)
 - Description (optional)
 - Report Type: Select template or custom
@@ -6211,6 +6909,7 @@ Real-time quality metrics dashboard with customizable date ranges and filters.
 **Section 2: Data Selection**
 
 Checkboxes for data to include:
+
 - ☐ Stories (with filters)
 - ☐ Test Cases (with filters)
 - ☐ Bugs (with filters)
@@ -6221,6 +6920,7 @@ Checkboxes for data to include:
 **Section 3: Metrics to Include**
 
 Checkboxes:
+
 - ☐ Test Coverage
 - ☐ Test Pass Rate
 - ☐ Bug Density
@@ -6232,6 +6932,7 @@ Checkboxes:
 **Section 4: Visualizations**
 
 Checkboxes for charts:
+
 - ☐ Burn-Down Chart
 - ☐ Test Trend Line Chart
 - ☐ Bug Trend Area Chart
@@ -6242,6 +6943,7 @@ Checkboxes for charts:
 **Section 5: Format Options**
 
 Radio buttons:
+
 - ○ PDF (Recommended)
 - ○ Excel Spreadsheet
 - ○ CSV Data
@@ -6250,22 +6952,26 @@ Radio buttons:
 **Section 6: Delivery**
 
 Radio buttons:
+
 - ○ Download Now
 - ○ Email to Recipients
 - ○ Schedule Recurring
 
 If Email selected:
+
 - Email addresses (comma-separated)
 - Subject line
 - Message body
 
 If Schedule selected:
+
 - Frequency: Daily/Weekly/Monthly
 - Day of week (if weekly)
 - Time of day
 - Duration: Until cancelled or end date
 
 **Generate Button:**
+
 - Validates all required fields
 - Shows progress bar while generating
 - Large reports may take 30-60 seconds
@@ -6277,6 +6983,7 @@ If Schedule selected:
 **Table showing past reports:**
 
 Columns:
+
 - Report Name
 - Type (template name or "Custom")
 - Generated Date
@@ -6289,6 +6996,7 @@ Columns:
   - Delete (red button)
 
 Filters:
+
 - Search by name
 - Filter by type
 - Filter by date range
@@ -6299,6 +7007,7 @@ Filters:
 **Table of recurring reports:**
 
 Columns:
+
 - Report Name
 - Template
 - Frequency
@@ -6313,6 +7022,7 @@ Columns:
   - Delete
 
 **Add Scheduled Report:**
+
 - Same as custom report
 - Plus scheduling options
 - Can pause temporarily
@@ -6322,30 +7032,36 @@ Columns:
 ## Test History - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 View complete history of all test executions with filtering and analysis.
 
 ### Page Header
+
 - Title: "Test Execution History"
 - Subtitle: "Review past test runs and results"
 
 ### Filters (Top Section)
 
 **Date Range:**
+
 - Last 7 Days (default)
 - Last 30 Days
 - Last Quarter
 - Custom Range
 
 **Test Filter:**
+
 - Search by test ID or name
 - Dropdown of all tests
 - "All Tests" option
 
 **Tester Filter:**
+
 - Dropdown of QA engineers
 - "All Testers" option
 
 **Result Filter:**
+
 - Checkboxes:
   - ☐ Pass
   - ☐ Fail
@@ -6353,6 +7069,7 @@ View complete history of all test executions with filtering and analysis.
 - Can select multiple
 
 **Test Type Filter:**
+
 - Multi-select of 8 test types
 
 ### Execution History Table
@@ -6360,28 +7077,34 @@ View complete history of all test executions with filtering and analysis.
 **Columns (10 columns):**
 
 **Column 1: Execution Date**
+
 - Format: "MM/DD/YYYY HH:MM AM/PM"
 - Sortable (default: newest first)
 - Relative time in tooltip
 
 **Column 2: Test ID**
+
 - Link to test detail
 - Example: "TC-045"
 - Click: Opens test
 
 **Column 3: Test Title**
+
 - Truncated to 2 lines
 - Hover: Full title
 
 **Column 4: Test Type**
+
 - Colored badge
 - Functional/Regression/etc.
 
 **Column 5: Executed By**
+
 - User avatar and name
 - Tooltip: Full details
 
 **Column 6: Result**
+
 - Large badge:
   - PASS (green)
   - FAIL (red)
@@ -6389,21 +7112,25 @@ View complete history of all test executions with filtering and analysis.
 - Icon included
 
 **Column 7: Duration**
+
 - Format: "5 min 32 sec"
 - Comparison to average shown
 - Red if >2× expected
 
 **Column 8: Issues Found**
+
 - Count of bugs created
 - Link to bugs
 - "-" if none
 
 **Column 9: Notes**
+
 - First 50 characters
 - Click to expand
 - Icon if has attachments
 
 **Column 10: Actions**
+
 - View Details (blue) - Opens execution detail modal
 - Re-run Test (green) - Opens execution modal with this test
 
@@ -6414,25 +7141,29 @@ View complete history of all test executions with filtering and analysis.
 Shows complete execution information:
 
 **Header:**
+
 - Test ID and title
 - Execution date/time
 - Executed by (with avatar)
 - Result badge (large)
 
 **Preconditions Section:**
+
 - Shows if verified
 - Timestamp of verification
 
 **Step Results:**
+
 - Table of all steps
 - Columns:
-  - Step # 
+  - Step #
   - Step Description
   - Result (Pass/Fail/Blocked/N/A)
   - Notes (if any)
 - Failed steps highlighted red
 
 **Failure Details** (if test failed):
+
 - Failure reason (full text)
 - Screenshot (if uploaded)
 - Error logs
@@ -6440,22 +7171,26 @@ Shows complete execution information:
 - Bug created (link if applicable)
 
 **Execution Notes:**
+
 - Tester's notes (full text)
 - Observations
 - Recommendations
 
 **Attachments:**
+
 - Grid of uploaded files
 - Click to download
 - Thumbnails for images
 
 **Metrics:**
+
 - Total duration
 - Step-by-step timing
 - Comparison to average
 - Previous execution result
 
 **Compare to Previous:**
+
 - Button: "Compare to Last Run"
 - Opens: Side-by-side comparison
 - Shows: What changed between runs
@@ -6463,6 +7198,7 @@ Shows complete execution information:
 ### Execution Trends Panel (Right Sidebar)
 
 **For Selected Test:**
+
 - Total executions: Count
 - Pass rate: Percentage
 - Average duration: Time
@@ -6470,6 +7206,7 @@ Shows complete execution information:
 - Flakiness indicator: If inconsistent results
 
 **Trend Graph:**
+
 - Line chart of last 20 executions
 - Pass/Fail pattern
 - Duration trend
@@ -6477,6 +7214,7 @@ Shows complete execution information:
 ### Bulk Actions
 
 **When rows selected:**
+
 - Export selected executions
 - Delete execution records (admin only)
 - Compare multiple executions
@@ -6486,9 +7224,11 @@ Shows complete execution information:
 ## Team Performance - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 Track individual and team productivity, quality metrics, and workload distribution.
 
 ### Page Header
+
 - Title: "Team Performance"
 - Subtitle: "Individual and team metrics"
 - Date range selector
@@ -6496,21 +7236,25 @@ Track individual and team productivity, quality metrics, and workload distributi
 ### Team Overview Cards (4 cards)
 
 **Card 1: Active Team Members**
+
 - Count of team members
 - Breakdown by role
 - Availability status
 
 **Card 2: Total Tests Executed**
+
 - This period
 - Per team member average
 - Trend vs. last period
 
 **Card 3: Bugs Resolved**
+
 - This period
 - Average resolution time
 - Trend
 
 **Card 4: Team Velocity**
+
 - Average story points/sprint
 - Team capacity
 - Utilization percentage
@@ -6520,46 +7264,55 @@ Track individual and team productivity, quality metrics, and workload distributi
 **Columns (9 columns):**
 
 **Column 1: Team Member**
+
 - Avatar + Full name
 - Role badge
 - Active/Inactive status
 
 **Column 2: Tests Executed**
+
 - Count this period
 - Bar chart showing relative volume
 - Breakdown by result (Pass/Fail)
 
 **Column 3: Test Pass Rate**
+
 - Percentage
 - Color: Green >90%, Yellow 70-90%, Red <70%
 - Indicates test quality
 
 **Column 4: Bugs Reported**
+
 - Count found by this person
 - Breakdown by severity
 - Critical bugs highlighted
 
 **Column 5: Bugs Fixed**
+
 - Count fixed (developers only)
 - "-" for QA roles
 - Average time to fix
 
 **Column 6: Stories Completed**
+
 - Count (developers/PMs)
 - Story points total
 - Velocity trend
 
 **Column 7: Current Workload**
+
 - Active assignments
 - Stories/Bugs/Tests in progress
 - Color: Green <5, Yellow 5-10, Red >10
 
 **Column 8: Availability**
+
 - Percentage available
 - Accounts for: Vacation, meetings, other tasks
 - Calendar icon shows schedule
 
 **Column 9: Actions**
+
 - View Details (blue)
 - Message (gray) - Opens chat
 - Assign Work (green)
@@ -6571,6 +7324,7 @@ Track individual and team productivity, quality metrics, and workload distributi
 Shows comprehensive metrics for one person:
 
 **Personal Info Panel:**
+
 - Photo
 - Full name
 - Role
@@ -6579,6 +7333,7 @@ Shows comprehensive metrics for one person:
 - Team/Department
 
 **This Period Stats:**
+
 - Tests executed: Count with breakdown
 - Pass rate: Percentage
 - Bugs reported: Count by severity
@@ -6588,6 +7343,7 @@ Shows comprehensive metrics for one person:
 - Velocity: Story points/sprint
 
 **Historical Trends:**
+
 - Line charts showing:
   - Test executions over time
   - Pass rate trend
@@ -6596,6 +7352,7 @@ Shows comprehensive metrics for one person:
 - Comparison to team average
 
 **Current Assignments:**
+
 - Table of active work
 - Stories/Bugs/Tests in progress
 - Priority levels
@@ -6603,18 +7360,21 @@ Shows comprehensive metrics for one person:
 - Estimated effort remaining
 
 **Workload Calendar:**
+
 - 30-day view
 - Shows: Tests executed, bugs fixed, stories completed each day
 - Heatmap style
 - Click day: See detail
 
 **Skill Matrix:**
+
 - Test types expertise
 - Modules knowledge
 - Tech stack proficiency
 - Edit: Admin only
 
 **Performance Notes:**
+
 - Manager notes (private, admin only)
 - Self-assessment (own view only)
 - Goals and objectives
@@ -6622,11 +7382,13 @@ Shows comprehensive metrics for one person:
 ### Team Comparison Charts
 
 **Tests Executed Leaderboard:**
+
 - Bar chart ranking team
 - This period only
 - Sortable
 
 **Quality Metrics Comparison:**
+
 - Table comparing:
   - Pass rate
   - Bug find rate
@@ -6635,6 +7397,7 @@ Shows comprehensive metrics for one person:
 - Highlight: Top performers
 
 **Workload Distribution:**
+
 - Pie chart of total workload
 - Identifies: Overloaded vs. underutilized
 - Recommendation: Balance assignments
@@ -6642,18 +7405,21 @@ Shows comprehensive metrics for one person:
 ### Capacity Planning
 
 **Shows:**
+
 - Team total capacity (story points/sprint)
 - Current utilization %
 - Available capacity
 - Forecast: Next sprint capacity
 
 **Capacity Factors:**
+
 - Vacation/PTO
 - Training
 - Meetings
 - Availability percentage
 
 **Recommendations:**
+
 - Suggested assignment distribution
 - Who has capacity
 - Who is overloaded
@@ -6663,9 +7429,11 @@ Shows comprehensive metrics for one person:
 ## Sprints - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 Plan, track, and manage agile sprints including stories, capacity, and progress.
 
 ### Page Header
+
 - Title: "Sprint Management"
 - Subtitle: "Plan and track sprints"
 - Create Sprint button (green)
@@ -6675,6 +7443,7 @@ Plan, track, and manage agile sprints including stories, capacity, and progress.
 Shows all sprints with filtering:
 
 **Filter Options:**
+
 - All Sprints
 - Active Only
 - Planning
@@ -6686,12 +7455,14 @@ Shows all sprints with filtering:
 Each sprint shown as card:
 
 **Card Header:**
+
 - Sprint Name (large, bold)
 - Status badge (Active/Planning/Completed/Cancelled)
 - Date range
 - Days remaining (if active)
 
 **Card Body:**
+
 - Goal: Sprint objective (2 lines max)
 - Story count: "12 stories (8 completed)"
 - Progress bar: Visual completion
@@ -6699,12 +7470,14 @@ Each sprint shown as card:
 - Team: Avatars of assigned members
 
 **Card Footer:**
+
 - View Details (blue button)
 - Edit Sprint (gray button, if not started)
 - Complete Sprint (green button, if active)
 - Delete Sprint (red button, if planning)
 
 **Active Sprint (Special Styling):**
+
 - Green border (4px left)
 - Appears first
 - Pulsing indicator
@@ -6715,35 +7488,41 @@ Each sprint shown as card:
 **Modal with fields:**
 
 **Field 1: Sprint Name*** (Required)
+
 - Format: "Sprint X" or custom
 - Example: "Sprint 13" or "Payment Gateway Sprint"
 - Max: 50 characters
 
 **Field 2: Sprint Goal*** (Required)
+
 - Textarea
 - Max: 200 characters
 - Placeholder: "What is the primary objective of this sprint?"
 - Example: "Implement payment gateway and refund system"
 
 **Field 3: Start Date*** (Required)
+
 - Date picker
 - Cannot be in past
 - Default: Next Monday
 - Validation: Must be before end date
 
 **Field 4: End Date*** (Required)
+
 - Date picker
 - Default: Start date + 14 days
 - Recommended: 1-4 weeks
 - Validation: Must be after start date
 
 **Field 5: Team Capacity** (Optional)
+
 - Story points team can complete
 - Calculated from: Team size × velocity
 - Manual override allowed
 - Helps prevent overcommitment
 
 **Field 6: Assign Stories** (Optional)
+
 - Multi-select from backlog
 - Shows: Story ID, title, points
 - Filter: By priority, module, etc.
@@ -6751,6 +7530,7 @@ Each sprint shown as card:
 - Warning: If exceeds capacity
 
 **Create Button:**
+
 - Validates dates and required fields
 - Creates sprint
 - Assigns selected stories
@@ -6762,6 +7542,7 @@ Each sprint shown as card:
 **Full page view for one sprint**
 
 **Header Section:**
+
 - Sprint name (large)
 - Status badge
 - Date range
@@ -6770,6 +7551,7 @@ Each sprint shown as card:
 - Complete Sprint button (if active)
 
 **Sprint Goals Panel:**
+
 - Goal statement
 - Success criteria checklist
 - Definition of Done items
@@ -6797,6 +7579,7 @@ Each sprint shown as card:
    - Shows completion date
 
 **Each Story Card Shows:**
+
 - Story ID
 - Title (truncated)
 - Story points
@@ -6807,6 +7590,7 @@ Each sprint shown as card:
 - Progress indicator
 
 **Drag and Drop:**
+
 - Drag stories between columns
 - Auto-updates status
 - Records in activity log
@@ -6815,32 +7599,38 @@ Each sprint shown as card:
 **Metrics Panel (Right Sidebar):**
 
 **Progress:**
+
 - Story points: "32 / 50 (64%)"
 - Stories: "8 / 12 completed"
 - Progress bar
 - On track indicator
 
 **Velocity:**
+
 - Current: Points completed / Days elapsed
 - Projected: If maintain current pace
 - Comparison: To team average
 
 **Scope Changes:**
+
 - Added this sprint: Count
 - Removed this sprint: Count
 - Net change: Percentage
 
 **Team Workload:**
+
 - Each member's active stories
 - Points per person
 - Capacity remaining
 
 **Time Tracking:**
+
 - Days elapsed
 - Days remaining
 - Working days vs. total days
 
 **Risks:**
+
 - Stories at risk (no progress)
 - Blocked stories
 - Dependencies not met
@@ -6848,10 +7638,12 @@ Each sprint shown as card:
 ### Sprint Actions
 
 **Complete Sprint Button:**
+
 - Only if status = Active
 - Opens completion dialog
 
 **Completion Dialog:**
+
 - Review incomplete stories
 - Options for each:
   - Mark as complete
@@ -6862,11 +7654,13 @@ Each sprint shown as card:
 - Archives: Sprint as completed
 
 **Extend Sprint:**
+
 - Add days to end date
 - Requires justification
 - Notification sent
 
 **Cancel Sprint:**
+
 - Admin only
 - Requires reason
 - Returns stories to backlog
@@ -6897,6 +7691,7 @@ Each sprint shown as card:
    - Quality metrics
 
 **Save Retrospective:**
+
 - Attached to sprint record
 - Visible in sprint history
 - Used for continuous improvement
@@ -6906,9 +7701,11 @@ Each sprint shown as card:
 ## Traceability Matrix - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 Map requirements (stories) to test cases to ensure complete coverage and support compliance.
 
 ### Page Header
+
 - Title: "Traceability Matrix"
 - Subtitle: "Requirements to tests mapping"
 - Export Matrix button (blue)
@@ -6916,6 +7713,7 @@ Map requirements (stories) to test cases to ensure complete coverage and support
 ### Matrix View Type Selector
 
 **Radio buttons:**
+
 - ○ Grid View (default)
 - ○ List View
 - ○ Tree View
@@ -6926,6 +7724,7 @@ Map requirements (stories) to test cases to ensure complete coverage and support
 
 **Rows:** Stories (one per row)
 **Columns:**
+
 - Story ID
 - Story Title
 - Priority
@@ -6935,6 +7734,7 @@ Map requirements (stories) to test cases to ensure complete coverage and support
 - Actions
 
 **Test Type Sub-columns:**
+
 - F = Functional
 - R = Regression
 - I = Integration
@@ -6945,6 +7745,7 @@ Map requirements (stories) to test cases to ensure complete coverage and support
 - API = API
 
 **Cell Content:**
+
 - Number = Count of tests
 - Color:
   - Green: ≥3 tests
@@ -6953,6 +7754,7 @@ Map requirements (stories) to test cases to ensure complete coverage and support
 - Click: Opens list of tests
 
 **Coverage % Column:**
+
 - Percentage with color:
   - Green: 100% (all test types covered)
   - Yellow: 50-99% (partial coverage)
@@ -6960,6 +7762,7 @@ Map requirements (stories) to test cases to ensure complete coverage and support
   - Gray: 0% (no tests)
 
 **Row Highlighting:**
+
 - Red background: 0 tests (critical gap)
 - Yellow background: <3 tests (needs more)
 - Green background: ≥5 tests (well covered)
@@ -6967,18 +7770,21 @@ Map requirements (stories) to test cases to ensure complete coverage and support
 ### Filters
 
 **Story Filters:**
+
 - Search by ID or title
 - Priority filter
 - Sprint filter
 - Module filter
 
 **Coverage Filter:**
+
 - Show All
 - Show Untested Only (red rows)
 - Show Poorly Covered (<3 tests)
 - Show Well Covered (≥5 tests)
 
 **Sort Options:**
+
 - By Story ID
 - By Priority
 - By Coverage % (ascending/descending)
@@ -7004,11 +7810,13 @@ Shows hierarchical list:
 ```
 
 **Expand/Collapse:**
+
 - Click story: Toggle test list
 - Expand All button
 - Collapse All button
 
 **Color Coding:**
+
 - Green story: ≥5 tests
 - Yellow story: 1-4 tests
 - Red story: 0 tests
@@ -7032,6 +7840,7 @@ Module: Authentication
 **Shows coverage gaps:**
 
 **Untested Stories:**
+
 - Count: "13 stories without tests"
 - List with:
   - Story ID
@@ -7040,16 +7849,19 @@ Module: Authentication
   - "Create Test" button
 
 **Under-Tested Stories:**
+
 - Count: "8 stories with <3 tests"
 - Recommendation: Add more tests
 - Priority stories highlighted
 
 **Missing Test Types:**
+
 - Stories missing specific types
 - Example: "15 stories missing security tests"
 - Filter by type
 
 **Recommendations:**
+
 - "Add regression tests for high-priority stories"
 - "Create API tests for backend features"
 - "Add security tests for authentication module"
@@ -7057,6 +7869,7 @@ Module: Authentication
 ### Create Tests from Matrix
 
 **Quick Test Creation:**
+
 - Click cell in grid
 - Opens: Create Test form
 - Pre-filled:
@@ -7067,12 +7880,14 @@ Module: Authentication
 ### Export Options
 
 **Export Matrix as:**
+
 - PDF Report (formatted)
 - Excel Spreadsheet (interactive)
 - CSV Data (raw)
 - HTML Page (web view)
 
 **Report Includes:**
+
 - Complete matrix grid
 - Coverage statistics
 - Gap analysis
@@ -7080,6 +7895,7 @@ Module: Authentication
 - Recommendations
 
 **Compliance Mode:**
+
 - Include signatures
 - Include timestamps
 - Include test evidence
@@ -7090,9 +7906,11 @@ Module: Authentication
 ## Release Readiness - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 Assess if the system is ready for production release based on quality gates and criteria.
 
 ### Page Header
+
 - Title: "Release Readiness Dashboard"
 - Subtitle: "Production deployment checklist"
 - Release Name: Input field for version (e.g., "v2.1.0")
@@ -7100,6 +7918,7 @@ Assess if the system is ready for production release based on quality gates and 
 ### Overall Readiness Score
 
 **Large Gauge Display:**
+
 - Score: 0-100%
 - Color zones:
   - 0-60%: Red (Not Ready)
@@ -7109,6 +7928,7 @@ Assess if the system is ready for production release based on quality gates and 
 - Recommendation shown
 
 **Go/No-Go Decision:**
+
 - Green: "READY TO RELEASE"
 - Yellow: "RELEASE AT RISK - Review items"
 - Red: "DO NOT RELEASE - Critical issues"
@@ -7116,12 +7936,14 @@ Assess if the system is ready for production release based on quality gates and 
 ### Quality Gates Checklist (8 Gates)
 
 Each gate has:
+
 - Gate name
 - Status: Pass/Fail/Warning
 - Percentage complete
 - Details button
 
 **Gate 1: Test Coverage**
+
 - Target: ≥80%
 - Current: Shows actual %
 - Status:
@@ -7132,6 +7954,7 @@ Each gate has:
 - Action: "Add Tests" button if failing
 
 **Gate 2: Test Pass Rate**
+
 - Target: ≥95%
 - Current: Shows actual %
 - Status:
@@ -7142,6 +7965,7 @@ Each gate has:
 - Action: "Fix Failures" button
 
 **Gate 3: Critical Bugs**
+
 - Target: 0 critical open bugs
 - Current: Count of critical bugs
 - Status:
@@ -7152,6 +7976,7 @@ Each gate has:
 - Blocker: Cannot release with critical bugs
 
 **Gate 4: High Priority Bugs**
+
 - Target: <3 high bugs
 - Current: Count
 - Status:
@@ -7162,6 +7987,7 @@ Each gate has:
 - Action: Review and accept risk or fix
 
 **Gate 5: Code Review**
+
 - Target: All PRs merged and reviewed
 - Current: Count of unreviewed/unmerged
 - Status:
@@ -7172,6 +7998,7 @@ Each gate has:
 - Action: "Complete Reviews" button
 
 **Gate 6: Regression Testing**
+
 - Target: All regression tests pass
 - Current: Regression pass rate
 - Status:
@@ -7181,6 +8008,7 @@ Each gate has:
 - Action: "Run Regression Suite" button
 
 **Gate 7: Performance Testing**
+
 - Target: Meet performance SLAs
 - Metrics:
   - Page load time <2s
@@ -7191,6 +8019,7 @@ Each gate has:
 - Action: "View Performance Report"
 
 **Gate 8: Security Testing**
+
 - Target: No high/critical vulnerabilities
 - Current: Vulnerability count
 - Status:
@@ -7205,12 +8034,14 @@ Each gate has:
 **For each gate, expandable panel shows:**
 
 **Coverage Gate Detail:**
+
 - Table: Module, Current %, Target %, Gap
 - Modules below target highlighted red
 - "Add Tests" links per module
 - Chart: Coverage trend over time
 
 **Bug Gate Detail:**
+
 - Table: Bug ID, Title, Severity, Age, Assigned To
 - Sort by: Severity, age
 - Actions: View, Fix, Accept Risk
@@ -7228,6 +8059,7 @@ Each gate has:
 ☐ UAT: User acceptance complete
 
 **For each environment:**
+
 - Status indicator
 - Last deployment date
 - Deployed version
@@ -7249,6 +8081,7 @@ Each gate has:
 ☐ Stakeholders notified
 
 **Each task:**
+
 - Checkbox (check when complete)
 - Assigned to: User
 - Due date
@@ -7260,6 +8093,7 @@ Each gate has:
 **Identified Risks:**
 
 Table showing:
+
 - Risk description
 - Likelihood (High/Medium/Low)
 - Impact (High/Medium/Low)
@@ -7268,6 +8102,7 @@ Table showing:
 - Status
 
 **Add Risk Button:**
+
 - Opens form
 - Describe risk
 - Assess likelihood and impact
@@ -7275,6 +8110,7 @@ Table showing:
 - Assign owner
 
 **Overall Risk Level:**
+
 - Calculated from risks
 - Color: Red/Yellow/Green
 - Recommendation
@@ -7284,6 +8120,7 @@ Table showing:
 **Required Approvals:**
 
 **QA Sign-Off:**
+
 - Name: QA Lead
 - Status: Pending/Approved/Rejected
 - Date: When approved
@@ -7292,22 +8129,26 @@ Table showing:
 - Only QA Lead can approve
 
 **Product Manager Sign-Off:**
+
 - Name: PM
 - Status: Pending/Approved/Rejected
 - Comments
 - Button: "Provide PM Sign-Off"
 
 **Development Lead Sign-Off:**
+
 - Name: Dev Lead
 - Status
 - Comments
 
 **Security Sign-Off:**
+
 - Name: Security engineer
 - Status
 - Comments
 
 **All Required Before Release:**
+
 - Cannot deploy without all sign-offs
 - Each person can add comments
 - Can reject with reason
@@ -7315,6 +8156,7 @@ Table showing:
 ### Release Actions
 
 **Schedule Release Button:**
+
 - Opens: Release scheduler
 - Select: Date and time
 - Timezone: Configured
@@ -7324,6 +8166,7 @@ Table showing:
 - Requires: All gates pass + all sign-offs
 
 **Deploy Now Button:**
+
 - Immediate deployment
 - Confirmation required
 - Final check: All gates
@@ -7331,6 +8174,7 @@ Table showing:
 - Rollback: Available if issues
 
 **Export Release Report Button:**
+
 - PDF report with:
   - All gate statuses
   - Test results
@@ -7342,13 +8186,14 @@ Table showing:
 
 ---
 
-
 ## AI Recommendations - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 AI analyzes your project data to identify testing gaps and generate specific, actionable test recommendations with effort estimates.
 
 ### Page Header
+
 - Title: "AI Test Recommendations"
 - Subtitle: "Automated test gap analysis"
 - Analyze Now button (purple with sparkle icon)
@@ -7356,6 +8201,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 ### How AI Analysis Works
 
 **Data Sources Analyzed:**
+
 1. All user stories and acceptance criteria
 2. Existing test cases and coverage
 3. Bug history and patterns
@@ -7364,6 +8210,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 6. Test execution history
 
 **Analysis Algorithm:**
+
 1. Identifies stories with 0 tests (critical gaps)
 2. Finds stories with <3 tests (under-tested)
 3. Detects missing test types (e.g., no security tests)
@@ -7372,6 +8219,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 6. Reviews acceptance criteria (generates test from criteria)
 
 **Run Analysis:**
+
 - Click "Analyze Now" button
 - Shows progress: "Analyzing project data..."
 - Scans: All stories, tests, bugs (takes 5-15 seconds)
@@ -7383,21 +8231,25 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 **Summary Cards (Top Row):**
 
 **Card 1: Total Recommendations**
+
 - Count of suggestions
 - Example: "24 recommendations"
 - By type breakdown
 
 **Card 2: High Priority**
+
 - Critical gaps
 - Example: "8 high priority"
 - Color: Red
 
 **Card 3: Estimated Effort**
+
 - Total time to implement all
 - Example: "~40 hours"
 - Based on test complexity
 
 **Card 4: Projected Coverage Increase**
+
 - Coverage if all implemented
 - Example: "+15% coverage"
 - Target: Reach 90%+
@@ -7409,20 +8261,24 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 **Recommendation Card:**
 
 **Header:**
+
 - Priority badge (Critical/High/Medium/Low)
 - Recommendation type icon
 - Auto-generated ID (e.g., "REC-001")
 
 **Title:**
+
 - Clear action statement
 - Example: "Add security tests for authentication module"
 - Example: "Create regression tests for payment processing"
 
 **Description:**
+
 - Why this is recommended
 - Example: "Authentication module has 8 critical bugs in the last 90 days but only 2 security tests. Industry best practice suggests minimum 5 security tests for auth."
 
 **Details Panel:**
+
 - **Affected Story:** Link to story (e.g., "US-101: User Login")
 - **Current Coverage:** "2 tests (Functional only)"
 - **Recommended Tests:** "Add 5 tests"
@@ -7434,12 +8290,14 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 - **Impact:** "High - Critical security gap"
 
 **Evidence:**
+
 - 8 bugs found in last 90 days
 - 2 security-related bugs
 - Module risk level: High
 - Current test types: Functional only
 
 **Action Buttons:**
+
 - **Create Tests** (green) - Opens test creation form with recommendations pre-filled
 - **Accept Recommendation** (blue) - Marks as acknowledged
 - **Dismiss** (gray) - Hides this recommendation
@@ -7448,30 +8306,35 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 ### Recommendation Types
 
 **Type 1: Coverage Gaps**
+
 - Stories with 0 tests
 - Highest priority
 - Icon: Red warning triangle
 - Example: "Story US-105 has no tests. Add minimum 3 tests covering acceptance criteria."
 
 **Type 2: Under-Tested Areas**
+
 - Stories with <3 tests
 - Medium priority
 - Icon: Yellow warning
 - Example: "Story US-101 has only 1 test. Add 2 more tests for better coverage."
 
 **Type 3: Missing Test Types**
+
 - Specific test type gaps
 - Priority based on risk
 - Icon: Blue info
 - Example: "Payment module has no security tests. Add 3 security tests for PCI compliance."
 
 **Type 4: Bug Pattern Tests**
+
 - Areas with frequent bugs
 - High priority
 - Icon: Bug with arrow
 - Example: "Login flow has had 5 bugs. Create regression tests to prevent recurrence."
 
 **Type 5: Acceptance Criteria Tests**
+
 - Tests generated from story criteria
 - Detailed test steps suggested
 - Icon: Checklist
@@ -7479,7 +8342,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
   ```
   Story US-101 has acceptance criteria:
   "Given user enters valid credentials, when they click login, then they access dashboard"
-  
+
   Suggested Test:
   Title: Verify login with valid credentials
   Steps:
@@ -7491,6 +8354,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
   ```
 
 **Type 6: High-Risk Module Tests**
+
 - Modules with risk score ≥7
 - Critical priority
 - Icon: Red target
@@ -7499,6 +8363,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 ### Filters and Sorting
 
 **Filter Recommendations:**
+
 - By Priority: All/Critical/High/Medium/Low
 - By Type: Coverage gaps, missing types, bug patterns, etc.
 - By Module: Filter to specific module
@@ -7506,6 +8371,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 - Show Implemented: Hide completed recommendations
 
 **Sort Options:**
+
 - By Priority (default)
 - By Effort (low to high)
 - By Impact (high to low)
@@ -7514,6 +8380,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 ### Bulk Actions
 
 **Select multiple recommendations:**
+
 - Checkboxes on each card
 - Select All button
 - Actions:
@@ -7525,6 +8392,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 ### Implementation Tracking
 
 **Progress Panel:**
+
 - Total recommendations: 24
 - Implemented: 8 (33%)
 - In Progress: 3 (13%)
@@ -7532,6 +8400,7 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 - Progress bar
 
 **When Recommendation Implemented:**
+
 - Status changes to "Completed"
 - Shows: Test IDs created
 - Impact: Coverage % increase
@@ -7540,11 +8409,13 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 ### Export and Reporting
 
 **Export Recommendations:**
+
 - Format: PDF, CSV, Excel
 - Include: All details, effort estimates
 - Use: Planning sprints, allocating QA resources
 
 **Schedule:**
+
 - Auto-generate weekly
 - Email to QA lead
 - Include: New recommendations since last week
@@ -7554,9 +8425,11 @@ AI analyzes your project data to identify testing gaps and generate specific, ac
 ## Audit Trail - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 Complete, immutable history of all system changes for compliance, debugging, and security.
 
 ### Page Header
+
 - Title: "Audit Trail"
 - Subtitle: "Complete system change history"
 - Export Audit Log button
@@ -7566,12 +8439,14 @@ Complete, immutable history of all system changes for compliance, debugging, and
 **Columns (10 columns):**
 
 **Column 1: Timestamp**
+
 - Format: "MM/DD/YYYY HH:MM:SS AM/PM"
 - Timezone: System timezone
 - Precision: To the second
 - Sortable (default: newest first)
 
 **Column 2: User**
+
 - Name of person who made change
 - Avatar + full name
 - Role badge
@@ -7579,6 +8454,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
 - System actions: "SYSTEM" user
 
 **Column 3: Action Type**
+
 - Badge with icon:
   - CREATE (green) - New item added
   - UPDATE (blue) - Item modified
@@ -7591,6 +8467,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
   - ASSIGN (blue) - Assignment made
 
 **Column 4: Entity Type**
+
 - What was changed
 - Options:
   - Story
@@ -7603,17 +8480,20 @@ Complete, immutable history of all system changes for compliance, debugging, and
   - Attachment
 
 **Column 5: Entity ID**
+
 - ID of changed item
 - Link to item
 - Example: "US-101" (clickable)
 - Click: Opens item detail
 
 **Column 6: Entity Name**
+
 - Title of changed item
 - Truncated to 50 chars
 - Hover: Full name
 
 **Column 7: Change Summary**
+
 - Brief description
 - Examples:
   - "Priority changed from Medium to High"
@@ -7623,6 +8503,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
   - "Bug assigned to John Doe"
 
 **Column 8: Before Value**
+
 - Old value before change
 - Examples:
   - "Medium" (priority)
@@ -7631,6 +8512,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
 - "-" for CREATE actions
 
 **Column 9: After Value**
+
 - New value after change
 - Examples:
   - "High" (priority)
@@ -7639,6 +8521,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
 - "-" for DELETE actions
 
 **Column 10: IP Address**
+
 - User's IP when action performed
 - Format: "192.168.1.100"
 - Security: Track suspicious activity
@@ -7647,17 +8530,20 @@ Complete, immutable history of all system changes for compliance, debugging, and
 ### Advanced Filters
 
 **Date Range:**
+
 - Presets: Today, Last 7 days, Last 30 days, Last quarter, All time
 - Custom: Start and end date pickers
 - Default: Last 7 days
 
 **User Filter:**
+
 - Dropdown of all users
 - "All Users" option
 - "System Actions" option
 - Multi-select enabled
 
 **Action Type Filter:**
+
 - Checkboxes:
   - ☐ CREATE
   - ☐ UPDATE
@@ -7669,6 +8555,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
 - Select multiple
 
 **Entity Type Filter:**
+
 - Dropdown:
   - All Entities
   - Stories
@@ -7679,6 +8566,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
   - Other
 
 **Search:**
+
 - Search by: Entity ID, Entity name, Change summary
 - Real-time filtering
 
@@ -7687,6 +8575,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
 **Click any row to see complete details:**
 
 **Modal Shows:**
+
 - Timestamp (precise to millisecond)
 - User (full details)
 - Action type
@@ -7700,6 +8589,7 @@ Complete, immutable history of all system changes for compliance, debugging, and
 - Request data (JSON)
 
 **For UPDATE actions:**
+
 ```
 Changed Fields:
 ┌─────────────┬──────────────┬──────────────┐
@@ -7712,6 +8602,7 @@ Changed Fields:
 ```
 
 **Related Changes:**
+
 - Shows other changes to same entity
 - Timeline view
 - Who made each change
@@ -7722,12 +8613,14 @@ Changed Fields:
 **Alternative view: Timeline instead of table**
 
 **Visual timeline:**
+
 - Vertical line with events
 - Most recent at top
 - Events grouped by day
 - Expandable for details
 
 **Each Event:**
+
 - Icon based on action type
 - Time (relative: "2 hours ago")
 - User avatar
@@ -7737,23 +8630,27 @@ Changed Fields:
 ### Compliance Features
 
 **Tamper-Proof:**
+
 - Records cannot be edited or deleted
 - Cryptographic hash of each record
 - Chain of custody maintained
 - Detects any tampering attempts
 
 **Retention Policy:**
+
 - Keep all logs: 7 years (configurable)
 - Archives: After 1 year to cold storage
 - Compliance: Meets SOC2, GDPR, HIPAA
 
 **Audit Log Export:**
+
 - Format: JSON, CSV, PDF
 - Includes: Cryptographic proof
 - Signed: With system certificate
 - Use: Compliance audits
 
 **Scheduled Exports:**
+
 - Daily/Weekly/Monthly automatic export
 - Encrypted and sent to secure storage
 - Retention: Per compliance requirements
@@ -7763,6 +8660,7 @@ Changed Fields:
 **Suspicious Activity Alerts:**
 
 Automatically detects:
+
 - Multiple failed login attempts (>3 in 5 min)
 - Login from new IP address
 - Login from unusual location
@@ -7772,12 +8670,14 @@ Automatically detects:
 - After-hours activity (configurable)
 
 **Alert Actions:**
+
 - Email to security team
 - Lock user account
 - Log to security system
 - Create incident ticket
 
 **Activity Reports:**
+
 - User activity summary
 - Login history
 - Data access patterns
@@ -7788,9 +8688,11 @@ Automatically detects:
 ## Bulk Operations - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 Perform mass updates to multiple stories, tests, or bugs simultaneously to save time.
 
 ### Page Header
+
 - Title: "Bulk Operations"
 - Subtitle: "Mass update multiple items"
 - Safety warning: "Use carefully - changes affect many items"
@@ -7800,6 +8702,7 @@ Perform mass updates to multiple stories, tests, or bugs simultaneously to save 
 **Select Operation Type:**
 
 Radio buttons:
+
 - ○ Bulk Update Stories
 - ○ Bulk Update Test Cases
 - ○ Bulk Update Bugs
@@ -7814,12 +8717,14 @@ Radio buttons:
 **Selection Methods:**
 
 **Method 1: Manual Selection**
+
 - Table showing all stories
 - Checkbox for each row
 - Select All checkbox in header
 - Shows count: "15 stories selected"
 
 **Method 2: Filter Selection**
+
 - Apply filters:
   - Priority: Critical/High/Medium/Low
   - Status: Ready/Locked
@@ -7830,11 +8735,13 @@ Radio buttons:
 - Shows count of selected
 
 **Method 3: Import Selection**
+
 - Upload CSV with story IDs
 - System selects matching stories
 - Shows count and list
 
 **Preview Selection:**
+
 - Shows table of selected stories
 - Can remove individual items
 - Confirms selection before proceeding
@@ -7844,44 +8751,53 @@ Radio buttons:
 **Available Fields:**
 
 ☐ Priority
+
 - Dropdown: Critical/High/Medium/Low
 - Will update ALL selected stories
 
 ☐ Sprint
+
 - Dropdown: Select sprint
 - Moves all to selected sprint
 - Validates capacity
 
 ☐ Assign QA Reviewer
+
 - Dropdown: Select QA engineer
 - Assigns all to one person
 - Shows workload impact
 
 ☐ Assign Developer
+
 - Only if stories unlocked
 - Dropdown: Select developer
 - Workload warning if >10 stories
 
 ☐ Assign Tester
+
 - Only if stories unlocked
 - Dropdown: Select tester
 
 ☐ Add Tags
+
 - Multi-tag input
 - Tags added to existing tags
 - Example: Add "urgent" tag to all
 
 ☐ Remove Tags
+
 - Select tags to remove
 - Removes from all selected
 
 ☐ Change Status
+
 - Options based on workflow
 - Validates transitions
 
 **Step 3: Review and Confirm**
 
 **Preview Changes:**
+
 ```
 You are about to update 15 stories:
 
@@ -7903,11 +8819,13 @@ This action affects team workload:
 ```
 
 **Confirmation Required:**
+
 - Type "CONFIRM" in text box
 - Prevents accidental bulk changes
 - Case-sensitive
 
 **Execute Button:**
+
 - Disabled until "CONFIRM" typed
 - Click: Performs bulk update
 - Progress bar shows: "Updating 5 of 15..."
@@ -7921,6 +8839,7 @@ This action affects team workload:
 **Step 1: Select tests** (by filters or manual)
 
 **Step 2: Choose fields:**
+
 - ☐ Test Type
 - ☐ Priority
 - ☐ Assign To
@@ -7934,6 +8853,7 @@ This action affects team workload:
 ### Bulk Update Bugs
 
 **Select bugs, then update:**
+
 - ☐ Severity
 - ☐ Priority
 - ☐ Status
@@ -7947,6 +8867,7 @@ This action affects team workload:
 **Most Dangerous Operation:**
 
 **Step 1: Select Items**
+
 - Choose entity type: Stories/Tests/Bugs
 - Select items to delete
 - Shows count
@@ -7954,12 +8875,14 @@ This action affects team workload:
 **Step 2: Deletion Options**
 
 **Soft Delete (Recommended):**
+
 - Items marked as deleted
 - Hidden from views
 - Can be restored within 30 days
 - Preserves history
 
 **Hard Delete (Permanent):**
+
 - Items permanently removed
 - Cannot be undone
 - Requires admin permission
@@ -7968,6 +8891,7 @@ This action affects team workload:
 **Step 3: Confirm**
 
 **Extra Safeguards:**
+
 - Type entity count: "I want to delete 15 stories"
 - Type: "DELETE PERMANENTLY"
 - Shows warning: Lists all items
@@ -7975,6 +8899,7 @@ This action affects team workload:
 - Two-factor: Required for hard delete
 
 **Cascading Effects:**
+
 - Lists all related items affected
 - Example: "Deleting these 15 stories will:"
   - Unlink 47 test cases
@@ -7983,6 +8908,7 @@ This action affects team workload:
   - Affect team velocity calculations
 
 **Execute:**
+
 - Progress: "Deleting 5 of 15..."
 - Logs: Records in audit trail
 - Notification: Sent to team
@@ -7993,21 +8919,25 @@ This action affects team workload:
 **Export multiple items:**
 
 **Step 1: Select Items**
+
 - Choose entity type
 - Select items (or use filters)
 
 **Step 2: Choose Format**
+
 - ○ CSV (data only)
 - ○ Excel (formatted, with formulas)
 - ○ JSON (for API integration)
 - ○ PDF (report format)
 
 **Step 3: Choose Fields**
+
 - Checklist of all fields
 - Select which to include
 - Can reorder columns
 
 **Step 4: Export Options**
+
 - Include related items:
   - ☐ Include linked tests
   - ☐ Include linked bugs
@@ -8017,6 +8947,7 @@ This action affects team workload:
 - Compression: ZIP if large
 
 **Execute:**
+
 - Generates file
 - Download starts
 - Email option: Send to recipients
@@ -8027,24 +8958,29 @@ This action affects team workload:
 **Import items from file:**
 
 **Step 1: Choose Entity Type**
+
 - Stories, Test Cases, or Bugs
 
 **Step 2: Download Template**
+
 - Click "Download CSV Template"
 - Pre-formatted with all fields
 - Includes examples and instructions
 
 **Step 3: Prepare Data**
+
 - Fill template with your data
 - Follow format exactly
 - Validate: Required fields filled
 
 **Step 4: Upload File**
+
 - Drag & drop CSV file
 - Or click to browse
 - Max: 1000 rows
 
 **Step 5: Map Columns**
+
 - System auto-detects columns
 - Confirm mappings:
   - CSV Column → AQMS Field
@@ -8052,6 +8988,7 @@ This action affects team workload:
 - Fix any errors
 
 **Step 6: Validate Data**
+
 - System checks all rows
 - Shows errors:
   - Row 5: Missing required field "Title"
@@ -8060,10 +8997,12 @@ This action affects team workload:
 - Must fix all errors before import
 
 **Step 7: Preview**
+
 - Shows first 10 rows
 - Confirm data looks correct
 
 **Step 8: Import**
+
 - Creates items in database
 - Progress: "Importing row 50 of 200..."
 - Skips rows with errors
@@ -8076,29 +9015,35 @@ This action affects team workload:
 ### Safety Features
 
 **Validation:**
+
 - All changes validated before applying
 - Blocks invalid operations
 - Shows clear error messages
 
 **Preview:**
+
 - Always shows what will change
 - Confirms before executing
 
 **Limits:**
+
 - Max 500 items per operation
 - Prevents system overload
 
 **Rollback:**
+
 - For some operations, can undo
 - Within 5 minutes of execution
 - "Undo Last Bulk Operation" button
 
 **Permissions:**
+
 - Bulk delete: Admin only
 - Bulk assign: Managers only
 - Bulk export: All authenticated users
 
 **Notifications:**
+
 - Email team about bulk changes
 - Specify who made change
 - List what changed
@@ -8108,9 +9053,11 @@ This action affects team workload:
 ## Data Management - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 Import, export, backup, and restore AQMS data for migrations, backups, and integrations.
 
 ### Page Header
+
 - Title: "Data Management"
 - Subtitle: "Import, export, backup, and restore"
 - Admin only access
@@ -8121,6 +9068,7 @@ Import, export, backup, and restore AQMS data for migrations, backups, and integ
 
 **What to Export:**
 Checkboxes:
+
 - ☐ All Stories (with acceptance criteria)
 - ☐ All Test Cases (with steps and results)
 - ☐ All Bugs (with history)
@@ -8132,23 +9080,27 @@ Checkboxes:
 - ☐ Configuration Settings
 
 **Date Range:**
+
 - All Time (default)
 - Custom date range
 - Purpose: Export subset of data
 
 **Format:**
+
 - ○ JSON (Full fidelity, for backup/restore)
 - ○ CSV (Data only, multiple files)
 - ○ Excel (Formatted, multiple sheets)
 - ○ SQL Dump (Database format)
 
 **Options:**
+
 - ☐ Include deleted items
 - ☐ Include draft items
 - ☐ Encrypt export (password required)
 - ☐ Compress (ZIP format)
 
 **Export Button:**
+
 - Click: Generates export file
 - Progress: "Exporting... 30% complete"
 - Large datasets: May take 2-5 minutes
@@ -8157,6 +9109,7 @@ Checkboxes:
 - Email: Option to email download link
 
 **Export History:**
+
 - Table of past exports
 - Columns: Date, Exported By, File Size, Download
 - Keep: Last 10 exports
@@ -8167,17 +9120,20 @@ Checkboxes:
 **Import Data:**
 
 **Step 1: Choose Import Type**
+
 - ○ Full System Restore (overwrites all data)
 - ○ Merge Import (adds to existing data)
 - ○ Selective Import (choose entities)
 
 **Step 2: Upload File**
+
 - Drag & drop zone
 - Supported: JSON, CSV, SQL
 - Max size: 500MB
 - Validates: File format
 
 **Step 3: Review Data**
+
 - Shows summary:
   - Stories to import: 150
   - Tests to import: 300
@@ -8191,12 +9147,14 @@ Checkboxes:
 **Step 4: Resolve Conflicts**
 
 **For each conflict:**
+
 - Option 1: Skip conflicting item
 - Option 2: Overwrite existing item
 - Option 3: Create as new item (new ID)
 - Option 4: Merge data
 
 **Step 5: Import**
+
 - Confirmation required
 - Type: "IMPORT" to confirm
 - Progress: "Importing... 75%"
@@ -8205,6 +9163,7 @@ Checkboxes:
 - Error Report: Download if any failures
 
 **Import Log:**
+
 - Detailed log of import process
 - Shows: What succeeded, what failed
 - Errors: With line numbers
@@ -8215,6 +9174,7 @@ Checkboxes:
 **Automated Backups:**
 
 **Schedule:**
+
 - Daily: 2:00 AM (configurable)
 - Includes: Full system data
 - Retention: Last 30 daily backups
@@ -8222,6 +9182,7 @@ Checkboxes:
 
 **Backup List:**
 Table showing:
+
 - Date/Time
 - Backup Type: Full/Incremental
 - Size
@@ -8229,11 +9190,13 @@ Table showing:
 - Actions: Restore/Download/Delete
 
 **Manual Backup:**
+
 - Button: "Create Backup Now"
 - Useful: Before major changes
 - On-demand: No schedule
 
 **Restore from Backup:**
+
 - Select backup from list
 - Shows: Backup details and contents
 - Warning: "This will overwrite current data"
@@ -8245,6 +9208,7 @@ Table showing:
 ### Data Cleanup Tools
 
 **Remove Duplicate Entries:**
+
 - Scans: For duplicate stories/tests/bugs
 - Criteria: Same title, same dates
 - Shows: List of duplicates
@@ -8252,6 +9216,7 @@ Table showing:
 - Delete: Others
 
 **Archive Old Data:**
+
 - Move data to archive:
   - Sprints older than X months
   - Bugs closed for X months
@@ -8260,6 +9225,7 @@ Table showing:
 - Archived data: Still searchable, read-only
 
 **Delete Orphaned Data:**
+
 - Finds: Items with broken links
   - Tests linked to deleted stories
   - Bugs with non-existent assignees
@@ -8269,12 +9235,14 @@ Table showing:
 ### Integration Tools
 
 **API Access:**
+
 - Generate API key
 - Documentation link
 - Rate limits shown
 - Usage stats
 
 **Webhook Configuration:**
+
 - Set webhook URLs
 - Events to trigger:
   - Story created/updated
@@ -8284,6 +9252,7 @@ Table showing:
 - Test webhook: Send test event
 
 **Third-Party Integrations:**
+
 - JIRA sync (import stories as issues)
 - GitHub sync (link commits to stories)
 - Slack notifications (post updates)
@@ -8294,6 +9263,7 @@ Table showing:
 **Admin Tools:**
 
 **Optimize Database:**
+
 - Button: "Optimize Now"
 - Rebuilds: Indexes
 - Analyzes: Table statistics
@@ -8301,11 +9271,13 @@ Table showing:
 - Improves: Query performance
 
 **Vacuum Database:**
+
 - Reclaims: Deleted record space
 - Compacts: Database files
 - Reduces: File size
 
 **Integrity Check:**
+
 - Scans: All database tables
 - Validates: Foreign keys
 - Checks: Data consistency
@@ -8313,6 +9285,7 @@ Table showing:
 - Auto-fix: Minor issues
 
 **Usage Statistics:**
+
 - Database size
 - Table sizes
 - Record counts
@@ -8324,9 +9297,11 @@ Table showing:
 ## User Management - Ultra-Detailed Complete Guide
 
 ### Purpose
+
 Manage user accounts, roles, permissions, and team structure.
 
 ### Page Header
+
 - Title: "User Management"
 - Subtitle: "Manage team members and permissions"
 - Add User button (green)
@@ -8336,12 +9311,14 @@ Manage user accounts, roles, permissions, and team structure.
 **Columns (9 columns):**
 
 **Column 1: User**
+
 - Avatar (48px circle)
 - Full name
 - Email below name
 - Online status (green dot if active)
 
 **Column 2: Role**
+
 - Badge:
   - Admin (red)
   - Product Manager (blue)
@@ -8351,17 +9328,20 @@ Manage user accounts, roles, permissions, and team structure.
   - Viewer (gray)
 
 **Column 3: Status**
+
 - Active (green badge)
 - Inactive (gray badge)
 - Pending (yellow badge) - Invitation sent
 - Locked (red badge) - Account locked
 
 **Column 4: Last Login**
+
 - Date/time
 - Relative: "2 hours ago"
 - Never logged in: "-"
 
 **Column 5: Current Workload**
+
 - Open stories: Count
 - Open bugs: Count
 - Open tests: Count
@@ -8369,21 +9349,25 @@ Manage user accounts, roles, permissions, and team structure.
 - Color: Green <5, Yellow 5-10, Red >10
 
 **Column 6: Created**
+
 - Date account created
 - Format: MM/DD/YYYY
 
 **Column 7: Teams**
+
 - List of teams user belongs to
 - Example: "Frontend, QA"
 - Badges for each team
 
 **Column 8: Permissions**
+
 - Quick indicators:
   - Can create stories: ✓/✗
   - Can delete items: ✓/✗
   - Admin access: ✓/✗
 
 **Column 9: Actions**
+
 - View Profile (blue)
 - Edit User (gray)
 - Deactivate (yellow)
@@ -8394,19 +9378,23 @@ Manage user accounts, roles, permissions, and team structure.
 **Opens modal:**
 
 **Field 1: Email*** (Required)
+
 - Valid email address
 - Checked: If already exists
 - Send: Invitation to email
 
 **Field 2: First Name*** (Required)
+
 - Text input
 - Max: 50 characters
 
 **Field 3: Last Name*** (Required)
+
 - Text input
 - Max: 50 characters
 
 **Field 4: Role*** (Required)
+
 - Dropdown:
   - Admin (full access)
   - Product Manager (stories, sprints, approvals)
@@ -8417,6 +9405,7 @@ Manage user accounts, roles, permissions, and team structure.
 - Description of each role shown
 
 **Field 5: Teams** (Optional)
+
 - Multi-select:
   - Frontend Team
   - Backend Team
@@ -8426,15 +9415,18 @@ Manage user accounts, roles, permissions, and team structure.
 - Create new team: Option
 
 **Field 6: Send Welcome Email**
+
 - Checkbox (checked by default)
 - Sends: Account setup instructions
 - Includes: Temporary password
 
 **Field 7: Set as Active**
+
 - Checkbox (checked by default)
 - Unchecked: User created but cannot log in yet
 
 **Create User Button:**
+
 - Validates: All required fields
 - Creates: User account
 - Generates: Temporary password
@@ -8446,6 +9438,7 @@ Manage user accounts, roles, permissions, and team structure.
 **Opens user detail:**
 
 Can modify:
+
 - Name
 - Email
 - Role (with confirmation)
@@ -8455,17 +9448,20 @@ Can modify:
 - Avatar (upload image)
 
 **Password Reset:**
+
 - Button: "Send Password Reset"
 - Sends: Email with reset link
 - Expires: After 24 hours
 
 **Lock Account:**
+
 - Prevents: User login
 - Use: Security concerns
 - Button: "Lock Account"
 - Requires: Reason
 
 **Delete User:**
+
 - Permanent action
 - Reassign: All their items
 - Options:
@@ -8480,24 +9476,25 @@ Can modify:
 
 Table showing what each role can do:
 
-| Permission | Admin | PM | Dev | QA | SM | Viewer |
-|---|---|---|---|---|---|---|
-| Create Stories | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ |
-| Edit Stories | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ |
-| Delete Stories | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ |
-| QA Sign-Off | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ |
-| PM Approval | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ |
-| Create Tests | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ |
-| Execute Tests | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ |
-| Report Bugs | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ |
-| Fix Bugs | ✓ | ✗ | ✓ | ✗ | ✗ | ✗ |
-| Create Sprints | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ |
-| View Reports | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Export Data | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ |
-| Manage Users | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| Bulk Operations | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ |
+| Permission      | Admin | PM  | Dev | QA  | SM  | Viewer |
+| --------------- | ----- | --- | --- | --- | --- | ------ |
+| Create Stories  | ✓     | ✓   | ✗   | ✗   | ✓   | ✗      |
+| Edit Stories    | ✓     | ✓   | ✗   | ✗   | ✓   | ✗      |
+| Delete Stories  | ✓     | ✓   | ✗   | ✗   | ✗   | ✗      |
+| QA Sign-Off     | ✓     | ✗   | ✗   | ✓   | ✗   | ✗      |
+| PM Approval     | ✓     | ✓   | ✗   | ✗   | ✗   | ✗      |
+| Create Tests    | ✓     | ✗   | ✗   | ✓   | ✗   | ✗      |
+| Execute Tests   | ✓     | ✗   | ✗   | ✓   | ✗   | ✗      |
+| Report Bugs     | ✓     | ✓   | ✓   | ✓   | ✓   | ✗      |
+| Fix Bugs        | ✓     | ✗   | ✓   | ✗   | ✗   | ✗      |
+| Create Sprints  | ✓     | ✓   | ✗   | ✗   | ✓   | ✗      |
+| View Reports    | ✓     | ✓   | ✓   | ✓   | ✓   | ✓      |
+| Export Data     | ✓     | ✓   | ✗   | ✗   | ✓   | ✗      |
+| Manage Users    | ✓     | ✗   | ✗   | ✗   | ✗   | ✗      |
+| Bulk Operations | ✓     | ✓   | ✗   | ✗   | ✗   | ✗      |
 
 **Custom Permissions:**
+
 - Can override role defaults
 - Set per-user permissions
 - Example: Give specific developer story creation rights
@@ -8505,6 +9502,7 @@ Table showing what each role can do:
 ### Team Management
 
 **Create Team:**
+
 - Team name
 - Team lead
 - Members (multi-select)
@@ -8512,6 +9510,7 @@ Table showing what each role can do:
 - Slack channel (optional)
 
 **Team View:**
+
 - Shows: All team members
 - Workload: Team total
 - Capacity: Team capacity
@@ -8519,12 +9518,14 @@ Table showing what each role can do:
 - Active work: Current sprint stories
 
 **Team Permissions:**
+
 - Can set: Team-specific permissions
 - Example: Frontend team can only edit frontend stories
 
 ### Activity Monitoring
 
 **User Activity:**
+
 - Last 30 days
 - Actions per day
 - Logins
@@ -8532,6 +9533,7 @@ Table showing what each role can do:
 - Time spent in system
 
 **Inactive Users:**
+
 - List: Not logged in >30 days
 - Action: Deactivate or contact
 - License: Free up seats
@@ -8539,16 +9541,19 @@ Table showing what each role can do:
 ### Bulk User Operations
 
 **Bulk invite:**
+
 - Upload CSV with emails
 - Assign: Same role to all
 - Send: Invitations
 
 **Bulk deactivate:**
+
 - Select: Multiple users
 - Deactivate: All at once
 - Use: Offboarding
 
 **Bulk role change:**
+
 - Select users
 - Change role
 - Confirm with reason
@@ -8558,6 +9563,7 @@ Table showing what each role can do:
 ## COMPLETE AQMS DOCUMENTATION
 
 This comprehensive manual covers ALL features of AQMS in extreme detail. Every button, field, workflow, calculation, and action is fully explained with:
+
 - Exact specifications (sizes, colors, formats)
 - Validation rules and error messages
 - Step-by-step workflows
@@ -8576,10 +9582,10 @@ Total Coverage:
 ✓ All Actions Detailed
 
 File Statistics:
+
 - Pages: ~200+ when converted to PDF
 - Lines: 7,344+
 - Words: ~60,000+
 - Characters: ~400,000+
 
 This is the COMPLETE, EXHAUSTIVE documentation for AQMS.
-

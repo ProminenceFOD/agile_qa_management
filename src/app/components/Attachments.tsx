@@ -33,7 +33,8 @@ export function Attachments() {
         title: 'Payment Gateway Integration',
       },
       url: '#',
-      thumbnail: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="150"%3E%3Crect fill="%23e5e7eb" width="200" height="150"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="sans-serif" font-size="14"%3EPNG%3C/text%3E%3C/svg%3E',
+      thumbnail:
+        'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="150"%3E%3Crect fill="%23e5e7eb" width="200" height="150"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="sans-serif" font-size="14"%3EPNG%3C/text%3E%3C/svg%3E',
     },
     {
       id: 'ATT-002',
@@ -76,19 +77,29 @@ export function Attachments() {
         title: 'Dashboard chart not loading',
       },
       url: '#',
-      thumbnail: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="150"%3E%3Crect fill="%23e5e7eb" width="200" height="150"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="sans-serif" font-size="14"%3EJPG%3C/text%3E%3C/svg%3E',
+      thumbnail:
+        'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="150"%3E%3Crect fill="%23e5e7eb" width="200" height="150"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="sans-serif" font-size="14"%3EJPG%3C/text%3E%3C/svg%3E',
     },
   ]);
 
-  const [filterType, setFilterType] = useState<'all' | 'story' | 'bug' | 'sprint'>('all');
+  const [filterType, setFilterType] = useState<
+    'all' | 'story' | 'bug' | 'sprint'
+  >('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [linkType, setLinkType] = useState<'story' | 'bug' | 'sprint'>('story');
   const [linkId, setLinkId] = useState('');
-  const [notification, setNotification] = useState({ isOpen: false, title: '', message: '', type: 'warning' as const });
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'warning' as const,
+  });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deletingAttachmentId, setDeletingAttachmentId] = useState<string | null>(null);
+  const [deletingAttachmentId, setDeletingAttachmentId] = useState<
+    string | null
+  >(null);
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return bytes + ' B';
@@ -101,7 +112,8 @@ export function Attachments() {
     if (fileType === 'application/pdf') return '📄';
     if (fileType.includes('word') || fileType.includes('document')) return '📝';
     if (fileType.includes('sheet') || fileType.includes('excel')) return '📊';
-    if (fileType.includes('presentation') || fileType.includes('powerpoint')) return '📽️';
+    if (fileType.includes('presentation') || fileType.includes('powerpoint'))
+      return '📽️';
     return '📎';
   };
 
@@ -116,10 +128,12 @@ export function Attachments() {
     }
   };
 
-  const filteredAttachments = attachments.filter(att => {
-    const matchesType = filterType === 'all' || att.linkedTo.type === filterType;
-    const matchesSearch = att.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         att.linkedTo.title.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredAttachments = attachments.filter((att) => {
+    const matchesType =
+      filterType === 'all' || att.linkedTo.type === filterType;
+    const matchesSearch =
+      att.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      att.linkedTo.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesType && matchesSearch;
   });
 
@@ -153,7 +167,9 @@ export function Attachments() {
         title: `${linkType === 'story' ? 'Story' : linkType === 'bug' ? 'Bug' : 'Sprint'} ${linkId}`,
       },
       url: URL.createObjectURL(selectedFile),
-      thumbnail: selectedFile.type.startsWith('image/') ? URL.createObjectURL(selectedFile) : undefined,
+      thumbnail: selectedFile.type.startsWith('image/')
+        ? URL.createObjectURL(selectedFile)
+        : undefined,
     };
 
     setAttachments([newAttachment, ...attachments]);
@@ -169,7 +185,9 @@ export function Attachments() {
 
   const confirmDelete = () => {
     if (deletingAttachmentId) {
-      setAttachments(attachments.filter(att => att.id !== deletingAttachmentId));
+      setAttachments(
+        attachments.filter((att) => att.id !== deletingAttachmentId)
+      );
     }
     setShowDeleteConfirm(false);
     setDeletingAttachmentId(null);
@@ -182,7 +200,9 @@ export function Attachments() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl mb-2">Attachments & Files</h1>
-          <p className="text-gray-600">Manage files linked to stories, bugs, and sprints</p>
+          <p className="text-gray-600">
+            Manage files linked to stories, bugs, and sprints
+          </p>
         </div>
         <button
           onClick={() => setUploadModalOpen(true)}
@@ -196,22 +216,26 @@ export function Attachments() {
       <div className="grid grid-cols-4 gap-4 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Total Files</div>
-          <div className="text-2xl font-bold text-gray-900">{attachments.length}</div>
+          <div className="text-2xl font-bold text-gray-900">
+            {attachments.length}
+          </div>
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Total Size</div>
-          <div className="text-2xl font-bold text-gray-900">{formatFileSize(totalSize)}</div>
+          <div className="text-2xl font-bold text-gray-900">
+            {formatFileSize(totalSize)}
+          </div>
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Images</div>
           <div className="text-2xl font-bold text-indigo-600">
-            {attachments.filter(a => a.fileType.startsWith('image/')).length}
+            {attachments.filter((a) => a.fileType.startsWith('image/')).length}
           </div>
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Documents</div>
           <div className="text-2xl font-bold text-purple-600">
-            {attachments.filter(a => !a.fileType.startsWith('image/')).length}
+            {attachments.filter((a) => !a.fileType.startsWith('image/')).length}
           </div>
         </div>
       </div>
@@ -226,7 +250,7 @@ export function Attachments() {
           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
         <div className="flex gap-2">
-          {['all', 'story', 'bug', 'sprint'].map(type => (
+          {['all', 'story', 'bug', 'sprint'].map((type) => (
             <button
               key={type}
               onClick={() => setFilterType(type as typeof filterType)}
@@ -244,28 +268,44 @@ export function Attachments() {
 
       {/* Attachments Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredAttachments.map(attachment => (
-          <div key={attachment.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+        {filteredAttachments.map((attachment) => (
+          <div
+            key={attachment.id}
+            className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+          >
             {/* Thumbnail or Icon */}
             <div className="h-40 bg-gray-100 flex items-center justify-center">
               {attachment.thumbnail ? (
-                <img src={attachment.thumbnail} alt={attachment.fileName} className="max-h-full max-w-full object-contain" />
+                <img
+                  src={attachment.thumbnail}
+                  alt={attachment.fileName}
+                  className="max-h-full max-w-full object-contain"
+                />
               ) : (
-                <div className="text-6xl">{getFileIcon(attachment.fileType)}</div>
+                <div className="text-6xl">
+                  {getFileIcon(attachment.fileType)}
+                </div>
               )}
             </div>
 
             {/* File Info */}
             <div className="p-4">
               <div className="mb-2">
-                <div className="font-medium text-gray-900 truncate" title={attachment.fileName}>
+                <div
+                  className="font-medium text-gray-900 truncate"
+                  title={attachment.fileName}
+                >
                   {attachment.fileName}
                 </div>
-                <div className="text-xs text-gray-500">{formatFileSize(attachment.fileSize)}</div>
+                <div className="text-xs text-gray-500">
+                  {formatFileSize(attachment.fileSize)}
+                </div>
               </div>
 
               <div className="mb-3">
-                <span className={`inline-flex items-center px-2 py-1 rounded border text-xs ${getTypeColor(attachment.linkedTo.type)}`}>
+                <span
+                  className={`inline-flex items-center px-2 py-1 rounded border text-xs ${getTypeColor(attachment.linkedTo.type)}`}
+                >
                   {attachment.linkedTo.type}: {attachment.linkedTo.id}
                 </span>
               </div>
@@ -304,11 +344,16 @@ export function Attachments() {
       {/* Upload Modal */}
       {uploadModalOpen && (
         <>
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setUploadModalOpen(false)}></div>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setUploadModalOpen(false)}
+          ></div>
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col overflow-hidden">
               <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
-                <h2 className="text-2xl text-gray-900 dark:text-white font-semibold">Upload File</h2>
+                <h2 className="text-2xl text-gray-900 dark:text-white font-semibold">
+                  Upload File
+                </h2>
                 <button
                   onClick={() => setUploadModalOpen(false)}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
@@ -330,7 +375,8 @@ export function Attachments() {
                   />
                   {selectedFile && (
                     <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                      Selected: {selectedFile.name} ({formatFileSize(selectedFile.size)})
+                      Selected: {selectedFile.name} (
+                      {formatFileSize(selectedFile.size)})
                     </div>
                   )}
                 </div>
@@ -341,7 +387,9 @@ export function Attachments() {
                   </label>
                   <select
                     value={linkType}
-                    onChange={(e) => setLinkType(e.target.value as typeof linkType)}
+                    onChange={(e) =>
+                      setLinkType(e.target.value as typeof linkType)
+                    }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="story">User Story</option>
@@ -352,13 +400,23 @@ export function Attachments() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {linkType === 'story' ? 'Story ID' : linkType === 'bug' ? 'Bug ID' : 'Sprint ID'}
+                    {linkType === 'story'
+                      ? 'Story ID'
+                      : linkType === 'bug'
+                        ? 'Bug ID'
+                        : 'Sprint ID'}
                   </label>
                   <input
                     type="text"
                     value={linkId}
                     onChange={(e) => setLinkId(e.target.value)}
-                    placeholder={linkType === 'story' ? 'US-XXX' : linkType === 'bug' ? 'BUG-XXX' : 'SPR-XXX'}
+                    placeholder={
+                      linkType === 'story'
+                        ? 'US-XXX'
+                        : linkType === 'bug'
+                          ? 'BUG-XXX'
+                          : 'SPR-XXX'
+                    }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>

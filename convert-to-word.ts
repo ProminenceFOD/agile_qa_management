@@ -22,13 +22,15 @@ HTMLtoDOCX(html, null, {
     right: 1440,
     bottom: 1440,
     left: 1440,
-  }
-}).then((docx: any) => {
-  fs.writeFileSync('./AQMS_Documentation.docx', docx);
-  console.log('✅ Word document created: AQMS_Documentation.docx');
-  const stats = fs.statSync('./AQMS_Documentation.docx');
-  console.log('📦 Size:', (stats.size / 1024).toFixed(2), 'KB');
-}).catch((error: any) => {
-  console.error('❌ Error:', error);
-  process.exit(1);
-});
+  },
+})
+  .then((docx: any) => {
+    fs.writeFileSync('./AQMS_Documentation.docx', docx);
+    console.log('✅ Word document created: AQMS_Documentation.docx');
+    const stats = fs.statSync('./AQMS_Documentation.docx');
+    console.log('📦 Size:', (stats.size / 1024).toFixed(2), 'KB');
+  })
+  .catch((error: any) => {
+    console.error('❌ Error:', error);
+    process.exit(1);
+  });

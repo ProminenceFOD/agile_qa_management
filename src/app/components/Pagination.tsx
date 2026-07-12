@@ -15,7 +15,7 @@ export function Pagination({
   itemsPerPage,
   onPageChange,
   onItemsPerPageChange,
-  itemsPerPageOptions = [10, 25, 50, 100]
+  itemsPerPageOptions = [10, 25, 50, 100],
 }: PaginationProps) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startItem = totalItems === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
@@ -79,7 +79,8 @@ export function Pagination({
     <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
       {/* Item count */}
       <div className="text-sm text-gray-700 dark:text-gray-300">
-        Showing <span className="font-medium">{startItem}</span> to <span className="font-medium">{endItem}</span> of{' '}
+        Showing <span className="font-medium">{startItem}</span> to{' '}
+        <span className="font-medium">{endItem}</span> of{' '}
         <span className="font-medium">{totalItems}</span> items
       </div>
 
@@ -100,7 +101,10 @@ export function Pagination({
           {getPageNumbers().map((page, index) => {
             if (page === '...') {
               return (
-                <span key={`ellipsis-${index}`} className="px-3 py-1 text-gray-500 dark:text-gray-400">
+                <span
+                  key={`ellipsis-${index}`}
+                  className="px-3 py-1 text-gray-500 dark:text-gray-400"
+                >
                   ...
                 </span>
               );

@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 import { defaultTestCases } from '../utils/defaultData';
 import { toast } from 'sonner';
-import { Play, Eye, Edit3, Search, Filter, TrendingUp, Plus, FilterX } from 'lucide-react';
+import {
+  Play,
+  Eye,
+  Edit3,
+  Search,
+  Filter,
+  TrendingUp,
+  Plus,
+  FilterX,
+} from 'lucide-react';
 import { TestCaseForm } from './TestCaseForm';
 import { TestCaseView } from './TestCaseView';
 import { TestCaseExecute } from './TestCaseExecute';
@@ -14,7 +23,8 @@ import { Modal } from './Modal';
 import { useModal } from '../hooks/useModal';
 
 type TestStatus = 'Pass' | 'Fail' | 'Blocked' | 'Not Run';
-type TestType = 'Functional' | 'Regression' | 'Integration' | 'Smoke' | 'Performance';
+type TestType =
+  'Functional' | 'Regression' | 'Integration' | 'Smoke' | 'Performance';
 
 interface TestCase {
   id: string;
@@ -60,7 +70,9 @@ interface TestCasesProps {
 export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
   const { user } = useAuth();
   const { modalState, showConfirm, closeModal } = useModal();
-  const [viewMode, setViewMode] = useState<'list' | 'create' | 'edit' | 'execute'>('list');
+  const [viewMode, setViewMode] = useState<
+    'list' | 'create' | 'edit' | 'execute'
+  >('list');
   const [selectedTest, setSelectedTest] = useState<TestCase | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<TestStatus | 'All'>('All');
@@ -76,17 +88,201 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     notes: string;
   } | null>(null);
 
-
   // Use Supabase for persistent storage
-  const { data: testCasesRaw, setData: setTestCases, loading: testCasesLoading } = useSupabaseData<TestCase[]>('aqms_test_cases', defaultTestCases);
-  const { data: bugs, setData: setBugs } = useSupabaseData<Bug[]>('aqms_bugs', []);
+  const {
+    data: testCasesRaw,
+    setData: setTestCases,
+    loading: testCasesLoading,
+  } = useSupabaseData<TestCase[]>('aqms_test_cases', defaultTestCases);
+  const { data: bugs, setData: setBugs } = useSupabaseData<Bug[]>(
+    'aqms_bugs',
+    []
+  );
 
   // Ensure all test cases have required arrays (for backwards compatibility)
-  const testCases = testCasesRaw.map(tc => ({
+  const testCases = testCasesRaw.map((tc) => ({
     ...tc,
     steps: tc.steps || [],
     expectedResults: tc.expectedResults || [],
   }));
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCurrentPage(1);
+  }, [searchQuery, filterStatus, filterType, filterAssignedTo]);
+
+  // Listen for quick create trigger
+  useEffect(() => {
+    const quickCreate = localStorage.getItem('aqms_quick_create');
+    if (quickCreate === 'test') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowCreateForm(true);
+      localStorage.removeItem('aqms_quick_create');
+    }
+  }, []);
+
+  // Auto-deduplicate and migrate legacy test case IDs on load
+  useEffect(() => {
+    if (testCasesRaw && testCasesRaw.length > 0) {
+      let hasChange = false;
+      const idMigrations = new Map<string, string>();
+      const seenContents = new Set<string>();
+      const filteredList: TestCase[] = [];
+
+      // 1. Remove exact duplicate test cases (same title, description, steps, expectedResults, link context, isDraft status)
+      testCasesRaw.forEach((tc) => {
+        const stepsStr = (tc.steps || []).join('|');
+        const expectedStr = (tc.expectedResults || []).join('|');
+        const signature = `${tc.title}::${tc.description}::${stepsStr}::${expectedStr}::${tc.linkedStory || ''}::${tc.moduleId || ''}::${tc.isDraft ? 'draft' : 'approved'}`;
+
+        if (seenContents.has(signature)) {
+          hasChange = true;
+          console.log(
+            `[Deduplicate] Removing exact duplicate test case: ${tc.id} (${tc.title})`
+          );
+          return; // Skip/discard
+        }
+
+        seenContents.add(signature);
+        filteredList.push(tc);
+      });
+
+      // 2. Identify legacy IDs (e.g. containing timestamps or not matching standard sequential formats)
+      // Standard sequential format: TC-XXX or REC-TC-XXX where XXX is a 1-5 digit number.
+      const isLegacyId = (id: string) => {
+        const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+        if (!match) return true; // Doesn't match sequential format at all
+        const num = parseInt(match[1], 10);
+        return num >= 1000; // Too large (timestamp or bloated IDs from loops)
+      };
+
+      const seenIds = new Set<string>();
+
+      // Single pass: Migrate legacy IDs and resolve clashes
+      const updatedList = filteredList.map((tc) => {
+        let currentId = tc.id;
+        let idChanged = false;
+        const isDraft =
+          tc.isDraft || tc.status === 'Draft' || currentId.startsWith('REC-');
+
+        // If it is a legacy ID, migrate it to a sequential ID
+        if (isLegacyId(currentId)) {
+          // Find next available sequential number
+          const existingNumbers = [...seenIds]
+            .map((id) => {
+              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            })
+            .filter((n) => n > 0 && n < 1000);
+
+          // Also check all remaining clean IDs in filteredList so we don't collide with them!
+          const remainingNumbers = filteredList
+            .map((x) => x.id)
+            .filter((id) => !isLegacyId(id))
+            .map((id) => {
+              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            })
+            .filter((n) => n > 0 && n < 1000);
+
+          const allNumbers = [...existingNumbers, ...remainingNumbers];
+          const nextNum =
+            allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
+          const newId = isDraft
+            ? `REC-TC-${String(nextNum).padStart(3, '0')}`
+            : `TC-${String(nextNum).padStart(3, '0')}`;
+
+          console.log(
+            `[Migrate] Converting legacy test case ID ${currentId} to sequential ${newId}`
+          );
+          idMigrations.set(currentId, newId);
+          currentId = newId;
+          idChanged = true;
+          hasChange = true;
+        }
+
+        // If it clashes with an already seen ID, rename it
+        if (seenIds.has(currentId)) {
+          const existingNumbers = [...seenIds]
+            .map((id) => {
+              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            })
+            .filter((n) => n > 0 && n < 1000);
+
+          // Also check all remaining clean IDs in filteredList
+          const remainingNumbers = filteredList
+            .map((x) => x.id)
+            .filter((id) => !isLegacyId(id))
+            .map((id) => {
+              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            })
+            .filter((n) => n > 0 && n < 1000);
+
+          const allNumbers = [...existingNumbers, ...remainingNumbers];
+          const nextNum =
+            allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
+          const newId = isDraft
+            ? `REC-TC-${String(nextNum).padStart(3, '0')}`
+            : `TC-${String(nextNum).padStart(3, '0')}`;
+
+          console.log(
+            `[Deduplicate] Renaming clashing test case ID ${currentId} to ${newId}`
+          );
+          if (idChanged) {
+            // Update the mapping to the final ID if it was also legacy
+            for (const [key, val] of idMigrations.entries()) {
+              if (val === currentId) {
+                idMigrations.set(key, newId);
+              }
+            }
+          } else {
+            idMigrations.set(tc.id, newId);
+          }
+          currentId = newId;
+          hasChange = true;
+        }
+
+        seenIds.add(currentId);
+        return {
+          ...tc,
+          id: currentId,
+          isDraft: isDraft,
+          status: tc.status === 'Draft' ? 'Not Run' : tc.status,
+        };
+      });
+
+      if (hasChange) {
+        setTestCases(updatedList);
+
+        // If legacy IDs were migrated, update execution history references as well
+        if (idMigrations.size > 0) {
+          getData('aqms_test_execution_history').then((executions) => {
+            if (executions && Array.isArray(executions)) {
+              let execChanged = false;
+              const updatedExecutions = executions.map((ex) => {
+                if (idMigrations.has(ex.testCaseId)) {
+                  execChanged = true;
+                  const newId = idMigrations.get(ex.testCaseId)!;
+                  console.log(
+                    `[Migrate] Updating execution history reference: ${ex.testCaseId} -> ${newId}`
+                  );
+                  return { ...ex, testCaseId: newId };
+                }
+                return ex;
+              });
+
+              if (execChanged) {
+                setData('aqms_test_execution_history', updatedExecutions);
+              }
+            }
+          });
+        }
+      }
+    }
+  }, [testCasesRaw, setTestCases]);
 
   // Show loading state if data isn't ready
   if (testCasesLoading || !testCases) {
@@ -153,15 +349,20 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     }
   };
 
-  const allAssignedTesters = Array.from(new Set(testCases.map(t => t.assignedTo).filter(Boolean))) as string[];
+  const allAssignedTesters = Array.from(
+    new Set(testCases.map((t) => t.assignedTo).filter(Boolean))
+  ) as string[];
 
-  const filteredTests = testCases.filter(test => {
-    const matchesSearch = searchQuery === '' ||
+  const filteredTests = testCases.filter((test) => {
+    const matchesSearch =
+      searchQuery === '' ||
       test.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       test.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus === 'All' || test.status === filterStatus;
+    const matchesStatus =
+      filterStatus === 'All' || test.status === filterStatus;
     const matchesType = filterType === 'All' || test.type === filterType;
-    const matchesAssignedTo = filterAssignedTo === 'All' || test.assignedTo === filterAssignedTo;
+    const matchesAssignedTo =
+      filterAssignedTo === 'All' || test.assignedTo === filterAssignedTo;
     return matchesSearch && matchesStatus && matchesType && matchesAssignedTo;
   });
 
@@ -215,190 +416,35 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
   const endIndex = startIndex + itemsPerPage;
   const paginatedTests = sortedTests.slice(startIndex, endIndex);
 
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, filterStatus, filterType, filterAssignedTo]);
 
-  // Listen for quick create trigger
-  useEffect(() => {
-    const quickCreate = localStorage.getItem('aqms_quick_create');
-    if (quickCreate === 'test') {
-      setShowCreateForm(true);
-      localStorage.removeItem('aqms_quick_create');
-    }
-  }, []);
-
-  // Auto-deduplicate and migrate legacy test case IDs on load
-  useEffect(() => {
-    if (testCasesRaw && testCasesRaw.length > 0) {
-      let hasChange = false;
-      const idMigrations = new Map<string, string>();
-      const seenContents = new Set<string>();
-      const filteredList: TestCase[] = [];
-
-      // 1. Remove exact duplicate test cases (same title, description, steps, expectedResults, link context, isDraft status)
-      testCasesRaw.forEach(tc => {
-        const stepsStr = (tc.steps || []).join('|');
-        const expectedStr = (tc.expectedResults || []).join('|');
-        const signature = `${tc.title}::${tc.description}::${stepsStr}::${expectedStr}::${tc.linkedStory || ''}::${tc.moduleId || ''}::${tc.isDraft ? 'draft' : 'approved'}`;
-
-        if (seenContents.has(signature)) {
-          hasChange = true;
-          console.log(`[Deduplicate] Removing exact duplicate test case: ${tc.id} (${tc.title})`);
-          return; // Skip/discard
-        }
-
-        seenContents.add(signature);
-        filteredList.push(tc);
-      });
-
-      // 2. Identify legacy IDs (e.g. containing timestamps or not matching standard sequential formats)
-      // Standard sequential format: TC-XXX or REC-TC-XXX where XXX is a 1-5 digit number.
-      const isLegacyId = (id: string) => {
-        const match = id.match(/^(?:REC-)?TC-(\d+)$/);
-        if (!match) return true; // Doesn't match sequential format at all
-        const num = parseInt(match[1], 10);
-        return num >= 1000; // Too large (timestamp or bloated IDs from loops)
-      };
-
-      const seenIds = new Set<string>();
-
-      // Single pass: Migrate legacy IDs and resolve clashes
-      const updatedList = filteredList.map(tc => {
-        let currentId = tc.id;
-        let idChanged = false;
-        const isDraft = tc.isDraft || tc.status === 'Draft' || currentId.startsWith('REC-');
-
-        // If it is a legacy ID, migrate it to a sequential ID
-        if (isLegacyId(currentId)) {
-          // Find next available sequential number
-          const existingNumbers = [...seenIds]
-            .map(id => {
-              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
-              return match ? parseInt(match[1], 10) : 0;
-            })
-            .filter(n => n > 0 && n < 1000);
-          
-          // Also check all remaining clean IDs in filteredList so we don't collide with them!
-          const remainingNumbers = filteredList
-            .map(x => x.id)
-            .filter(id => !isLegacyId(id))
-            .map(id => {
-              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
-              return match ? parseInt(match[1], 10) : 0;
-            })
-            .filter(n => n > 0 && n < 1000);
-
-          const allNumbers = [...existingNumbers, ...remainingNumbers];
-          const nextNum = allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
-          const newId = isDraft
-            ? `REC-TC-${String(nextNum).padStart(3, '0')}`
-            : `TC-${String(nextNum).padStart(3, '0')}`;
-          
-          console.log(`[Migrate] Converting legacy test case ID ${currentId} to sequential ${newId}`);
-          idMigrations.set(currentId, newId);
-          currentId = newId;
-          idChanged = true;
-          hasChange = true;
-        }
-
-        // If it clashes with an already seen ID, rename it
-        if (seenIds.has(currentId)) {
-          const existingNumbers = [...seenIds]
-            .map(id => {
-              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
-              return match ? parseInt(match[1], 10) : 0;
-            })
-            .filter(n => n > 0 && n < 1000);
-
-          // Also check all remaining clean IDs in filteredList
-          const remainingNumbers = filteredList
-            .map(x => x.id)
-            .filter(id => !isLegacyId(id))
-            .map(id => {
-              const match = id.match(/^(?:REC-)?TC-(\d+)$/);
-              return match ? parseInt(match[1], 10) : 0;
-            })
-            .filter(n => n > 0 && n < 1000);
-
-          const allNumbers = [...existingNumbers, ...remainingNumbers];
-          const nextNum = allNumbers.length > 0 ? Math.max(...allNumbers) + 1 : 1;
-          const newId = isDraft
-            ? `REC-TC-${String(nextNum).padStart(3, '0')}`
-            : `TC-${String(nextNum).padStart(3, '0')}`;
-          
-          console.log(`[Deduplicate] Renaming clashing test case ID ${currentId} to ${newId}`);
-          if (idChanged) {
-            // Update the mapping to the final ID if it was also legacy
-            for (const [key, val] of idMigrations.entries()) {
-              if (val === currentId) {
-                idMigrations.set(key, newId);
-              }
-            }
-          } else {
-            idMigrations.set(tc.id, newId);
-          }
-          currentId = newId;
-          hasChange = true;
-        }
-
-        seenIds.add(currentId);
-        return {
-          ...tc,
-          id: currentId,
-          isDraft: isDraft,
-          status: tc.status === 'Draft' ? 'Not Run' : tc.status
-        };
-      });
-
-      if (hasChange) {
-        setTestCases(updatedList);
-
-        // If legacy IDs were migrated, update execution history references as well
-        if (idMigrations.size > 0) {
-          getData('aqms_test_execution_history').then(executions => {
-            if (executions && Array.isArray(executions)) {
-              let execChanged = false;
-              const updatedExecutions = executions.map(ex => {
-                if (idMigrations.has(ex.testCaseId)) {
-                  execChanged = true;
-                  const newId = idMigrations.get(ex.testCaseId)!;
-                  console.log(`[Migrate] Updating execution history reference: ${ex.testCaseId} -> ${newId}`);
-                  return { ...ex, testCaseId: newId };
-                }
-                return ex;
-              });
-
-              if (execChanged) {
-                setData('aqms_test_execution_history', updatedExecutions);
-              }
-            }
-          });
-        }
-      }
-    }
-  }, [testCasesRaw, setTestCases]);
 
   const stats = {
-    total: testCases.filter(t => !t.isDraft).length,
-    pass: testCases.filter(t => !t.isDraft && t.status === 'Pass').length,
-    fail: testCases.filter(t => !t.isDraft && t.status === 'Fail').length,
-    blocked: testCases.filter(t => !t.isDraft && t.status === 'Blocked').length,
-    notRun: testCases.filter(t => !t.isDraft && t.status === 'Not Run').length,
+    total: testCases.filter((t) => !t.isDraft).length,
+    pass: testCases.filter((t) => !t.isDraft && t.status === 'Pass').length,
+    fail: testCases.filter((t) => !t.isDraft && t.status === 'Fail').length,
+    blocked: testCases.filter((t) => !t.isDraft && t.status === 'Blocked')
+      .length,
+    notRun: testCases.filter((t) => !t.isDraft && t.status === 'Not Run')
+      .length,
   };
 
-  const passRate = (stats.total - stats.notRun) > 0 ? ((stats.pass / (stats.total - stats.notRun)) * 100).toFixed(1) : 0;
+  const passRate =
+    stats.total - stats.notRun > 0
+      ? ((stats.pass / (stats.total - stats.notRun)) * 100).toFixed(1)
+      : 0;
 
-  const handleCreateTestCase = (testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>) => {
+  const handleCreateTestCase = (
+    testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>
+  ) => {
     const existingNumbers = testCases
-      .map(tc => {
+      .map((tc) => {
         const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
         return match ? parseInt(match[1]) : 0;
       })
-      .filter(n => n > 0 && n < 1000000);
+      .filter((n) => n > 0 && n < 1000000);
 
-    const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+    const nextNumber =
+      existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
     const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
 
     const newTestCase: TestCase = {
@@ -410,21 +456,24 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     toast.success(`Test case ${newTestCase.id} has been created successfully!`);
   };
 
-  const handleEditTestCase = (testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>) => {
+  const handleEditTestCase = (
+    testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>
+  ) => {
     if (editingTest) {
       let finalId = editingTest.id;
-      let finalIsDraft = testCase.isDraft;
+      const finalIsDraft = testCase.isDraft;
 
       if (editingTest.isDraft && finalIsDraft === false) {
         const existingNumbers = testCases
-          .filter(tc => !tc.isDraft)
-          .map(tc => {
+          .filter((tc) => !tc.isDraft)
+          .map((tc) => {
             const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
             return match ? parseInt(match[1]) : 0;
           })
-          .filter(n => n > 0 && n < 1000000);
+          .filter((n) => n > 0 && n < 1000000);
 
-        const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+        const nextNumber =
+          existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
         finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
       }
 
@@ -436,30 +485,38 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
         executionTime: editingTest.executionTime,
       };
 
-      setTestCases(testCases.map(tc => tc.id === editingTest.id ? updatedTestCase : tc));
+      setTestCases(
+        testCases.map((tc) => (tc.id === editingTest.id ? updatedTestCase : tc))
+      );
       setEditingTest(null);
 
       if (editingTest.isDraft && finalIsDraft === false) {
         toast.success(`Test case approved and assigned ID ${finalId}`);
       } else {
-        toast.success(`Test case ${updatedTestCase.id} has been updated successfully!`);
+        toast.success(
+          `Test case ${updatedTestCase.id} has been updated successfully!`
+        );
       }
     }
   };
 
-  const handleApproveTestCase = (draftTestCase: TestCase, onSuccess?: () => void) => {
+  const handleApproveTestCase = (
+    draftTestCase: TestCase,
+    onSuccess?: () => void
+  ) => {
     showConfirm(
       `Are you sure you want to approve "${draftTestCase.title}" as an active test case?`,
       () => {
         const existingNumbers = testCases
-          .filter(tc => !tc.isDraft)
-          .map(tc => {
+          .filter((tc) => !tc.isDraft)
+          .map((tc) => {
             const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
             return match ? parseInt(match[1]) : 0;
           })
-          .filter(n => n > 0 && n < 1000000);
+          .filter((n) => n > 0 && n < 1000000);
 
-        const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+        const nextNumber =
+          existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
         const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
 
         const approvedTestCase: TestCase = {
@@ -469,7 +526,11 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
           status: 'Not Run',
         };
 
-        setTestCases(testCases.map(tc => tc.id === draftTestCase.id ? approvedTestCase : tc));
+        setTestCases(
+          testCases.map((tc) =>
+            tc.id === draftTestCase.id ? approvedTestCase : tc
+          )
+        );
         toast.success(`Test case approved and assigned ID ${finalId}`);
         if (onSuccess) onSuccess();
       },
@@ -478,11 +539,14 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     );
   };
 
-  const handleRejectTestCase = (draftTestCase: TestCase, onSuccess?: () => void) => {
+  const handleRejectTestCase = (
+    draftTestCase: TestCase,
+    onSuccess?: () => void
+  ) => {
     showConfirm(
       `Are you sure you want to discard the suggestion for "${draftTestCase.title}"?`,
       () => {
-        setTestCases(testCases.filter(tc => tc.id !== draftTestCase.id));
+        setTestCases(testCases.filter((tc) => tc.id !== draftTestCase.id));
         toast.success('AI suggestion discarded');
         if (onSuccess) onSuccess();
       },
@@ -492,23 +556,24 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
   };
 
   const handleApproveAllDrafts = () => {
-    const drafts = testCases.filter(tc => tc.isDraft);
+    const drafts = testCases.filter((tc) => tc.isDraft);
     if (drafts.length === 0) return;
 
     showConfirm(
       `Are you sure you want to approve all ${drafts.length} suggested test cases?`,
       () => {
         const existingNumbers = testCases
-          .filter(tc => !tc.isDraft)
-          .map(tc => {
+          .filter((tc) => !tc.isDraft)
+          .map((tc) => {
             const match = tc.id.match(/^(?:REC-)?TC-(\d+)$/);
             return match ? parseInt(match[1]) : 0;
           })
-          .filter(n => n > 0 && n < 1000000);
+          .filter((n) => n > 0 && n < 1000000);
 
-        let nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+        let nextNumber =
+          existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
-        const updatedTestCases = testCases.map(tc => {
+        const updatedTestCases = testCases.map((tc) => {
           if (tc.isDraft) {
             const finalId = `TC-${String(nextNumber).padStart(3, '0')}`;
             nextNumber++;
@@ -538,16 +603,20 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
   const handleExecuteTest = (result: TestStatus, notes?: string) => {
     if (selectedTest) {
       if (selectedTest.isDraft) {
-        toast.error("Cannot execute a draft test case. Please approve it first.");
+        toast.error(
+          'Cannot execute a draft test case. Please approve it first.'
+        );
         return;
       }
       const updatedTest: TestCase = {
         ...selectedTest,
         status: result,
         lastRun: new Date(),
-        executionTime: Math.floor(Math.random() * 120) + 30, // Random execution time for demo
+        executionTime: 60, // Fixed execution time for demo
       };
-      setTestCases(testCases.map(tc => tc.id === selectedTest.id ? updatedTest : tc));
+      setTestCases(
+        testCases.map((tc) => (tc.id === selectedTest.id ? updatedTest : tc))
+      );
       setViewMode('list');
       setSelectedTest(null);
     }
@@ -576,7 +645,9 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
     setBugPreFillData(null);
 
     // Show success message
-    toast.success(`Bug ${newBug.id} has been created and linked to test case ${bugPreFillData?.testCase.id}`);
+    toast.success(
+      `Bug ${newBug.id} has been created and linked to test case ${bugPreFillData?.testCase.id}`
+    );
 
     // Update the test to mark it as failed (if not already done)
     if (selectedTest) {
@@ -584,9 +655,11 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
         ...selectedTest,
         status: 'Fail',
         lastRun: new Date(),
-        executionTime: Math.floor(Math.random() * 120) + 30,
+        executionTime: 60,
       };
-      setTestCases(testCases.map(tc => tc.id === selectedTest.id ? updatedTest : tc));
+      setTestCases(
+        testCases.map((tc) => (tc.id === selectedTest.id ? updatedTest : tc))
+      );
     }
 
     // Close the execute view
@@ -602,12 +675,13 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
           <p className="text-gray-600">Organize and execute test cases</p>
         </div>
         <div className="flex gap-3">
-          {testCases.some(tc => tc.isDraft) && (
+          {testCases.some((tc) => tc.isDraft) && (
             <button
               onClick={handleApproveAllDrafts}
               className="px-5 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl hover:from-purple-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
             >
-              ✓ Approve All Suggestions ({testCases.filter(tc => tc.isDraft).length})
+              ✓ Approve All Suggestions (
+              {testCases.filter((tc) => tc.isDraft).length})
             </button>
           )}
           <button
@@ -623,23 +697,33 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-6">
         <div className="card fade-in p-4">
-          <div className="text-2xl font-bold text-gray-900 mb-1">{stats.total}</div>
+          <div className="text-2xl font-bold text-gray-900 mb-1">
+            {stats.total}
+          </div>
           <div className="text-sm text-gray-600">Total Tests</div>
         </div>
         <div className="card fade-in p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-          <div className="text-2xl font-bold text-green-700 mb-1">{stats.pass}</div>
+          <div className="text-2xl font-bold text-green-700 mb-1">
+            {stats.pass}
+          </div>
           <div className="text-sm text-green-600">Passed</div>
         </div>
         <div className="card fade-in p-4 bg-gradient-to-br from-red-50 to-rose-50 border-red-200">
-          <div className="text-2xl font-bold text-red-700 mb-1">{stats.fail}</div>
+          <div className="text-2xl font-bold text-red-700 mb-1">
+            {stats.fail}
+          </div>
           <div className="text-sm text-red-600">Failed</div>
         </div>
         <div className="card fade-in p-4 bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200">
-          <div className="text-2xl font-bold text-orange-700 mb-1">{stats.blocked}</div>
+          <div className="text-2xl font-bold text-orange-700 mb-1">
+            {stats.blocked}
+          </div>
           <div className="text-sm text-orange-600">Blocked</div>
         </div>
         <div className="card fade-in p-4 bg-gray-50">
-          <div className="text-2xl font-bold text-gray-700 mb-1">{stats.notRun}</div>
+          <div className="text-2xl font-bold text-gray-700 mb-1">
+            {stats.notRun}
+          </div>
           <div className="text-sm text-gray-600">Not Run</div>
         </div>
         <div className="card fade-in p-4 bg-gradient-to-br from-indigo-50 to-indigo-50 border-indigo-200">
@@ -699,8 +783,10 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
               className="input"
             >
               <option value="All">All Assigned Testers</option>
-              {allAssignedTesters.map(tester => (
-                <option key={tester} value={tester}>{tester}</option>
+              {allAssignedTesters.map((tester) => (
+                <option key={tester} value={tester}>
+                  {tester}
+                </option>
               ))}
             </select>
           </div>
@@ -756,107 +842,119 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
               const rowClassName = isHighlighted
                 ? 'bg-indigo-100 dark:bg-indigo-900 ring-2 ring-indigo-500 animate-pulse'
                 : test.isDraft
-                ? 'bg-purple-50/30 dark:bg-purple-950/10 border-l-4 border-purple-500/70'
-                : '';
+                  ? 'bg-purple-50/30 dark:bg-purple-950/10 border-l-4 border-purple-500/70'
+                  : '';
               return (
-              <tr
-                key={test.id}
-                className={rowClassName}
-              >
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">{test.id}</td>
-                <td className="px-4 py-3 text-sm text-gray-700">{test.title}</td>
-                <td className="text-center">
-                  <span className={`badge ${getTypeColor(test.type)}`}>
-                    {test.type}
-                  </span>
-                </td>
-                <td className="text-center">
-                  <span className={`badge ${test.priority === 'High' ? 'badge-error' : test.priority === 'Medium' ? 'badge-warning' : 'badge-neutral'}`}>
-                    {test.priority}
-                  </span>
-                </td>
-                <td className="text-center">
-                  <span className={`badge ${test.isDraft ? 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-200' : getStatusColor(test.status)}`}>
-                    {test.isDraft ? 'AI Sug.' : test.status}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-center text-xs text-gray-600">
-                  {test.assignedTo ? test.assignedTo.split(' ').map(n => n[0]).join('') : '-'}
-                </td>
-                <td className="px-4 py-3 text-center text-sm text-indigo-600">
-                  {test.linkedStory || '-'}
-                </td>
-                <td className="px-4 py-3 text-center text-xs text-gray-600">
-                  {test.lastRun ? new Date(test.lastRun).toLocaleDateString() : '-'}
-                </td>
-                <td className="px-4 py-3">
-                  <div className="flex justify-center gap-2">
-                    {test.isDraft ? (
-                      <>
-                        <button
-                          onClick={() => handleApproveTestCase(test)}
-                          className="px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-750 transition-colors text-xs font-medium flex items-center gap-1"
-                          title="Approve & save test case"
-                        >
-                          ✓ Approve
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedTest(test);
-                            setViewMode('view');
-                          }}
-                          className="px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors text-xs font-medium flex items-center gap-1"
-                          title="View details"
-                        >
-                          <Eye className="w-3 h-3" />
-                          View
-                        </button>
-                        <button
-                          onClick={() => handleRejectTestCase(test)}
-                          className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-650 transition-colors text-xs font-medium flex items-center gap-1"
-                          title="Reject suggestion"
-                        >
-                          ✕ Reject
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          onClick={() => {
-                            setSelectedTest(test);
-                            setViewMode('execute');
-                          }}
-                          className="px-3 py-1.5 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-xs font-medium flex items-center gap-1"
-                          title="Execute test case"
-                        >
-                          <Play className="w-3 h-3" />
-                          Run
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedTest(test);
-                            setViewMode('view');
-                          }}
-                          className="px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors text-xs font-medium flex items-center gap-1"
-                          title="View details"
-                        >
-                          <Eye className="w-3 h-3" />
-                          View
-                        </button>
-                        <button
-                          onClick={() => setEditingTest(test)}
-                          className="px-3 py-1.5 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors text-xs font-medium flex items-center gap-1"
-                          title="Edit test case"
-                        >
-                          <Edit3 className="w-3 h-3" />
-                          Edit
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            );
+                <tr key={test.id} className={rowClassName}>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                    {test.id}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-700">
+                    {test.title}
+                  </td>
+                  <td className="text-center">
+                    <span className={`badge ${getTypeColor(test.type)}`}>
+                      {test.type}
+                    </span>
+                  </td>
+                  <td className="text-center">
+                    <span
+                      className={`badge ${test.priority === 'High' ? 'badge-error' : test.priority === 'Medium' ? 'badge-warning' : 'badge-neutral'}`}
+                    >
+                      {test.priority}
+                    </span>
+                  </td>
+                  <td className="text-center">
+                    <span
+                      className={`badge ${test.isDraft ? 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-200' : getStatusColor(test.status)}`}
+                    >
+                      {test.isDraft ? 'AI Sug.' : test.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-center text-xs text-gray-600">
+                    {test.assignedTo
+                      ? test.assignedTo
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')
+                      : '-'}
+                  </td>
+                  <td className="px-4 py-3 text-center text-sm text-indigo-600">
+                    {test.linkedStory || '-'}
+                  </td>
+                  <td className="px-4 py-3 text-center text-xs text-gray-600">
+                    {test.lastRun
+                      ? new Date(test.lastRun).toLocaleDateString()
+                      : '-'}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex justify-center gap-2">
+                      {test.isDraft ? (
+                        <>
+                          <button
+                            onClick={() => handleApproveTestCase(test)}
+                            className="px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-750 transition-colors text-xs font-medium flex items-center gap-1"
+                            title="Approve & save test case"
+                          >
+                            ✓ Approve
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedTest(test);
+                              setViewMode('view');
+                            }}
+                            className="px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors text-xs font-medium flex items-center gap-1"
+                            title="View details"
+                          >
+                            <Eye className="w-3 h-3" />
+                            View
+                          </button>
+                          <button
+                            onClick={() => handleRejectTestCase(test)}
+                            className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-650 transition-colors text-xs font-medium flex items-center gap-1"
+                            title="Reject suggestion"
+                          >
+                            ✕ Reject
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => {
+                              setSelectedTest(test);
+                              setViewMode('execute');
+                            }}
+                            className="px-3 py-1.5 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-xs font-medium flex items-center gap-1"
+                            title="Execute test case"
+                          >
+                            <Play className="w-3 h-3" />
+                            Run
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedTest(test);
+                              setViewMode('view');
+                            }}
+                            className="px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors text-xs font-medium flex items-center gap-1"
+                            title="View details"
+                          >
+                            <Eye className="w-3 h-3" />
+                            View
+                          </button>
+                          <button
+                            onClick={() => setEditingTest(test)}
+                            className="px-3 py-1.5 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors text-xs font-medium flex items-center gap-1"
+                            title="Edit test case"
+                          >
+                            <Edit3 className="w-3 h-3" />
+                            Edit
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
             })}
           </tbody>
         </table>
@@ -945,7 +1043,8 @@ export function TestCases({ highlightedItemId }: TestCasesProps = {}) {
               linkedStory: bugPreFillData.testCase.linkedStory || '',
               severity: 'High' as const,
               steps: bugPreFillData.testCase.steps,
-              expectedBehavior: bugPreFillData.testCase.expectedResults.join('\n'),
+              expectedBehavior:
+                bugPreFillData.testCase.expectedResults.join('\n'),
               actualBehavior: 'Test failed. See test notes for details.',
             }}
           />
@@ -989,13 +1088,20 @@ function BugReportFormWithPreFill({
 }) {
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-[60]" onClick={onClose}></div>
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 z-[60]"
+        onClick={onClose}
+      ></div>
       <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
           <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
             <div>
-              <h2 className="text-2xl text-gray-900 dark:text-white mb-1">Create Bug from Failed Test</h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Pre-filled with test case information</p>
+              <h2 className="text-2xl text-gray-900 dark:text-white mb-1">
+                Create Bug from Failed Test
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Pre-filled with test case information
+              </p>
             </div>
             <button
               onClick={onClose}
@@ -1057,12 +1163,16 @@ function BugReportFormContent({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col flex-1 overflow-hidden"
+    >
       <div className="p-6 space-y-6 flex-1 overflow-y-auto custom-scrollbar">
         <div className="bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-900/40 rounded-lg p-4">
           <p className="text-sm text-indigo-800 dark:text-indigo-200">
-            <strong>Note:</strong> This form has been pre-filled with information from the failed test case.
-            You can edit any field before submitting.
+            <strong>Note:</strong> This form has been pre-filled with
+            information from the failed test case. You can edit any field before
+            submitting.
           </p>
         </div>
 
@@ -1073,7 +1183,9 @@ function BugReportFormContent({
           <input
             type="text"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
             className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
           />
@@ -1085,7 +1197,9 @@ function BugReportFormContent({
           </label>
           <textarea
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             rows={5}
             className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
@@ -1099,7 +1213,9 @@ function BugReportFormContent({
             </label>
             <select
               value={formData.severity}
-              onChange={(e) => setFormData({ ...formData, severity: e.target.value as any })}
+              onChange={(e) =>
+                setFormData({ ...formData, severity: e.target.value as any })
+              }
               className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             >
@@ -1117,7 +1233,9 @@ function BugReportFormContent({
             <input
               type="text"
               value={formData.linkedStory}
-              onChange={(e) => setFormData({ ...formData, linkedStory: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, linkedStory: e.target.value })
+              }
               className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="US-XXX"
             />
@@ -1156,7 +1274,9 @@ function BugReportFormContent({
           </label>
           <textarea
             value={formData.expectedBehavior}
-            onChange={(e) => setFormData({ ...formData, expectedBehavior: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, expectedBehavior: e.target.value })
+            }
             rows={3}
             className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
@@ -1169,7 +1289,9 @@ function BugReportFormContent({
           </label>
           <textarea
             value={formData.actualBehavior}
-            onChange={(e) => setFormData({ ...formData, actualBehavior: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, actualBehavior: e.target.value })
+            }
             rows={3}
             className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
@@ -1183,7 +1305,9 @@ function BugReportFormContent({
             </label>
             <select
               value={formData.assignedDeveloper}
-              onChange={(e) => setFormData({ ...formData, assignedDeveloper: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, assignedDeveloper: e.target.value })
+              }
               className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="">Unassigned</option>
@@ -1199,7 +1323,9 @@ function BugReportFormContent({
             </label>
             <select
               value={formData.environment}
-              onChange={(e) => setFormData({ ...formData, environment: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, environment: e.target.value })
+              }
               className="w-full px-3 py-2 bg-white dark:bg-gray-750 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="Development">Development</option>

@@ -8,7 +8,7 @@ import { projectId, publicAnonKey } from '/utils/supabase/info';
 const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-5a760dac`;
 
 // In-memory cache for performance
-const cache = new Map<string, any>();
+const cache = new Map<string, Record<string, unknown> | Record<string, unknown>[]>();
 
 // Keys that should NOT be scoped by organization (global data)
 const GLOBAL_KEYS = ['aqms_users'];
@@ -21,7 +21,7 @@ export function getCurrentOrganizationId(): string | null {
       const parsed = JSON.parse(session);
       return parsed.user?.organizationId || null;
     }
-  } catch (error) {
+  } catch (_error) {
     console.warn('[SupabaseStorage] Could not get organizationId from session');
   }
   return null;
@@ -67,7 +67,7 @@ function getDeviceId(): string {
   return deviceId;
 }
 
-export async function getData(key: string, retries = 2): Promise<any> {
+export async function getData(key: string, retries = 2): Promise<Record<string, unknown> | Record<string, unknown>[] | null> {
   // Scope the key by organization
   const scopedKey = getScopedKey(key);
 
@@ -85,7 +85,7 @@ export async function getData(key: string, retries = 2): Promise<any> {
 
       const response = await fetch(`${API_BASE}/data/${scopedKey}`, {
         headers: {
-          'Authorization': `Bearer ${publicAnonKey}`,
+          Authorization: `Bearer ${publicAnonKey}`,
           'Content-Type': 'application/json',
         },
         signal: controller.signal,
@@ -95,7 +95,9 @@ export async function getData(key: string, retries = 2): Promise<any> {
 
       if (!response.ok) {
         if (attempt === retries) {
-          console.warn(`[SupabaseStorage] Server returned ${response.status} for ${scopedKey}`);
+          console.warn(
+            `[SupabaseStorage] Server returned ${response.status} for ${scopedKey}`
+          );
         }
         continue; // Retry on error
       }
@@ -111,21 +113,30 @@ export async function getData(key: string, retries = 2): Promise<any> {
       if (attempt === retries) {
         // Only log on final attempt
         if ((error as Error).name === 'AbortError') {
-          console.log(`[SupabaseStorage] Using cached/default data for ${scopedKey}`);
+          console.log(
+            `[SupabaseStorage] Using cached/default data for ${scopedKey}`
+          );
         } else {
-          console.warn(`[SupabaseStorage] Cannot reach server for ${scopedKey}:`, error);
+          console.warn(
+            `[SupabaseStorage] Cannot reach server for ${scopedKey}:`,
+            error
+          );
         }
         return null;
       }
       // Wait 500ms before retry
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
   }
 
   return null;
 }
 
-export async function setData(key: string, data: any, retries = 2): Promise<boolean> {
+export async function setData(
+  key: string,
+  data: Record<string, unknown> | Record<string, unknown>[],
+  retries = 2
+): Promise<boolean> {
   // Scope the key by organization
   const scopedKey = getScopedKey(key);
 
@@ -141,7 +152,7 @@ export async function setData(key: string, data: any, retries = 2): Promise<bool
       const response = await fetch(`${API_BASE}/data/${scopedKey}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${publicAnonKey}`,
+          Authorization: `Bearer ${publicAnonKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ data }),
@@ -152,7 +163,9 @@ export async function setData(key: string, data: any, retries = 2): Promise<bool
 
       if (!response.ok) {
         if (attempt === retries) {
-          console.warn(`[SupabaseStorage] Server returned ${response.status} for ${scopedKey}`);
+          console.warn(
+            `[SupabaseStorage] Server returned ${response.status} for ${scopedKey}`
+          );
         }
         continue; // Retry on error
       }
@@ -165,13 +178,16 @@ export async function setData(key: string, data: any, retries = 2): Promise<bool
         if ((error as Error).name === 'AbortError') {
           console.log(`[SupabaseStorage] Data cached locally for ${scopedKey}`);
         } else {
-          console.warn(`[SupabaseStorage] Cannot reach server to save ${scopedKey}, data cached locally:`, error);
+          console.warn(
+            `[SupabaseStorage] Cannot reach server to save ${scopedKey}, data cached locally:`,
+            error
+          );
         }
         // Return true since we cached it - it will persist in memory for this session
         return true;
       }
       // Wait 500ms before retry
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
   }
 
@@ -180,10 +196,21 @@ export async function setData(key: string, data: any, retries = 2): Promise<bool
 }
 
 // Auth functions
-export async function login(email: string, password: string, rememberMe: boolean): Promise<{ success: boolean; user?: any; error?: string }> {
+export async function login(
+  email: string,
+  password: string,
+  rememberMe: boolean
+): Promise<{ success: boolean; user?: Record<string, unknown>; error?: string }> {
   try {
     const deviceId = getDeviceId();
-    console.log('[SupabaseStorage] Calling login API for:', email, 'rememberMe:', rememberMe, 'deviceId:', deviceId);
+    console.log(
+      '[SupabaseStorage] Calling login API for:',
+      email,
+      'rememberMe:',
+      rememberMe,
+      'deviceId:',
+      deviceId
+    );
 
     // Add 8 second timeout for login
     const controller = new AbortController();
@@ -192,7 +219,7 @@ export async function login(email: string, password: string, rememberMe: boolean
     const response = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${publicAnonKey}`,
+        Authorization: `Bearer ${publicAnonKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password, rememberMe, deviceId }),
@@ -202,7 +229,9 @@ export async function login(email: string, password: string, rememberMe: boolean
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      const result = await response.json().catch(() => ({ error: 'Invalid credentials' }));
+      const result = await response
+        .json()
+        .catch(() => ({ error: 'Invalid credentials' }));
       return { success: false, error: result.error || 'Login failed' };
     }
 
@@ -211,49 +240,64 @@ export async function login(email: string, password: string, rememberMe: boolean
 
     // Cache successful login in localStorage
     if (result.success && result.user) {
-      localStorage.setItem('aqms_session', JSON.stringify({
-        user: result.user,
-        timestamp: Date.now()
-      }));
+      localStorage.setItem(
+        'aqms_session',
+        JSON.stringify({
+          user: result.user,
+          timestamp: Date.now(),
+        })
+      );
     }
 
     return result;
   } catch (error) {
     const isTimeout = (error as Error).name === 'AbortError';
     if (isTimeout) {
-      console.warn('[SupabaseStorage] Login timeout, trying cached credentials');
+      console.warn(
+        '[SupabaseStorage] Login timeout, trying cached credentials'
+      );
     } else {
       console.warn('[SupabaseStorage] Cannot reach auth server:', error);
     }
 
     // Fallback: check credentials against cached users
     const users = cache.get('aqms_users');
-    if (users) {
-      const user = users.find((u: any) => u.email === email && u.password === password);
+    if (users && Array.isArray(users)) {
+      const user = users.find(
+        (u: Record<string, unknown>) => u.email === email && u.password === password
+      );
       if (user) {
-        console.log('[SupabaseStorage] Using cached credentials for offline login');
+        console.log(
+          '[SupabaseStorage] Using cached credentials for offline login'
+        );
         const userData = {
           email: user.email,
           name: user.name,
           role: user.role,
           organizationId: user.organizationId || 'demo-org',
-          organizationName: user.organizationName
+          organizationName: user.organizationName,
         };
 
         // Cache session in localStorage
-        localStorage.setItem('aqms_session', JSON.stringify({
-          user: userData,
-          timestamp: Date.now()
-        }));
+        localStorage.setItem(
+          'aqms_session',
+          JSON.stringify({
+            user: userData,
+            timestamp: Date.now(),
+          })
+        );
 
         return {
           success: true,
-          user: userData
+          user: userData,
         };
       }
     }
 
-    return { success: false, error: 'Cannot connect to server. Please check your connection.' };
+    return {
+      success: false,
+      error: 'Cannot connect to server. Please check your connection.',
+    };
   }
 }
 
@@ -263,7 +307,7 @@ export async function logout(): Promise<void> {
     await fetch(`${API_BASE}/auth/logout`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${publicAnonKey}`,
+        Authorization: `Bearer ${publicAnonKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ deviceId }),
@@ -278,7 +322,7 @@ export async function logout(): Promise<void> {
   }
 }
 
-export async function checkSession(): Promise<any> {
+export async function checkSession(): Promise<Record<string, unknown> | null> {
   try {
     const deviceId = getDeviceId();
     console.log('[SupabaseStorage] Checking session for deviceId:', deviceId);
@@ -294,25 +338,37 @@ export async function checkSession(): Promise<any> {
 
         if (sessionAge < sevenDays) {
           // Enforce correct data for known demo accounts before returning cached session
-          const demoCorrections: Record<string, { name: string; role: string }> = {
+          const demoCorrections: Record<
+            string,
+            { name: string; role: string }
+          > = {
             'qa@aqms.com': { name: 'Damilola Ogunlade', role: 'Administrator' },
             'pm@aqms.com': { name: 'Sarah Johnson', role: 'Product Manager' },
             'sm@aqms.com': { name: 'Mike Williams', role: 'Scrum Master' },
           };
           const correction = demoCorrections[sessionData.user?.email];
-          if (correction && (sessionData.user?.role !== correction.role || sessionData.user?.name !== correction.name)) {
-            console.log('[SupabaseStorage] Correcting stale session data for', sessionData.user.email);
+          if (
+            correction &&
+            (sessionData.user?.role !== correction.role ||
+              sessionData.user?.name !== correction.name)
+          ) {
+            console.log(
+              '[SupabaseStorage] Correcting stale session data for',
+              sessionData.user.email
+            );
             sessionData.user = { ...sessionData.user, ...correction };
             localStorage.setItem('aqms_session', JSON.stringify(sessionData));
           }
 
-          console.log('[SupabaseStorage] Using cached session from localStorage');
+          console.log(
+            '[SupabaseStorage] Using cached session from localStorage'
+          );
           return sessionData.user;
         } else {
           console.log('[SupabaseStorage] Local session expired');
           localStorage.removeItem('aqms_session');
         }
-      } catch (e) {
+      } catch (_e) {
         console.warn('[SupabaseStorage] Invalid session data in localStorage');
         localStorage.removeItem('aqms_session');
       }
@@ -325,7 +381,7 @@ export async function checkSession(): Promise<any> {
     const response = await fetch(`${API_BASE}/auth/check-session`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${publicAnonKey}`,
+        Authorization: `Bearer ${publicAnonKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ deviceId }),
@@ -335,7 +391,11 @@ export async function checkSession(): Promise<any> {
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      console.warn('[SupabaseStorage] Server returned', response.status, 'for check session');
+      console.warn(
+        '[SupabaseStorage] Server returned',
+        response.status,
+        'for check session'
+      );
       return null;
     }
 
@@ -344,10 +404,13 @@ export async function checkSession(): Promise<any> {
 
     // Cache the session in localStorage
     if (result.user) {
-      localStorage.setItem('aqms_session', JSON.stringify({
-        user: result.user,
-        timestamp: Date.now()
-      }));
+      localStorage.setItem(
+        'aqms_session',
+        JSON.stringify({
+          user: result.user,
+          timestamp: Date.now(),
+        })
+      );
     }
 
     return result.user;
@@ -362,10 +425,12 @@ export async function checkSession(): Promise<any> {
         const sessionData = JSON.parse(localSession);
         // Only log if verbose logging is needed
         if (!isTimeout) {
-          console.log('[SupabaseStorage] Server unreachable, using cached session');
+          console.log(
+            '[SupabaseStorage] Server unreachable, using cached session'
+          );
         }
         return sessionData.user;
-      } catch (e) {
+      } catch (_e) {
         console.warn('[SupabaseStorage] Failed to parse localStorage session');
       }
     }
@@ -377,7 +442,7 @@ export async function checkSession(): Promise<any> {
 // Initialize demo data if needed (non-blocking)
 export async function initializeDemoData(): Promise<void> {
   try {
-    let users = await getData('aqms_users');
+    const users = await getData('aqms_users');
 
     if (!users || users.length === 0) {
       console.log('[SupabaseStorage] Initializing demo data...');
@@ -399,7 +464,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T14:30:00'),
           storiesAssigned: 12,
           bugsAssigned: 8,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'pm@aqms.com',
@@ -416,7 +481,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T10:15:00'),
           storiesAssigned: 24,
           bugsAssigned: 0,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'sm@aqms.com',
@@ -432,7 +497,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-25T16:45:00'),
           storiesAssigned: 0,
           bugsAssigned: 0,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'james.martinez@aqms.com',
@@ -448,7 +513,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T13:00:00'),
           storiesAssigned: 15,
           bugsAssigned: 5,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'emily.chen@aqms.com',
@@ -463,7 +528,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T11:20:00'),
           storiesAssigned: 10,
           bugsAssigned: 3,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'david.kumar@aqms.com',
@@ -478,7 +543,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T09:30:00'),
           storiesAssigned: 8,
           bugsAssigned: 2,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'jessica.williams@aqms.com',
@@ -493,7 +558,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T09:15:00'),
           storiesAssigned: 5,
           bugsAssigned: 3,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'maria.rodriguez@aqms.com',
@@ -508,7 +573,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T15:00:00'),
           storiesAssigned: 12,
           bugsAssigned: 4,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'robert.taylor@aqms.com',
@@ -523,7 +588,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T12:30:00'),
           storiesAssigned: 6,
           bugsAssigned: 1,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'linda.thompson@aqms.com',
@@ -538,7 +603,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T14:00:00'),
           storiesAssigned: 9,
           bugsAssigned: 7,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'michael.brown@aqms.com',
@@ -553,7 +618,7 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T10:45:00'),
           storiesAssigned: 5,
           bugsAssigned: 6,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'jennifer.lee@aqms.com',
@@ -568,26 +633,53 @@ export async function initializeDemoData(): Promise<void> {
           lastActive: new Date('2026-04-26T11:15:00'),
           storiesAssigned: 4,
           bugsAssigned: 5,
-          isActive: true
+          isActive: true,
         },
       ];
 
       await setData('aqms_users', demoUsers);
     } else {
       // Users exist — enforce correct data for primary demo accounts (in case they got corrupted)
-      const primaryCorrections: Record<string, { name: string; role: string; title: string; canSignOffQA?: boolean; canSignOffPM?: boolean }> = {
-        'qa@aqms.com': { name: 'Damilola Ogunlade', role: 'Administrator', title: 'Head of QA / Administrator', canSignOffQA: true, canSignOffPM: true },
-        'pm@aqms.com': { name: 'Sarah Johnson', role: 'Product Manager', title: 'Senior Product Manager', canSignOffPM: true },
-        'sm@aqms.com': { name: 'Mike Williams', role: 'Scrum Master', title: 'Lead Scrum Master' },
+      const primaryCorrections: Record<
+        string,
+        {
+          name: string;
+          role: string;
+          title: string;
+          canSignOffQA?: boolean;
+          canSignOffPM?: boolean;
+        }
+      > = {
+        'qa@aqms.com': {
+          name: 'Damilola Ogunlade',
+          role: 'Administrator',
+          title: 'Head of QA / Administrator',
+          canSignOffQA: true,
+          canSignOffPM: true,
+        },
+        'pm@aqms.com': {
+          name: 'Sarah Johnson',
+          role: 'Product Manager',
+          title: 'Senior Product Manager',
+          canSignOffPM: true,
+        },
+        'sm@aqms.com': {
+          name: 'Mike Williams',
+          role: 'Scrum Master',
+          title: 'Lead Scrum Master',
+        },
       };
 
       let correctionsMade = false;
       for (const user of users) {
         const correction = primaryCorrections[user.email];
         if (correction) {
-          const needsUpdate = user.name !== correction.name || user.role !== correction.role;
+          const needsUpdate =
+            user.name !== correction.name || user.role !== correction.role;
           if (needsUpdate) {
-            console.log(`[SupabaseStorage] Correcting user ${user.email}: role ${user.role} -> ${correction.role}`);
+            console.log(
+              `[SupabaseStorage] Correcting user ${user.email}: role ${user.role} -> ${correction.role}`
+            );
             Object.assign(user, correction);
             correctionsMade = true;
           }
@@ -598,19 +690,34 @@ export async function initializeDemoData(): Promise<void> {
         await setData('aqms_users', users);
         // Also clear any stale session so the corrected data is picked up on next login
         localStorage.removeItem('aqms_session');
-        console.log('[SupabaseStorage] Primary demo users corrected. Please log in again.');
+        console.log(
+          '[SupabaseStorage] Primary demo users corrected. Please log in again.'
+        );
       }
 
       // Check if we need to add missing developers/testers
-      const existingUserIds = new Set(users.map((u: any) => u.id));
-      const requiredUserIds = ['USR-004', 'USR-005', 'USR-006', 'USR-008', 'USR-009', 'USR-010', 'USR-011', 'USR-012'];
-      const missingUsers = requiredUserIds.filter(id => !existingUserIds.has(id));
+      const existingUserIds = new Set(users.map((u: Record<string, unknown>) => u.id));
+      const requiredUserIds = [
+        'USR-004',
+        'USR-005',
+        'USR-006',
+        'USR-008',
+        'USR-009',
+        'USR-010',
+        'USR-011',
+        'USR-012',
+      ];
+      const missingUsers = requiredUserIds.filter(
+        (id) => !existingUserIds.has(id)
+      );
 
       if (missingUsers.length > 0) {
-        console.log('[SupabaseStorage] Adding missing developers and testers...');
+        console.log(
+          '[SupabaseStorage] Adding missing developers and testers...'
+        );
 
         // Define all required users
-        const allRequiredUsers: any = {
+        const allRequiredUsers: Record<string, unknown> = {
           'USR-004': {
             email: 'james.martinez@aqms.com',
             password: 'password123',
@@ -623,7 +730,7 @@ export async function initializeDemoData(): Promise<void> {
             lastActive: new Date('2026-04-26T13:00:00'),
             storiesAssigned: 0,
             bugsAssigned: 0,
-            isActive: true
+            isActive: true,
           },
           'USR-005': {
             email: 'emily.chen@aqms.com',
@@ -637,7 +744,7 @@ export async function initializeDemoData(): Promise<void> {
             lastActive: new Date('2026-04-26T11:20:00'),
             storiesAssigned: 0,
             bugsAssigned: 0,
-            isActive: true
+            isActive: true,
           },
           'USR-006': {
             email: 'david.kumar@aqms.com',
@@ -651,7 +758,7 @@ export async function initializeDemoData(): Promise<void> {
             lastActive: new Date('2026-04-26T09:30:00'),
             storiesAssigned: 0,
             bugsAssigned: 0,
-            isActive: true
+            isActive: true,
           },
           'USR-008': {
             email: 'maria.rodriguez@aqms.com',
@@ -665,7 +772,7 @@ export async function initializeDemoData(): Promise<void> {
             lastActive: new Date('2026-04-26T15:00:00'),
             storiesAssigned: 0,
             bugsAssigned: 0,
-            isActive: true
+            isActive: true,
           },
           'USR-009': {
             email: 'robert.taylor@aqms.com',
@@ -679,7 +786,7 @@ export async function initializeDemoData(): Promise<void> {
             lastActive: new Date('2026-04-26T12:30:00'),
             storiesAssigned: 0,
             bugsAssigned: 0,
-            isActive: true
+            isActive: true,
           },
           'USR-010': {
             email: 'linda.thompson@aqms.com',
@@ -693,7 +800,7 @@ export async function initializeDemoData(): Promise<void> {
             lastActive: new Date('2026-04-26T14:00:00'),
             storiesAssigned: 0,
             bugsAssigned: 0,
-            isActive: true
+            isActive: true,
           },
           'USR-011': {
             email: 'michael.brown@aqms.com',
@@ -707,7 +814,7 @@ export async function initializeDemoData(): Promise<void> {
             lastActive: new Date('2026-04-26T10:45:00'),
             storiesAssigned: 0,
             bugsAssigned: 0,
-            isActive: true
+            isActive: true,
           },
           'USR-012': {
             email: 'jennifer.lee@aqms.com',
@@ -721,7 +828,7 @@ export async function initializeDemoData(): Promise<void> {
             lastActive: new Date('2026-04-26T11:15:00'),
             storiesAssigned: 0,
             bugsAssigned: 0,
-            isActive: true
+            isActive: true,
           },
         };
 
@@ -733,7 +840,11 @@ export async function initializeDemoData(): Promise<void> {
         }
 
         await setData('aqms_users', users);
-        console.log('[SupabaseStorage] Added', missingUsers.length, 'missing users');
+        console.log(
+          '[SupabaseStorage] Added',
+          missingUsers.length,
+          'missing users'
+        );
       }
     }
   } catch (error) {

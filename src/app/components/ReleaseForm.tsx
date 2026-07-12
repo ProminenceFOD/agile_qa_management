@@ -21,8 +21,12 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
   const [formData, setFormData] = useState({
     name: release?.name || '',
     version: release?.version || '',
-    targetDate: release?.targetDate ? new Date(release.targetDate).toISOString().split('T')[0] : '',
-    status: release?.status || 'Planning' as 'Planning' | 'In Progress' | 'Released',
+    targetDate: release?.targetDate
+      ? new Date(release.targetDate).toISOString().split('T')[0]
+      : '',
+    status:
+      release?.status ||
+      ('Planning' as 'Planning' | 'In Progress' | 'Released'),
   });
 
   const [features, setFeatures] = useState<string[]>(release?.features || ['']);
@@ -61,7 +65,7 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
       return;
     }
 
-    const filteredFeatures = features.filter(f => f.trim() !== '');
+    const filteredFeatures = features.filter((f) => f.trim() !== '');
     if (filteredFeatures.length === 0) {
       toast.error('Please add at least one feature');
       return;
@@ -98,7 +102,10 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col flex-1 overflow-hidden"
+          >
             <div className="p-6 space-y-6 flex-1 overflow-y-auto custom-scrollbar">
               {/* Release Name */}
               <div>
@@ -108,7 +115,9 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   placeholder="e.g., Version 2.2"
                   className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
@@ -123,7 +132,9 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
                   <input
                     type="text"
                     value={formData.version}
-                    onChange={(e) => setFormData({ ...formData, version: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, version: e.target.value })
+                    }
                     placeholder="e.g., v2.2.0"
                     className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
@@ -136,7 +147,9 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
                   <input
                     type="date"
                     value={formData.targetDate}
-                    onChange={(e) => setFormData({ ...formData, targetDate: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, targetDate: e.target.value })
+                    }
                     className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
@@ -149,7 +162,13 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
                 </label>
                 <select
                   value={formData.status}
-                  onChange={(e) => setFormData({ ...formData, status: e.target.value as 'Planning' | 'In Progress' | 'Released' })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      status: e.target.value as
+                        'Planning' | 'In Progress' | 'Released',
+                    })
+                  }
                   className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
                 >
                   <option value="Planning">Planning</option>
@@ -169,7 +188,9 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
                       <input
                         type="text"
                         value={feature}
-                        onChange={(e) => handleFeatureChange(index, e.target.value)}
+                        onChange={(e) =>
+                          handleFeatureChange(index, e.target.value)
+                        }
                         placeholder={`Feature ${index + 1}`}
                         className="flex-1 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       />
@@ -196,7 +217,9 @@ export function ReleaseForm({ onClose, onSubmit, release }: ReleaseFormProps) {
 
               {/* Info Banner */}
               <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900/40 rounded-lg p-3 text-sm text-purple-800 dark:text-purple-200">
-                <strong>Note:</strong> Sprints can be linked to this release after creation. Features listed here will help track the scope of the release.
+                <strong>Note:</strong> Sprints can be linked to this release
+                after creation. Features listed here will help track the scope
+                of the release.
               </div>
             </div>
 

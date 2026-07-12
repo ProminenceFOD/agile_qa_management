@@ -8,25 +8,36 @@ interface RichTextEditorProps {
   minHeight?: string;
 }
 
-export function RichTextEditor({ value, onChange, placeholder, minHeight = '150px' }: RichTextEditorProps) {
+export function RichTextEditor({
+  value,
+  onChange,
+  placeholder,
+  minHeight = '150px',
+}: RichTextEditorProps) {
   const modules = {
     toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
+      [{ header: [1, 2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ indent: '-1' }, { indent: '+1' }],
       ['blockquote', 'code-block'],
       ['link'],
-      ['clean']
+      ['clean'],
     ],
   };
 
   const formats = [
     'header',
-    'bold', 'italic', 'underline', 'strike',
-    'list', 'bullet', 'indent',
-    'blockquote', 'code-block',
-    'link'
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'list',
+    'bullet',
+    'indent',
+    'blockquote',
+    'code-block',
+    'link',
   ];
 
   return (

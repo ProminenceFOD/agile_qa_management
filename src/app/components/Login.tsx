@@ -15,7 +15,12 @@ export function Login({ onSwitchToSignup }: LoginProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showDemoMessage, setShowDemoMessage] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
-  const [notification, setNotification] = useState({ isOpen: false, title: '', message: '', type: 'success' as const });
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'success' as const,
+  });
   const { login } = useAuth();
 
   const handleResetUsers = () => {
@@ -36,7 +41,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
         lastActive: new Date(),
         storiesAssigned: 12,
         bugsAssigned: 8,
-        isActive: true
+        isActive: true,
       },
       {
         email: 'pm@aqms.com',
@@ -50,7 +55,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
         title: 'Senior Product Manager',
         status: 'Active',
         joinedDate: new Date('2026-01-10'),
-        isActive: true
+        isActive: true,
       },
       {
         email: 'sm@aqms.com',
@@ -63,7 +68,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
         title: 'Lead Scrum Master',
         status: 'Active',
         joinedDate: new Date('2026-01-10'),
-        isActive: true
+        isActive: true,
       },
     ];
     localStorage.setItem('aqms_users', JSON.stringify(demoUsers));
@@ -108,7 +113,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
   };
 
   return (
-    <div 
+    <div
       className="min-h-screen flex font-sans relative bg-cover bg-center"
       style={{ backgroundImage: "url('/login_hero.png')" }}
     >
@@ -117,7 +122,7 @@ export function Login({ onSwitchToSignup }: LoginProps) {
       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent mobile-overlay-responsive"></div>
 
       {/* Left Pane - Hero Section (Hidden on mobile, split-screen on desktop/tablet) */}
-      <div 
+      <div
         className="hidden hero-pane-responsive text-white p-6 md:p-12 flex-col justify-between relative bg-cover bg-center overflow-hidden border-r border-indigo-900/10"
         style={{ backgroundImage: "url('/login_hero.png')" }}
       >
@@ -125,20 +130,39 @@ export function Login({ onSwitchToSignup }: LoginProps) {
         <div className="absolute inset-0 bg-indigo-900/65 mix-blend-multiply"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/80 to-transparent"></div>
-        
+
         {/* Content */}
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-8 md:mb-16 text-xs md:text-sm font-semibold tracking-wider text-indigo-100">
             <div className="bg-white/20 p-1.5 rounded backdrop-blur-sm border border-white/10 shadow-sm">
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+              <svg
+                className="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                ></path>
+              </svg>
             </div>
             AQMS
           </div>
           <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight text-white drop-shadow-lg">
-            Agile QA<br />Management<br />System
+            Agile QA
+            <br />
+            Management
+            <br />
+            System
           </h1>
           <p className="text-indigo-50 text-xs md:text-sm lg:text-lg max-w-md drop-shadow font-medium">
-            The gatekeeper for your deployment pipeline. Enforce quality criteria, prioritize testing risks, and eliminate sprint bottlenecks.
+            The gatekeeper for your deployment pipeline. Enforce quality
+            criteria, prioritize testing risks, and eliminate sprint
+            bottlenecks.
           </p>
         </div>
 
@@ -146,29 +170,81 @@ export function Login({ onSwitchToSignup }: LoginProps) {
         <div className="space-y-2 md:space-y-4 text-indigo-50 text-[10px] md:text-xs lg:text-sm relative z-10 bg-white/10 p-4 md:p-6 lg:p-7 rounded-xl md:rounded-2xl backdrop-blur-md border border-white/20 shadow-2xl mt-4">
           <div className="flex items-start gap-2 md:gap-4">
             <div className="bg-white/10 p-1 md:p-2 rounded-lg border border-white/10 shrink-0 mt-0.5">
-              <svg className="w-3.5 h-3.5 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+              <svg
+                className="w-3.5 h-3.5 md:w-5 md:h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                ></path>
+              </svg>
             </div>
             <div>
-              <span className="font-bold tracking-wide block text-white text-[12px] md:text-sm lg:text-[15px] mb-0.5">Criteria Validator</span>
-              <span className="text-indigo-200/90 leading-relaxed font-normal">Enforce QA & PM sign-offs at the codebase level. Stories with missing approvals are locked out of the dev queue automatically.</span>
+              <span className="font-bold tracking-wide block text-white text-[12px] md:text-sm lg:text-[15px] mb-0.5">
+                Criteria Validator
+              </span>
+              <span className="text-indigo-200/90 leading-relaxed font-normal">
+                Enforce QA & PM sign-offs at the codebase level. Stories with
+                missing approvals are locked out of the dev queue automatically.
+              </span>
             </div>
           </div>
           <div className="flex items-start gap-2 md:gap-4">
             <div className="bg-white/10 p-1 md:p-2 rounded-lg border border-white/10 shrink-0 mt-0.5">
-              <svg className="w-3.5 h-3.5 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <svg
+                className="w-3.5 h-3.5 md:w-5 md:h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
             </div>
             <div>
-              <span className="font-bold tracking-wide block text-white text-[12px] md:text-sm lg:text-[15px] mb-0.5">Risk-Prioritization Matrix</span>
-              <span className="text-indigo-200/90 leading-relaxed font-normal">Optimize test coverage dynamically. Core modules like Payment/Auth trigger full regression, while minor fixes receive fast visual checks.</span>
+              <span className="font-bold tracking-wide block text-white text-[12px] md:text-sm lg:text-[15px] mb-0.5">
+                Risk-Prioritization Matrix
+              </span>
+              <span className="text-indigo-200/90 leading-relaxed font-normal">
+                Optimize test coverage dynamically. Core modules like
+                Payment/Auth trigger full regression, while minor fixes receive
+                fast visual checks.
+              </span>
             </div>
           </div>
           <div className="flex items-start gap-2 md:gap-4">
             <div className="bg-white/10 p-1 md:p-2 rounded-lg border border-white/10 shrink-0 mt-0.5">
-              <svg className="w-3.5 h-3.5 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+              <svg
+                className="w-3.5 h-3.5 md:w-5 md:h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                ></path>
+              </svg>
             </div>
             <div>
-              <span className="font-bold tracking-wide block text-white text-[12px] md:text-sm lg:text-[15px] mb-0.5">Quality Burn-Down</span>
-              <span className="text-indigo-200/90 leading-relaxed font-normal">Replaces simple status updates with 4 real-time states and automated bottleneck alerts to prevent end-of-sprint delays.</span>
+              <span className="font-bold tracking-wide block text-white text-[12px] md:text-sm lg:text-[15px] mb-0.5">
+                Quality Burn-Down
+              </span>
+              <span className="text-indigo-200/90 leading-relaxed font-normal">
+                Replaces simple status updates with 4 real-time states and
+                automated bottleneck alerts to prevent end-of-sprint delays.
+              </span>
             </div>
           </div>
         </div>
@@ -178,7 +254,9 @@ export function Login({ onSwitchToSignup }: LoginProps) {
       <div className="w-full form-pane-responsive flex items-center justify-center p-4 sm:p-6 md:p-12 overflow-y-auto relative z-10">
         <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-100 form-card-responsive">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">Sign in</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+              Sign in
+            </h2>
             <p className="text-gray-500">Welcome back to AQMS</p>
           </div>
 
@@ -190,14 +268,20 @@ export function Login({ onSwitchToSignup }: LoginProps) {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">
+              <label
+                htmlFor="email"
+                className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2"
+              >
                 Email
               </label>
               <input
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => { setEmail(e.target.value); setShowDemoMessage(false); }}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setShowDemoMessage(false);
+                }}
                 autoComplete="off"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-colors"
                 placeholder="you@company.com"
@@ -206,7 +290,10 @@ export function Login({ onSwitchToSignup }: LoginProps) {
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label htmlFor="password" className="block text-xs font-bold text-gray-600 uppercase tracking-wider">
+                <label
+                  htmlFor="password"
+                  className="block text-xs font-bold text-gray-600 uppercase tracking-wider"
+                >
                   Password
                 </label>
                 <button
@@ -220,9 +307,12 @@ export function Login({ onSwitchToSignup }: LoginProps) {
               <div className="relative">
                 <input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={(e) => { setPassword(e.target.value); setShowDemoMessage(false); }}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setShowDemoMessage(false);
+                  }}
                   autoComplete="new-password"
                   className="w-full px-4 py-3 pr-12 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-colors"
                   placeholder="••••••••"
@@ -233,14 +323,32 @@ export function Login({ onSwitchToSignup }: LoginProps) {
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                 >
                   {showPassword ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z"
+                        clipRule="evenodd"
+                      />
                       <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
                     </svg>
                   ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
                       <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                      <path
+                        fillRule="evenodd"
+                        d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   )}
                 </button>
@@ -249,10 +357,25 @@ export function Login({ onSwitchToSignup }: LoginProps) {
 
             {showDemoMessage && !error && (
               <div className="flex items-center justify-center gap-2 text-[#4b6a5a] py-1 text-[15px]">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
                 </svg>
-                <span>Credentials filled — click <span className="font-bold text-gray-900">Sign In</span> to continue</span>
+                <span>
+                  Credentials filled — click{' '}
+                  <span className="font-bold text-gray-900">Sign In</span> to
+                  continue
+                </span>
               </div>
             )}
 
@@ -268,28 +391,54 @@ export function Login({ onSwitchToSignup }: LoginProps) {
           <div className="mt-10">
             <div className="relative flex items-center py-5">
               <div className="flex-grow border-t border-gray-200"></div>
-              <span className="flex-shrink-0 mx-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Click to Fill Demo Account</span>
+              <span className="flex-shrink-0 mx-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                Click to Fill Demo Account
+              </span>
               <div className="flex-grow border-t border-gray-200"></div>
             </div>
 
             <div className="grid grid-cols-3 gap-3">
-              <button onClick={() => handleDemoClick('qa@aqms.com')} type="button" className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-indigo-600 hover:shadow-md transition-all group">
-                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold mb-3 group-hover:scale-105 transition-transform">QA</div>
+              <button
+                onClick={() => handleDemoClick('qa@aqms.com')}
+                type="button"
+                className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-indigo-600 hover:shadow-md transition-all group"
+              >
+                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold mb-3 group-hover:scale-105 transition-transform">
+                  QA
+                </div>
                 <span className="text-sm font-bold text-gray-800">Admin</span>
-                <span className="text-[11px] text-gray-500 text-center leading-tight mt-1">Damilola O.</span>
+                <span className="text-[11px] text-gray-500 text-center leading-tight mt-1">
+                  Damilola O.
+                </span>
               </button>
-              <button onClick={() => handleDemoClick('pm@aqms.com')} type="button" className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-indigo-600 hover:shadow-md transition-all group">
-                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold mb-3 group-hover:scale-105 transition-transform">PM</div>
+              <button
+                onClick={() => handleDemoClick('pm@aqms.com')}
+                type="button"
+                className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-indigo-600 hover:shadow-md transition-all group"
+              >
+                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold mb-3 group-hover:scale-105 transition-transform">
+                  PM
+                </div>
                 <span className="text-sm font-bold text-gray-800">Manager</span>
-                <span className="text-[11px] text-gray-500 text-center leading-tight mt-1">Sarah J.</span>
+                <span className="text-[11px] text-gray-500 text-center leading-tight mt-1">
+                  Sarah J.
+                </span>
               </button>
-              <button onClick={() => handleDemoClick('sm@aqms.com')} type="button" className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-indigo-600 hover:shadow-md transition-all group">
-                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold mb-3 group-hover:scale-105 transition-transform">SM</div>
+              <button
+                onClick={() => handleDemoClick('sm@aqms.com')}
+                type="button"
+                className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-indigo-600 hover:shadow-md transition-all group"
+              >
+                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold mb-3 group-hover:scale-105 transition-transform">
+                  SM
+                </div>
                 <span className="text-sm font-bold text-gray-800">Master</span>
-                <span className="text-[11px] text-gray-500 text-center leading-tight mt-1">Mike W.</span>
+                <span className="text-[11px] text-gray-500 text-center leading-tight mt-1">
+                  Mike W.
+                </span>
               </button>
             </div>
-            
+
             <div className="mt-4 flex justify-center">
               <button
                 type="button"
@@ -304,7 +453,10 @@ export function Login({ onSwitchToSignup }: LoginProps) {
           <div className="mt-12 text-center">
             <p className="text-sm text-gray-500">
               No account?{' '}
-              <button onClick={onSwitchToSignup} className="font-bold text-indigo-600 hover:underline">
+              <button
+                onClick={onSwitchToSignup}
+                className="font-bold text-indigo-600 hover:underline"
+              >
                 Register here
               </button>
             </p>
@@ -322,18 +474,34 @@ export function Login({ onSwitchToSignup }: LoginProps) {
       {/* Password Reset Modal */}
       {showResetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={() => setShowResetModal(false)}></div>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+            onClick={() => setShowResetModal(false)}
+          ></div>
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden relative z-10 transform transition-all">
             <div className="px-6 py-5 border-b border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900">Password Reset</h3>
+              <h3 className="text-xl font-bold text-gray-900">
+                Password Reset
+              </h3>
             </div>
             <div className="px-6 py-5 space-y-4">
               <p className="text-gray-600 text-sm">
-                To reset your password, please contact your system administrator or the IT help desk at <a href="mailto:support@aqms.com" className="text-indigo-600 hover:underline">support@aqms.com</a>
+                To reset your password, please contact your system administrator
+                or the IT help desk at{' '}
+                <a
+                  href="mailto:support@aqms.com"
+                  className="text-indigo-600 hover:underline"
+                >
+                  support@aqms.com
+                </a>
               </p>
               <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-100">
                 <p className="text-sm text-indigo-800">
-                  <span className="font-bold">For demo accounts:</span> All demo credentials use the password <code className="bg-white px-2 py-0.5 rounded text-indigo-600 font-mono text-xs border border-indigo-200">password123</code>
+                  <span className="font-bold">For demo accounts:</span> All demo
+                  credentials use the password{' '}
+                  <code className="bg-white px-2 py-0.5 rounded text-indigo-600 font-mono text-xs border border-indigo-200">
+                    password123
+                  </code>
                 </p>
               </div>
             </div>
@@ -351,4 +519,4 @@ export function Login({ onSwitchToSignup }: LoginProps) {
       )}
     </div>
   );
-};
+}

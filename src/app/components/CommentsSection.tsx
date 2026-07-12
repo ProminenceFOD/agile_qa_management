@@ -30,7 +30,12 @@ const TEAM_MEMBERS = [
   'Robert Taylor',
 ];
 
-export function CommentsSection({ comments, onAddComment, onEditComment, onDeleteComment }: CommentsSectionProps) {
+export function CommentsSection({
+  comments,
+  onAddComment,
+  onEditComment,
+  onDeleteComment,
+}: CommentsSectionProps) {
   const { user } = useAuth();
   const [newComment, setNewComment] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -40,7 +45,9 @@ export function CommentsSection({ comments, onAddComment, onEditComment, onDelet
   const [mentionPosition, setMentionPosition] = useState(0);
   const [selectedMentionIndex, setSelectedMentionIndex] = useState(0);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null);
+  const [deletingCommentId, setDeletingCommentId] = useState<string | null>(
+    null
+  );
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const mentionDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -73,8 +80,12 @@ export function CommentsSection({ comments, onAddComment, onEditComment, onDelet
     if (lastAtIndex !== -1) {
       const textAfterAt = textBeforeCursor.slice(lastAtIndex + 1);
       // Only show mentions if @ is the start or preceded by space, and no space after @
-      const charBeforeAt = lastAtIndex === 0 ? ' ' : textBeforeCursor[lastAtIndex - 1];
-      if ((charBeforeAt === ' ' || charBeforeAt === '\n') && !textAfterAt.includes(' ')) {
+      const charBeforeAt =
+        lastAtIndex === 0 ? ' ' : textBeforeCursor[lastAtIndex - 1];
+      if (
+        (charBeforeAt === ' ' || charBeforeAt === '\n') &&
+        !textAfterAt.includes(' ')
+      ) {
         setMentionFilter(textAfterAt.toLowerCase());
         setMentionPosition(lastAtIndex);
         setShowMentions(true);
@@ -86,9 +97,9 @@ export function CommentsSection({ comments, onAddComment, onEditComment, onDelet
     setShowMentions(false);
   };
 
-  const handleMentionSelect = (name: string) => {
+  const handleMentionSelect = useCallback((name: string) => {
     const beforeMention = newComment.slice(0, mentionPosition);
-    const afterMention = newComment.slice(textareaRef.current?.selectionStart || newComment.length);
+    const afterMention = newComment.slice(mentionPosition + mentionFilter.length + 1);
     const newText = beforeMention + '@' + name + ' ' + afterMention;
     setNewComment(newText);
     setShowMentions(false);
@@ -101,11 +112,11 @@ export function CommentsSection({ comments, onAddComment, onEditComment, onDelet
         textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
       }
     }, 0);
-  };
+  }, [newComment, mentionPosition, mentionFilter]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (showMentions) {
-      const filteredMembers = TEAM_MEMBERS.filter(name =>
+      const filteredMembers = TEAM_MEMBERS.filter((name) =>
         name.toLowerCase().includes(mentionFilter)
       );
 
@@ -201,42 +212,51 @@ export function CommentsSection({ comments, onAddComment, onEditComment, onDelet
           />
 
           {/* Mention Dropdown */}
-          {showMentions && (() => {
-            const filteredMembers = TEAM_MEMBERS.filter(name =>
-              name.toLowerCase().includes(mentionFilter)
-            );
+          {showMentions &&
+            (() => {
+              const filteredMembers = TEAM_MEMBERS.filter((name) =>
+                name.toLowerCase().includes(mentionFilter)
+              );
 
-            if (filteredMembers.length === 0) return null;
+              if (filteredMembers.length === 0) return null;
 
-            return (
-              <div
-                ref={mentionDropdownRef}
-                className="absolute z-10 bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto w-64"
-              >
-                {filteredMembers.map((name, index) => (
-                  <div
-                    key={name}
-                    onClick={() => handleMentionSelect(name)}
-                    className={`px-4 py-2 cursor-pointer hover:bg-indigo-50 ${
-                      index === selectedMentionIndex ? 'bg-indigo-100' : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm">
-                        {name.split(' ').map(n => n[0]).join('')}
+              return (
+                <div
+                  ref={mentionDropdownRef}
+                  className="absolute z-10 bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto w-64"
+                >
+                  {filteredMembers.map((name, index) => (
+                    <div
+                      key={name}
+                      // eslint-disable-next-line react-hooks/refs
+                      onClick={() => handleMentionSelect(name)}
+                      className={`px-4 py-2 cursor-pointer hover:bg-indigo-50 ${
+                        index === selectedMentionIndex ? 'bg-indigo-100' : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm">
+                          {name
+                            .split(' ')
+                            .map((n) => n[0])
+                            .join('')}
+                        </div>
+                        <div className="font-medium text-gray-900">{name}</div>
                       </div>
-                      <div className="font-medium text-gray-900">{name}</div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            );
-          })()}
+                  ))}
+                </div>
+              );
+            })()}
         </div>
 
         <div className="flex justify-between items-center">
           <span className="text-sm text-gray-500">
-            💡 Type <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs">@</kbd> to mention someone
+            💡 Type{' '}
+            <kbd className="px-2 py-1 bg-gray-100 border border-gray-300 rounded text-xs">
+              @
+            </kbd>{' '}
+            to mention someone
           </span>
           <button
             type="submit"
@@ -256,14 +276,22 @@ export function CommentsSection({ comments, onAddComment, onEditComment, onDelet
           </div>
         ) : (
           comments.map((comment) => (
-            <div key={comment.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <div
+              key={comment.id}
+              className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+            >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm">
-                    {comment.author.split(' ').map(n => n[0]).join('')}
+                    {comment.author
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')}
                   </div>
                   <div>
-                    <div className="font-medium text-gray-900">{comment.author}</div>
+                    <div className="font-medium text-gray-900">
+                      {comment.author}
+                    </div>
                     <div className="text-xs text-gray-500">
                       {formatTimestamp(comment.timestamp)}
                       {comment.edited && ' (edited)'}

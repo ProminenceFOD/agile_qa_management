@@ -1,7 +1,17 @@
 import { useState, useEffect } from 'react';
 import { defaultBugs } from '../utils/defaultData';
 import { toast } from 'sonner';
-import { Bug as BugIcon, Eye, Edit3, Plus, Search, Filter, AlertCircle, TrendingUp, FilterX } from 'lucide-react';
+import {
+  Bug as BugIcon,
+  Eye,
+  Edit3,
+  Plus,
+  Search,
+  Filter,
+  AlertCircle,
+  TrendingUp,
+  FilterX,
+} from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { BugReportForm } from './BugReportForm';
 import { BugView } from './BugView';
@@ -12,7 +22,8 @@ import { useModal } from '../hooks/useModal';
 import { Pagination } from './Pagination';
 
 type BugSeverity = 'Critical' | 'High' | 'Medium' | 'Low';
-type BugStatus = 'Open' | 'In Progress' | 'Fixed' | 'Verified' | 'Closed' | 'Reopened';
+type BugStatus =
+  'Open' | 'In Progress' | 'Fixed' | 'Verified' | 'Closed' | 'Reopened';
 
 interface Comment {
   id: string;
@@ -49,31 +60,52 @@ interface BugTrackerProps {
 
 export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
   const { user } = useAuth();
-  const { modalState, showAlert, showSuccess, showConfirm, closeModal } = useModal();
-  const [showReportForm, setShowReportForm] = useState(false);
+  const { modalState, showAlert, showSuccess, showConfirm, closeModal } =
+    useModal();
+  const [showReportForm, setShowReportForm] = useState(() => {
+    const quickCreate = localStorage.getItem('aqms_quick_create');
+    if (quickCreate === 'bug') {
+      localStorage.removeItem('aqms_quick_create');
+      return true;
+    }
+    return false;
+  });
   const [viewMode, setViewMode] = useState<'list' | 'view' | 'edit'>('list');
   const [selectedBug, setSelectedBug] = useState<Bug | null>(null);
 
   // Use Supabase for persistent storage (shares data with KanbanBoard)
 
-  const { data: bugs, setData: setBugs, loading: bugsLoading } = useSupabaseData<Bug[]>('aqms_bugs', defaultBugs);
+  const {
+    data: bugs,
+    setData: setBugs,
+    loading: bugsLoading,
+  } = useSupabaseData<Bug[]>('aqms_bugs', defaultBugs);
 
-  // Listen for quick create trigger
-  useEffect(() => {
-    const quickCreate = localStorage.getItem('aqms_quick_create');
-    if (quickCreate === 'bug') {
-      setShowReportForm(true);
-      localStorage.removeItem('aqms_quick_create');
-    }
-  }, []);
+  // Quick create is handled by lazy initialization of showReportForm
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterSeverity, setFilterSeverity] = useState<BugSeverity | 'All'>('All');
+  const [filterSeverity, setFilterSeverity] = useState<BugSeverity | 'All'>(
+    'All'
+  );
   const [filterStatus, setFilterStatus] = useState<BugStatus | 'All'>('All');
-  const [filterAssignedDeveloper, setFilterAssignedDeveloper] = useState<string>('All');
-  const [filterAssignedTester, setFilterAssignedTester] = useState<string>('All');
+  const [filterAssignedDeveloper, setFilterAssignedDeveloper] =
+    useState<string>('All');
+  const [filterAssignedTester, setFilterAssignedTester] =
+    useState<string>('All');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);
+
+  // Reset to page 1 when filters change (using derived state instead of effect is better, but moving effect up fixes rules-of-hooks)
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCurrentPage(1);
+  }, [
+    searchQuery,
+    filterSeverity,
+    filterStatus,
+    filterAssignedDeveloper,
+    filterAssignedTester,
+  ]);
 
   // Show loading state immediately if data isn't ready
   if (bugsLoading || !bugs) {
@@ -142,43 +174,61 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
     }
   };
 
-  const allDevelopers = Array.from(new Set(bugs.map(b => b.assignedDeveloper).filter(Boolean))) as string[];
-  const allTesters = Array.from(new Set(bugs.map(b => b.assignedTester).filter(Boolean))) as string[];
+  const allDevelopers = Array.from(
+    new Set(bugs.map((b) => b.assignedDeveloper).filter(Boolean))
+  ) as string[];
+  const allTesters = Array.from(
+    new Set(bugs.map((b) => b.assignedTester).filter(Boolean))
+  ) as string[];
 
-  const filteredBugs = bugs.filter(bug => {
-    const matchesSearch = searchQuery === '' ||
-      bug.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bug.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesSeverity = filterSeverity === 'All' || bug.severity === filterSeverity;
-    const matchesStatus = filterStatus === 'All' || bug.status === filterStatus;
-    const matchesDeveloper = filterAssignedDeveloper === 'All' || bug.assignedDeveloper === filterAssignedDeveloper;
-    const matchesTester = filterAssignedTester === 'All' || bug.assignedTester === filterAssignedTester;
-    return matchesSearch && matchesSeverity && matchesStatus && matchesDeveloper && matchesTester;
-  }).sort((a, b) => {
-    // Extract numeric part from bug IDs (e.g., "BUG-001" -> 1, "BUG-123" -> 123)
-    const getNumericId = (id: string) => {
-      const match = id.match(/\d+/);
-      return match ? parseInt(match[0], 10) : 0;
-    };
-    return getNumericId(a.id) - getNumericId(b.id);
-  });
+  const filteredBugs = bugs
+    .filter((bug) => {
+      const matchesSearch =
+        searchQuery === '' ||
+        bug.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        bug.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSeverity =
+        filterSeverity === 'All' || bug.severity === filterSeverity;
+      const matchesStatus =
+        filterStatus === 'All' || bug.status === filterStatus;
+      const matchesDeveloper =
+        filterAssignedDeveloper === 'All' ||
+        bug.assignedDeveloper === filterAssignedDeveloper;
+      const matchesTester =
+        filterAssignedTester === 'All' ||
+        bug.assignedTester === filterAssignedTester;
+      return (
+        matchesSearch &&
+        matchesSeverity &&
+        matchesStatus &&
+        matchesDeveloper &&
+        matchesTester
+      );
+    })
+    .sort((a, b) => {
+      // Extract numeric part from bug IDs (e.g., "BUG-001" -> 1, "BUG-123" -> 123)
+      const getNumericId = (id: string) => {
+        const match = id.match(/\d+/);
+        return match ? parseInt(match[0], 10) : 0;
+      };
+      return getNumericId(a.id) - getNumericId(b.id);
+    });
 
   // Calculate pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedBugs = filteredBugs.slice(startIndex, endIndex);
 
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, filterSeverity, filterStatus, filterAssignedDeveloper, filterAssignedTester]);
+  // Reset to page 1 when filters change is handled above
 
   const stats = {
     total: bugs.length,
-    open: bugs.filter(b => b.status === 'Open').length,
-    inProgress: bugs.filter(b => b.status === 'In Progress').length,
-    fixed: bugs.filter(b => b.status === 'Fixed').length,
-    critical: bugs.filter(b => b.severity === 'Critical' && b.status !== 'Closed').length,
+    open: bugs.filter((b) => b.status === 'Open').length,
+    inProgress: bugs.filter((b) => b.status === 'In Progress').length,
+    fixed: bugs.filter((b) => b.status === 'Fixed').length,
+    critical: bugs.filter(
+      (b) => b.severity === 'Critical' && b.status !== 'Closed'
+    ).length,
   };
 
   const handleReportBug = (bug: Omit<Bug, 'id' | 'createdAt'>) => {
@@ -203,28 +253,43 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
   };
 
   const handleUpdateBug = (updatedBug: Bug) => {
-    setBugs(bugs.map(b => b.id === updatedBug.id ? updatedBug : b));
+    setBugs(bugs.map((b) => (b.id === updatedBug.id ? updatedBug : b)));
     setViewMode('list');
     setSelectedBug(null);
     toast.success(`Bug ${updatedBug.id} has been updated successfully!`);
   };
 
   const handleAssignDeveloper = (bugId: string, developer: string) => {
-    setBugs(bugs.map(b => b.id === bugId ? { ...b, assignedDeveloper: developer || undefined } : b));
+    setBugs(
+      bugs.map((b) =>
+        b.id === bugId ? { ...b, assignedDeveloper: developer || undefined } : b
+      )
+    );
     if (selectedBug && selectedBug.id === bugId) {
-      setSelectedBug({ ...selectedBug, assignedDeveloper: developer || undefined });
+      setSelectedBug({
+        ...selectedBug,
+        assignedDeveloper: developer || undefined,
+      });
     }
   };
 
   const handleAssignTester = (bugId: string, tester: string) => {
-    setBugs(bugs.map(b => b.id === bugId ? { ...b, assignedTester: tester || undefined } : b));
+    setBugs(
+      bugs.map((b) =>
+        b.id === bugId ? { ...b, assignedTester: tester || undefined } : b
+      )
+    );
     if (selectedBug && selectedBug.id === bugId) {
       setSelectedBug({ ...selectedBug, assignedTester: tester || undefined });
     }
   };
 
   const handleUpdateComments = (bugId: string, updatedComments: Comment[]) => {
-    setBugs(bugs.map(b => b.id === bugId ? { ...b, comments: updatedComments } : b));
+    setBugs(
+      bugs.map((b) =>
+        b.id === bugId ? { ...b, comments: updatedComments } : b
+      )
+    );
     if (selectedBug && selectedBug.id === bugId) {
       setSelectedBug({ ...selectedBug, comments: updatedComments });
     }
@@ -254,19 +319,27 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
       {/* Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <div className="card fade-in p-4">
-          <div className="text-2xl font-bold text-gray-900 mb-1">{stats.total}</div>
+          <div className="text-2xl font-bold text-gray-900 mb-1">
+            {stats.total}
+          </div>
           <div className="text-sm text-gray-600">Total Bugs</div>
         </div>
         <div className="card fade-in p-4 bg-gradient-to-br from-red-50 to-rose-50 border-red-200">
-          <div className="text-2xl font-bold text-red-700 mb-1">{stats.open}</div>
+          <div className="text-2xl font-bold text-red-700 mb-1">
+            {stats.open}
+          </div>
           <div className="text-sm text-red-600">Open</div>
         </div>
         <div className="card fade-in p-4 bg-gradient-to-br from-indigo-50 to-indigo-50 border-indigo-200">
-          <div className="text-2xl font-bold text-indigo-700 mb-1">{stats.inProgress}</div>
+          <div className="text-2xl font-bold text-indigo-700 mb-1">
+            {stats.inProgress}
+          </div>
           <div className="text-sm text-indigo-600">In Progress</div>
         </div>
         <div className="card fade-in p-4 bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200">
-          <div className="text-2xl font-bold text-purple-700 mb-1">{stats.fixed}</div>
+          <div className="text-2xl font-bold text-purple-700 mb-1">
+            {stats.fixed}
+          </div>
           <div className="text-sm text-purple-600">Fixed</div>
         </div>
         <div className="card fade-in p-4 bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200">
@@ -327,8 +400,10 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
               className="input"
             >
               <option value="All">All Developers</option>
-              {allDevelopers.map(dev => (
-                <option key={dev} value={dev}>{dev}</option>
+              {allDevelopers.map((dev) => (
+                <option key={dev} value={dev}>
+                  {dev}
+                </option>
               ))}
             </select>
           </div>
@@ -339,8 +414,10 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
               className="input"
             >
               <option value="All">All Testers</option>
-              {allTesters.map(tester => (
-                <option key={tester} value={tester}>{tester}</option>
+              {allTesters.map((tester) => (
+                <option key={tester} value={tester}>
+                  {tester}
+                </option>
               ))}
             </select>
           </div>
@@ -393,15 +470,26 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
           </thead>
           <tbody>
             {paginatedBugs.map((bug) => {
-              const age = Math.floor((new Date().getTime() - new Date(bug.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+              const age = Math.floor(
+                (new Date().getTime() - new Date(bug.createdAt).getTime()) /
+                  (1000 * 60 * 60 * 24)
+              );
               const isHighlighted = highlightedItemId === bug.id;
               return (
                 <tr
                   key={bug.id}
-                  className={isHighlighted ? 'bg-indigo-100 dark:bg-indigo-900 ring-2 ring-indigo-500 animate-pulse' : ''}
+                  className={
+                    isHighlighted
+                      ? 'bg-indigo-100 dark:bg-indigo-900 ring-2 ring-indigo-500 animate-pulse'
+                      : ''
+                  }
                 >
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900">{bug.id}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{bug.title}</td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                    {bug.id}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-700">
+                    {bug.title}
+                  </td>
                   <td className="text-center">
                     <span className={`badge ${getSeverityColor(bug.severity)}`}>
                       {bug.severity}
@@ -416,12 +504,22 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
                     {bug.linkedStory || '-'}
                   </td>
                   <td className="px-4 py-3 text-center text-xs text-gray-600">
-                    {bug.foundBy.split(' ').map(n => n[0]).join('')}
+                    {bug.foundBy
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')}
                   </td>
                   <td className="px-4 py-3 text-center text-xs text-gray-600">
-                    {bug.assignedTo ? bug.assignedTo.split(' ').map(n => n[0]).join('') : '-'}
+                    {bug.assignedTo
+                      ? bug.assignedTo
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')
+                      : '-'}
                   </td>
-                  <td className="px-4 py-3 text-center text-sm text-gray-600">{age}d</td>
+                  <td className="px-4 py-3 text-center text-sm text-gray-600">
+                    {age}d
+                  </td>
                   <td className="text-center">
                     <div className="flex justify-center gap-2">
                       <button
@@ -479,8 +577,12 @@ export function BugTracker({ highlightedItemId }: BugTrackerProps = {}) {
                 bug={selectedBug}
                 onBack={handleBackToList}
                 onEdit={() => setViewMode('edit')}
-                onAssignDeveloper={(developer) => handleAssignDeveloper(selectedBug.id, developer)}
-                onAssignTester={(tester) => handleAssignTester(selectedBug.id, tester)}
+                onAssignDeveloper={(developer) =>
+                  handleAssignDeveloper(selectedBug.id, developer)
+                }
+                onAssignTester={(tester) =>
+                  handleAssignTester(selectedBug.id, tester)
+                }
                 onUpdateComments={handleUpdateComments}
               />
             </div>

@@ -84,7 +84,14 @@ export function TestExecutionHistory() {
   ];
 
   // Use Supabase for persistent storage
-  const { data: executions, setData: setExecutions, loading: executionsLoading } = useSupabaseData<TestExecution[]>('aqms_test_execution_history', defaultExecutions);
+  const {
+    data: executions,
+    setData: setExecutions,
+    loading: executionsLoading,
+  } = useSupabaseData<TestExecution[]>(
+    'aqms_test_execution_history',
+    defaultExecutions
+  );
 
   // Show loading state if data isn't ready
   if (executionsLoading || !executions) {
@@ -92,22 +99,28 @@ export function TestExecutionHistory() {
       <div className="w-full max-w-7xl mx-auto p-6 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-purple-500 mb-4"></div>
-          <p className="text-gray-600">Loading test execution history from database...</p>
+          <p className="text-gray-600">
+            Loading test execution history from database...
+          </p>
         </div>
       </div>
     );
   }
 
-  const uniqueTestCases = Array.from(new Set(executions.map(e => e.testCaseId)));
+  const uniqueTestCases = Array.from(
+    new Set(executions.map((e) => e.testCaseId))
+  );
 
-  const filteredExecutions = executions.filter(ex => {
-    const matchesSearch = searchQuery === '' ||
+  const filteredExecutions = executions.filter((ex) => {
+    const matchesSearch =
+      searchQuery === '' ||
       ex.testCaseId.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ex.testCaseTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ex.executedBy.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesStatus = filterStatus === 'All' || ex.status === filterStatus;
-    const matchesTestCase = filterTestCase === 'All' || ex.testCaseId === filterTestCase;
+    const matchesTestCase =
+      filterTestCase === 'All' || ex.testCaseId === filterTestCase;
 
     return matchesSearch && matchesStatus && matchesTestCase;
   });
@@ -126,21 +139,31 @@ export function TestExecutionHistory() {
   };
 
   const totalExecutions = executions.length;
-  const passRate = executions.length > 0
-    ? Math.round((executions.filter(e => e.status === 'Pass').length / executions.length) * 100)
-    : 0;
-  const avgDuration = executions.filter(e => e.duration).length > 0
-    ? Math.round(
-        executions.filter(e => e.duration).reduce((sum, e) => sum + (e.duration || 0), 0) /
-        executions.filter(e => e.duration).length
-      )
-    : 0;
+  const passRate =
+    executions.length > 0
+      ? Math.round(
+          (executions.filter((e) => e.status === 'Pass').length /
+            executions.length) *
+            100
+        )
+      : 0;
+  const avgDuration =
+    executions.filter((e) => e.duration).length > 0
+      ? Math.round(
+          executions
+            .filter((e) => e.duration)
+            .reduce((sum, e) => sum + (e.duration || 0), 0) /
+            executions.filter((e) => e.duration).length
+        )
+      : 0;
 
   return (
     <div className="w-full max-w-7xl mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-3xl mb-2">Test Execution History</h1>
-        <p className="text-gray-600">Complete history of all test case executions</p>
+        <p className="text-gray-600">
+          Complete history of all test case executions
+        </p>
       </div>
 
       {/* Stats */}
@@ -160,7 +183,10 @@ export function TestExecutionHistory() {
         <div className="bg-red-50 rounded-lg shadow-sm border border-red-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Bugs Found</div>
           <div className="text-2xl text-red-600">
-            {Array.from(new Set(executions.flatMap(e => e.bugsFound || []))).length}
+            {
+              Array.from(new Set(executions.flatMap((e) => e.bugsFound || [])))
+                .length
+            }
           </div>
         </div>
       </div>
@@ -179,15 +205,19 @@ export function TestExecutionHistory() {
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-700 mb-2">Test Case</label>
+            <label className="block text-sm text-gray-700 mb-2">
+              Test Case
+            </label>
             <select
               value={filterTestCase}
               onChange={(e) => setFilterTestCase(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="All">All Test Cases</option>
-              {uniqueTestCases.map(tcId => (
-                <option key={tcId} value={tcId}>{tcId}</option>
+              {uniqueTestCases.map((tcId) => (
+                <option key={tcId} value={tcId}>
+                  {tcId}
+                </option>
               ))}
             </select>
           </div>
@@ -195,7 +225,9 @@ export function TestExecutionHistory() {
             <label className="block text-sm text-gray-700 mb-2">Status</label>
             <select
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value as 'All' | TestStatus)}
+              onChange={(e) =>
+                setFilterStatus(e.target.value as 'All' | TestStatus)
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="All">All Statuses</option>
@@ -214,30 +246,48 @@ export function TestExecutionHistory() {
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left text-gray-700">Execution ID</th>
+                <th className="px-6 py-3 text-left text-gray-700">
+                  Execution ID
+                </th>
                 <th className="px-6 py-3 text-left text-gray-700">Test Case</th>
                 <th className="px-6 py-3 text-center text-gray-700">Status</th>
-                <th className="px-6 py-3 text-left text-gray-700">Executed By</th>
-                <th className="px-6 py-3 text-left text-gray-700">Executed At</th>
-                <th className="px-6 py-3 text-center text-gray-700">Duration</th>
+                <th className="px-6 py-3 text-left text-gray-700">
+                  Executed By
+                </th>
+                <th className="px-6 py-3 text-left text-gray-700">
+                  Executed At
+                </th>
+                <th className="px-6 py-3 text-center text-gray-700">
+                  Duration
+                </th>
                 <th className="px-6 py-3 text-left text-gray-700">Notes</th>
                 <th className="px-6 py-3 text-center text-gray-700">Bugs</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredExecutions.map(ex => (
+              {filteredExecutions.map((ex) => (
                 <tr key={ex.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-900 font-mono">{ex.id}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900 font-mono">
+                    {ex.id}
+                  </td>
                   <td className="px-6 py-4">
-                    <div className="font-medium text-gray-900">{ex.testCaseId}</div>
-                    <div className="text-sm text-gray-500">{ex.testCaseTitle}</div>
+                    <div className="font-medium text-gray-900">
+                      {ex.testCaseId}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {ex.testCaseTitle}
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <span className={`inline-flex items-center px-2 py-1 rounded text-xs ${getStatusColor(ex.status)}`}>
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded text-xs ${getStatusColor(ex.status)}`}
+                    >
                       {ex.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-700">{ex.executedBy}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700">
+                    {ex.executedBy}
+                  </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
                     {new Date(ex.executedAt).toLocaleString()}
                   </td>
@@ -250,8 +300,11 @@ export function TestExecutionHistory() {
                   <td className="px-6 py-4 text-center">
                     {ex.bugsFound && ex.bugsFound.length > 0 ? (
                       <div className="flex flex-wrap gap-1 justify-center">
-                        {ex.bugsFound.map(bugId => (
-                          <span key={bugId} className="px-2 py-1 bg-red-100 text-red-800 rounded text-xs">
+                        {ex.bugsFound.map((bugId) => (
+                          <span
+                            key={bugId}
+                            className="px-2 py-1 bg-red-100 text-red-800 rounded text-xs"
+                          >
                             {bugId}
                           </span>
                         ))}

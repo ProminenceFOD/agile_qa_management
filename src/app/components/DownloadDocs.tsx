@@ -6,7 +6,9 @@ export function DownloadDocs() {
     // Open PDF in new tab - works better in Figma Make environment
     const pdfUrl = '/AQMS_Complete_Documentation.pdf';
     window.open(pdfUrl, '_blank');
-    toast.success('PDF opened in new tab! Right-click and "Save As" to download (157 pages, 267KB)');
+    toast.success(
+      'PDF opened in new tab! Right-click and "Save As" to download (157 pages, 267KB)'
+    );
   };
 
   const directDownload = async () => {

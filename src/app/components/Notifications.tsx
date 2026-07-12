@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { useNotifications, type NotificationType } from '../hooks/useNotifications';
+import {
+  useNotifications,
+  type NotificationType,
+} from '../hooks/useNotifications';
 
 export function Notifications() {
   const {
@@ -13,31 +16,60 @@ export function Notifications() {
   } = useNotifications();
 
   const [filterType, setFilterType] = useState<'all' | NotificationType>('all');
-  const [filterRead, setFilterRead] = useState<'all' | 'read' | 'unread'>('all');
+  const [filterRead, setFilterRead] = useState<'all' | 'read' | 'unread'>(
+    'all'
+  );
 
   const handleCreateTestNotification = async () => {
-    const testTypes: NotificationType[] = ['assignment', 'signoff', 'bug', 'blocked', 'info'];
+    const testTypes: NotificationType[] = [
+      'assignment',
+      'signoff',
+      'bug',
+      'blocked',
+      'info',
+    ];
     const randomType = testTypes[Math.floor(Math.random() * testTypes.length)];
 
     const testMessages = {
-      assignment: { title: 'New Assignment', message: 'You have been assigned to story US-' + Math.floor(Math.random() * 1000) },
-      signoff: { title: 'Sign-Off Required', message: 'Story requires your QA approval' },
-      bug: { title: 'Bug Reported', message: 'A new bug has been assigned to you' },
-      blocked: { title: 'Story Blocked', message: 'Your story is blocked and needs attention' },
-      info: { title: 'System Update', message: 'AQMS system has been updated successfully' },
+      assignment: {
+        title: 'New Assignment',
+        message:
+          'You have been assigned to story US-' +
+          Math.floor(Math.random() * 1000),
+      },
+      signoff: {
+        title: 'Sign-Off Required',
+        message: 'Story requires your QA approval',
+      },
+      bug: {
+        title: 'Bug Reported',
+        message: 'A new bug has been assigned to you',
+      },
+      blocked: {
+        title: 'Story Blocked',
+        message: 'Your story is blocked and needs attention',
+      },
+      info: {
+        title: 'System Update',
+        message: 'AQMS system has been updated successfully',
+      },
     };
 
     await addNotification({
       type: randomType,
       title: testMessages[randomType as keyof typeof testMessages].title,
       message: testMessages[randomType as keyof typeof testMessages].message,
-      relatedItem: randomType === 'assignment' || randomType === 'bug' ? `US-${Math.floor(Math.random() * 1000)}` : undefined,
+      relatedItem:
+        randomType === 'assignment' || randomType === 'bug'
+          ? `US-${Math.floor(Math.random() * 1000)}`
+          : undefined,
     });
   };
 
-  const filteredNotifications = notifications.filter(n => {
+  const filteredNotifications = notifications.filter((n) => {
     const matchesType = filterType === 'all' || n.type === filterType;
-    const matchesRead = filterRead === 'all' ||
+    const matchesRead =
+      filterRead === 'all' ||
       (filterRead === 'read' && n.read) ||
       (filterRead === 'unread' && !n.read);
     return matchesType && matchesRead;
@@ -99,7 +131,9 @@ export function Notifications() {
         <div>
           <h1 className="text-3xl mb-2">Notifications</h1>
           <p className="text-gray-600">
-            {unreadCount > 0 ? `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}` : 'All caught up!'}
+            {unreadCount > 0
+              ? `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}`
+              : 'All caught up!'}
           </p>
         </div>
         <div className="flex gap-3">
@@ -127,7 +161,9 @@ export function Notifications() {
             <label className="block text-sm text-gray-700 mb-2">Type</label>
             <select
               value={filterType}
-              onChange={(e) => setFilterType(e.target.value as typeof filterType)}
+              onChange={(e) =>
+                setFilterType(e.target.value as typeof filterType)
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="all">All Types</option>
@@ -146,7 +182,9 @@ export function Notifications() {
             <label className="block text-sm text-gray-700 mb-2">Status</label>
             <select
               value={filterRead}
-              onChange={(e) => setFilterRead(e.target.value as typeof filterRead)}
+              onChange={(e) =>
+                setFilterRead(e.target.value as typeof filterRead)
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="all">All</option>
@@ -162,7 +200,9 @@ export function Notifications() {
         {loading ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
             <div className="text-5xl mb-4">⏳</div>
-            <h3 className="text-xl text-gray-900 mb-2">Loading notifications...</h3>
+            <h3 className="text-xl text-gray-900 mb-2">
+              Loading notifications...
+            </h3>
           </div>
         ) : filteredNotifications.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
@@ -171,11 +211,13 @@ export function Notifications() {
             <p className="text-gray-600">You're all caught up!</p>
           </div>
         ) : (
-          filteredNotifications.map(notif => (
+          filteredNotifications.map((notif) => (
             <div
               key={notif.id}
               className={`bg-white rounded-lg shadow-sm border p-4 transition-all ${
-                notif.read ? 'border-gray-200' : 'border-indigo-300 bg-indigo-50'
+                notif.read
+                  ? 'border-gray-200'
+                  : 'border-indigo-300 bg-indigo-50'
               }`}
             >
               <div className="flex items-start gap-4">
@@ -185,12 +227,17 @@ export function Notifications() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <div className="flex-1">
-                      <h3 className="text-lg text-gray-900 mb-1">{notif.title}</h3>
+                      <h3 className="text-lg text-gray-900 mb-1">
+                        {notif.title}
+                      </h3>
                       <p className="text-gray-700">{notif.message}</p>
                     </div>
                     <div className="flex flex-col items-end gap-2">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full border text-xs ${getTypeColor(notif.type)}`}>
-                        {notif.type.charAt(0).toUpperCase() + notif.type.slice(1)}
+                      <span
+                        className={`inline-flex items-center px-3 py-1 rounded-full border text-xs ${getTypeColor(notif.type)}`}
+                      >
+                        {notif.type.charAt(0).toUpperCase() +
+                          notif.type.slice(1)}
                       </span>
                       {!notif.read && (
                         <span className="inline-flex items-center px-2 py-1 rounded-full bg-indigo-500 text-white text-xs">

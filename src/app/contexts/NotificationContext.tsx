@@ -1,5 +1,8 @@
 import { createContext, useContext, ReactNode } from 'react';
-import { useNotifications, type NotificationType } from '../hooks/useNotifications';
+import {
+  useNotifications,
+  type NotificationType,
+} from '../hooks/useNotifications';
 
 interface NotificationContextType {
   addNotification: (notification: {
@@ -12,7 +15,9 @@ interface NotificationContextType {
   }) => Promise<void>;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined
+);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
   const { addNotification } = useNotifications();
@@ -27,7 +32,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 export function useNotificationContext() {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error('useNotificationContext must be used within NotificationProvider');
+    throw new Error(
+      'useNotificationContext must be used within NotificationProvider'
+    );
   }
   return context;
 }

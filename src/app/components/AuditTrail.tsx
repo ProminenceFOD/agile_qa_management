@@ -1,8 +1,17 @@
 import { useState } from 'react';
-import { Plus, Edit3, Trash2, UserPlus, CheckCircle, Check, Play } from 'lucide-react';
+import {
+  Plus,
+  Edit3,
+  Trash2,
+  UserPlus,
+  CheckCircle,
+  Check,
+  Play,
+} from 'lucide-react';
 import { useSupabaseData } from '../hooks/useSupabaseData';
 
-type ActionType = 'create' | 'update' | 'delete' | 'assign' | 'signoff' | 'approve' | 'execute';
+type ActionType =
+  'create' | 'update' | 'delete' | 'assign' | 'signoff' | 'approve' | 'execute';
 type EntityType = 'story' | 'bug' | 'testcase' | 'user';
 
 interface AuditEntry {
@@ -106,7 +115,11 @@ export function AuditTrail() {
   ];
 
   // Use Supabase for persistent storage
-  const { data: entries, setData: setEntries, loading: entriesLoading } = useSupabaseData<AuditEntry[]>('aqms_audit_trail', defaultEntries);
+  const {
+    data: entries,
+    setData: setEntries,
+    loading: entriesLoading,
+  } = useSupabaseData<AuditEntry[]>('aqms_audit_trail', defaultEntries);
 
   // Show loading state if data isn't ready
   if (entriesLoading || !entries) {
@@ -120,55 +133,86 @@ export function AuditTrail() {
     );
   }
 
-  const uniqueUsers = Array.from(new Set(entries.map(e => e.user)));
+  const uniqueUsers = Array.from(new Set(entries.map((e) => e.user)));
 
-  const filteredEntries = entries.filter(entry => {
-    const matchesSearch = searchQuery === '' ||
+  const filteredEntries = entries.filter((entry) => {
+    const matchesSearch =
+      searchQuery === '' ||
       entry.entityId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (entry.entityTitle?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+      (entry.entityTitle?.toLowerCase() || '').includes(
+        searchQuery.toLowerCase()
+      ) ||
       entry.user.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesAction = filterAction === 'all' || entry.action === filterAction;
-    const matchesEntity = filterEntity === 'all' || entry.entityType === filterEntity;
+    const matchesAction =
+      filterAction === 'all' || entry.action === filterAction;
+    const matchesEntity =
+      filterEntity === 'all' || entry.entityType === filterEntity;
     const matchesUser = filterUser === 'all' || entry.user === filterUser;
 
     const matchesDateFrom = !dateFrom || entry.timestamp >= new Date(dateFrom);
-    const matchesDateTo = !dateTo || entry.timestamp <= new Date(dateTo + 'T23:59:59');
+    const matchesDateTo =
+      !dateTo || entry.timestamp <= new Date(dateTo + 'T23:59:59');
 
-    return matchesSearch && matchesAction && matchesEntity && matchesUser && matchesDateFrom && matchesDateTo;
+    return (
+      matchesSearch &&
+      matchesAction &&
+      matchesEntity &&
+      matchesUser &&
+      matchesDateFrom &&
+      matchesDateTo
+    );
   });
 
   const getActionIcon = (action: ActionType) => {
-    const iconClass = "w-4 h-4";
+    const iconClass = 'w-4 h-4';
     switch (action) {
-      case 'create': return <Plus className={iconClass} />;
-      case 'update': return <Edit3 className={iconClass} />;
-      case 'delete': return <Trash2 className={iconClass} />;
-      case 'assign': return <UserPlus className={iconClass} />;
-      case 'signoff': return <CheckCircle className={iconClass} />;
-      case 'approve': return <Check className={iconClass} />;
-      case 'execute': return <Play className={iconClass} />;
+      case 'create':
+        return <Plus className={iconClass} />;
+      case 'update':
+        return <Edit3 className={iconClass} />;
+      case 'delete':
+        return <Trash2 className={iconClass} />;
+      case 'assign':
+        return <UserPlus className={iconClass} />;
+      case 'signoff':
+        return <CheckCircle className={iconClass} />;
+      case 'approve':
+        return <Check className={iconClass} />;
+      case 'execute':
+        return <Play className={iconClass} />;
     }
   };
 
   const getActionColor = (action: ActionType) => {
     switch (action) {
-      case 'create': return 'bg-green-100 text-green-800 border-green-200';
-      case 'update': return 'bg-indigo-100 text-indigo-800 border-indigo-200';
-      case 'delete': return 'bg-red-100 text-red-800 border-red-200';
-      case 'assign': return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'signoff': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'approve': return 'bg-teal-100 text-teal-800 border-teal-200';
-      case 'execute': return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+      case 'create':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'update':
+        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+      case 'delete':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'assign':
+        return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'signoff':
+        return 'bg-orange-100 text-orange-800 border-orange-200';
+      case 'approve':
+        return 'bg-teal-100 text-teal-800 border-teal-200';
+      case 'execute':
+        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
     }
   };
 
   const getEntityColor = (entityType: EntityType) => {
     switch (entityType) {
-      case 'story': return 'bg-indigo-100 text-indigo-800';
-      case 'bug': return 'bg-red-100 text-red-800';
-      case 'testcase': return 'bg-green-100 text-green-800';
-      case 'user': return 'bg-purple-100 text-purple-800';
+      case 'story':
+        return 'bg-indigo-100 text-indigo-800';
+      case 'bug':
+        return 'bg-red-100 text-red-800';
+      case 'testcase':
+        return 'bg-green-100 text-green-800';
+      case 'user':
+        return 'bg-purple-100 text-purple-800';
     }
   };
 
@@ -194,7 +238,9 @@ export function AuditTrail() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl mb-2">Audit Trail</h1>
-          <p className="text-gray-600">Complete history of all system changes</p>
+          <p className="text-gray-600">
+            Complete history of all system changes
+          </p>
         </div>
         <button
           onClick={handleExportAudit}
@@ -212,11 +258,15 @@ export function AuditTrail() {
         </div>
         <div className="bg-green-50 rounded-lg shadow-sm border border-green-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Creates</div>
-          <div className="text-2xl text-green-600">{entries.filter(e => e.action === 'create').length}</div>
+          <div className="text-2xl text-green-600">
+            {entries.filter((e) => e.action === 'create').length}
+          </div>
         </div>
         <div className="bg-indigo-50 rounded-lg shadow-sm border border-indigo-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Updates</div>
-          <div className="text-2xl text-indigo-600">{entries.filter(e => e.action === 'update').length}</div>
+          <div className="text-2xl text-indigo-600">
+            {entries.filter((e) => e.action === 'update').length}
+          </div>
         </div>
         <div className="bg-purple-50 rounded-lg shadow-sm border border-purple-200 p-4">
           <div className="text-sm text-gray-600 mb-1">Active Users</div>
@@ -241,7 +291,9 @@ export function AuditTrail() {
             <label className="block text-sm text-gray-700 mb-2">Action</label>
             <select
               value={filterAction}
-              onChange={(e) => setFilterAction(e.target.value as typeof filterAction)}
+              onChange={(e) =>
+                setFilterAction(e.target.value as typeof filterAction)
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="all">All Actions</option>
@@ -258,7 +310,9 @@ export function AuditTrail() {
             <label className="block text-sm text-gray-700 mb-2">Entity</label>
             <select
               value={filterEntity}
-              onChange={(e) => setFilterEntity(e.target.value as typeof filterEntity)}
+              onChange={(e) =>
+                setFilterEntity(e.target.value as typeof filterEntity)
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="all">All Types</option>
@@ -276,13 +330,17 @@ export function AuditTrail() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             >
               <option value="all">All Users</option>
-              {uniqueUsers.map(user => (
-                <option key={user} value={user}>{user}</option>
+              {uniqueUsers.map((user) => (
+                <option key={user} value={user}>
+                  {user}
+                </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-sm text-gray-700 mb-2">Date From</label>
+            <label className="block text-sm text-gray-700 mb-2">
+              Date From
+            </label>
             <input
               type="date"
               value={dateFrom}
@@ -308,39 +366,59 @@ export function AuditTrail() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredEntries.map(entry => (
+              {filteredEntries.map((entry) => (
                 <tr key={entry.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-600">
                     {new Date(entry.timestamp).toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">{entry.user}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    {entry.user}
+                  </td>
                   <td className="px-6 py-4 text-center">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full border text-xs ${getActionColor(entry.action)}`}>
-                      {getActionIcon(entry.action)} {entry.action.charAt(0).toUpperCase() + entry.action.slice(1)}
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full border text-xs ${getActionColor(entry.action)}`}
+                    >
+                      {getActionIcon(entry.action)}{' '}
+                      {entry.action.charAt(0).toUpperCase() +
+                        entry.action.slice(1)}
                     </span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex flex-col gap-1">
-                      <span className={`inline-flex items-center px-2 py-1 rounded text-xs w-fit ${getEntityColor(entry.entityType)}`}>
+                      <span
+                        className={`inline-flex items-center px-2 py-1 rounded text-xs w-fit ${getEntityColor(entry.entityType)}`}
+                      >
                         {entry.entityType}
                       </span>
-                      <div className="font-medium text-gray-900">{entry.entityId}</div>
+                      <div className="font-medium text-gray-900">
+                        {entry.entityId}
+                      </div>
                       {entry.entityTitle && (
-                        <div className="text-sm text-gray-500">{entry.entityTitle}</div>
+                        <div className="text-sm text-gray-500">
+                          {entry.entityTitle}
+                        </div>
                       )}
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     {entry.changes && Object.keys(entry.changes).length > 0 ? (
                       <div className="space-y-1">
-                        {Object.entries(entry.changes).map(([field, change]) => (
-                          <div key={field} className="text-xs">
-                            <span className="font-medium text-gray-700">{field}:</span>
-                            <span className="text-red-600 line-through ml-1">{JSON.stringify(change.old)}</span>
-                            <span className="mx-1">→</span>
-                            <span className="text-green-600">{JSON.stringify(change.new)}</span>
-                          </div>
-                        ))}
+                        {Object.entries(entry.changes).map(
+                          ([field, change]) => (
+                            <div key={field} className="text-xs">
+                              <span className="font-medium text-gray-700">
+                                {field}:
+                              </span>
+                              <span className="text-red-600 line-through ml-1">
+                                {JSON.stringify(change.old)}
+                              </span>
+                              <span className="mx-1">→</span>
+                              <span className="text-green-600">
+                                {JSON.stringify(change.new)}
+                              </span>
+                            </div>
+                          )
+                        )}
                       </div>
                     ) : (
                       <span className="text-gray-400">-</span>

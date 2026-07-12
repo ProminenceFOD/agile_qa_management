@@ -1,4 +1,11 @@
-import { X, Calendar, Target, TrendingUp, CheckCircle, Clock } from 'lucide-react';
+import {
+  X,
+  Calendar,
+  Target,
+  TrendingUp,
+  CheckCircle,
+  Clock,
+} from 'lucide-react';
 
 interface Sprint {
   id: string;
@@ -20,14 +27,29 @@ interface SprintDetailViewProps {
   releaseName?: string;
 }
 
-export function SprintDetailView({ sprint, onClose, releaseName }: SprintDetailViewProps) {
+export function SprintDetailView({
+  sprint,
+  onClose,
+  releaseName,
+}: SprintDetailViewProps) {
   const startDate = new Date(sprint.startDate);
   const endDate = new Date(sprint.endDate);
   const today = new Date();
-  const duration = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-  const daysElapsed = Math.max(0, Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
-  const daysRemaining = Math.max(0, Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
-  const progressPercentage = sprint.status === 'Completed' ? 100 : Math.min(100, (daysElapsed / duration) * 100);
+  const duration = Math.ceil(
+    (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  const daysElapsed = Math.max(
+    0,
+    Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
+  );
+  const daysRemaining = Math.max(
+    0,
+    Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+  );
+  const progressPercentage =
+    sprint.status === 'Completed'
+      ? 100
+      : Math.min(100, (daysElapsed / duration) * 100);
 
   const getStatusColor = (status: Sprint['status']) => {
     switch (status) {
@@ -44,15 +66,22 @@ export function SprintDetailView({ sprint, onClose, releaseName }: SprintDetailV
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose}></div>
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        onClick={onClose}
+      ></div>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
           {/* Header */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 rounded-t-lg flex-shrink-0">
             <div className="flex-1">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{sprint.name}</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                {sprint.name}
+              </h2>
               <div className="flex items-center gap-3 mt-2">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(sprint.status)}`}>
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(sprint.status)}`}
+                >
                   {sprint.status}
                 </span>
                 {releaseName && (
@@ -77,8 +106,12 @@ export function SprintDetailView({ sprint, onClose, releaseName }: SprintDetailV
               <div className="flex items-start gap-3">
                 <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-indigo-900 dark:text-indigo-200 mb-1">Sprint Goal</h3>
-                  <p className="text-indigo-800 dark:text-indigo-300">{sprint.goal}</p>
+                  <h3 className="font-semibold text-indigo-900 dark:text-indigo-200 mb-1">
+                    Sprint Goal
+                  </h3>
+                  <p className="text-indigo-800 dark:text-indigo-300">
+                    {sprint.goal}
+                  </p>
                 </div>
               </div>
             </div>
@@ -87,44 +120,69 @@ export function SprintDetailView({ sprint, onClose, releaseName }: SprintDetailV
             <div className="bg-white dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Calendar className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                <h3 className="font-semibold text-gray-900 dark:text-white">Timeline</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white">
+                  Timeline
+                </h3>
               </div>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Start Date</div>
-                  <div className="font-medium text-gray-900 dark:text-white">{startDate.toLocaleDateString()}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">End Date</div>
-                  <div className="font-medium text-gray-900 dark:text-white">{endDate.toLocaleDateString()}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Duration</div>
-                  <div className="font-medium text-gray-900 dark:text-white">{duration} days</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Days Remaining</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                    Start Date
+                  </div>
                   <div className="font-medium text-gray-900 dark:text-white">
-                    {sprint.status === 'Completed' ? 'Completed' : sprint.status === 'Planning' ? 'Not started' : `${daysRemaining} days`}
+                    {startDate.toLocaleDateString()}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                    End Date
+                  </div>
+                  <div className="font-medium text-gray-900 dark:text-white">
+                    {endDate.toLocaleDateString()}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                    Duration
+                  </div>
+                  <div className="font-medium text-gray-900 dark:text-white">
+                    {duration} days
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                    Days Remaining
+                  </div>
+                  <div className="font-medium text-gray-900 dark:text-white">
+                    {sprint.status === 'Completed'
+                      ? 'Completed'
+                      : sprint.status === 'Planning'
+                        ? 'Not started'
+                        : `${daysRemaining} days`}
                   </div>
                 </div>
               </div>
 
               {/* Progress Bar */}
-              {sprint.status !== 'Planning' && sprint.status !== 'Cancelled' && (
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Time Progress</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">{Math.round(progressPercentage)}%</span>
+              {sprint.status !== 'Planning' &&
+                sprint.status !== 'Cancelled' && (
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        Time Progress
+                      </span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        {Math.round(progressPercentage)}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div
+                        className="bg-indigo-500 h-2 rounded-full transition-all"
+                        style={{ width: `${progressPercentage}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div
-                      className="bg-indigo-500 h-2 rounded-full transition-all"
-                      style={{ width: `${progressPercentage}%` }}
-                    ></div>
-                  </div>
-                </div>
-              )}
+                )}
             </div>
 
             {/* Metrics */}
@@ -132,45 +190,67 @@ export function SprintDetailView({ sprint, onClose, releaseName }: SprintDetailV
               <div className="bg-white dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Velocity</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    Velocity
+                  </span>
                 </div>
-                <div className="text-2xl font-semibold text-gray-900 dark:text-white">{sprint.velocity}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Story points</div>
+                <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  {sprint.velocity}
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Story points
+                </div>
               </div>
 
               <div className="bg-white dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Clock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Capacity</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    Capacity
+                  </span>
                 </div>
-                <div className="text-2xl font-semibold text-gray-900 dark:text-white">{sprint.capacity}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Available points</div>
+                <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  {sprint.capacity}
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Available points
+                </div>
               </div>
 
               <div className="bg-white dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Stories</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    Stories
+                  </span>
                 </div>
                 <div className="text-2xl font-semibold text-gray-900 dark:text-white">
                   {sprint.completedStories || 0} / {sprint.stories?.length || 0}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Completed</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Completed
+                </div>
               </div>
             </div>
 
             {/* Stories List (if available) */}
             {sprint.stories && sprint.stories.length > 0 && (
               <div className="bg-white dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Sprint Stories</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+                  Sprint Stories
+                </h3>
                 <div className="space-y-2">
                   {sprint.stories.map((storyId, index) => (
                     <div
                       key={storyId}
                       className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-900/50 rounded border border-gray-200 dark:border-gray-750"
                     >
-                      <span className="font-mono text-sm text-gray-600 dark:text-gray-400">{storyId}</span>
-                      <span className="text-sm text-gray-700 dark:text-gray-300">Story {index + 1}</span>
+                      <span className="font-mono text-sm text-gray-600 dark:text-gray-400">
+                        {storyId}
+                      </span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Story {index + 1}
+                      </span>
                     </div>
                   ))}
                 </div>

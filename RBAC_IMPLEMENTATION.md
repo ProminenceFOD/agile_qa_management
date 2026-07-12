@@ -1,12 +1,15 @@
 # Role-Based Access Control (RBAC) Implementation
 
 ## Overview
+
 Comprehensive RBAC system implemented for the AQMS to enforce quality gates programmatically at both UI and API levels.
 
 ## Permission Structure
 
 ### Administrator
+
 **Full System Access** - Can do everything:
+
 - ✅ User Management (view, invite, edit, deactivate, change roles, delete)
 - ✅ Data Management (view, import, export, bulk delete)
 - ✅ Audit Trail (view, export)
@@ -17,6 +20,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 - ✅ All reports and analytics
 
 **Visible Tabs:**
+
 - Dashboard, Kanban Board
 - Stories, Test Cases, Bugs, Risk Matrix, Burn-Down
 - Analytics, Reports, Test History, Team Performance
@@ -29,7 +33,9 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 ---
 
 ### QA Engineer (e.g., Damilola Ogunlade - Head of QA)
+
 **Quality Assurance Focus**:
+
 - ✅ Stories (view, create, edit own, **sign off QA**)
 - ✅ Bugs (view, create, edit own, edit all, close)
 - ✅ Test Cases (view, create, edit own, edit all, execute, delete)
@@ -39,6 +45,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 - ❌ Cannot access admin tabs (Users, Data, Audit, Bulk)
 
 **Visible Tabs:**
+
 - Dashboard, Kanban Board
 - Stories (can QA sign-off), Test Cases, Bugs, Risk Matrix, Burn-Down
 - Analytics, Reports, Test History, Team Performance
@@ -47,7 +54,9 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 ---
 
 ### Product Manager
+
 **Product & Planning Focus**:
+
 - ✅ Stories (view, create, edit own, edit all, **sign off PM**)
 - ✅ Bugs (view, create, edit own)
 - ✅ Test Cases (view only)
@@ -57,6 +66,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 - ❌ Cannot access admin tabs
 
 **Visible Tabs:**
+
 - Dashboard, Kanban Board
 - Stories (can PM sign-off), Test Cases (view), Bugs, Risk Matrix, Burn-Down
 - Analytics, Reports, Test History, Team Performance
@@ -65,7 +75,9 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 ---
 
 ### Scrum Master
+
 **Sprint Management Focus**:
+
 - ✅ Stories (view, create, edit own)
 - ✅ Bugs (view, create, edit own)
 - ✅ Test Cases (view only)
@@ -75,6 +87,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 - ❌ Cannot access admin tabs
 
 **Visible Tabs:**
+
 - Dashboard, Kanban Board
 - Stories (view), Test Cases (view), Bugs, Risk Matrix, Burn-Down
 - Analytics, Reports, Test History, Team Performance
@@ -113,18 +126,21 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 ## Key Features
 
 ### ✅ Separation of Concerns
+
 - QA Engineers focus on testing and quality
 - Product Managers focus on requirements and prioritization
 - Scrum Masters focus on sprint management
 - Administrators have full control
 
 ### ✅ Quality Gate Enforcement
+
 - Only QA Engineers (or Admins) can sign off QA
 - Only Product Managers (or Admins) can sign off PM
 - Enforced at UI level (buttons hidden)
 - **TODO:** Enforce at API level
 
 ### ✅ Admin Privileges
+
 - Only Administrators can:
   - View/manage users
   - Import/export data
@@ -134,6 +150,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
   - Deactivate users
 
 ### ✅ UI Responsiveness
+
 - Sidebar automatically hides unauthorized tabs
 - Permission checks happen client-side for instant feedback
 - **TODO:** Add server-side validation for security
@@ -143,11 +160,13 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 ## Security Considerations
 
 ### Current Implementation
+
 - ✅ UI-level permission checks (Sidebar filtering)
 - ✅ Role-based function visibility
 - ✅ Clear permission matrix
 
 ### Recommended Additions
+
 - ⚠️ **API-level validation** (critical for production)
 - ⚠️ **Audit logging** for admin actions
 - ⚠️ **Role change notifications**
@@ -158,6 +177,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 ## Testing Scenarios
 
 ### Test as Administrator
+
 1. Login as admin
 2. Verify all tabs visible (including Users, Data, Audit, Bulk)
 3. Access User Management → Should allow inviting, editing, deactivating users
@@ -166,6 +186,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 6. Access Bulk Operations → Should allow mass updates
 
 ### Test as QA Engineer (qa@aqms.com)
+
 1. Login as Damilola Ogunlade (QA Engineer)
 2. Verify admin tabs HIDDEN (Users, Data, Audit, Bulk)
 3. Go to Stories → Verify "QA Sign-Off" button visible
@@ -174,6 +195,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 6. Go to Bugs → Verify can edit any bug
 
 ### Test as Product Manager (pm@aqms.com)
+
 1. Login as PM
 2. Verify admin tabs HIDDEN
 3. Go to Stories → Verify "PM Approve" button visible
@@ -182,6 +204,7 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 6. Go to Test Cases → Verify read-only (cannot execute)
 
 ### Test as Scrum Master (sm@aqms.com)
+
 1. Login as Scrum Master
 2. Verify admin tabs HIDDEN
 3. Go to Stories → Verify can view but not sign off
@@ -193,17 +216,20 @@ Comprehensive RBAC system implemented for the AQMS to enforce quality gates prog
 ## Admin Role Addition to Invitations
 
 ### Current Discussion
+
 Should we add "Administrator" to the user invitation role dropdown?
 
 ### Recommendation: YES, with Guardrails
 
 **Rationale:**
+
 - B2B quality management tool for professional teams
 - Head of QA (Damilola) likely needs to invite co-admins (CTO, VP Engineering)
 - Forcing "invite → promote" workflow is annoying for trusted colleagues
 - Warning message makes intent clear
 
 **Implementation:**
+
 ```tsx
 <select value={inviteRole} onChange={...}>
   <option value="QA Engineer">QA Engineer</option>
@@ -236,6 +262,7 @@ Should we add "Administrator" to the user invitation role dropdown?
 For production deployment, add these constraints:
 
 ### PostgreSQL Row-Level Security (RLS)
+
 ```sql
 -- Example: Users table RLS
 CREATE POLICY user_management_admin_only ON users
@@ -252,6 +279,7 @@ CREATE POLICY story_qa_signoff ON stories
 ```
 
 ### API Middleware
+
 ```typescript
 // Supabase Edge Function
 function requirePermission(permission: Permission) {
@@ -265,9 +293,13 @@ function requirePermission(permission: Permission) {
 }
 
 // Usage
-app.post('/api/users/invite', requirePermission('users:invite'), async (req) => {
-  // Handle invitation
-});
+app.post(
+  '/api/users/invite',
+  requirePermission('users:invite'),
+  async (req) => {
+    // Handle invitation
+  }
+);
 ```
 
 ---
@@ -275,12 +307,14 @@ app.post('/api/users/invite', requirePermission('users:invite'), async (req) => 
 ## Compliance & Audit
 
 ### Audit Log Events (Recommended)
+
 - User role changes
 - Permission-denied attempts
 - Admin actions (user deactivation, data export, bulk operations)
 - Sign-off events (QA/PM approvals with timestamps)
 
 ### Retention Policy
+
 - Keep audit logs for 2+ years for compliance
 - Export audit logs monthly for archival
 - Include: timestamp, user, action, IP address, affected resource
@@ -290,6 +324,7 @@ app.post('/api/users/invite', requirePermission('users:invite'), async (req) => 
 ## Summary
 
 ✅ **Completed:**
+
 - Permission utility with full role matrix (`/src/app/utils/permissions.ts`)
 - Sidebar filtering based on user role (admin tabs hidden from non-admins)
 - Clear separation of Admin vs Non-Admin features
@@ -301,6 +336,7 @@ app.post('/api/users/invite', requirePermission('users:invite'), async (req) => 
 - Role color-coding (Administrator = red badge to indicate power)
 
 ⏳ **Recommended for Production:**
+
 - API-level permission validation in Supabase Edge Functions
 - Audit logging for admin actions (role changes, user deactivation, data export)
 - Database Row-Level Security (RLS) policies

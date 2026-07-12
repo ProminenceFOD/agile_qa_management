@@ -1,7 +1,14 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import * as supabaseStorage from '../utils/supabaseStorage';
 
-export type UserRole = 'Administrator' | 'QA Engineer' | 'Product Manager' | 'Scrum Master';
+export type UserRole =
+  'Administrator' | 'QA Engineer' | 'Product Manager' | 'Scrum Master';
 
 interface User {
   email: string;
@@ -14,8 +21,18 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<boolean>;
-  signup: (email: string, password: string, name: string, role: UserRole, organizationName: string) => Promise<boolean>;
+  login: (
+    email: string,
+    password: string,
+    rememberMe?: boolean
+  ) => Promise<boolean>;
+  signup: (
+    email: string,
+    password: string,
+    name: string,
+    role: UserRole,
+    organizationName: string
+  ) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -37,7 +54,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const sessionUser = await supabaseStorage.checkSession();
 
       if (sessionUser) {
-        console.log('[AuthContext] Found active session for:', sessionUser.email);
+        console.log(
+          '[AuthContext] Found active session for:',
+          sessionUser.email
+        );
         try {
           setUser({
             email: sessionUser.email,
@@ -60,7 +80,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkSession();
   }, []);
 
-  const login = async (email: string, password: string, rememberMe: boolean = false): Promise<boolean> => {
+  const login = async (
+    email: string,
+    password: string,
+    rememberMe: boolean = false
+  ): Promise<boolean> => {
     console.log('[AuthContext] Attempting login for:', email);
 
     try {
@@ -93,9 +117,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     role: UserRole,
     organizationName: string
   ): Promise<boolean> => {
-    console.log('[AuthContext] Attempting signup for:', email, 'organization:', organizationName);
+    console.log(
+      '[AuthContext] Attempting signup for:',
+      email,
+      'organization:',
+      organizationName
+    );
 
-    const users = await supabaseStorage.getData('aqms_users') || [];
+    const users = (await supabaseStorage.getData('aqms_users')) || [];
 
     if (users.some((u: any) => u.email === email)) {
       console.log('[AuthContext] Email already exists');
@@ -115,18 +144,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       name,
       role,
       organizationId,
-      organizationName: isDemoUser ? 'AQMS Demo Organization' : organizationName,
+      organizationName: isDemoUser
+        ? 'AQMS Demo Organization'
+        : organizationName,
       id: `USR-${String(users.length + 1).padStart(3, '0')}`,
       title: role,
       status: 'Active',
       joinedDate: new Date(),
-      isActive: true
+      isActive: true,
     };
 
     users.push(newUser);
     await supabaseStorage.setData('aqms_users', users);
 
-    console.log('[AuthContext] New user created with organizationId:', organizationId, 'organizationName:', organizationName);
+    console.log(
+      '[AuthContext] New user created with organizationId:',
+      organizationId,
+      'organizationName:',
+      organizationName
+    );
 
     // Auto-login after signup
     return await login(email, password, false);

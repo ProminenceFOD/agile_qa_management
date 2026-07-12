@@ -72,11 +72,16 @@ export function BulkActions({
 
             {isOpen && (
               <>
-                <div className="fixed inset-0" onClick={() => setIsOpen(false)}></div>
+                <div
+                  className="fixed inset-0"
+                  onClick={() => setIsOpen(false)}
+                ></div>
                 <div className="absolute bottom-full mb-2 left-0 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2">
                   {/* Assign Developer */}
                   <div className="px-4 py-2">
-                    <label className="block text-xs text-gray-600 mb-1">Assign Developer</label>
+                    <label className="block text-xs text-gray-600 mb-1">
+                      Assign Developer
+                    </label>
                     <select
                       onChange={(e) => {
                         if (e.target.value) {
@@ -87,8 +92,10 @@ export function BulkActions({
                       className="w-full px-3 py-2 border border-gray-300 rounded text-sm text-gray-900 bg-white"
                     >
                       <option value="">Choose...</option>
-                      {DEVELOPERS.map(dev => (
-                        <option key={dev} value={dev}>{dev}</option>
+                      {DEVELOPERS.map((dev) => (
+                        <option key={dev} value={dev}>
+                          {dev}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -97,7 +104,9 @@ export function BulkActions({
 
                   {/* Assign Tester */}
                   <div className="px-4 py-2">
-                    <label className="block text-xs text-gray-600 mb-1">Assign Tester</label>
+                    <label className="block text-xs text-gray-600 mb-1">
+                      Assign Tester
+                    </label>
                     <select
                       onChange={(e) => {
                         if (e.target.value) {
@@ -108,8 +117,10 @@ export function BulkActions({
                       className="w-full px-3 py-2 border border-gray-300 rounded text-sm text-gray-900 bg-white"
                     >
                       <option value="">Choose...</option>
-                      {TESTERS.map(tester => (
-                        <option key={tester} value={tester}>{tester}</option>
+                      {TESTERS.map((tester) => (
+                        <option key={tester} value={tester}>
+                          {tester}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -118,7 +129,9 @@ export function BulkActions({
 
                   {/* Set Priority */}
                   <div className="px-4 py-2">
-                    <label className="block text-xs text-gray-600 mb-1">Set Priority</label>
+                    <label className="block text-xs text-gray-600 mb-1">
+                      Set Priority
+                    </label>
                     <select
                       onChange={(e) => {
                         if (e.target.value) {
@@ -140,7 +153,9 @@ export function BulkActions({
 
                   {/* Set Sprint */}
                   <div className="px-4 py-2">
-                    <label className="block text-xs text-gray-600 mb-1">Move to Sprint</label>
+                    <label className="block text-xs text-gray-600 mb-1">
+                      Move to Sprint
+                    </label>
                     <select
                       onChange={(e) => {
                         if (e.target.value) {
@@ -151,8 +166,10 @@ export function BulkActions({
                       className="w-full px-3 py-2 border border-gray-300 rounded text-sm text-gray-900 bg-white"
                     >
                       <option value="">Choose...</option>
-                      {SPRINTS.map(sprint => (
-                        <option key={sprint} value={sprint}>{sprint}</option>
+                      {SPRINTS.map((sprint) => (
+                        <option key={sprint} value={sprint}>
+                          {sprint}
+                        </option>
                       ))}
                     </select>
                   </div>

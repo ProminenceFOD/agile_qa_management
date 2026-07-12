@@ -3,15 +3,18 @@
 ## Quick Links to Search for Papers
 
 ### Google Scholar (Best Starting Point)
+
 **URL**: https://scholar.google.com
 
 **Search Strategy**:
+
 1. Copy exact paper title in quotes
 2. Add author name
 3. Look for [PDF] links on the right side
 4. Check "All versions" for free copies
 
 **Example Search**:
+
 ```
 "Challenges of Scrum adoption in distributed software development" Aldahmash
 ```
@@ -90,6 +93,7 @@
 ## Step-by-Step Download Process
 
 ### Option 1: Through Your University Library
+
 1. Go to your university library website
 2. Search for the journal name (e.g., "Empirical Software Engineering")
 3. Check if your institution has access
@@ -97,6 +101,7 @@
 5. Download PDF
 
 ### Option 2: Google Scholar
+
 1. Go to https://scholar.google.com
 2. Paste exact paper title in quotes
 3. Click "All X versions" link
@@ -107,27 +112,30 @@
    - Preprint servers (arXiv, etc.)
 
 ### Option 3: ResearchGate
+
 1. Go to https://www.researchgate.net
 2. Search paper title
 3. Click "Request full-text" button
 4. Authors often respond within 24-48 hours
 
 ### Option 4: Contact Authors Directly
+
 1. Find author email from university website
 2. Send polite request:
    ```
    Dear Dr. [Name],
-   
-   I am a graduate student researching automated quality management systems. 
-   I would like to cite your paper "[Title]" in my thesis but cannot access 
+
+   I am a graduate student researching automated quality management systems.
+   I would like to cite your paper "[Title]" in my thesis but cannot access
    it through my institution. Would you be willing to share a copy?
-   
+
    Thank you,
    [Your Name]
    ```
 3. Most authors are happy to share their work
 
 ### Option 5: Interlibrary Loan
+
 1. Contact your university library
 2. Request papers through interlibrary loan
 3. Usually takes 3-5 days
@@ -138,18 +146,21 @@
 ## Priority Download Order
 
 ### Week 1 - Critical Gaps (Do These First):
+
 1. Forsgren et al. (2021) - FREE, essential for 2.3.5
 2. Felderer & Fourniere (2022) - Core RBT reference
 3. Nguyen et al. (2022) - Critical for quality metrics
 4. Rola et al. (2022) - Technical debt foundation
 
 ### Week 2 - Supporting Evidence:
+
 5. Saltz & Shamshurin (2021) - DoD empirical data
 6. Huang et al. (2023) - Sprint prediction
 7. Santos & Travassos (2023) - RBT effectiveness
 8. Rahman & Williams (2022) - Build prediction
 
 ### Week 3 - Depth & Coverage:
+
 9. Aldahmash et al. (2023) - Distributed Scrum
 10. Inayat et al. (2021) - Requirements practices
 11. Remaining papers as needed
@@ -166,6 +177,7 @@
 4. Use papers with [PDF] link available
 
 **Alternative Papers Database**:
+
 - ACM Digital Library: https://dl.acm.org (check institutional access)
 - IEEE Xplore: https://ieeexplore.ieee.org (check institutional access)
 - arXiv: https://arxiv.org (free CS preprints)
@@ -176,6 +188,7 @@
 ## Verify Paper Quality
 
 Before using a paper, check:
+
 - ✅ Published in reputable journal/conference
 - ✅ Has peer review
 - ✅ Cited by other papers (check Google Scholar)

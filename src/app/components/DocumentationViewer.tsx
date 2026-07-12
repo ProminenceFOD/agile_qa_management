@@ -6,8 +6,13 @@ interface DocumentationViewerProps {
   onClose: () => void;
 }
 
-export function DocumentationViewer({ isOpen, onClose }: DocumentationViewerProps) {
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+export function DocumentationViewer({
+  isOpen,
+  onClose,
+}: DocumentationViewerProps) {
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    new Set()
+  );
 
   const toggleSection = (section: string) => {
     const newExpanded = new Set(expandedSections);
@@ -20,7 +25,7 @@ export function DocumentationViewer({ isOpen, onClose }: DocumentationViewerProp
   };
 
   const documentation = {
-    "System Overview": {
+    'System Overview': {
       content: `AQMS (Agile Quality Management System) is a comprehensive quality assurance platform designed for agile development teams.
 
 **Technology Stack:**
@@ -55,9 +60,9 @@ export function DocumentationViewer({ isOpen, onClose }: DocumentationViewerProp
 - Smooth transitions and hover effects
 - Responsive grid layouts
 - Dark mode support
-- Professional data visualization`
+- Professional data visualization`,
     },
-    "Dashboard": {
+    Dashboard: {
       content: `**Dashboard Overview**
 
 The Dashboard is your command center showing real-time quality metrics.
@@ -81,9 +86,9 @@ Shows all sprints with:
 - Status (Planning/Active/Completed/Cancelled)
 - Date range and duration
 - Story completion count and percentage
-- Progress bar visualization`
+- Progress bar visualization`,
     },
-    "Stories Management": {
+    'Stories Management': {
       content: `**Stories Management (Criteria Validator)**
 
 Central hub for requirement management with enforced quality gates.
@@ -134,9 +139,9 @@ Step 1: Create story with criteria
 Step 2: QA Engineer provides QA Sign-Off
 Step 3: Product Manager provides PM Approval
 Step 4: Developer and Tester can now be assigned
-Step 5: Story ready for sprint`
+Step 5: Story ready for sprint`,
     },
-    "Test Cases Management": {
+    'Test Cases Management': {
       content: `**Test Cases Management**
 
 Comprehensive test management with execution tracking.
@@ -181,9 +186,9 @@ Comprehensive test management with execution tracking.
 - Add execution notes
 - Upload screenshots/logs
 - If fail: Create bug directly
-- Overall result calculated automatically`
+- Overall result calculated automatically`,
     },
-    "Bug Tracker": {
+    'Bug Tracker': {
       content: `**Bug Tracker**
 
 Complete defect management and tracking.
@@ -231,9 +236,9 @@ Complete defect management and tracking.
 - Linked Story
 - Assigned Developer
 - Reported Date
-- Actions (View/Edit/Delete)`
+- Actions (View/Edit/Delete)`,
     },
-    "Risk Matrix": {
+    'Risk Matrix': {
       content: `**Risk-Prioritisation Matrix**
 
 Assess module risk and prioritize testing efforts with three visualization modes.
@@ -284,9 +289,9 @@ Scores range 0-10:
 - Business Impact (0-10 with progress bar)
 - Risk Level badge (High/Medium/Low)
 - Testing Protocol recommendation
-- Actions (View/Edit)`
+- Actions (View/Edit)`,
     },
-    "Analytics": {
+    Analytics: {
       content: `**Analytics Dashboard**
 
 Comprehensive quality metrics and workflow diagnostics with 6 specialized views.
@@ -460,9 +465,9 @@ Comprehensive quality metrics and workflow diagnostics with 6 specialized views.
 
 **Export Options:**
 - JSON report with all metrics
-- Timestamp and date range included`
+- Timestamp and date range included`,
     },
-    "Sprints": {
+    Sprints: {
       content: `**Sprint Management**
 
 Plan and track agile sprints.
@@ -501,9 +506,9 @@ Plan and track agile sprints.
 - What went well
 - What could improve
 - Action items with owners
-- Metrics review`
+- Metrics review`,
     },
-    "AI Recommendations": {
+    'AI Recommendations': {
       content: `**AI Test Recommendations**
 
 Automated test gap analysis and suggestions.
@@ -546,9 +551,9 @@ AI analyzes:
 - By Priority
 - By Type
 - By Module
-- By Story`
+- By Story`,
     },
-    "Release Readiness": {
+    'Release Readiness': {
       content: `**Release Readiness Dashboard**
 
 Production deployment checklist and quality gates.
@@ -611,9 +616,9 @@ Production deployment checklist and quality gates.
 **Actions:**
 - Schedule Release (date/time picker)
 - Deploy Now
-- Export Release Report (PDF)`
+- Export Release Report (PDF)`,
     },
-    "User Management": {
+    'User Management': {
       content: `**User Management**
 
 Manage team members and permissions.
@@ -695,9 +700,9 @@ Scrum Master:
 - Current Workload
 - Created Date
 - Teams
-- Actions (View/Edit/Deactivate/Delete)`
+- Actions (View/Edit/Deactivate/Delete)`,
     },
-    "Quick Create": {
+    'Quick Create': {
       content: `**Quick Create Menu**
 
 Rapidly create new items from anywhere in the application.
@@ -739,9 +744,9 @@ Rapidly create new items from anywhere in the application.
 - Clean dropdown interface
 - Hover states for better UX
 - Smooth animations
-- Mobile-friendly`
+- Mobile-friendly`,
     },
-    "Accessing Documentation": {
+    'Accessing Documentation': {
       content: `**How to Access Documentation**
 
 The documentation is always available from the top header.
@@ -778,9 +783,9 @@ The documentation is always available from the top header.
 **Tips:**
 - Expand multiple sections simultaneously
 - Use browser search (Ctrl+F) to find specific terms
-- Documentation updates automatically with new features`
+- Documentation updates automatically with new features`,
     },
-    "CSV Import & REST API": {
+    'CSV Import & REST API': {
       content: `**CSV Import & REST API Documentation**
 
 **CSV Import (Historical Data)**
@@ -861,9 +866,9 @@ const response = await fetch(
 - Supabase Auth for authentication
 - RBAC with 5 roles
 - Row-level security
-- Service role key never exposed to frontend`
+- Service role key never exposed to frontend`,
     },
-    "Keyboard Shortcuts": {
+    'Keyboard Shortcuts': {
       content: `**Keyboard Shortcuts**
 
 **Navigation:**
@@ -892,8 +897,8 @@ const response = await fetch(
 **Quick Create:**
 - Alt+S: Quick Create Story
 - Alt+T: Quick Create Test
-- Alt+B: Quick Create Bug`
-    }
+- Alt+B: Quick Create Bug`,
+    },
   };
 
   return (
@@ -955,19 +960,28 @@ const response = await fetch(
                           {content.split('\n').map((line, idx) => {
                             if (line.startsWith('**') && line.endsWith('**')) {
                               return (
-                                <h4 key={idx} className="font-bold text-gray-900 dark:text-white mt-4 mb-2">
+                                <h4
+                                  key={idx}
+                                  className="font-bold text-gray-900 dark:text-white mt-4 mb-2"
+                                >
                                   {line.replace(/\*\*/g, '')}
                                 </h4>
                               );
                             } else if (line.startsWith('- ')) {
                               return (
-                                <li key={idx} className="ml-4 text-gray-700 dark:text-gray-300">
+                                <li
+                                  key={idx}
+                                  className="ml-4 text-gray-700 dark:text-gray-300"
+                                >
                                   {line.substring(2)}
                                 </li>
                               );
                             } else if (line.trim()) {
                               return (
-                                <p key={idx} className="text-gray-700 dark:text-gray-300 mb-2">
+                                <p
+                                  key={idx}
+                                  className="text-gray-700 dark:text-gray-300 mb-2"
+                                >
                                   {line}
                                 </p>
                               );

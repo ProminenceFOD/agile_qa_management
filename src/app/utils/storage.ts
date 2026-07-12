@@ -157,7 +157,7 @@ class PersistentStorage {
     await this.adapter.clear();
     try {
       // Only clear aqms_* keys from localStorage
-      Object.keys(localStorage).forEach(key => {
+      Object.keys(localStorage).forEach((key) => {
         if (key.startsWith('aqms_')) {
           localStorage.removeItem(key);
         }
@@ -175,7 +175,7 @@ class PersistentStorage {
   setItemSync(key: string, value: string): void {
     this.cache.set(key, value);
     // Fire and forget async save
-    this.setItem(key, value).catch(e =>
+    this.setItem(key, value).catch((e) =>
       console.error('[Storage] Async setItem failed:', e)
     );
   }
@@ -189,7 +189,10 @@ export async function getStorageItem(key: string): Promise<string | null> {
   return storage.getItem(key);
 }
 
-export async function setStorageItem(key: string, value: string): Promise<void> {
+export async function setStorageItem(
+  key: string,
+  value: string
+): Promise<void> {
   return storage.setItem(key, value);
 }
 

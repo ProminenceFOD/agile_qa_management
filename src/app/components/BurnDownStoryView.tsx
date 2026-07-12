@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { ArrowLeft, Circle, Clock, AlertTriangle, CheckCircle, Save } from 'lucide-react';
+import {
+  ArrowLeft,
+  Circle,
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+  Save,
+} from 'lucide-react';
 
 type QualityState = 'Tested' | 'Testing' | 'Bugs Found' | 'Not Started';
 
@@ -19,7 +26,11 @@ interface BurnDownStoryViewProps {
   onBack: () => void;
 }
 
-export function BurnDownStoryView({ story, onUpdateState, onBack }: BurnDownStoryViewProps) {
+export function BurnDownStoryView({
+  story,
+  onUpdateState,
+  onBack,
+}: BurnDownStoryViewProps) {
   const { user } = useAuth();
   const [notes, setNotes] = useState(story.notes || '');
 
@@ -71,7 +82,9 @@ export function BurnDownStoryView({ story, onUpdateState, onBack }: BurnDownStor
               <h1 className="text-3xl text-gray-900 mt-1">{story.title}</h1>
             </div>
             <div>
-              <span className={`inline-flex items-center px-4 py-2 rounded-full ${getStateColor(story.state)}`}>
+              <span
+                className={`inline-flex items-center px-4 py-2 rounded-full ${getStateColor(story.state)}`}
+              >
                 {story.state}
               </span>
             </div>
@@ -87,23 +100,33 @@ export function BurnDownStoryView({ story, onUpdateState, onBack }: BurnDownStor
           )}
 
           <div>
-            <h3 className="text-lg text-gray-800 mb-3">Current Quality State</h3>
+            <h3 className="text-lg text-gray-800 mb-3">
+              Current Quality State
+            </h3>
             <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
               <div className="flex items-center justify-between mb-2">
-                <span className={`inline-flex items-center px-4 py-2 rounded-full ${getStateColor(story.state)}`}>
+                <span
+                  className={`inline-flex items-center px-4 py-2 rounded-full ${getStateColor(story.state)}`}
+                >
                   {story.state}
                 </span>
                 {story.dayCompleted && (
-                  <span className="text-sm text-gray-600">Completed on Day {story.dayCompleted}</span>
+                  <span className="text-sm text-gray-600">
+                    Completed on Day {story.dayCompleted}
+                  </span>
                 )}
               </div>
-              <p className="text-sm text-gray-700">{getStateDescription(story.state)}</p>
+              <p className="text-sm text-gray-700">
+                {getStateDescription(story.state)}
+              </p>
             </div>
           </div>
 
           {canUpdateState && (
             <div>
-              <h3 className="text-lg text-gray-800 mb-3">Update Quality State</h3>
+              <h3 className="text-lg text-gray-800 mb-3">
+                Update Quality State
+              </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <button
                   onClick={() => onUpdateState(story.id, 'Not Started')}
@@ -144,7 +167,8 @@ export function BurnDownStoryView({ story, onUpdateState, onBack }: BurnDownStor
           {!canUpdateState && (
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               <p className="text-sm text-yellow-800">
-                Only QA Engineers can update quality states. Current role: <strong>{user?.role}</strong>
+                Only QA Engineers can update quality states. Current role:{' '}
+                <strong>{user?.role}</strong>
               </p>
             </div>
           )}
@@ -168,7 +192,9 @@ export function BurnDownStoryView({ story, onUpdateState, onBack }: BurnDownStor
           </div>
 
           <div>
-            <h3 className="text-lg text-gray-800 mb-3">Quality State Timeline</h3>
+            <h3 className="text-lg text-gray-800 mb-3">
+              Quality State Timeline
+            </h3>
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-sm">
                 <div className="w-3 h-3 rounded-full bg-gray-400"></div>
@@ -176,17 +202,25 @@ export function BurnDownStoryView({ story, onUpdateState, onBack }: BurnDownStor
               </div>
               <div className="ml-1.5 w-0.5 h-6 bg-gray-200"></div>
               <div className="flex items-center gap-3 text-sm">
-                <div className={`w-3 h-3 rounded-full ${story.state === 'Testing' || story.state === 'Bugs Found' || story.state === 'Tested' ? 'bg-indigo-500' : 'bg-gray-200'}`}></div>
+                <div
+                  className={`w-3 h-3 rounded-full ${story.state === 'Testing' || story.state === 'Bugs Found' || story.state === 'Tested' ? 'bg-indigo-500' : 'bg-gray-200'}`}
+                ></div>
                 <span className="text-gray-700">Testing</span>
               </div>
               <div className="ml-1.5 w-0.5 h-6 bg-gray-200"></div>
               <div className="flex items-center gap-3 text-sm">
-                <div className={`w-3 h-3 rounded-full ${story.state === 'Bugs Found' ? 'bg-orange-500' : 'bg-gray-200'}`}></div>
-                <span className="text-gray-700">Bugs Found (if applicable)</span>
+                <div
+                  className={`w-3 h-3 rounded-full ${story.state === 'Bugs Found' ? 'bg-orange-500' : 'bg-gray-200'}`}
+                ></div>
+                <span className="text-gray-700">
+                  Bugs Found (if applicable)
+                </span>
               </div>
               <div className="ml-1.5 w-0.5 h-6 bg-gray-200"></div>
               <div className="flex items-center gap-3 text-sm">
-                <div className={`w-3 h-3 rounded-full ${story.state === 'Tested' ? 'bg-green-500' : 'bg-gray-200'}`}></div>
+                <div
+                  className={`w-3 h-3 rounded-full ${story.state === 'Tested' ? 'bg-green-500' : 'bg-gray-200'}`}
+                ></div>
                 <span className="text-gray-700">Tested</span>
               </div>
             </div>

@@ -78,7 +78,13 @@ const TESTERS = [
 
 const SPRINTS = ['Sprint 12', 'Sprint 13', 'Sprint 14', 'Backlog'];
 
-export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] }: StoryFormProps) {
+export function StoryForm({
+  story,
+  onSave,
+  onCancel,
+  mode,
+  existingStories = [],
+}: StoryFormProps) {
   // Generate next Story ID for create mode
   const generateStoryId = () => {
     if (mode === 'edit' && story?.id) {
@@ -87,13 +93,14 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
 
     // Find the highest existing US-XXX number
     const existingNumbers = existingStories
-      .map(s => {
+      .map((s) => {
         const match = s.id.match(/^US-(\d+)$/);
         return match ? parseInt(match[1]) : 0;
       })
-      .filter(n => n > 0);
+      .filter((n) => n > 0);
 
-    const maxNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) : 0;
+    const maxNumber =
+      existingNumbers.length > 0 ? Math.max(...existingNumbers) : 0;
     const nextNumber = maxNumber + 1;
 
     return `US-${String(nextNumber).padStart(3, '0')}`;
@@ -148,10 +155,16 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
   // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (bugDropdownRef.current && !bugDropdownRef.current.contains(e.target as Node)) {
+      if (
+        bugDropdownRef.current &&
+        !bugDropdownRef.current.contains(e.target as Node)
+      ) {
         setShowBugDropdown(false);
       }
-      if (testDropdownRef.current && !testDropdownRef.current.contains(e.target as Node)) {
+      if (
+        testDropdownRef.current &&
+        !testDropdownRef.current.contains(e.target as Node)
+      ) {
         setShowTestCaseDropdown(false);
       }
     };
@@ -165,7 +178,10 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
       const tags = new Set<string>();
       try {
         const stories = await getData('aqms_stories');
-        if (stories) stories.forEach((s: any) => s.tags?.forEach((t: string) => tags.add(t)));
+        if (stories)
+          stories.forEach((s: any) =>
+            s.tags?.forEach((t: string) => tags.add(t))
+          );
         const bugs = await getData('aqms_bugs');
         if (bugs) {
           bugs.forEach((b: any) => b.tags?.forEach((t: string) => tags.add(t)));
@@ -176,7 +192,9 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
           setAllTestCases(testCases);
           const storyId = formData.id;
           setLinkedTestCaseIds(
-            testCases.filter((tc: any) => tc.linkedStory === storyId).map((tc: any) => tc.id)
+            testCases
+              .filter((tc: any) => tc.linkedStory === storyId)
+              .map((tc: any) => tc.id)
           );
         }
       } catch (e) {
@@ -185,19 +203,25 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
       setAllTags(Array.from(tags).sort());
     };
     loadData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ── Bug helpers ──────────────────────────────────────────────────────────────
   const handleLinkBug = (bugId: string) => {
     if (!formData.linkedBugs?.includes(bugId)) {
-      setFormData(prev => ({ ...prev, linkedBugs: [...(prev.linkedBugs || []), bugId] }));
+      setFormData((prev) => ({
+        ...prev,
+        linkedBugs: [...(prev.linkedBugs || []), bugId],
+      }));
     }
     setShowBugDropdown(false);
   };
 
   const handleUnlinkBug = (bugId: string) => {
-    setFormData(prev => ({ ...prev, linkedBugs: (prev.linkedBugs || []).filter(id => id !== bugId) }));
+    setFormData((prev) => ({
+      ...prev,
+      linkedBugs: (prev.linkedBugs || []).filter((id) => id !== bugId),
+    }));
   };
 
   const handleCreateBug = async () => {
@@ -220,7 +244,10 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
       bugs.push(newBug);
       await setData('aqms_bugs', bugs);
       setAvailableBugs(bugs);
-      setFormData(prev => ({ ...prev, linkedBugs: [...(prev.linkedBugs || []), nextId] }));
+      setFormData((prev) => ({
+        ...prev,
+        linkedBugs: [...(prev.linkedBugs || []), nextId],
+      }));
       setNewBugTitle('');
       setNewBugDescription('');
       setNewBugSeverity('Medium');
@@ -234,10 +261,12 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
   const handleLinkTestCase = async (tcId: string) => {
     try {
       const tcs = (await getData('aqms_test_cases')) || [];
-      const updated = tcs.map((tc: any) => tc.id === tcId ? { ...tc, linkedStory: formData.id } : tc);
+      const updated = tcs.map((tc: any) =>
+        tc.id === tcId ? { ...tc, linkedStory: formData.id } : tc
+      );
       await setData('aqms_test_cases', updated);
       setAllTestCases(updated);
-      setLinkedTestCaseIds(prev => [...prev, tcId]);
+      setLinkedTestCaseIds((prev) => [...prev, tcId]);
     } catch (e) {
       console.error('[StoryForm] Error linking test case:', e);
     }
@@ -247,10 +276,12 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
   const handleUnlinkTestCase = async (tcId: string) => {
     try {
       const tcs = (await getData('aqms_test_cases')) || [];
-      const updated = tcs.map((tc: any) => tc.id === tcId ? { ...tc, linkedStory: undefined } : tc);
+      const updated = tcs.map((tc: any) =>
+        tc.id === tcId ? { ...tc, linkedStory: undefined } : tc
+      );
       await setData('aqms_test_cases', updated);
       setAllTestCases(updated);
-      setLinkedTestCaseIds(prev => prev.filter(id => id !== tcId));
+      setLinkedTestCaseIds((prev) => prev.filter((id) => id !== tcId));
     } catch (e) {
       console.error('[StoryForm] Error unlinking test case:', e);
     }
@@ -262,13 +293,15 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
     if (!formData.title.trim()) {
       newErrors.title = 'Title is required';
     } else if (formData.title.trim().length < 10) {
-      newErrors.title = 'Title must be at least 10 characters (required for PM approval)';
+      newErrors.title =
+        'Title must be at least 10 characters (required for PM approval)';
     }
 
     if (!formData.description.trim()) {
       newErrors.description = 'Description is required';
     } else if (formData.description.trim().length < 20) {
-      newErrors.description = 'Description must be at least 20 characters (required for PM approval)';
+      newErrors.description =
+        'Description must be at least 20 characters (required for PM approval)';
     }
 
     // Validate acceptance criteria if checkbox is checked
@@ -276,13 +309,20 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
       // Strip HTML tags for validation
       const plainText = formData.criteriaDetails.replace(/<[^>]*>/g, '').trim();
       if (!plainText || plainText.length < 20) {
-        newErrors.criteriaDetails = 'Acceptance Criteria details must be at least 20 characters (required for QA/PM sign-off)';
+        newErrors.criteriaDetails =
+          'Acceptance Criteria details must be at least 20 characters (required for QA/PM sign-off)';
       } else {
         const lowerCriteria = plainText.toLowerCase();
         if (lowerCriteria.includes('todo') || lowerCriteria.includes('tbd')) {
-          newErrors.criteriaDetails = 'Please replace TODO/TBD placeholder text with actual criteria';
-        } else if (!lowerCriteria.includes('given') || !lowerCriteria.includes('when') || !lowerCriteria.includes('then')) {
-          newErrors.criteriaDetails = 'Acceptance Criteria must follow Given/When/Then format (required for QA/PM sign-off)';
+          newErrors.criteriaDetails =
+            'Please replace TODO/TBD placeholder text with actual criteria';
+        } else if (
+          !lowerCriteria.includes('given') ||
+          !lowerCriteria.includes('when') ||
+          !lowerCriteria.includes('then')
+        ) {
+          newErrors.criteriaDetails =
+            'Acceptance Criteria must follow Given/When/Then format (required for QA/PM sign-off)';
         }
       }
     }
@@ -314,7 +354,11 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
     console.log('[StoryForm] Validation passed, preparing to save...');
 
     // Enforce quality gate: clear assignments if QA/PM approval not complete
-    const cleanedData = { ...formData, tags: selectedTags, linkedBugs: formData.linkedBugs || [] };
+    const cleanedData = {
+      ...formData,
+      tags: selectedTags,
+      linkedBugs: formData.linkedBugs || [],
+    };
 
     console.log('[StoryForm] Original story props:', {
       id: story?.id,
@@ -362,9 +406,7 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-gray-700 mb-2">
-              Story ID
-            </label>
+            <label className="block text-gray-700 mb-2">Story ID</label>
             <div className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 font-mono font-semibold">
               {formData.id}
             </div>
@@ -372,27 +414,35 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
 
           <div>
             <label htmlFor="title" className="block text-gray-700 mb-2">
-              Story Title * <span className="text-xs text-gray-500">(min 10 chars)</span>
+              Story Title *{' '}
+              <span className="text-xs text-gray-500">(min 10 chars)</span>
             </label>
             <input
               id="title"
               type="text"
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="User Authentication - Login Flow"
             />
-            {errors.title && <p className="text-red-600 text-sm mt-1">{errors.title}</p>}
+            {errors.title && (
+              <p className="text-red-600 text-sm mt-1">{errors.title}</p>
+            )}
           </div>
 
           <div>
             <label htmlFor="description" className="block text-gray-700 mb-2">
-              Description * <span className="text-xs text-gray-500">(min 20 chars)</span>
+              Description *{' '}
+              <span className="text-xs text-gray-500">(min 20 chars)</span>
             </label>
             <textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               rows={4}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="As a user, I want to..."
@@ -403,12 +453,17 @@ export function StoryForm({ story, onSave, onCancel, mode, existingStories = [] 
           </div>
 
           <div>
-            <label htmlFor="criteriaDetails" className="block text-gray-700 mb-2">
+            <label
+              htmlFor="criteriaDetails"
+              className="block text-gray-700 mb-2"
+            >
               Acceptance Criteria Details *
             </label>
             <RichTextEditor
               value={formData.criteriaDetails}
-              onChange={(value) => setFormData({ ...formData, criteriaDetails: value })}
+              onChange={(value) =>
+                setFormData({ ...formData, criteriaDetails: value })
+              }
               placeholder="Given a valid user account
 When I enter correct credentials
 Then I should be redirected to the dashboard
@@ -416,10 +471,13 @@ And my session should be maintained"
               minHeight="180px"
             />
             {errors.criteriaDetails && (
-              <p className="text-red-600 text-sm mt-1">{errors.criteriaDetails}</p>
+              <p className="text-red-600 text-sm mt-1">
+                {errors.criteriaDetails}
+              </p>
             )}
             <p className="text-xs text-gray-600 mt-1">
-              ⚠️ Required for QA/PM sign-off: Must be 20+ characters, follow Given/When/Then format, and contain no placeholders (TODO/TBD)
+              ⚠️ Required for QA/PM sign-off: Must be 20+ characters, follow
+              Given/When/Then format, and contain no placeholders (TODO/TBD)
             </p>
           </div>
 
@@ -428,13 +486,24 @@ And my session should be maintained"
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  <svg
+                    className="h-5 w-5 text-yellow-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-yellow-700">
-                    <strong>Quality Gate Enforcement:</strong> Developer and Tester assignment is blocked until BOTH QA sign-off (by assigned QA Reviewer) and PM approval are completed.
+                    <strong>Quality Gate Enforcement:</strong> Developer and
+                    Tester assignment is blocked until BOTH QA sign-off (by
+                    assigned QA Reviewer) and PM approval are completed.
                   </p>
                 </div>
               </div>
@@ -443,14 +512,23 @@ And my session should be maintained"
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="assignedDeveloper" className="block text-gray-700 mb-2">
-                Assign Developer {(!formData.qaSignOff || !formData.pmApproval) && <span className="text-red-600">🔒</span>}
+              <label
+                htmlFor="assignedDeveloper"
+                className="block text-gray-700 mb-2"
+              >
+                Assign Developer{' '}
+                {(!formData.qaSignOff || !formData.pmApproval) && (
+                  <span className="text-red-600">🔒</span>
+                )}
               </label>
               <select
                 id="assignedDeveloper"
                 value={formData.assignedDeveloper}
                 onChange={(e) =>
-                  setFormData({ ...formData, assignedDeveloper: e.target.value })
+                  setFormData({
+                    ...formData,
+                    assignedDeveloper: e.target.value,
+                  })
                 }
                 disabled={!formData.qaSignOff || !formData.pmApproval}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
@@ -470,8 +548,14 @@ And my session should be maintained"
             </div>
 
             <div>
-              <label htmlFor="assignedTester" className="block text-gray-700 mb-2">
-                Assign Tester {(!formData.qaSignOff || !formData.pmApproval) && <span className="text-red-600">🔒</span>}
+              <label
+                htmlFor="assignedTester"
+                className="block text-gray-700 mb-2"
+              >
+                Assign Tester{' '}
+                {(!formData.qaSignOff || !formData.pmApproval) && (
+                  <span className="text-red-600">🔒</span>
+                )}
               </label>
               <select
                 id="assignedTester"
@@ -506,7 +590,10 @@ And my session should be maintained"
                 id="priority"
                 value={formData.priority}
                 onChange={(e) =>
-                  setFormData({ ...formData, priority: e.target.value as Priority })
+                  setFormData({
+                    ...formData,
+                    priority: e.target.value as Priority,
+                  })
                 }
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
@@ -527,7 +614,9 @@ And my session should be maintained"
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    storyPoints: e.target.value ? parseInt(e.target.value) : undefined,
+                    storyPoints: e.target.value
+                      ? parseInt(e.target.value)
+                      : undefined,
                   })
                 }
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
@@ -551,7 +640,9 @@ And my session should be maintained"
               <select
                 id="sprint"
                 value={formData.sprint}
-                onChange={(e) => setFormData({ ...formData, sprint: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, sprint: e.target.value })
+                }
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 <option value="">Unassigned</option>
@@ -570,7 +661,9 @@ And my session should be maintained"
               <select
                 id="moduleId"
                 value={formData.moduleId || ''}
-                onChange={(e) => setFormData({ ...formData, moduleId: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, moduleId: e.target.value })
+                }
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 <option value="">No Module Linked</option>
@@ -597,7 +690,11 @@ And my session should be maintained"
                     🏷️ {tag}
                     <button
                       type="button"
-                      onClick={() => setSelectedTags(selectedTags.filter((_, i) => i !== idx))}
+                      onClick={() =>
+                        setSelectedTags(
+                          selectedTags.filter((_, i) => i !== idx)
+                        )
+                      }
                       className="ml-1 text-indigo-600 hover:text-indigo-800"
                     >
                       ×
@@ -617,7 +714,10 @@ And my session should be maintained"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
-                      if (tagInput.trim() && !selectedTags.includes(tagInput.trim())) {
+                      if (
+                        tagInput.trim() &&
+                        !selectedTags.includes(tagInput.trim())
+                      ) {
                         setSelectedTags([...selectedTags, tagInput.trim()]);
                         setTagInput('');
                       }
@@ -630,16 +730,23 @@ And my session should be maintained"
               <select
                 value=""
                 onChange={(e) => {
-                  if (e.target.value && !selectedTags.includes(e.target.value)) {
+                  if (
+                    e.target.value &&
+                    !selectedTags.includes(e.target.value)
+                  ) {
                     setSelectedTags([...selectedTags, e.target.value]);
                   }
                 }}
                 className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 <option value="">Select existing...</option>
-                {allTags.filter(tag => !selectedTags.includes(tag)).map(tag => (
-                  <option key={tag} value={tag}>{tag}</option>
-                ))}
+                {allTags
+                  .filter((tag) => !selectedTags.includes(tag))
+                  .map((tag) => (
+                    <option key={tag} value={tag}>
+                      {tag}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -650,7 +757,10 @@ And my session should be maintained"
               type="checkbox"
               checked={formData.acceptanceCriteria}
               onChange={(e) =>
-                setFormData({ ...formData, acceptanceCriteria: e.target.checked })
+                setFormData({
+                  ...formData,
+                  acceptanceCriteria: e.target.checked,
+                })
               }
               className="w-5 h-5 text-indigo-500 border-gray-300 rounded focus:ring-indigo-500"
             />
@@ -660,16 +770,24 @@ And my session should be maintained"
           </div>
 
           <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Quality Gate Assignment</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Quality Gate Assignment
+            </h3>
             <div>
-              <label htmlFor="assignedQAReviewer" className="block text-gray-700 mb-2">
+              <label
+                htmlFor="assignedQAReviewer"
+                className="block text-gray-700 mb-2"
+              >
                 Assign QA Reviewer (for Sign-Off) *
               </label>
               <select
                 id="assignedQAReviewer"
                 value={formData.assignedQAReviewer}
                 onChange={(e) =>
-                  setFormData({ ...formData, assignedQAReviewer: e.target.value })
+                  setFormData({
+                    ...formData,
+                    assignedQAReviewer: e.target.value,
+                  })
                 }
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
@@ -681,60 +799,274 @@ And my session should be maintained"
                 ))}
               </select>
               <p className="text-xs text-gray-500 mt-1">
-                Only the assigned QA Reviewer can provide QA sign-off on acceptance criteria
+                Only the assigned QA Reviewer can provide QA sign-off on
+                acceptance criteria
               </p>
             </div>
           </div>
 
           {/* ── Linked Items (Bugs & Test Cases) ──────────────────────── */}
           <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Linked Items</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Linked Items
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Linked Bugs */}
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-800">
-                  🐛 Linked Bugs ({formData.linkedBugs?.length || 0})
-                </h3>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => { setShowCreateBugForm(true); setShowBugDropdown(false); }}
-                    className="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700"
-                  >
-                    + Create Bug Ticket
-                  </button>
-                  <div className="relative" ref={bugDropdownRef}>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-gray-800">
+                    🐛 Linked Bugs ({formData.linkedBugs?.length || 0})
+                  </h3>
+                  <div className="flex gap-2">
                     <button
                       type="button"
-                      onClick={() => setShowBugDropdown(v => !v)}
-                      className="px-3 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                      onClick={() => {
+                        setShowCreateBugForm(true);
+                        setShowBugDropdown(false);
+                      }}
+                      className="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700"
                     >
-                      + Link Existing
+                      + Create Bug Ticket
                     </button>
-                    {showBugDropdown && (
-                      <div className="absolute right-0 top-8 z-20 bg-white border border-red-200 rounded-lg shadow-lg max-h-56 overflow-y-auto w-72">
+                    <div className="relative" ref={bugDropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setShowBugDropdown((v) => !v)}
+                        className="px-3 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                      >
+                        + Link Existing
+                      </button>
+                      {showBugDropdown && (
+                        <div className="absolute right-0 top-8 z-20 bg-white border border-red-200 rounded-lg shadow-lg max-h-56 overflow-y-auto w-72">
+                          <input
+                            type="text"
+                            value={bugSearchTerm}
+                            onChange={(e) => setBugSearchTerm(e.target.value)}
+                            placeholder="Search bugs..."
+                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
+                          />
+                          {availableBugs.filter(
+                            (b) =>
+                              !formData.linkedBugs?.includes(b.id) &&
+                              b.title
+                                .toLowerCase()
+                                .includes(bugSearchTerm.toLowerCase())
+                          ).length === 0 ? (
+                            <div className="px-3 py-3 text-sm text-gray-500">
+                              All bugs are already linked
+                            </div>
+                          ) : (
+                            availableBugs
+                              .filter(
+                                (b) =>
+                                  !formData.linkedBugs?.includes(b.id) &&
+                                  b.title
+                                    .toLowerCase()
+                                    .includes(bugSearchTerm.toLowerCase())
+                              )
+                              .map((bug) => (
+                                <div
+                                  key={bug.id}
+                                  onClick={() => handleLinkBug(bug.id)}
+                                  className="px-3 py-2 hover:bg-red-50 cursor-pointer text-sm border-b border-gray-100 last:border-0"
+                                >
+                                  <span className="font-medium text-gray-900">
+                                    {bug.id}
+                                  </span>
+                                  <span className="text-gray-500"> — </span>
+                                  <span className="text-gray-700 truncate">
+                                    {bug.title}
+                                  </span>
+                                </div>
+                              ))
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick create bug form */}
+                {showCreateBugForm && (
+                  <div className="mb-4 bg-white border border-red-200 rounded-lg p-4 space-y-3">
+                    <h4 className="text-sm font-semibold text-gray-800">
+                      New Bug Ticket
+                    </h4>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">
+                        Title *
+                      </label>
+                      <input
+                        type="text"
+                        value={newBugTitle}
+                        onChange={(e) => setNewBugTitle(e.target.value)}
+                        placeholder="Brief description of the bug"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1">
+                          Severity
+                        </label>
+                        <select
+                          value={newBugSeverity}
+                          onChange={(e) => setNewBugSeverity(e.target.value)}
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400 bg-white"
+                        >
+                          <option>Critical</option>
+                          <option>High</option>
+                          <option>Medium</option>
+                          <option>Low</option>
+                        </select>
+                      </div>
+                      <div className="flex items-end gap-2">
+                        <button
+                          type="button"
+                          onClick={handleCreateBug}
+                          disabled={!newBugTitle.trim()}
+                          className="flex-1 px-3 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600 disabled:opacity-50"
+                        >
+                          Create &amp; Link
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowCreateBugForm(false);
+                            setNewBugTitle('');
+                            setNewBugDescription('');
+                          }}
+                          className="px-3 py-2 bg-gray-100 text-gray-600 rounded text-sm hover:bg-gray-200"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">
+                        Description (optional)
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={newBugDescription}
+                        onChange={(e) => setNewBugDescription(e.target.value)}
+                        placeholder="Steps to reproduce, expected vs actual..."
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Linked bugs list */}
+                <div className="space-y-2">
+                  {(formData.linkedBugs || []).length === 0 ? (
+                    <div className="text-sm text-gray-500 text-center py-3">
+                      No bugs linked to this story
+                    </div>
+                  ) : (
+                    (formData.linkedBugs || []).map((bugId) => {
+                      const bug = availableBugs.find((b) => b.id === bugId);
+                      return (
+                        <div
+                          key={bugId}
+                          className="flex items-center justify-between bg-white border border-red-200 rounded p-2"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <span className="text-sm font-medium text-red-700">
+                              {bugId}
+                            </span>
+                            {bug && (
+                              <span className="text-xs text-gray-600 ml-2 truncate">
+                                {bug.title}
+                              </span>
+                            )}
+                            {bug?.severity && (
+                              <span
+                                className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs ${
+                                  bug.severity === 'Critical'
+                                    ? 'bg-red-100 text-red-800'
+                                    : bug.severity === 'High'
+                                      ? 'bg-orange-100 text-orange-800'
+                                      : bug.severity === 'Medium'
+                                        ? 'bg-yellow-100 text-yellow-800'
+                                        : 'bg-gray-100 text-gray-600'
+                                }`}
+                              >
+                                {bug.severity}
+                              </span>
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleUnlinkBug(bugId)}
+                            className="ml-2 px-2 py-1 text-xs bg-red-100 text-red-700 hover:bg-red-200 rounded"
+                          >
+                            Unlink
+                          </button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+
+              {/* Linked Test Cases */}
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-gray-800">
+                    🧪 Linked Test Cases ({linkedTestCaseIds.length})
+                  </h3>
+                  <div className="relative" ref={testDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setShowTestCaseDropdown((v) => !v)}
+                      className="px-3 py-1 bg-purple-500 text-white rounded text-xs hover:bg-purple-600"
+                    >
+                      + Link Test Case
+                    </button>
+                    {showTestCaseDropdown && (
+                      <div className="absolute right-0 top-8 z-20 bg-white border border-purple-200 rounded-lg shadow-lg max-h-56 overflow-y-auto w-72">
                         <input
                           type="text"
-                          value={bugSearchTerm}
-                          onChange={e => setBugSearchTerm(e.target.value)}
-                          placeholder="Search bugs..."
-                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
+                          value={testCaseSearchTerm}
+                          onChange={(e) =>
+                            setTestCaseSearchTerm(e.target.value)
+                          }
+                          placeholder="Search test cases..."
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-400"
                         />
-                        {availableBugs.filter(b => !formData.linkedBugs?.includes(b.id) && b.title.toLowerCase().includes(bugSearchTerm.toLowerCase())).length === 0 ? (
-                          <div className="px-3 py-3 text-sm text-gray-500">All bugs are already linked</div>
+                        {allTestCases.filter(
+                          (tc) =>
+                            !linkedTestCaseIds.includes(tc.id) &&
+                            tc.title
+                              .toLowerCase()
+                              .includes(testCaseSearchTerm.toLowerCase())
+                        ).length === 0 ? (
+                          <div className="px-3 py-3 text-sm text-gray-500">
+                            No unlinked test cases available
+                          </div>
                         ) : (
-                          availableBugs
-                            .filter(b => !formData.linkedBugs?.includes(b.id) && b.title.toLowerCase().includes(bugSearchTerm.toLowerCase()))
-                            .map(bug => (
+                          allTestCases
+                            .filter(
+                              (tc) =>
+                                !linkedTestCaseIds.includes(tc.id) &&
+                                tc.title
+                                  .toLowerCase()
+                                  .includes(testCaseSearchTerm.toLowerCase())
+                            )
+                            .map((tc) => (
                               <div
-                                key={bug.id}
-                                onClick={() => handleLinkBug(bug.id)}
-                                className="px-3 py-2 hover:bg-red-50 cursor-pointer text-sm border-b border-gray-100 last:border-0"
+                                key={tc.id}
+                                onClick={() => handleLinkTestCase(tc.id)}
+                                className="px-3 py-2 hover:bg-purple-50 cursor-pointer text-sm border-b border-gray-100 last:border-0"
                               >
-                                <span className="font-medium text-gray-900">{bug.id}</span>
+                                <span className="font-medium text-gray-900">
+                                  {tc.id}
+                                </span>
                                 <span className="text-gray-500"> — </span>
-                                <span className="text-gray-700 truncate">{bug.title}</span>
+                                <span className="text-gray-700 truncate">
+                                  {tc.title}
+                                </span>
                               </div>
                             ))
                         )}
@@ -742,179 +1074,57 @@ And my session should be maintained"
                     )}
                   </div>
                 </div>
-              </div>
 
-              {/* Quick create bug form */}
-              {showCreateBugForm && (
-                <div className="mb-4 bg-white border border-red-200 rounded-lg p-4 space-y-3">
-                  <h4 className="text-sm font-semibold text-gray-800">New Bug Ticket</h4>
-                  <div>
-                    <label className="block text-xs text-gray-600 mb-1">Title *</label>
-                    <input
-                      type="text"
-                      value={newBugTitle}
-                      onChange={e => setNewBugTitle(e.target.value)}
-                      placeholder="Brief description of the bug"
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs text-gray-600 mb-1">Severity</label>
-                      <select
-                        value={newBugSeverity}
-                        onChange={e => setNewBugSeverity(e.target.value)}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400 bg-white"
-                      >
-                        <option>Critical</option>
-                        <option>High</option>
-                        <option>Medium</option>
-                        <option>Low</option>
-                      </select>
+                <div className="space-y-2">
+                  {linkedTestCaseIds.length === 0 ? (
+                    <div className="text-sm text-gray-500 text-center py-3">
+                      No test cases linked to this story
                     </div>
-                    <div className="flex items-end gap-2">
-                      <button
-                        type="button"
-                        onClick={handleCreateBug}
-                        disabled={!newBugTitle.trim()}
-                        className="flex-1 px-3 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600 disabled:opacity-50"
-                      >
-                        Create &amp; Link
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => { setShowCreateBugForm(false); setNewBugTitle(''); setNewBugDescription(''); }}
-                        className="px-3 py-2 bg-gray-100 text-gray-600 rounded text-sm hover:bg-gray-200"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs text-gray-600 mb-1">Description (optional)</label>
-                    <textarea
-                      rows={2}
-                      value={newBugDescription}
-                      onChange={e => setNewBugDescription(e.target.value)}
-                      placeholder="Steps to reproduce, expected vs actual..."
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Linked bugs list */}
-              <div className="space-y-2">
-                {(formData.linkedBugs || []).length === 0 ? (
-                  <div className="text-sm text-gray-500 text-center py-3">No bugs linked to this story</div>
-                ) : (
-                  (formData.linkedBugs || []).map(bugId => {
-                    const bug = availableBugs.find(b => b.id === bugId);
-                    return (
-                      <div key={bugId} className="flex items-center justify-between bg-white border border-red-200 rounded p-2">
-                        <div className="flex-1 min-w-0">
-                          <span className="text-sm font-medium text-red-700">{bugId}</span>
-                          {bug && <span className="text-xs text-gray-600 ml-2 truncate">{bug.title}</span>}
-                          {bug?.severity && (
-                            <span className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs ${
-                              bug.severity === 'Critical' ? 'bg-red-100 text-red-800' :
-                              bug.severity === 'High' ? 'bg-orange-100 text-orange-800' :
-                              bug.severity === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-gray-100 text-gray-600'
-                            }`}>{bug.severity}</span>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => handleUnlinkBug(bugId)}
-                          className="ml-2 px-2 py-1 text-xs bg-red-100 text-red-700 hover:bg-red-200 rounded"
+                  ) : (
+                    linkedTestCaseIds.map((tcId) => {
+                      const tc = allTestCases.find((t) => t.id === tcId);
+                      return (
+                        <div
+                          key={tcId}
+                          className="flex items-center justify-between bg-white border border-purple-200 rounded p-2"
                         >
-                          Unlink
-                        </button>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </div>
-
-              {/* Linked Test Cases */}
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-800">
-                  🧪 Linked Test Cases ({linkedTestCaseIds.length})
-                </h3>
-                <div className="relative" ref={testDropdownRef}>
-                  <button
-                    type="button"
-                    onClick={() => setShowTestCaseDropdown(v => !v)}
-                    className="px-3 py-1 bg-purple-500 text-white rounded text-xs hover:bg-purple-600"
-                  >
-                    + Link Test Case
-                  </button>
-                  {showTestCaseDropdown && (
-                    <div className="absolute right-0 top-8 z-20 bg-white border border-purple-200 rounded-lg shadow-lg max-h-56 overflow-y-auto w-72">
-                      <input
-                        type="text"
-                        value={testCaseSearchTerm}
-                        onChange={e => setTestCaseSearchTerm(e.target.value)}
-                        placeholder="Search test cases..."
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-400"
-                      />
-                      {allTestCases.filter(tc => !linkedTestCaseIds.includes(tc.id) && tc.title.toLowerCase().includes(testCaseSearchTerm.toLowerCase())).length === 0 ? (
-                        <div className="px-3 py-3 text-sm text-gray-500">No unlinked test cases available</div>
-                      ) : (
-                        allTestCases
-                          .filter(tc => !linkedTestCaseIds.includes(tc.id) && tc.title.toLowerCase().includes(testCaseSearchTerm.toLowerCase()))
-                          .map(tc => (
-                            <div
-                              key={tc.id}
-                              onClick={() => handleLinkTestCase(tc.id)}
-                              className="px-3 py-2 hover:bg-purple-50 cursor-pointer text-sm border-b border-gray-100 last:border-0"
-                            >
-                              <span className="font-medium text-gray-900">{tc.id}</span>
-                              <span className="text-gray-500"> — </span>
-                              <span className="text-gray-700 truncate">{tc.title}</span>
-                            </div>
-                          ))
-                      )}
-                    </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-sm font-medium text-purple-700">
+                              {tcId}
+                            </span>
+                            {tc && (
+                              <span className="text-xs text-gray-600 ml-2 truncate">
+                                {tc.title}
+                              </span>
+                            )}
+                            {tc?.status && (
+                              <span
+                                className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs ${
+                                  tc.status === 'Pass'
+                                    ? 'bg-green-100 text-green-800'
+                                    : tc.status === 'Fail'
+                                      ? 'bg-red-100 text-red-800'
+                                      : tc.status === 'Blocked'
+                                        ? 'bg-orange-100 text-orange-800'
+                                        : 'bg-gray-100 text-gray-600'
+                                }`}
+                              >
+                                {tc.status}
+                              </span>
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleUnlinkTestCase(tcId)}
+                            className="ml-2 px-2 py-1 text-xs bg-purple-100 text-purple-700 hover:bg-purple-200 rounded"
+                          >
+                            Unlink
+                          </button>
+                        </div>
+                      );
+                    })
                   )}
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                {linkedTestCaseIds.length === 0 ? (
-                  <div className="text-sm text-gray-500 text-center py-3">No test cases linked to this story</div>
-                ) : (
-                  linkedTestCaseIds.map(tcId => {
-                    const tc = allTestCases.find(t => t.id === tcId);
-                    return (
-                      <div key={tcId} className="flex items-center justify-between bg-white border border-purple-200 rounded p-2">
-                        <div className="flex-1 min-w-0">
-                          <span className="text-sm font-medium text-purple-700">{tcId}</span>
-                          {tc && <span className="text-xs text-gray-600 ml-2 truncate">{tc.title}</span>}
-                          {tc?.status && (
-                            <span className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs ${
-                              tc.status === 'Pass' ? 'bg-green-100 text-green-800' :
-                              tc.status === 'Fail' ? 'bg-red-100 text-red-800' :
-                              tc.status === 'Blocked' ? 'bg-orange-100 text-orange-800' :
-                              'bg-gray-100 text-gray-600'
-                            }`}>{tc.status}</span>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => handleUnlinkTestCase(tcId)}
-                          className="ml-2 px-2 py-1 text-xs bg-purple-100 text-purple-700 hover:bg-purple-200 rounded"
-                        >
-                          Unlink
-                        </button>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
               </div>
             </div>
           </div>

@@ -6,7 +6,13 @@ interface NotificationModalProps {
   type?: 'success' | 'error' | 'info' | 'warning';
 }
 
-export function NotificationModal({ isOpen, onClose, title, message, type = 'info' }: NotificationModalProps) {
+export function NotificationModal({
+  isOpen,
+  onClose,
+  title,
+  message,
+  type = 'info',
+}: NotificationModalProps) {
   if (!isOpen) return null;
 
   const getTypeStyles = () => {
@@ -53,12 +59,18 @@ export function NotificationModal({ isOpen, onClose, title, message, type = 'inf
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full border border-gray-200 dark:border-gray-700">
         <div className="p-6">
           <div className="flex items-start gap-4">
-            <div className={`flex-shrink-0 w-10 h-10 ${styles.iconBg} rounded-full flex items-center justify-center text-white text-xl`}>
+            <div
+              className={`flex-shrink-0 w-10 h-10 ${styles.iconBg} rounded-full flex items-center justify-center text-white text-xl`}
+            >
               {styles.icon}
             </div>
             <div className="flex-grow">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{title}</h3>
-              <p className="text-sm text-gray-700 dark:text-gray-300">{message}</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                {title}
+              </h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                {message}
+              </p>
             </div>
           </div>
         </div>

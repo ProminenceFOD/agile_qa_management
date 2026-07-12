@@ -1,4 +1,4 @@
-export const exportToCSV = (data: any[], filename: string) => {
+export const exportToCSV = (data: Record<string, unknown>[], filename: string) => {
   if (data.length === 0) return;
 
   // Get headers from first object
@@ -7,22 +7,27 @@ export const exportToCSV = (data: any[], filename: string) => {
   // Create CSV content
   const csvContent = [
     headers.join(','),
-    ...data.map(row =>
-      headers.map(header => {
-        const cell = row[header];
-        // Handle arrays, objects, and special characters
-        if (Array.isArray(cell)) {
-          return `"${cell.join('; ')}"`;
-        }
-        if (typeof cell === 'object' && cell !== null) {
-          return `"${JSON.stringify(cell)}"`;
-        }
-        if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"') || cell.includes('\n'))) {
-          return `"${cell.replace(/"/g, '""')}"`;
-        }
-        return cell ?? '';
-      }).join(',')
-    )
+    ...data.map((row) =>
+      headers
+        .map((header) => {
+          const cell = row[header];
+          // Handle arrays, objects, and special characters
+          if (Array.isArray(cell)) {
+            return `"${cell.join('; ')}"`;
+          }
+          if (typeof cell === 'object' && cell !== null) {
+            return `"${JSON.stringify(cell)}"`;
+          }
+          if (
+            typeof cell === 'string' &&
+            (cell.includes(',') || cell.includes('"') || cell.includes('\n'))
+          ) {
+            return `"${cell.replace(/"/g, '""')}"`;
+          }
+          return cell ?? '';
+        })
+        .join(',')
+    ),
   ].join('\n');
 
   // Create download link
@@ -39,7 +44,11 @@ export const exportToCSV = (data: any[], filename: string) => {
   document.body.removeChild(link);
 };
 
-export const exportToPDF = async (data: any[], filename: string, title: string) => {
+export const exportToPDF = async (
+  data: Record<string, unknown>[],
+  filename: string,
+  title: string
+) => {
   // Simple HTML table to PDF conversion
   const htmlContent = `
     <!DOCTYPE html>
@@ -63,17 +72,27 @@ export const exportToPDF = async (data: any[], filename: string, title: string) 
         <table>
           <thead>
             <tr>
-              ${Object.keys(data[0] || {}).map(key => `<th>${key}</th>`).join('')}
+              ${Object.keys(data[0] || {})
+                .map((key) => `<th>${key}</th>`)
+                .join('')}
             </tr>
           </thead>
           <tbody>
-            ${data.map(row => `
+            ${data
+              .map(
+                (row) => `
               <tr>
-                ${Object.values(row).map(value => `
-                  <td>${Array.isArray(value) ? value.join(', ') : typeof value === 'object' ? JSON.stringify(value) : value ?? ''}</td>
-                `).join('')}
+                ${Object.values(row)
+                  .map(
+                    (value) => `
+                  <td>${Array.isArray(value) ? value.join(', ') : typeof value === 'object' ? JSON.stringify(value) : (value ?? '')}</td>
+                `
+                  )
+                  .join('')}
               </tr>
-            `).join('')}
+            `
+              )
+              .join('')}
           </tbody>
         </table>
       </body>
@@ -92,20 +111,23 @@ export const exportToPDF = async (data: any[], filename: string, title: string) 
   }
 };
 
-export const prepareStoryDataForExport = (stories: any[]) => {
-  return stories.map(story => ({
+export const prepareStoryDataForExport = (stories: Record<string, unknown>[]) => {
+  return stories.map((story) => ({
     'Story ID': story.id,
-    'Title': story.title,
-    'Priority': story.priority,
-    'Points': story.storyPoints || '',
-    'Sprint': story.sprint || '',
-    'Developer': story.assignedDeveloper || '',
-    'Tester': story.assignedTester || '',
-    'Status': story.acceptanceCriteria && story.qaSignOff && story.pmApproval ? 'Ready' : 'Locked',
+    Title: story.title,
+    Priority: story.priority,
+    Points: story.storyPoints || '',
+    Sprint: story.sprint || '',
+    Developer: story.assignedDeveloper || '',
+    Tester: story.assignedTester || '',
+    Status:
+      story.acceptanceCriteria && story.qaSignOff && story.pmApproval
+        ? 'Ready'
+        : 'Locked',
     'AC Complete': story.acceptanceCriteria ? 'Yes' : 'No',
     'QA Signed': story.qaSignOff ? 'Yes' : 'No',
     'PM Approved': story.pmApproval ? 'Yes' : 'No',
-    'Dependencies': story.dependencies?.join('; ') || '',
-    'Created': new Date(story.createdAt).toLocaleDateString(),
+    Dependencies: story.dependencies?.join('; ') || '',
+    Created: new Date(story.createdAt).toLocaleDateString(),
   }));
 };

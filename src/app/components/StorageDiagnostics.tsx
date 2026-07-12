@@ -5,7 +5,9 @@ export function StorageDiagnostics() {
   const [storageKeys, setStorageKeys] = useState<string[]>([]);
   const [aqmsKeys, setAqmsKeys] = useState<Record<string, string>>({});
   const [testResult, setTestResult] = useState<string>('');
-  const [indexedDBKeys, setIndexedDBKeys] = useState<Record<string, string>>({});
+  const [indexedDBKeys, setIndexedDBKeys] = useState<Record<string, string>>(
+    {}
+  );
 
   useEffect(() => {
     const checkStorage = async () => {
@@ -15,7 +17,7 @@ export function StorageDiagnostics() {
 
       // Get all aqms_* keys and their values from localStorage
       const aqms: Record<string, string> = {};
-      allKeys.forEach(key => {
+      allKeys.forEach((key) => {
         if (key.includes('aqms_')) {
           const value = localStorage.getItem(key);
           aqms[key] = value ? `${value.substring(0, 100)}...` : 'null';
@@ -26,7 +28,12 @@ export function StorageDiagnostics() {
       // Check IndexedDB
       try {
         const idbData: Record<string, string> = {};
-        const testKeys = ['aqms_stories', 'aqms_bugs', 'aqms_users', 'aqms_test_cases'];
+        const testKeys = [
+          'aqms_stories',
+          'aqms_bugs',
+          'aqms_users',
+          'aqms_test_cases',
+        ];
         for (const key of testKeys) {
           const value = await getStorageItem(key);
           if (value) {
@@ -70,9 +77,7 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
   };
 
   const saveTestData = async () => {
-    const testStories = [
-      { id: 'US-999', title: 'Test Story', status: 'Done' }
-    ];
+    const testStories = [{ id: 'US-999', title: 'Test Story', status: 'Done' }];
 
     // Save to new storage system
     await setStorageItem('aqms_stories', JSON.stringify(testStories));
@@ -81,11 +86,13 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
     // Immediately try to read it back
     const retrieved = await getStorageItem('aqms_stories');
     console.log('[Diagnostics] Retrieved from IndexedDB:', retrieved);
-    alert(`IndexedDB - Saved and retrieved: ${retrieved ? 'SUCCESS ✅' : 'FAILED ❌'}\n\nNow refresh the page and check if it persists!`);
+    alert(
+      `IndexedDB - Saved and retrieved: ${retrieved ? 'SUCCESS ✅' : 'FAILED ❌'}\n\nNow refresh the page and check if it persists!`
+    );
   };
 
   const clearAqmsData = () => {
-    Object.keys(localStorage).forEach(key => {
+    Object.keys(localStorage).forEach((key) => {
       if (key.includes('aqms_')) {
         localStorage.removeItem(key);
       }
@@ -101,13 +108,23 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
         <h3 className="font-bold mb-2">Real-time Storage Monitor</h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm font-bold text-gray-700">localStorage (non-persistent)</p>
-            <p className="text-sm text-gray-600">Total keys: {storageKeys.length}</p>
-            <p className="text-sm text-gray-600">AQMS keys: {Object.keys(aqmsKeys).length}</p>
+            <p className="text-sm font-bold text-gray-700">
+              localStorage (non-persistent)
+            </p>
+            <p className="text-sm text-gray-600">
+              Total keys: {storageKeys.length}
+            </p>
+            <p className="text-sm text-gray-600">
+              AQMS keys: {Object.keys(aqmsKeys).length}
+            </p>
           </div>
           <div>
-            <p className="text-sm font-bold text-gray-700">IndexedDB (persistent)</p>
-            <p className="text-sm text-gray-600">AQMS keys: {Object.keys(indexedDBKeys).length}</p>
+            <p className="text-sm font-bold text-gray-700">
+              IndexedDB (persistent)
+            </p>
+            <p className="text-sm text-gray-600">
+              AQMS keys: {Object.keys(indexedDBKeys).length}
+            </p>
             {Object.keys(indexedDBKeys).length > 0 ? (
               <p className="text-sm text-green-600 font-bold">✅ Data found!</p>
             ) : (
@@ -118,7 +135,9 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
       </div>
 
       <div className="mb-6">
-        <h3 className="font-bold mb-2">localStorage AQMS Keys (cleared on refresh)</h3>
+        <h3 className="font-bold mb-2">
+          localStorage AQMS Keys (cleared on refresh)
+        </h3>
         {Object.keys(aqmsKeys).length === 0 ? (
           <p className="text-red-600">⚠️ No AQMS keys found in localStorage</p>
         ) : (
@@ -134,13 +153,21 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
       </div>
 
       <div className="mb-6">
-        <h3 className="font-bold mb-2">IndexedDB AQMS Keys (persistent across refresh)</h3>
+        <h3 className="font-bold mb-2">
+          IndexedDB AQMS Keys (persistent across refresh)
+        </h3>
         {Object.keys(indexedDBKeys).length === 0 ? (
-          <p className="text-orange-600">⚠️ No AQMS keys found in IndexedDB - Click "Save Test Story" to create some</p>
+          <p className="text-orange-600">
+            ⚠️ No AQMS keys found in IndexedDB - Click "Save Test Story" to
+            create some
+          </p>
         ) : (
           <div className="space-y-2">
             {Object.entries(indexedDBKeys).map(([key, value]) => (
-              <div key={key} className="p-2 bg-green-50 border border-green-200 rounded text-xs">
+              <div
+                key={key}
+                className="p-2 bg-green-50 border border-green-200 rounded text-xs"
+              >
                 <div className="font-bold text-green-700">{key} ✅</div>
                 <div className="text-gray-600 truncate">{value}</div>
               </div>
@@ -156,8 +183,13 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
             <p>No keys in localStorage</p>
           ) : (
             <ul className="space-y-1">
-              {storageKeys.map(key => (
-                <li key={key} className={key.includes('aqms_') ? 'text-indigo-600 font-bold' : ''}>
+              {storageKeys.map((key) => (
+                <li
+                  key={key}
+                  className={
+                    key.includes('aqms_') ? 'text-indigo-600 font-bold' : ''
+                  }
+                >
                   {key}
                 </li>
               ))}
@@ -197,23 +229,39 @@ Object test: ${aqmsObj ? '✅ PASS' : '❌ FAIL'}
       <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
         <h3 className="font-bold mb-2">🔍 Testing IndexedDB Persistence</h3>
         <ol className="text-sm space-y-2 list-decimal list-inside">
-          <li className="font-bold text-indigo-700">Click "Save Test Story" button above</li>
+          <li className="font-bold text-indigo-700">
+            Click "Save Test Story" button above
+          </li>
           <li>You should see an alert saying "SUCCESS ✅"</li>
-          <li>Check that "aqms_stories" appears in the "IndexedDB AQMS Keys" section with a green checkmark</li>
-          <li className="font-bold text-orange-700">Refresh the page (F5 or Ctrl+R)</li>
+          <li>
+            Check that "aqms_stories" appears in the "IndexedDB AQMS Keys"
+            section with a green checkmark
+          </li>
+          <li className="font-bold text-orange-700">
+            Refresh the page (F5 or Ctrl+R)
+          </li>
           <li>Go back to the "Storage Debug" tab</li>
-          <li className="font-bold text-green-700">If "aqms_stories" still appears in IndexedDB section → IndexedDB works! ✅</li>
-          <li>If it's gone → IndexedDB also doesn't persist in Figma Make environment ❌</li>
+          <li className="font-bold text-green-700">
+            If "aqms_stories" still appears in IndexedDB section → IndexedDB
+            works! ✅
+          </li>
+          <li>
+            If it's gone → IndexedDB also doesn't persist in Figma Make
+            environment ❌
+          </li>
         </ol>
       </div>
 
       <div className="mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded">
         <h3 className="font-bold mb-2">📝 What We're Testing</h3>
         <p className="text-sm text-gray-700 mb-2">
-          <strong>Problem:</strong> localStorage doesn't persist in Figma Make's iframe environment.
+          <strong>Problem:</strong> localStorage doesn't persist in Figma Make's
+          iframe environment.
         </p>
         <p className="text-sm text-gray-700">
-          <strong>Solution:</strong> We're testing IndexedDB as an alternative. IndexedDB is a more robust browser storage API that typically persists even in iframe environments.
+          <strong>Solution:</strong> We're testing IndexedDB as an alternative.
+          IndexedDB is a more robust browser storage API that typically persists
+          even in iframe environments.
         </p>
       </div>
     </div>

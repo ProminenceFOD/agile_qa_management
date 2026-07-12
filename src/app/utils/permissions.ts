@@ -2,16 +2,47 @@ import { UserRole } from '../contexts/AuthContext';
 import { getData, setData } from './supabaseStorage';
 
 export type Permission =
-  | 'users:view' | 'users:invite' | 'users:edit' | 'users:deactivate' | 'users:change_role' | 'users:delete'
-  | 'data:view' | 'data:import' | 'data:export' | 'data:bulk_delete'
-  | 'audit:view' | 'audit:export'
-  | 'bulk:view' | 'bulk:execute'
-  | 'org:view' | 'org:edit'
-  | 'stories:view' | 'stories:create' | 'stories:edit_own' | 'stories:edit_all' | 'stories:delete' | 'stories:sign_off_qa' | 'stories:sign_off_pm'
-  | 'bugs:view' | 'bugs:create' | 'bugs:edit_own' | 'bugs:edit_all' | 'bugs:delete' | 'bugs:close'
-  | 'tests:view' | 'tests:create' | 'tests:edit_own' | 'tests:edit_all' | 'tests:execute' | 'tests:delete'
-  | 'sprints:view' | 'sprints:create' | 'sprints:edit' | 'sprints:delete'
-  | 'reports:view' | 'reports:export'
+  | 'users:view'
+  | 'users:invite'
+  | 'users:edit'
+  | 'users:deactivate'
+  | 'users:change_role'
+  | 'users:delete'
+  | 'data:view'
+  | 'data:import'
+  | 'data:export'
+  | 'data:bulk_delete'
+  | 'audit:view'
+  | 'audit:export'
+  | 'bulk:view'
+  | 'bulk:execute'
+  | 'org:view'
+  | 'org:edit'
+  | 'stories:view'
+  | 'stories:create'
+  | 'stories:edit_own'
+  | 'stories:edit_all'
+  | 'stories:delete'
+  | 'stories:sign_off_qa'
+  | 'stories:sign_off_pm'
+  | 'bugs:view'
+  | 'bugs:create'
+  | 'bugs:edit_own'
+  | 'bugs:edit_all'
+  | 'bugs:delete'
+  | 'bugs:close'
+  | 'tests:view'
+  | 'tests:create'
+  | 'tests:edit_own'
+  | 'tests:edit_all'
+  | 'tests:execute'
+  | 'tests:delete'
+  | 'sprints:view'
+  | 'sprints:create'
+  | 'sprints:edit'
+  | 'sprints:delete'
+  | 'reports:view'
+  | 'reports:export'
   | 'dashboard:view';
 
 // All 6 roles used in the system (UserRole covers the 4 that can log in)
@@ -30,7 +61,12 @@ export interface AuditLogEntry {
   timestamp: Date;
   userId: string;
   userName: string;
-  action: 'role_change' | 'permission_grant' | 'permission_revoke' | 'matrix_update' | 'template_apply';
+  action:
+    | 'role_change'
+    | 'permission_grant'
+    | 'permission_revoke'
+    | 'matrix_update'
+    | 'template_apply';
   targetUserId?: string;
   targetUserName?: string;
   details: string;
@@ -39,63 +75,133 @@ export interface AuditLogEntry {
 }
 
 export const ALL_PERMISSIONS: Permission[] = [
-  'users:view','users:invite','users:edit','users:deactivate','users:change_role','users:delete',
-  'data:view','data:import','data:export','data:bulk_delete',
-  'audit:view','audit:export',
-  'bulk:view','bulk:execute',
-  'org:view','org:edit',
-  'stories:view','stories:create','stories:edit_own','stories:edit_all','stories:delete','stories:sign_off_qa','stories:sign_off_pm',
-  'bugs:view','bugs:create','bugs:edit_own','bugs:edit_all','bugs:delete','bugs:close',
-  'tests:view','tests:create','tests:edit_own','tests:edit_all','tests:execute','tests:delete',
-  'sprints:view','sprints:create','sprints:edit','sprints:delete',
-  'reports:view','reports:export',
+  'users:view',
+  'users:invite',
+  'users:edit',
+  'users:deactivate',
+  'users:change_role',
+  'users:delete',
+  'data:view',
+  'data:import',
+  'data:export',
+  'data:bulk_delete',
+  'audit:view',
+  'audit:export',
+  'bulk:view',
+  'bulk:execute',
+  'org:view',
+  'org:edit',
+  'stories:view',
+  'stories:create',
+  'stories:edit_own',
+  'stories:edit_all',
+  'stories:delete',
+  'stories:sign_off_qa',
+  'stories:sign_off_pm',
+  'bugs:view',
+  'bugs:create',
+  'bugs:edit_own',
+  'bugs:edit_all',
+  'bugs:delete',
+  'bugs:close',
+  'tests:view',
+  'tests:create',
+  'tests:edit_own',
+  'tests:edit_all',
+  'tests:execute',
+  'tests:delete',
+  'sprints:view',
+  'sprints:create',
+  'sprints:edit',
+  'sprints:delete',
+  'reports:view',
+  'reports:export',
   'dashboard:view',
 ];
 
 /** Default (built-in) permissions per role — never mutated */
 export const DEFAULT_ROLE_PERMISSIONS: Record<AnyRole, Permission[]> = {
-  'Administrator': ALL_PERMISSIONS.slice(), // all
+  Administrator: ALL_PERMISSIONS.slice(), // all
 
   'QA Engineer': [
-    'stories:view','stories:create','stories:edit_own','stories:sign_off_qa',
-    'bugs:view','bugs:create','bugs:edit_own','bugs:edit_all','bugs:close',
-    'tests:view','tests:create','tests:edit_own','tests:edit_all','tests:execute','tests:delete',
+    'stories:view',
+    'stories:create',
+    'stories:edit_own',
+    'stories:sign_off_qa',
+    'bugs:view',
+    'bugs:create',
+    'bugs:edit_own',
+    'bugs:edit_all',
+    'bugs:close',
+    'tests:view',
+    'tests:create',
+    'tests:edit_own',
+    'tests:edit_all',
+    'tests:execute',
+    'tests:delete',
     'sprints:view',
-    'reports:view','reports:export',
+    'reports:view',
+    'reports:export',
     'dashboard:view',
   ],
 
   'Product Manager': [
-    'stories:view','stories:create','stories:edit_own','stories:edit_all','stories:sign_off_pm',
-    'bugs:view','bugs:create','bugs:edit_own',
+    'stories:view',
+    'stories:create',
+    'stories:edit_own',
+    'stories:edit_all',
+    'stories:sign_off_pm',
+    'bugs:view',
+    'bugs:create',
+    'bugs:edit_own',
     'tests:view',
-    'sprints:view','sprints:create','sprints:edit',
-    'reports:view','reports:export',
+    'sprints:view',
+    'sprints:create',
+    'sprints:edit',
+    'reports:view',
+    'reports:export',
     'dashboard:view',
   ],
 
   'Scrum Master': [
-    'stories:view','stories:create','stories:edit_own',
-    'bugs:view','bugs:create','bugs:edit_own',
+    'stories:view',
+    'stories:create',
+    'stories:edit_own',
+    'bugs:view',
+    'bugs:create',
+    'bugs:edit_own',
     'tests:view',
-    'sprints:view','sprints:create','sprints:edit','sprints:delete',
-    'reports:view','reports:export',
+    'sprints:view',
+    'sprints:create',
+    'sprints:edit',
+    'sprints:delete',
+    'reports:view',
+    'reports:export',
     'dashboard:view',
   ],
 
-  'Developer': [
+  Developer: [
     'stories:view',
-    'bugs:view','bugs:create','bugs:edit_own',
-    'tests:view','tests:execute',
+    'bugs:view',
+    'bugs:create',
+    'bugs:edit_own',
+    'tests:view',
+    'tests:execute',
     'sprints:view',
     'reports:view',
     'dashboard:view',
   ],
 
-  'Tester': [
+  Tester: [
     'stories:view',
-    'bugs:view','bugs:create','bugs:edit_own','bugs:close',
-    'tests:view','tests:create','tests:edit_own','tests:execute',
+    'bugs:view',
+    'bugs:create',
+    'bugs:edit_own',
+    'bugs:close',
+    'tests:view',
+    'tests:create',
+    'tests:edit_own',
+    'tests:execute',
     'sprints:view',
     'reports:view',
     'dashboard:view',
@@ -115,73 +221,135 @@ export const PERMISSION_TEMPLATES: PermissionTemplate[] = [
   {
     id: 'read-only',
     name: 'Read-Only',
-    description: 'View access to all content without edit or delete permissions',
+    description:
+      'View access to all content without edit or delete permissions',
     permissions: [
-      'stories:view', 'bugs:view', 'tests:view', 'sprints:view',
-      'reports:view', 'dashboard:view'
-    ]
+      'stories:view',
+      'bugs:view',
+      'tests:view',
+      'sprints:view',
+      'reports:view',
+      'dashboard:view',
+    ],
   },
   {
     id: 'contributor',
     name: 'Contributor',
     description: 'Create and edit own content across stories, bugs, and tests',
     permissions: [
-      'stories:view', 'stories:create', 'stories:edit_own',
-      'bugs:view', 'bugs:create', 'bugs:edit_own',
-      'tests:view', 'tests:create', 'tests:edit_own', 'tests:execute',
-      'sprints:view', 'reports:view', 'dashboard:view'
-    ]
+      'stories:view',
+      'stories:create',
+      'stories:edit_own',
+      'bugs:view',
+      'bugs:create',
+      'bugs:edit_own',
+      'tests:view',
+      'tests:create',
+      'tests:edit_own',
+      'tests:execute',
+      'sprints:view',
+      'reports:view',
+      'dashboard:view',
+    ],
   },
   {
     id: 'qa-reviewer',
     name: 'QA Reviewer',
     description: 'Full QA permissions including sign-off authority',
     permissions: [
-      'stories:view', 'stories:create', 'stories:edit_own', 'stories:sign_off_qa',
-      'bugs:view', 'bugs:create', 'bugs:edit_own', 'bugs:edit_all', 'bugs:close',
-      'tests:view', 'tests:create', 'tests:edit_own', 'tests:edit_all', 'tests:execute', 'tests:delete',
-      'sprints:view', 'reports:view', 'reports:export', 'dashboard:view'
-    ]
+      'stories:view',
+      'stories:create',
+      'stories:edit_own',
+      'stories:sign_off_qa',
+      'bugs:view',
+      'bugs:create',
+      'bugs:edit_own',
+      'bugs:edit_all',
+      'bugs:close',
+      'tests:view',
+      'tests:create',
+      'tests:edit_own',
+      'tests:edit_all',
+      'tests:execute',
+      'tests:delete',
+      'sprints:view',
+      'reports:view',
+      'reports:export',
+      'dashboard:view',
+    ],
   },
   {
     id: 'pm-approver',
     name: 'PM Approver',
     description: 'Product management with approval authority',
     permissions: [
-      'stories:view', 'stories:create', 'stories:edit_own', 'stories:edit_all', 'stories:sign_off_pm',
-      'bugs:view', 'bugs:create', 'bugs:edit_own',
-      'tests:view', 'sprints:view', 'sprints:create', 'sprints:edit',
-      'reports:view', 'reports:export', 'dashboard:view'
-    ]
+      'stories:view',
+      'stories:create',
+      'stories:edit_own',
+      'stories:edit_all',
+      'stories:sign_off_pm',
+      'bugs:view',
+      'bugs:create',
+      'bugs:edit_own',
+      'tests:view',
+      'sprints:view',
+      'sprints:create',
+      'sprints:edit',
+      'reports:view',
+      'reports:export',
+      'dashboard:view',
+    ],
   },
   {
     id: 'team-lead',
     name: 'Team Lead',
     description: 'Extended permissions for team management',
     permissions: [
-      'stories:view', 'stories:create', 'stories:edit_own', 'stories:edit_all',
-      'bugs:view', 'bugs:create', 'bugs:edit_own', 'bugs:edit_all', 'bugs:close',
-      'tests:view', 'tests:create', 'tests:edit_own', 'tests:edit_all', 'tests:execute',
-      'sprints:view', 'sprints:create', 'sprints:edit',
-      'reports:view', 'reports:export', 'users:view', 'dashboard:view'
-    ]
-  }
+      'stories:view',
+      'stories:create',
+      'stories:edit_own',
+      'stories:edit_all',
+      'bugs:view',
+      'bugs:create',
+      'bugs:edit_own',
+      'bugs:edit_all',
+      'bugs:close',
+      'tests:view',
+      'tests:create',
+      'tests:edit_own',
+      'tests:edit_all',
+      'tests:execute',
+      'sprints:view',
+      'sprints:create',
+      'sprints:edit',
+      'reports:view',
+      'reports:export',
+      'users:view',
+      'dashboard:view',
+    ],
+  },
 ];
 
 /** Live permission map — updated at runtime by overrideRolePermissions() */
-let ROLE_PERMISSIONS: Record<string, Permission[]> = deepClone(DEFAULT_ROLE_PERMISSIONS);
+let ROLE_PERMISSIONS: Record<string, Permission[]> = deepClone(
+  DEFAULT_ROLE_PERMISSIONS
+);
 
 /** User-level permission overrides — loaded from storage */
 let USER_PERMISSION_OVERRIDES: Record<string, UserPermissionOverride> = {};
 
-function deepClone(src: Record<string, Permission[]>): Record<string, Permission[]> {
+function deepClone(
+  src: Record<string, Permission[]>
+): Record<string, Permission[]> {
   const out: Record<string, Permission[]> = {};
   for (const k of Object.keys(src)) out[k] = src[k].slice();
   return out;
 }
 
 /** Replace the live permission map (call this after loading saved config) */
-export function overrideRolePermissions(overrides: Record<string, Permission[]>): void {
+export function overrideRolePermissions(
+  overrides: Record<string, Permission[]>
+): void {
   ROLE_PERMISSIONS = deepClone(overrides);
 }
 
@@ -211,16 +379,21 @@ export async function saveUserOverrides(): Promise<void> {
   }
 }
 
-export function getUserOverride(userId: string): UserPermissionOverride | undefined {
+export function getUserOverride(
+  userId: string
+): UserPermissionOverride | undefined {
   return USER_PERMISSION_OVERRIDES[userId];
 }
 
-export async function grantUserPermission(userId: string, permission: Permission): Promise<void> {
+export async function grantUserPermission(
+  userId: string,
+  permission: Permission
+): Promise<void> {
   if (!USER_PERMISSION_OVERRIDES[userId]) {
     USER_PERMISSION_OVERRIDES[userId] = {
       userId,
       grantedPermissions: [],
-      revokedPermissions: []
+      revokedPermissions: [],
     };
   }
   const override = USER_PERMISSION_OVERRIDES[userId];
@@ -228,16 +401,21 @@ export async function grantUserPermission(userId: string, permission: Permission
     override.grantedPermissions.push(permission);
   }
   // Remove from revoked if present
-  override.revokedPermissions = override.revokedPermissions.filter(p => p !== permission);
+  override.revokedPermissions = override.revokedPermissions.filter(
+    (p) => p !== permission
+  );
   await saveUserOverrides();
 }
 
-export async function revokeUserPermission(userId: string, permission: Permission): Promise<void> {
+export async function revokeUserPermission(
+  userId: string,
+  permission: Permission
+): Promise<void> {
   if (!USER_PERMISSION_OVERRIDES[userId]) {
     USER_PERMISSION_OVERRIDES[userId] = {
       userId,
       grantedPermissions: [],
-      revokedPermissions: []
+      revokedPermissions: [],
     };
   }
   const override = USER_PERMISSION_OVERRIDES[userId];
@@ -245,7 +423,9 @@ export async function revokeUserPermission(userId: string, permission: Permissio
     override.revokedPermissions.push(permission);
   }
   // Remove from granted if present
-  override.grantedPermissions = override.grantedPermissions.filter(p => p !== permission);
+  override.grantedPermissions = override.grantedPermissions.filter(
+    (p) => p !== permission
+  );
   await saveUserOverrides();
 }
 
@@ -256,7 +436,11 @@ export async function clearUserOverrides(userId: string): Promise<void> {
 
 // ── Core permission helpers ───────────────────────────────────────────────────
 
-export function hasPermission(role: string | undefined, permission: Permission, userId?: string): boolean {
+export function hasPermission(
+  role: string | undefined,
+  permission: Permission,
+  userId?: string
+): boolean {
   if (!role) return false;
 
   // Check user-level overrides first
@@ -278,14 +462,20 @@ export function hasPermission(role: string | undefined, permission: Permission, 
   return (ROLE_PERMISSIONS[role] ?? []).includes(permission);
 }
 
-export function hasAnyPermission(role: string | undefined, permissions: Permission[]): boolean {
+export function hasAnyPermission(
+  role: string | undefined,
+  permissions: Permission[]
+): boolean {
   if (!role) return false;
-  return permissions.some(p => hasPermission(role, p));
+  return permissions.some((p) => hasPermission(role, p));
 }
 
-export function hasAllPermissions(role: string | undefined, permissions: Permission[]): boolean {
+export function hasAllPermissions(
+  role: string | undefined,
+  permissions: Permission[]
+): boolean {
   if (!role) return false;
-  return permissions.every(p => hasPermission(role, p));
+  return permissions.every((p) => hasPermission(role, p));
 }
 
 export function isAdmin(role: string | undefined): boolean {
@@ -327,7 +517,11 @@ const TAB_PERMISSION_MAP: Record<string, Permission> = {
   recommendations: 'stories:view',
 };
 
-export function canAccessTab(role: string | undefined, tab: string, userId?: string): boolean {
+export function canAccessTab(
+  role: string | undefined,
+  tab: string,
+  userId?: string
+): boolean {
   if (!role) return false;
   const required = TAB_PERMISSION_MAP[tab];
   if (!required) return true;
@@ -378,16 +572,17 @@ export function canEditStory(user: User | null, story: Story): boolean {
 
   // Check if user has edit_own permission and is assigned
   if (hasPermission(user.role, 'stories:edit_own', user.id)) {
-    const isOwner = story.assignedDeveloper === user.name ||
-                    story.assignedTester === user.name ||
-                    story.assignedQAReviewer === user.name;
+    const isOwner =
+      story.assignedDeveloper === user.name ||
+      story.assignedTester === user.name ||
+      story.assignedQAReviewer === user.name;
     return isOwner;
   }
 
   return false;
 }
 
-export function canDeleteStory(user: User | null, story: Story): boolean {
+export function canDeleteStory(user: User | null, _story: Story): boolean {
   if (!user) return false;
   return hasPermission(user.role, 'stories:delete', user.id);
 }
@@ -403,27 +598,31 @@ export function canEditBug(user: User | null, bug: Bug): boolean {
 
   // Check if user has edit_own permission and is assigned or creator
   if (hasPermission(user.role, 'bugs:edit_own', user.id)) {
-    const isOwner = bug.foundBy === user.name ||
-                    bug.assignedTo === user.name ||
-                    bug.assignedDeveloper === user.name ||
-                    bug.assignedTester === user.name;
+    const isOwner =
+      bug.foundBy === user.name ||
+      bug.assignedTo === user.name ||
+      bug.assignedDeveloper === user.name ||
+      bug.assignedTester === user.name;
     return isOwner;
   }
 
   return false;
 }
 
-export function canDeleteBug(user: User | null, bug: Bug): boolean {
+export function canDeleteBug(user: User | null, _bug: Bug): boolean {
   if (!user) return false;
   return hasPermission(user.role, 'bugs:delete', user.id);
 }
 
-export function canCloseBug(user: User | null, bug: Bug): boolean {
+export function canCloseBug(user: User | null, _bug: Bug): boolean {
   if (!user) return false;
   return hasPermission(user.role, 'bugs:close', user.id);
 }
 
-export function canEditTestCase(user: User | null, testCase: TestCase): boolean {
+export function canEditTestCase(
+  user: User | null,
+  testCase: TestCase
+): boolean {
   if (!user) return false;
 
   // Admins can edit all
@@ -434,33 +633,41 @@ export function canEditTestCase(user: User | null, testCase: TestCase): boolean 
 
   // Check if user has edit_own permission and is creator or assigned
   if (hasPermission(user.role, 'tests:edit_own', user.id)) {
-    const isOwner = testCase.createdBy === user.name ||
-                    testCase.assignedTo === user.name;
+    const isOwner =
+      testCase.createdBy === user.name || testCase.assignedTo === user.name;
     return isOwner;
   }
 
   return false;
 }
 
-export function canDeleteTestCase(user: User | null, testCase: TestCase): boolean {
+export function canDeleteTestCase(
+  user: User | null,
+  _testCase: TestCase
+): boolean {
   if (!user) return false;
   return hasPermission(user.role, 'tests:delete', user.id);
 }
 
-export function canExecuteTestCase(user: User | null, testCase: TestCase): boolean {
+export function canExecuteTestCase(
+  user: User | null,
+  _testCase: TestCase
+): boolean {
   if (!user) return false;
   return hasPermission(user.role, 'tests:execute', user.id);
 }
 
 // ── Audit Logging ─────────────────────────────────────────────────────────────
 
-export async function logAuditEntry(entry: Omit<AuditLogEntry, 'id' | 'timestamp'>): Promise<void> {
+export async function logAuditEntry(
+  entry: Omit<AuditLogEntry, 'id' | 'timestamp'>
+): Promise<void> {
   try {
     const logs = (await getData('aqms_audit_logs')) || [];
     const newEntry: AuditLogEntry = {
       ...entry,
       id: `AUDIT-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
     logs.unshift(newEntry); // Add to beginning for most recent first
 
@@ -494,8 +701,12 @@ export async function exportAuditLogs(): Promise<string> {
 
 // ── Permission Templates ──────────────────────────────────────────────────────
 
-export async function applyTemplateToRole(templateId: string, role: AnyRole, currentUser: User): Promise<void> {
-  const template = PERMISSION_TEMPLATES.find(t => t.id === templateId);
+export async function applyTemplateToRole(
+  templateId: string,
+  role: AnyRole,
+  currentUser: User
+): Promise<void> {
+  const template = PERMISSION_TEMPLATES.find((t) => t.id === templateId);
   if (!template) throw new Error('Template not found');
 
   const currentPerms = ROLE_PERMISSIONS[role] || [];
@@ -509,12 +720,17 @@ export async function applyTemplateToRole(templateId: string, role: AnyRole, cur
     action: 'template_apply',
     details: `Applied template "${template.name}" to role ${role}`,
     oldValue: currentPerms.join(', '),
-    newValue: template.permissions.join(', ')
+    newValue: template.permissions.join(', '),
   });
 }
 
-export async function applyTemplateToUser(templateId: string, userId: string, userName: string, currentUser: User): Promise<void> {
-  const template = PERMISSION_TEMPLATES.find(t => t.id === templateId);
+export async function applyTemplateToUser(
+  templateId: string,
+  userId: string,
+  userName: string,
+  currentUser: User
+): Promise<void> {
+  const template = PERMISSION_TEMPLATES.find((t) => t.id === templateId);
   if (!template) throw new Error('Template not found');
 
   // Clear existing overrides
@@ -532,7 +748,7 @@ export async function applyTemplateToUser(templateId: string, userId: string, us
     targetUserId: userId,
     targetUserName: userName,
     details: `Applied template "${template.name}" to user ${userName}`,
-    newValue: template.permissions.join(', ')
+    newValue: template.permissions.join(', '),
   });
 }
 

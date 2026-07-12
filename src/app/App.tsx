@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { CriteriaValidator } from './components/CriteriaValidator';
 import { RiskMatrix, defaultModules } from './components/RiskMatrix';
 import { QualityBurnDown } from './components/QualityBurnDown';
@@ -32,7 +33,10 @@ import { TestRecommendations } from './components/TestRecommendations';
 import { DocumentationViewer } from './components/DocumentationViewer';
 import { Sidebar } from './components/Sidebar';
 import './utils/fixServerUsers'; // Load server fix utility
-import { overrideRolePermissions, loadUserOverrides } from './utils/permissions';
+import {
+  overrideRolePermissions,
+  loadUserOverrides,
+} from './utils/permissions';
 import { getData, setData, getScopedKey } from './utils/supabaseStorage';
 
 // Suppress findDOMNode deprecation warning from third-party libraries
@@ -44,7 +48,28 @@ console.error = (...args) => {
   originalError.call(console, ...args);
 };
 
-type TabType = 'dashboard' | 'kanban' | 'validator' | 'risk' | 'burndown' | 'tests' | 'bugs' | 'charts' | 'sprints' | 'attachments' | 'users' | 'reports' | 'notifications' | 'testhistory' | 'data' | 'audit' | 'bulk' | 'traceability' | 'release' | 'team' | 'recommendations';
+type TabType =
+  | 'dashboard'
+  | 'kanban'
+  | 'validator'
+  | 'risk'
+  | 'burndown'
+  | 'tests'
+  | 'bugs'
+  | 'charts'
+  | 'sprints'
+  | 'attachments'
+  | 'users'
+  | 'reports'
+  | 'notifications'
+  | 'testhistory'
+  | 'data'
+  | 'audit'
+  | 'bulk'
+  | 'traceability'
+  | 'release'
+  | 'team'
+  | 'recommendations';
 
 function AppDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>(() => {
@@ -55,7 +80,9 @@ function AppDashboard() {
       return 'dashboard';
     }
   });
-  const [highlightedItemId, setHighlightedItemId] = useState<string | null>(null);
+  const [highlightedItemId, setHighlightedItemId] = useState<string | null>(
+    null
+  );
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showDocumentation, setShowDocumentation] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -71,17 +98,13 @@ function AppDashboard() {
     }
   }, [activeTab]);
   const { theme, toggleTheme } = useTheme();
-  const {
-    notifications,
-    markAsRead,
-    markAllAsRead,
-    clearAll,
-  } = useNotifications();
+  const { notifications, markAsRead, markAllAsRead, clearAll } =
+    useNotifications();
 
   // Load saved role permissions and user overrides, and prefetch storage data
   useEffect(() => {
     // 1. Load role permissions
-    getData('aqms_role_permissions').then(saved => {
+    getData('aqms_role_permissions').then((saved) => {
       if (saved) overrideRolePermissions(saved);
     });
 
@@ -90,18 +113,29 @@ function AppDashboard() {
 
     // 3. Prefetch critical data to populate localStorage cache (fixes iframe storage clear)
     const prefetch = async () => {
-      const keys = ['aqms_stories', 'aqms_bugs', 'aqms_test_cases', 'aqms_users', 'aqms_modules'];
+      const keys = [
+        'aqms_stories',
+        'aqms_bugs',
+        'aqms_test_cases',
+        'aqms_users',
+        'aqms_modules',
+      ];
       for (const key of keys) {
         try {
           let data = await getData(key);
           if ((data === null || data === undefined) && key === 'aqms_modules') {
-            console.log('[App] Initializing aqms_modules on server with default modules');
+            console.log(
+              '[App] Initializing aqms_modules on server with default modules'
+            );
             await setData('aqms_modules', defaultModules);
             data = defaultModules;
           }
           if (data) {
             const scopedLocalKey = getScopedKey(key);
-            localStorage.setItem(scopedLocalKey, typeof data === 'string' ? data : JSON.stringify(data));
+            localStorage.setItem(
+              scopedLocalKey,
+              typeof data === 'string' ? data : JSON.stringify(data)
+            );
           }
         } catch (e) {
           console.warn(`[App] Failed to prefetch ${key}:`, e);
@@ -113,30 +147,140 @@ function AppDashboard() {
 
   // Keyboard shortcuts
   useKeyboardShortcuts([
-    { key: '1', ctrl: true, description: 'Go to Dashboard', action: () => setActiveTab('dashboard') },
-    { key: '2', ctrl: true, description: 'Go to Kanban Board', action: () => setActiveTab('kanban') },
-    { key: '3', ctrl: true, description: 'Go to Validator', action: () => setActiveTab('validator') },
-    { key: '4', ctrl: true, description: 'Go to Risk Matrix', action: () => setActiveTab('risk') },
-    { key: '5', ctrl: true, description: 'Go to Burn-Down', action: () => setActiveTab('burndown') },
-    { key: '6', ctrl: true, description: 'Go to Test Cases', action: () => setActiveTab('tests') },
-    { key: '7', ctrl: true, description: 'Go to Bugs', action: () => setActiveTab('bugs') },
-    { key: '8', ctrl: true, description: 'Go to Analytics', action: () => setActiveTab('charts') },
-    { key: '9', ctrl: true, description: 'Go to Sprints', action: () => setActiveTab('sprints') },
-    { key: '0', ctrl: true, description: 'Go to Users', action: () => setActiveTab('users') },
-    { key: 'a', ctrl: true, description: 'Go to Audit Trail', action: () => setActiveTab('audit') },
-    { key: 'b', ctrl: true, description: 'Go to Bulk Operations', action: () => setActiveTab('bulk') },
-    { key: 'e', ctrl: true, description: 'Go to Data Management', action: () => setActiveTab('data') },
-    { key: 'g', ctrl: true, description: 'Go to Traceability Matrix', action: () => setActiveTab('traceability') },
-    { key: 'i', ctrl: true, description: 'Go to Test Recommendations', action: () => setActiveTab('recommendations') },
-    { key: 'k', ctrl: true, description: 'Go to Release Readiness', action: () => setActiveTab('release') },
-    { key: 'm', ctrl: true, description: 'Go to Team Performance', action: () => setActiveTab('team') },
-    { key: 'o', ctrl: true, description: 'Go to Reports', action: () => setActiveTab('reports') },
-    { key: 'q', ctrl: true, description: 'Go to Notifications', action: () => setActiveTab('notifications') },
-    { key: 'u', ctrl: true, description: 'Go to Test History', action: () => setActiveTab('testhistory') },
-    { key: 'd', ctrl: true, shift: true, description: 'Toggle dark mode', action: toggleTheme },
-    { key: '?', shift: true, description: 'Show shortcuts', action: () => setShowShortcuts(true) },
+    {
+      key: '1',
+      ctrl: true,
+      description: 'Go to Dashboard',
+      action: () => setActiveTab('dashboard'),
+    },
+    {
+      key: '2',
+      ctrl: true,
+      description: 'Go to Kanban Board',
+      action: () => setActiveTab('kanban'),
+    },
+    {
+      key: '3',
+      ctrl: true,
+      description: 'Go to Validator',
+      action: () => setActiveTab('validator'),
+    },
+    {
+      key: '4',
+      ctrl: true,
+      description: 'Go to Risk Matrix',
+      action: () => setActiveTab('risk'),
+    },
+    {
+      key: '5',
+      ctrl: true,
+      description: 'Go to Burn-Down',
+      action: () => setActiveTab('burndown'),
+    },
+    {
+      key: '6',
+      ctrl: true,
+      description: 'Go to Test Cases',
+      action: () => setActiveTab('tests'),
+    },
+    {
+      key: '7',
+      ctrl: true,
+      description: 'Go to Bugs',
+      action: () => setActiveTab('bugs'),
+    },
+    {
+      key: '8',
+      ctrl: true,
+      description: 'Go to Analytics',
+      action: () => setActiveTab('charts'),
+    },
+    {
+      key: '9',
+      ctrl: true,
+      description: 'Go to Sprints',
+      action: () => setActiveTab('sprints'),
+    },
+    {
+      key: '0',
+      ctrl: true,
+      description: 'Go to Users',
+      action: () => setActiveTab('users'),
+    },
+    {
+      key: 'a',
+      ctrl: true,
+      description: 'Go to Audit Trail',
+      action: () => setActiveTab('audit'),
+    },
+    {
+      key: 'b',
+      ctrl: true,
+      description: 'Go to Bulk Operations',
+      action: () => setActiveTab('bulk'),
+    },
+    {
+      key: 'e',
+      ctrl: true,
+      description: 'Go to Data Management',
+      action: () => setActiveTab('data'),
+    },
+    {
+      key: 'g',
+      ctrl: true,
+      description: 'Go to Traceability Matrix',
+      action: () => setActiveTab('traceability'),
+    },
+    {
+      key: 'i',
+      ctrl: true,
+      description: 'Go to Test Recommendations',
+      action: () => setActiveTab('recommendations'),
+    },
+    {
+      key: 'k',
+      ctrl: true,
+      description: 'Go to Release Readiness',
+      action: () => setActiveTab('release'),
+    },
+    {
+      key: 'm',
+      ctrl: true,
+      description: 'Go to Team Performance',
+      action: () => setActiveTab('team'),
+    },
+    {
+      key: 'o',
+      ctrl: true,
+      description: 'Go to Reports',
+      action: () => setActiveTab('reports'),
+    },
+    {
+      key: 'q',
+      ctrl: true,
+      description: 'Go to Notifications',
+      action: () => setActiveTab('notifications'),
+    },
+    {
+      key: 'u',
+      ctrl: true,
+      description: 'Go to Test History',
+      action: () => setActiveTab('testhistory'),
+    },
+    {
+      key: 'd',
+      ctrl: true,
+      shift: true,
+      description: 'Toggle dark mode',
+      action: toggleTheme,
+    },
+    {
+      key: '?',
+      shift: true,
+      description: 'Show shortcuts',
+      action: () => setShowShortcuts(true),
+    },
   ]);
-
 
   const getPageTitle = (tab: TabType): string => {
     const titles: Record<TabType, string> = {
@@ -160,7 +304,7 @@ function AppDashboard() {
       traceability: 'Traceability Matrix',
       release: 'Release Readiness',
       team: 'Team Performance',
-      recommendations: 'AI Test Recommendations'
+      recommendations: 'AI Test Recommendations',
     };
     return titles[tab] || 'AQMS';
   };
@@ -184,10 +328,18 @@ function AppDashboard() {
     // Update counts from localStorage/Supabase data
     const updateCounts = () => {
       try {
-        const stories = JSON.parse(localStorage.getItem(getScopedKey('aqms_stories')) || '[]');
-        const bugs = JSON.parse(localStorage.getItem(getScopedKey('aqms_bugs')) || '[]');
-        const tests = JSON.parse(localStorage.getItem(getScopedKey('aqms_test_cases')) || '[]');
-        const activeTests = tests.filter((t: any) => !t.isDraft && !t.id.startsWith('REC-'));
+        const stories = JSON.parse(
+          localStorage.getItem(getScopedKey('aqms_stories')) || '[]'
+        );
+        const bugs = JSON.parse(
+          localStorage.getItem(getScopedKey('aqms_bugs')) || '[]'
+        );
+        const tests = JSON.parse(
+          localStorage.getItem(getScopedKey('aqms_test_cases')) || '[]'
+        );
+        const activeTests = tests.filter(
+          (t: any) => !t.isDraft && !t.id.startsWith('REC-')
+        );
 
         setStoryCount(stories.length);
         setBugCount(bugs.length);
@@ -216,7 +368,7 @@ function AppDashboard() {
                 return {
                   ...u,
                   lastActive: new Date().toISOString(),
-                  isActive: true
+                  isActive: true,
                 };
               }
               return u;
@@ -254,7 +406,9 @@ function AppDashboard() {
       />
 
       {/* Main Content Area */}
-      <div className={`transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'}`}>
+      <div
+        className={`transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'}`}
+      >
         {/* Header */}
         <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-35">
           <div className="px-6 py-4">
@@ -266,11 +420,23 @@ function AppDashboard() {
                   className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white lg:hidden"
                   title="Toggle menu"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
                   </svg>
                 </button>
-                <h1 className="text-2xl text-gray-900 dark:text-white">{getPageTitle(activeTab)}</h1>
+                <h1 className="text-2xl text-gray-900 dark:text-white">
+                  {getPageTitle(activeTab)}
+                </h1>
               </div>
               <div className="flex items-center gap-2 md:gap-4">
                 {/* Theme Toggle */}
@@ -309,11 +475,19 @@ function AppDashboard() {
                 </button>
 
                 <div className="hidden md:block text-right">
-                  <div className="text-sm text-gray-600 dark:text-gray-400 text-xs">Logged in as</div>
-                  <div className="font-medium text-gray-900 dark:text-white text-sm">{user?.name}</div>
-                  <div className="text-xs text-indigo-650 dark:text-indigo-400">{user?.role}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 text-xs">
+                    Logged in as
+                  </div>
+                  <div className="font-medium text-gray-900 dark:text-white text-sm">
+                    {user?.name}
+                  </div>
+                  <div className="text-xs text-indigo-650 dark:text-indigo-400">
+                    {user?.role}
+                  </div>
                   {user?.organizationName && (
-                    <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate max-w-[120px]">{user.organizationName}</div>
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate max-w-[120px]">
+                      {user.organizationName}
+                    </div>
                   )}
                 </div>
                 <button
@@ -329,28 +503,42 @@ function AppDashboard() {
 
         {/* Main Content */}
         <main className="py-8">
-        {activeTab === 'dashboard' && <DashboardOverview />}
-        {activeTab === 'kanban' && <KanbanBoard />}
-        {activeTab === 'validator' && <CriteriaValidator highlightedItemId={highlightedItemId} onNavigate={handleNavigateToItem} />}
-        {activeTab === 'risk' && <RiskMatrix highlightedItemId={highlightedItemId} />}
-        {activeTab === 'burndown' && <QualityBurnDown />}
-        {activeTab === 'tests' && <TestCases highlightedItemId={highlightedItemId} />}
-        {activeTab === 'bugs' && <BugTracker highlightedItemId={highlightedItemId} />}
-        {activeTab === 'charts' && <AnalyticsDashboard />}
-        {activeTab === 'sprints' && <SprintManagement />}
-        {activeTab === 'attachments' && <Attachments />}
-        {activeTab === 'users' && <UserManagement />}
-        {activeTab === 'reports' && <Reports />}
-        {activeTab === 'notifications' && <Notifications />}
-        {activeTab === 'testhistory' && <TestExecutionHistory />}
-        {activeTab === 'data' && <DataManagement />}
-        {activeTab === 'audit' && <AuditTrail />}
-        {activeTab === 'bulk' && <BulkOperations />}
-        {activeTab === 'traceability' && <TraceabilityMatrix onNavigate={handleNavigateToItem} />}
-        {activeTab === 'release' && <ReleaseReadiness />}
-        {activeTab === 'team' && <TeamPerformance />}
-        {activeTab === 'recommendations' && <TestRecommendations onNavigate={handleNavigateToItem} />}
-
+          {activeTab === 'dashboard' && <DashboardOverview />}
+          {activeTab === 'kanban' && <KanbanBoard />}
+          {activeTab === 'validator' && (
+            <CriteriaValidator
+              highlightedItemId={highlightedItemId}
+              onNavigate={handleNavigateToItem}
+            />
+          )}
+          {activeTab === 'risk' && (
+            <RiskMatrix highlightedItemId={highlightedItemId} />
+          )}
+          {activeTab === 'burndown' && <QualityBurnDown />}
+          {activeTab === 'tests' && (
+            <TestCases highlightedItemId={highlightedItemId} />
+          )}
+          {activeTab === 'bugs' && (
+            <BugTracker highlightedItemId={highlightedItemId} />
+          )}
+          {activeTab === 'charts' && <AnalyticsDashboard />}
+          {activeTab === 'sprints' && <SprintManagement />}
+          {activeTab === 'attachments' && <Attachments />}
+          {activeTab === 'users' && <UserManagement />}
+          {activeTab === 'reports' && <Reports />}
+          {activeTab === 'notifications' && <Notifications />}
+          {activeTab === 'testhistory' && <TestExecutionHistory />}
+          {activeTab === 'data' && <DataManagement />}
+          {activeTab === 'audit' && <AuditTrail />}
+          {activeTab === 'bulk' && <BulkOperations />}
+          {activeTab === 'traceability' && (
+            <TraceabilityMatrix onNavigate={handleNavigateToItem} />
+          )}
+          {activeTab === 'release' && <ReleaseReadiness />}
+          {activeTab === 'team' && <TeamPerformance />}
+          {activeTab === 'recommendations' && (
+            <TestRecommendations onNavigate={handleNavigateToItem} />
+          )}
         </main>
 
         {/* Documentation Viewer */}
@@ -383,8 +571,13 @@ function AuthenticatedApp() {
         try {
           const sessionData = JSON.parse(session);
           // Check if session has qa@aqms.com with wrong role
-          if (sessionData.user?.email === 'qa@aqms.com' && sessionData.user?.role !== 'Administrator') {
-            console.log('[App] Detected stale session for qa@aqms.com - clearing...');
+          if (
+            sessionData.user?.email === 'qa@aqms.com' &&
+            sessionData.user?.role !== 'Administrator'
+          ) {
+            console.log(
+              '[App] Detected stale session for qa@aqms.com - clearing...'
+            );
             localStorage.removeItem('aqms_session');
             // Force page reload to re-authenticate
             window.location.reload();
@@ -396,7 +589,9 @@ function AuthenticatedApp() {
         }
       }
 
-      const existingUsers = JSON.parse(localStorage.getItem('aqms_users') || '[]');
+      const existingUsers = JSON.parse(
+        localStorage.getItem('aqms_users') || '[]'
+      );
 
       // Define demo users with all required fields
       const requiredDemoUsers = [
@@ -416,7 +611,7 @@ function AuthenticatedApp() {
           lastActive: new Date('2026-04-26T14:30:00'),
           storiesAssigned: 12,
           bugsAssigned: 8,
-          isActive: true
+          isActive: true,
         },
         {
           email: 'pm@aqms.com',
@@ -429,7 +624,7 @@ function AuthenticatedApp() {
           title: 'Senior Product Manager',
           status: 'Active',
           joinedDate: new Date('2026-01-10'),
-          isActive: true
+          isActive: true,
         },
         {
           email: 'sm@aqms.com',
@@ -441,7 +636,7 @@ function AuthenticatedApp() {
           title: 'Lead Scrum Master',
           status: 'Active',
           joinedDate: new Date('2026-01-10'),
-          isActive: true
+          isActive: true,
         },
       ];
 
@@ -452,8 +647,10 @@ function AuthenticatedApp() {
       } else {
         // Ensure all demo users exist and are up-to-date
         let needsUpdate = false;
-        requiredDemoUsers.forEach(demoUser => {
-          const existingUserIndex = existingUsers.findIndex((u: any) => u.email === demoUser.email);
+        requiredDemoUsers.forEach((demoUser) => {
+          const existingUserIndex = existingUsers.findIndex(
+            (u: any) => u.email === demoUser.email
+          );
           if (existingUserIndex === -1) {
             // User doesn't exist, add them
             existingUsers.push(demoUser);
@@ -515,7 +712,7 @@ function AuthenticatedApp() {
           id: 'USR-001',
           title: 'Head of QA / Administrator',
           status: 'Active',
-          isActive: true
+          isActive: true,
         },
         {
           email: 'pm@aqms.com',
@@ -528,7 +725,7 @@ function AuthenticatedApp() {
           id: 'USR-002',
           title: 'Senior Product Manager',
           status: 'Active',
-          isActive: true
+          isActive: true,
         },
         {
           email: 'sm@aqms.com',
@@ -540,7 +737,7 @@ function AuthenticatedApp() {
           id: 'USR-003',
           title: 'Lead Scrum Master',
           status: 'Active',
-          isActive: true
+          isActive: true,
         },
       ];
       localStorage.setItem('aqms_users', JSON.stringify(demoUsers));
@@ -559,64 +756,31 @@ function AuthenticatedApp() {
     );
   }
 
-  try {
-    if (user) {
-      console.log('[AuthenticatedApp] Rendering AppDashboard for user:', user.email);
-      return <AppDashboard />;
-    }
-
-    console.log('[AuthenticatedApp] Rendering auth view:', authView);
-    return authView === 'login' ? (
-      <Login onSwitchToSignup={() => setAuthView('signup')} />
-    ) : (
-      <Signup onSwitchToLogin={() => setAuthView('login')} />
+  if (user) {
+    console.log(
+      '[AuthenticatedApp] Rendering AppDashboard for user:',
+      user.email
     );
-  } catch (error) {
-    console.error('[AuthenticatedApp] Render error:', error);
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-indigo-100 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md text-center">
-          <h2 className="text-xl font-bold text-red-600 mb-4">Render Error</h2>
-          <p className="text-gray-700 mb-4">Something went wrong. Please try refreshing.</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600"
-          >
-            Refresh Page
-          </button>
-        </div>
-      </div>
-    );
+    return <AppDashboard />;
   }
+
+  console.log('[AuthenticatedApp] Rendering auth view:', authView);
+  return authView === 'login' ? (
+    <Login onSwitchToSignup={() => setAuthView('signup')} />
+  ) : (
+    <Signup onSwitchToLogin={() => setAuthView('login')} />
+  );
 }
 
 export default function App() {
   // Version: 1.0.2 - Indigo theme applied
-  try {
-    return (
+  return (
+    <ErrorBoundary>
       <AuthProvider>
         <ThemeProvider>
           <AuthenticatedApp />
         </ThemeProvider>
       </AuthProvider>
-    );
-  } catch (error) {
-    console.error('[App] Fatal error:', error);
-    return (
-      <div className="min-h-screen bg-red-50 flex items-center justify-center p-6">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Application Error</h1>
-          <p className="text-gray-700 mb-4">
-            The application encountered an error. Please refresh the page.
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
-          >
-            Refresh Page
-          </button>
-        </div>
-      </div>
-    );
-  }
+    </ErrorBoundary>
+  );
 }

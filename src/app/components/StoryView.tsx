@@ -62,30 +62,64 @@ interface StoryViewProps {
   onLinkTestCase?: (testCaseId: string) => void;
   onUnlinkTestCase?: (testCaseId: string) => void;
   onNavigate?: (tab: string, itemId?: string) => void;
-  onUpdateComments?: (storyId: string, comments: Comment[], activities: ActivityLogEntry[]) => void;
+  onUpdateComments?: (
+    storyId: string,
+    comments: Comment[],
+    activities: ActivityLogEntry[]
+  ) => void;
 }
 
-export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAssignDeveloper, onAssignTester, onLinkBug, onUnlinkBug, onLinkTestCase, onUnlinkTestCase, onNavigate, onUpdateComments }: StoryViewProps) {
+export function StoryView({
+  story,
+  onEdit,
+  onBack,
+  onToggleQA,
+  onTogglePM,
+  onAssignDeveloper,
+  onAssignTester,
+  onLinkBug,
+  onUnlinkBug,
+  onLinkTestCase,
+  onUnlinkTestCase,
+  onNavigate,
+  onUpdateComments,
+}: StoryViewProps) {
   const { user } = useAuth();
   const { data: modules } = useSupabaseData<any[]>('aqms_modules', []);
   const [comments, setComments] = useState<Comment[]>(story.comments || []);
-  const [activities, setActivities] = useState<ActivityLogEntry[]>(story.activityLog || []);
+  const [activities, setActivities] = useState<ActivityLogEntry[]>(
+    story.activityLog || []
+  );
   const [showDeveloperDropdown, setShowDeveloperDropdown] = useState(false);
   const [showTesterDropdown, setShowTesterDropdown] = useState(false);
   const [showBugLinkDropdown, setShowBugLinkDropdown] = useState(false);
-  const [showTestCaseLinkDropdown, setShowTestCaseLinkDropdown] = useState(false);
+  const [showTestCaseLinkDropdown, setShowTestCaseLinkDropdown] =
+    useState(false);
   const [availableBugs, setAvailableBugs] = useState<any[]>([]);
   const [availableTestCases, setAvailableTestCases] = useState<any[]>([]);
   const [linkedTestCases, setLinkedTestCases] = useState<any[]>([]);
 
   // Sync state when story changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setComments(story.comments || []);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActivities(story.activityLog || []);
   }, [story.id]);
 
-  const developers = ['James Martinez', 'David Martinez', 'Emily Chen', 'Maria Rodriguez', 'Robert Taylor'];
-  const testers = ['Linda Thompson', 'Emily Chen', 'Jessica Williams', 'Michael Brown'];
+  const developers = [
+    'James Martinez',
+    'David Martinez',
+    'Emily Chen',
+    'Maria Rodriguez',
+    'Robert Taylor',
+  ];
+  const testers = [
+    'Linda Thompson',
+    'Emily Chen',
+    'Jessica Williams',
+    'Michael Brown',
+  ];
 
   // Load bugs and test cases
   useEffect(() => {
@@ -100,14 +134,17 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
       if (testCases) {
         setAvailableTestCases(testCases);
         // Filter test cases linked to this story
-        const linked = testCases.filter((tc: any) => tc.linkedStory === story.id);
+        const linked = testCases.filter(
+          (tc: any) => tc.linkedStory === story.id
+        );
         setLinkedTestCases(linked);
       }
     };
     loadData();
   }, [story.id]);
 
-  const isReadyForDev = story.acceptanceCriteria && story.qaSignOff && story.pmApproval;
+  const isReadyForDev =
+    story.acceptanceCriteria && story.qaSignOff && story.pmApproval;
 
   const handleAddComment = (text: string) => {
     const newComment: Comment = {
@@ -135,7 +172,7 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
   };
 
   const handleEditComment = (id: string, text: string) => {
-    const updatedComments = comments.map(c =>
+    const updatedComments = comments.map((c) =>
       c.id === id ? { ...c, text, edited: true } : c
     );
     setComments(updatedComments);
@@ -145,7 +182,7 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
   };
 
   const handleDeleteComment = (id: string) => {
-    const updatedComments = comments.filter(c => c.id !== id);
+    const updatedComments = comments.filter((c) => c.id !== id);
     setComments(updatedComments);
     if (onUpdateComments) {
       onUpdateComments(story.id, updatedComments, activities);
@@ -175,10 +212,7 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
           <ArrowLeft className="w-4 h-4" />
           Back to List
         </button>
-        <button
-          onClick={onEdit}
-          className="btn btn-primary"
-        >
+        <button onClick={onEdit} className="btn btn-primary">
           <Edit3 className="w-4 h-4" />
           Edit Story
         </button>
@@ -189,7 +223,9 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div className="flex-1">
               <span className="text-sm text-gray-500">{story.id}</span>
-              <h1 className="text-2xl md:text-3xl text-gray-900 mt-1">{story.title}</h1>
+              <h1 className="text-2xl md:text-3xl text-gray-900 mt-1">
+                {story.title}
+              </h1>
             </div>
             <div className="flex-shrink-0">
               {isReadyForDev ? (
@@ -207,21 +243,35 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-base md:text-lg text-gray-800 mb-2">Description</h3>
-            <p className="text-gray-700 whitespace-pre-wrap">{story.description}</p>
+            <h3 className="text-base md:text-lg text-gray-800 mb-2">
+              Description
+            </h3>
+            <p className="text-gray-700 whitespace-pre-wrap">
+              {story.description}
+            </p>
           </div>
 
           <div>
-            <h3 className="text-base md:text-lg text-gray-800 mb-4">Team Assignments</h3>
+            <h3 className="text-base md:text-lg text-gray-800 mb-4">
+              Team Assignments
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
-                <div className="text-sm text-gray-600 mb-2">QA Reviewer (Sign-Off)</div>
+                <div className="text-sm text-gray-600 mb-2">
+                  QA Reviewer (Sign-Off)
+                </div>
                 {story.assignedQAReviewer ? (
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs">
-                      {story.assignedQAReviewer.split(' ').slice(0, 2).map(n => n[0]).join('')}
+                      {story.assignedQAReviewer
+                        .split(' ')
+                        .slice(0, 2)
+                        .map((n) => n[0])
+                        .join('')}
                     </div>
-                    <span className="text-gray-900 text-sm">{story.assignedQAReviewer}</span>
+                    <span className="text-gray-900 text-sm">
+                      {story.assignedQAReviewer}
+                    </span>
                   </div>
                 ) : (
                   <span className="text-gray-400">No reviewer assigned</span>
@@ -229,18 +279,27 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
               </div>
 
               <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-200">
-                <div className="text-sm text-gray-600 mb-2">Assigned Developer</div>
+                <div className="text-sm text-gray-600 mb-2">
+                  Assigned Developer
+                </div>
                 {story.assignedDeveloper ? (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-xs">
-                        {story.assignedDeveloper.split(' ').map(n => n[0]).join('')}
+                        {story.assignedDeveloper
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')}
                       </div>
-                      <span className="text-gray-900 text-sm">{story.assignedDeveloper}</span>
+                      <span className="text-gray-900 text-sm">
+                        {story.assignedDeveloper}
+                      </span>
                     </div>
                     {isReadyForDev && onAssignDeveloper && (
                       <button
-                        onClick={() => setShowDeveloperDropdown(!showDeveloperDropdown)}
+                        onClick={() =>
+                          setShowDeveloperDropdown(!showDeveloperDropdown)
+                        }
                         className="px-2 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 text-xs"
                       >
                         Change
@@ -249,10 +308,14 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                   </div>
                 ) : (
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400 text-sm">{!isReadyForDev ? '🔒 Locked' : 'No developer assigned'}</span>
+                    <span className="text-gray-400 text-sm">
+                      {!isReadyForDev ? '🔒 Locked' : 'No developer assigned'}
+                    </span>
                     {isReadyForDev && onAssignDeveloper && (
                       <button
-                        onClick={() => setShowDeveloperDropdown(!showDeveloperDropdown)}
+                        onClick={() =>
+                          setShowDeveloperDropdown(!showDeveloperDropdown)
+                        }
                         className="px-2 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 text-xs"
                       >
                         Assign
@@ -260,48 +323,59 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                     )}
                   </div>
                 )}
-                {showDeveloperDropdown && isReadyForDev && onAssignDeveloper && (
-                  <div className="mt-2 bg-white border border-indigo-300 rounded-lg shadow-lg max-h-40 overflow-y-auto">
-                    {developers.map((dev) => (
-                      <div
-                        key={dev}
-                        onClick={() => {
-                          onAssignDeveloper(dev);
-                          setShowDeveloperDropdown(false);
-                        }}
-                        className="px-3 py-2 hover:bg-indigo-100 cursor-pointer text-sm"
-                      >
-                        {dev}
-                      </div>
-                    ))}
-                    {story.assignedDeveloper && (
-                      <div
-                        onClick={() => {
-                          onAssignDeveloper('');
-                          setShowDeveloperDropdown(false);
-                        }}
-                        className="px-3 py-2 hover:bg-red-100 cursor-pointer text-sm text-red-600 border-t"
-                      >
-                        Unassign
-                      </div>
-                    )}
-                  </div>
-                )}
+                {showDeveloperDropdown &&
+                  isReadyForDev &&
+                  onAssignDeveloper && (
+                    <div className="mt-2 bg-white border border-indigo-300 rounded-lg shadow-lg max-h-40 overflow-y-auto">
+                      {developers.map((dev) => (
+                        <div
+                          key={dev}
+                          onClick={() => {
+                            onAssignDeveloper(dev);
+                            setShowDeveloperDropdown(false);
+                          }}
+                          className="px-3 py-2 hover:bg-indigo-100 cursor-pointer text-sm"
+                        >
+                          {dev}
+                        </div>
+                      ))}
+                      {story.assignedDeveloper && (
+                        <div
+                          onClick={() => {
+                            onAssignDeveloper('');
+                            setShowDeveloperDropdown(false);
+                          }}
+                          className="px-3 py-2 hover:bg-red-100 cursor-pointer text-sm text-red-600 border-t"
+                        >
+                          Unassign
+                        </div>
+                      )}
+                    </div>
+                  )}
               </div>
 
               <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-                <div className="text-sm text-gray-600 mb-2">Assigned Tester</div>
+                <div className="text-sm text-gray-600 mb-2">
+                  Assigned Tester
+                </div>
                 {story.assignedTester ? (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs">
-                        {story.assignedTester.split(' ').map(n => n[0]).join('')}
+                        {story.assignedTester
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')}
                       </div>
-                      <span className="text-gray-900 text-sm">{story.assignedTester}</span>
+                      <span className="text-gray-900 text-sm">
+                        {story.assignedTester}
+                      </span>
                     </div>
                     {isReadyForDev && onAssignTester && (
                       <button
-                        onClick={() => setShowTesterDropdown(!showTesterDropdown)}
+                        onClick={() =>
+                          setShowTesterDropdown(!showTesterDropdown)
+                        }
                         className="px-2 py-1 bg-purple-500 text-white rounded hover:bg-purple-600 text-xs"
                       >
                         Change
@@ -310,10 +384,14 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                   </div>
                 ) : (
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400 text-sm">{!isReadyForDev ? '🔒 Locked' : 'No tester assigned'}</span>
+                    <span className="text-gray-400 text-sm">
+                      {!isReadyForDev ? '🔒 Locked' : 'No tester assigned'}
+                    </span>
                     {isReadyForDev && onAssignTester && (
                       <button
-                        onClick={() => setShowTesterDropdown(!showTesterDropdown)}
+                        onClick={() =>
+                          setShowTesterDropdown(!showTesterDropdown)
+                        }
                         className="px-2 py-1 bg-purple-500 text-white rounded hover:bg-purple-600 text-xs"
                       >
                         Assign
@@ -354,7 +432,9 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
 
           {story.criteriaDetails && (
             <div>
-              <h3 className="text-base md:text-lg text-gray-800 mb-2">Acceptance Criteria</h3>
+              <h3 className="text-base md:text-lg text-gray-800 mb-2">
+                Acceptance Criteria
+              </h3>
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <style>{`
                   .criteria-content h1, .criteria-content h2, .criteria-content h3 {
@@ -410,10 +490,14 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
           )}
 
           <div>
-            <h3 className="text-base md:text-lg text-gray-800 mb-4">Quality Gates</h3>
+            <h3 className="text-base md:text-lg text-gray-800 mb-4">
+              Quality Gates
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <div className="text-sm text-gray-600 mb-2">Acceptance Criteria</div>
+                <div className="text-sm text-gray-600 mb-2">
+                  Acceptance Criteria
+                </div>
                 {story.acceptanceCriteria ? (
                   <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800">
                     ✓ Complete
@@ -475,31 +559,48 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
 
           {/* Story Metadata */}
           <div>
-            <h3 className="text-base md:text-lg text-gray-800 mb-4">Story Details</h3>
+            <h3 className="text-base md:text-lg text-gray-800 mb-4">
+              Story Details
+            </h3>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Priority</div>
-                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${getPriorityColor(story.priority)}`}>
+                <span
+                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${getPriorityColor(story.priority)}`}
+                >
                   {story.priority}
                 </span>
               </div>
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Story Points</div>
-                <div className="text-sm text-gray-900">{story.storyPoints || 'Not estimated'}</div>
+                <div className="text-sm text-gray-900">
+                  {story.storyPoints || 'Not estimated'}
+                </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Sprint</div>
-                <div className="text-sm text-gray-900">{story.sprint || 'Unassigned'}</div>
+                <div className="text-sm text-gray-900">
+                  {story.sprint || 'Unassigned'}
+                </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Risk Module</div>
-                <div className="text-sm text-gray-900 truncate" title={modules.find(m => m.id === story.moduleId)?.name || 'None'}>
-                  {modules.find(m => m.id === story.moduleId) ? `${story.moduleId} - ${modules.find(m => m.id === story.moduleId)?.name}` : 'None'}
+                <div
+                  className="text-sm text-gray-900 truncate"
+                  title={
+                    modules.find((m) => m.id === story.moduleId)?.name || 'None'
+                  }
+                >
+                  {modules.find((m) => m.id === story.moduleId)
+                    ? `${story.moduleId} - ${modules.find((m) => m.id === story.moduleId)?.name}`
+                    : 'None'}
                 </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Created</div>
-                <div className="text-sm text-gray-900">{new Date(story.createdAt).toLocaleDateString()}</div>
+                <div className="text-sm text-gray-900">
+                  {new Date(story.createdAt).toLocaleDateString()}
+                </div>
               </div>
             </div>
           </div>
@@ -507,15 +608,22 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
           {/* Dependencies */}
           {story.dependencies && story.dependencies.length > 0 && (
             <div>
-              <h3 className="text-base md:text-lg text-gray-800 mb-2">Dependencies</h3>
+              <h3 className="text-base md:text-lg text-gray-800 mb-2">
+                Dependencies
+              </h3>
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-yellow-600">⚠️</span>
-                  <span className="text-sm text-yellow-800">This story depends on:</span>
+                  <span className="text-sm text-yellow-800">
+                    This story depends on:
+                  </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {story.dependencies.map(dep => (
-                    <span key={dep} className="px-3 py-1 bg-white border border-yellow-300 rounded text-sm text-gray-700">
+                  {story.dependencies.map((dep) => (
+                    <span
+                      key={dep}
+                      className="px-3 py-1 bg-white border border-yellow-300 rounded text-sm text-gray-700"
+                    >
                       {dep}
                     </span>
                   ))}
@@ -526,38 +634,54 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
 
           {/* Linked Items */}
           <div>
-            <h3 className="text-base md:text-lg text-gray-800 mb-4">Linked Items</h3>
+            <h3 className="text-base md:text-lg text-gray-800 mb-4">
+              Linked Items
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Linked Bugs */}
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-sm font-medium text-gray-800">🐛 Linked Bugs ({story.linkedBugs?.length || 0})</h4>
+                  <h4 className="text-sm font-medium text-gray-800">
+                    🐛 Linked Bugs ({story.linkedBugs?.length || 0})
+                  </h4>
                   {onLinkBug && (
                     <div className="relative">
                       <button
-                        onClick={() => setShowBugLinkDropdown(!showBugLinkDropdown)}
+                        onClick={() =>
+                          setShowBugLinkDropdown(!showBugLinkDropdown)
+                        }
                         className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
                       >
                         + Link Bug
                       </button>
                       {showBugLinkDropdown && (
                         <div className="absolute right-0 top-8 z-10 bg-white border border-red-300 rounded-lg shadow-lg max-h-60 overflow-y-auto w-64">
-                          {availableBugs.filter(b => !story.linkedBugs?.includes(b.id)).length === 0 ? (
-                            <div className="px-3 py-2 text-sm text-gray-500">All bugs are linked</div>
+                          {availableBugs.filter(
+                            (b) => !story.linkedBugs?.includes(b.id)
+                          ).length === 0 ? (
+                            <div className="px-3 py-2 text-sm text-gray-500">
+                              All bugs are linked
+                            </div>
                           ) : (
-                            availableBugs.filter(b => !story.linkedBugs?.includes(b.id)).map((bug) => (
-                              <div
-                                key={bug.id}
-                                onClick={() => {
-                                  onLinkBug(bug.id);
-                                  setShowBugLinkDropdown(false);
-                                }}
-                                className="px-3 py-2 hover:bg-red-100 cursor-pointer text-sm border-b border-gray-200"
-                              >
-                                <div className="font-medium text-gray-900">{bug.id}</div>
-                                <div className="text-xs text-gray-600 truncate">{bug.title}</div>
-                              </div>
-                            ))
+                            availableBugs
+                              .filter((b) => !story.linkedBugs?.includes(b.id))
+                              .map((bug) => (
+                                <div
+                                  key={bug.id}
+                                  onClick={() => {
+                                    onLinkBug(bug.id);
+                                    setShowBugLinkDropdown(false);
+                                  }}
+                                  className="px-3 py-2 hover:bg-red-100 cursor-pointer text-sm border-b border-gray-200"
+                                >
+                                  <div className="font-medium text-gray-900">
+                                    {bug.id}
+                                  </div>
+                                  <div className="text-xs text-gray-600 truncate">
+                                    {bug.title}
+                                  </div>
+                                </div>
+                              ))
                           )}
                         </div>
                       )}
@@ -566,8 +690,8 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                 </div>
                 <div className="space-y-2">
                   {story.linkedBugs && story.linkedBugs.length > 0 ? (
-                    story.linkedBugs.map(bugId => {
-                      const bug = availableBugs.find(b => b.id === bugId);
+                    story.linkedBugs.map((bugId) => {
+                      const bug = availableBugs.find((b) => b.id === bugId);
                       return (
                         <div
                           key={bugId}
@@ -580,7 +704,11 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                             >
                               {bugId}
                             </button>
-                            {bug && <div className="text-xs text-gray-600 truncate">{bug.title}</div>}
+                            {bug && (
+                              <div className="text-xs text-gray-600 truncate">
+                                {bug.title}
+                              </div>
+                            )}
                           </div>
                           {onUnlinkBug && (
                             <button
@@ -594,7 +722,9 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                       );
                     })
                   ) : (
-                    <div className="text-sm text-gray-500 text-center py-4">No bugs linked</div>
+                    <div className="text-sm text-gray-500 text-center py-4">
+                      No bugs linked
+                    </div>
                   )}
                 </div>
               </div>
@@ -602,33 +732,47 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
               {/* Linked Test Cases */}
               <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-sm font-medium text-gray-800">🧪 Linked Test Cases ({linkedTestCases.length})</h4>
+                  <h4 className="text-sm font-medium text-gray-800">
+                    🧪 Linked Test Cases ({linkedTestCases.length})
+                  </h4>
                   {onLinkTestCase && (
                     <div className="relative">
                       <button
-                        onClick={() => setShowTestCaseLinkDropdown(!showTestCaseLinkDropdown)}
+                        onClick={() =>
+                          setShowTestCaseLinkDropdown(!showTestCaseLinkDropdown)
+                        }
                         className="px-3 py-1 bg-purple-500 text-white rounded hover:bg-purple-600 text-xs"
                       >
                         + Link Test
                       </button>
                       {showTestCaseLinkDropdown && (
                         <div className="absolute right-0 top-8 z-10 bg-white border border-purple-300 rounded-lg shadow-lg max-h-60 overflow-y-auto w-64">
-                          {availableTestCases.filter(tc => tc.linkedStory !== story.id).length === 0 ? (
-                            <div className="px-3 py-2 text-sm text-gray-500">All test cases are linked</div>
+                          {availableTestCases.filter(
+                            (tc) => tc.linkedStory !== story.id
+                          ).length === 0 ? (
+                            <div className="px-3 py-2 text-sm text-gray-500">
+                              All test cases are linked
+                            </div>
                           ) : (
-                            availableTestCases.filter(tc => tc.linkedStory !== story.id).map((tc) => (
-                              <div
-                                key={tc.id}
-                                onClick={() => {
-                                  onLinkTestCase(tc.id);
-                                  setShowTestCaseLinkDropdown(false);
-                                }}
-                                className="px-3 py-2 hover:bg-purple-100 cursor-pointer text-sm border-b border-gray-200"
-                              >
-                                <div className="font-medium text-gray-900">{tc.id}</div>
-                                <div className="text-xs text-gray-600 truncate">{tc.title}</div>
-                              </div>
-                            ))
+                            availableTestCases
+                              .filter((tc) => tc.linkedStory !== story.id)
+                              .map((tc) => (
+                                <div
+                                  key={tc.id}
+                                  onClick={() => {
+                                    onLinkTestCase(tc.id);
+                                    setShowTestCaseLinkDropdown(false);
+                                  }}
+                                  className="px-3 py-2 hover:bg-purple-100 cursor-pointer text-sm border-b border-gray-200"
+                                >
+                                  <div className="font-medium text-gray-900">
+                                    {tc.id}
+                                  </div>
+                                  <div className="text-xs text-gray-600 truncate">
+                                    {tc.title}
+                                  </div>
+                                </div>
+                              ))
                           )}
                         </div>
                       )}
@@ -637,7 +781,7 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                 </div>
                 <div className="space-y-2">
                   {linkedTestCases.length > 0 ? (
-                    linkedTestCases.map(tc => (
+                    linkedTestCases.map((tc) => (
                       <div
                         key={tc.id}
                         className="flex items-center justify-between bg-white border border-purple-200 rounded p-2"
@@ -649,13 +793,20 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                           >
                             {tc.id}
                           </button>
-                          <div className="text-xs text-gray-600 truncate">{tc.title}</div>
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs mt-1 ${
-                            tc.status === 'Pass' ? 'bg-green-100 text-green-800' :
-                            tc.status === 'Fail' ? 'bg-red-100 text-red-800' :
-                            tc.status === 'Blocked' ? 'bg-orange-100 text-orange-800' :
-                            'bg-gray-100 text-gray-600'
-                          }`}>
+                          <div className="text-xs text-gray-600 truncate">
+                            {tc.title}
+                          </div>
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded text-xs mt-1 ${
+                              tc.status === 'Pass'
+                                ? 'bg-green-100 text-green-800'
+                                : tc.status === 'Fail'
+                                  ? 'bg-red-100 text-red-800'
+                                  : tc.status === 'Blocked'
+                                    ? 'bg-orange-100 text-orange-800'
+                                    : 'bg-gray-100 text-gray-600'
+                            }`}
+                          >
                             {tc.status}
                           </span>
                         </div>
@@ -670,7 +821,9 @@ export function StoryView({ story, onEdit, onBack, onToggleQA, onTogglePM, onAss
                       </div>
                     ))
                   ) : (
-                    <div className="text-sm text-gray-500 text-center py-4">No test cases linked</div>
+                    <div className="text-sm text-gray-500 text-center py-4">
+                      No test cases linked
+                    </div>
                   )}
                 </div>
               </div>

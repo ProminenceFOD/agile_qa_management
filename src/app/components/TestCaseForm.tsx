@@ -5,7 +5,8 @@ import { useSupabaseData } from '../hooks/useSupabaseData';
 import { toast } from 'sonner';
 
 type TestStatus = 'Pass' | 'Fail' | 'Blocked' | 'Not Run';
-type TestType = 'Functional' | 'Regression' | 'Integration' | 'Smoke' | 'Performance';
+type TestType =
+  'Functional' | 'Regression' | 'Integration' | 'Smoke' | 'Performance';
 
 interface Story {
   id: string;
@@ -34,42 +35,57 @@ interface TestCase {
 
 interface TestCaseFormProps {
   onClose: () => void;
-  onSubmit: (testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>) => void;
+  onSubmit: (
+    testCase: Omit<TestCase, 'id' | 'lastRun' | 'executionTime'>
+  ) => void;
   testCase?: TestCase;
 }
 
-export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps) {
+export function TestCaseForm({
+  onClose,
+  onSubmit,
+  testCase,
+}: TestCaseFormProps) {
   const { data: modules } = useSupabaseData<any[]>('aqms_modules', []);
-  const [isDraftSubmit, setIsDraftSubmit] = useState<boolean | undefined>(testCase?.isDraft);
+  const [isDraftSubmit, setIsDraftSubmit] = useState<boolean | undefined>(
+    testCase?.isDraft
+  );
 
   const [formData, setFormData] = useState({
     title: testCase?.title || '',
     description: testCase?.description || '',
-    type: testCase?.type || 'Functional' as TestType,
-    status: testCase?.status || 'Not Run' as TestStatus,
+    type: testCase?.type || ('Functional' as TestType),
+    status: testCase?.status || ('Not Run' as TestStatus),
     assignedTo: testCase?.assignedTo || '',
     linkedStory: testCase?.linkedStory || '',
-    priority: testCase?.priority || 'Medium' as 'High' | 'Medium' | 'Low',
+    priority: testCase?.priority || ('Medium' as 'High' | 'Medium' | 'Low'),
     moduleId: testCase?.moduleId || '',
   });
 
   const [steps, setSteps] = useState<string[]>(testCase?.steps || ['']);
-  const [expectedResults, setExpectedResults] = useState<string[]>(testCase?.expectedResults || ['']);
-
+  const [expectedResults, setExpectedResults] = useState<string[]>(
+    testCase?.expectedResults || ['']
+  );
 
   // Use Supabase hook to get all stories, defaulting to approved stories
-  const { data: allStories } = useSupabaseData<any[]>('aqms_stories', defaultStories);
+  const { data: allStories } = useSupabaseData<any[]>(
+    'aqms_stories',
+    defaultStories
+  );
 
   // Filter to show only stories with both QA sign-off and PM approval
-  const availableStories = allStories.filter((story: any) =>
-    story.qaSignOff === true && story.pmApproval === true
+  const availableStories = allStories.filter(
+    (story: any) => story.qaSignOff === true && story.pmApproval === true
   );
 
   // Auto-resolve moduleId from selected story
   useEffect(() => {
     if (formData.linkedStory) {
-      const selectedStory = allStories.find((story) => story.id === formData.linkedStory);
+      const selectedStory = allStories.find(
+        (story) => story.id === formData.linkedStory
+      );
       if (selectedStory && selectedStory.moduleId) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFormData((prev) => ({ ...prev, moduleId: selectedStory.moduleId }));
       }
     }
@@ -112,14 +128,16 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
       return;
     }
 
-    const filteredSteps = steps.filter(s => s.trim() !== '');
+    const filteredSteps = steps.filter((s) => s.trim() !== '');
     if (filteredSteps.length === 0) {
       toast.error('Please add at least one test step');
       return;
     }
 
-    const filteredResults = expectedResults.filter((_, index) => steps[index].trim() !== '');
-    if (filteredResults.some(r => !r.trim())) {
+    const filteredResults = expectedResults.filter(
+      (_, index) => steps[index].trim() !== ''
+    );
+    if (filteredResults.some((r) => !r.trim())) {
       toast.error('Please enter expected result for all test steps');
       return;
     }
@@ -161,210 +179,247 @@ export function TestCaseForm({ onClose, onSubmit, testCase }: TestCaseFormProps)
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col flex-1 overflow-hidden"
+          >
             <div className="p-6 space-y-6 flex-1 overflow-y-auto custom-scrollbar">
-            {/* Title */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Test Case Title <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Brief description of what is being tested"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            {/* Description */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Detailed description of the test case"
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            {/* Type, Priority, and Status */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Title */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Test Type <span className="text-red-500">*</span>
+                  Test Case Title <span className="text-red-500">*</span>
                 </label>
-                <select
-                  value={formData.type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value as TestType })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                >
-                  <option value="Functional">Functional</option>
-                  <option value="Regression">Regression</option>
-                  <option value="Integration">Integration</option>
-                  <option value="Smoke">Smoke</option>
-                  <option value="Performance">Performance</option>
-                </select>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  placeholder="Brief description of what is being tested"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
               </div>
 
+              {/* Description */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Priority <span className="text-red-500">*</span>
+                  Description <span className="text-red-500">*</span>
                 </label>
-                <select
-                  value={formData.priority}
-                  onChange={(e) => setFormData({ ...formData, priority: e.target.value as 'High' | 'Medium' | 'Low' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                >
-                  <option value="High">High</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Low">Low</option>
-                </select>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                  placeholder="Detailed description of the test case"
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
               </div>
 
+              {/* Type, Priority, and Status */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Test Type <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.type}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        type: e.target.value as TestType,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  >
+                    <option value="Functional">Functional</option>
+                    <option value="Regression">Regression</option>
+                    <option value="Integration">Integration</option>
+                    <option value="Smoke">Smoke</option>
+                    <option value="Performance">Performance</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Priority <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.priority}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        priority: e.target.value as 'High' | 'Medium' | 'Low',
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  >
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Status <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.status}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        status: e.target.value as TestStatus,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  >
+                    <option value="Not Run">Not Run</option>
+                    <option value="Pass">Pass</option>
+                    <option value="Fail">Fail</option>
+                    <option value="Blocked">Blocked</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Test Steps with Expected Results */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Status <span className="text-red-500">*</span>
+                  Test Steps & Expected Results{' '}
+                  <span className="text-red-500">*</span>
                 </label>
-                <select
-                  value={formData.status}
-                  onChange={(e) => setFormData({ ...formData, status: e.target.value as TestStatus })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                >
-                  <option value="Not Run">Not Run</option>
-                  <option value="Pass">Pass</option>
-                  <option value="Fail">Fail</option>
-                  <option value="Blocked">Blocked</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Test Steps with Expected Results */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Test Steps & Expected Results <span className="text-red-500">*</span>
-              </label>
-              <div className="space-y-4">
-                {steps.map((step, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                    <div className="flex gap-2 items-start mb-2">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm font-medium">
-                        {index + 1}
+                <div className="space-y-4">
+                  {steps.map((step, index) => (
+                    <div
+                      key={index}
+                      className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+                    >
+                      <div className="flex gap-2 items-start mb-2">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm font-medium">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          <input
+                            type="text"
+                            value={step}
+                            onChange={(e) =>
+                              handleStepChange(index, e.target.value)
+                            }
+                            placeholder={`Test Step ${index + 1}`}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                          />
+                          <input
+                            type="text"
+                            value={expectedResults[index] || ''}
+                            onChange={(e) =>
+                              handleExpectedResultChange(index, e.target.value)
+                            }
+                            placeholder={`Expected result for step ${index + 1}`}
+                            className="w-full px-3 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-green-50"
+                          />
+                        </div>
+                        {steps.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveStep(index)}
+                            className="px-3 py-2 text-red-600 hover:text-red-700 flex-shrink-0"
+                          >
+                            ✕
+                          </button>
+                        )}
                       </div>
-                      <div className="flex-1 space-y-2">
-                        <input
-                          type="text"
-                          value={step}
-                          onChange={(e) => handleStepChange(index, e.target.value)}
-                          placeholder={`Test Step ${index + 1}`}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                        />
-                        <input
-                          type="text"
-                          value={expectedResults[index] || ''}
-                          onChange={(e) => handleExpectedResultChange(index, e.target.value)}
-                          placeholder={`Expected result for step ${index + 1}`}
-                          className="w-full px-3 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-green-50"
-                        />
-                      </div>
-                      {steps.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveStep(index)}
-                          className="px-3 py-2 text-red-600 hover:text-red-700 flex-shrink-0"
-                        >
-                          ✕
-                        </button>
-                      )}
                     </div>
-                  </div>
-                ))}
-              </div>
-              <button
-                type="button"
-                onClick={handleAddStep}
-                className="mt-2 px-3 py-1 text-sm text-indigo-600 hover:text-indigo-700"
-              >
-                + Add Step
-              </button>
-            </div>
-
-            {/* Linked Story, Module, and Assigned To */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Linked Story (Optional)
-                </label>
-                <select
-                  value={formData.linkedStory}
-                  onChange={(e) => setFormData({ ...formData, linkedStory: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddStep}
+                  className="mt-2 px-3 py-1 text-sm text-indigo-600 hover:text-indigo-700"
                 >
-                  <option value="">
+                  + Add Step
+                </button>
+              </div>
+
+              {/* Linked Story, Module, and Assigned To */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Linked Story (Optional)
+                  </label>
+                  <select
+                    value={formData.linkedStory}
+                    onChange={(e) =>
+                      setFormData({ ...formData, linkedStory: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  >
+                    <option value="">
+                      {availableStories.length === 0
+                        ? 'No approved stories available'
+                        : 'No Story Linked'}
+                    </option>
+                    {availableStories.map((story) => (
+                      <option key={story.id} value={story.id}>
+                        {story.id} - {story.title}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">
                     {availableStories.length === 0
-                      ? 'No approved stories available'
-                      : 'No Story Linked'}
-                  </option>
-                  {availableStories.map((story) => (
-                    <option key={story.id} value={story.id}>
-                      {story.id} - {story.title}
-                    </option>
-                  ))}
-                </select>
-                <p className="text-xs text-gray-500 mt-1">
-                  {availableStories.length === 0
-                    ? 'No approved stories found.'
-                    : `${availableStories.length} approved stories available`}
-                </p>
+                      ? 'No approved stories found.'
+                      : `${availableStories.length} approved stories available`}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Module (Optional)
+                  </label>
+                  <select
+                    value={formData.moduleId}
+                    onChange={(e) =>
+                      setFormData({ ...formData, moduleId: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  >
+                    <option value="">No Module Linked</option>
+                    {modules.map((module) => (
+                      <option key={module.id} value={module.id}>
+                        {module.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Link test case to a specific risk module
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Assign To (Optional)
+                  </label>
+                  <select
+                    value={formData.assignedTo}
+                    onChange={(e) =>
+                      setFormData({ ...formData, assignedTo: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  >
+                    <option value="">Unassigned</option>
+                    <option value="Damilola Ogunlade">Damilola Ogunlade</option>
+                    <option value="Emily Chen">Emily Chen</option>
+                    <option value="Linda Thompson">Linda Thompson</option>
+                    <option value="Michael Brown">Michael Brown</option>
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Module (Optional)
-                </label>
-                <select
-                  value={formData.moduleId}
-                  onChange={(e) => setFormData({ ...formData, moduleId: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                >
-                  <option value="">No Module Linked</option>
-                  {modules.map((module) => (
-                    <option key={module.id} value={module.id}>
-                      {module.name}
-                    </option>
-                  ))}
-                </select>
-                <p className="text-xs text-gray-500 mt-1">
-                  Link test case to a specific risk module
-                </p>
+              {/* Info Banner */}
+              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-sm text-indigo-800">
+                <strong>Note:</strong> Test cases can be executed from the test
+                case list. Execution time and last run date will be tracked
+                automatically.
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Assign To (Optional)
-                </label>
-                <select
-                  value={formData.assignedTo}
-                  onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                >
-                  <option value="">Unassigned</option>
-                  <option value="Damilola Ogunlade">Damilola Ogunlade</option>
-                  <option value="Emily Chen">Emily Chen</option>
-                  <option value="Linda Thompson">Linda Thompson</option>
-                  <option value="Michael Brown">Michael Brown</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Info Banner */}
-            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-sm text-indigo-800">
-              <strong>Note:</strong> Test cases can be executed from the test case list. Execution time and last run date will be tracked automatically.
-            </div>
-
             </div>
 
             {/* Form Actions */}

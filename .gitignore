@@ -38,3 +38,21 @@ extract-speaker-notes.ts
 *.pdf
 *.docx
 *.pptx
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Linting logs
+.eslint_errors.log
+.eslint_results.json
+lint_errors.txt
+
+# Temp/Conversion scripts
+convert-*.js
+convert-*.ts
+create-*.ts
+live.js

@@ -1,7 +1,8 @@
 import { Edit3, ArrowLeft } from 'lucide-react';
 
 type RiskLevel = 'High' | 'Medium' | 'Low';
-type TestingProtocol = 'Full Regression' | 'Focused Functional' | 'Visual/Smoke Check';
+type TestingProtocol =
+  'Full Regression' | 'Focused Functional' | 'Visual/Smoke Check';
 
 interface Module {
   id: string;
@@ -52,10 +53,7 @@ export function ModuleView({ module, onEdit, onBack }: ModuleViewProps) {
           <ArrowLeft className="w-4 h-4" />
           Back to List
         </button>
-        <button
-          onClick={onEdit}
-          className="btn btn-primary"
-        >
+        <button onClick={onEdit} className="btn btn-primary">
           <Edit3 className="w-4 h-4" />
           Edit Module
         </button>
@@ -87,15 +85,21 @@ export function ModuleView({ module, onEdit, onBack }: ModuleViewProps) {
           </div>
 
           <div>
-            <h3 className="text-lg text-gray-800 mb-4">Risk Assessment Metrics</h3>
+            <h3 className="text-lg text-gray-800 mb-4">
+              Risk Assessment Metrics
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <div className="text-sm text-gray-600 mb-2">Defect Frequency</div>
+                <div className="text-sm text-gray-600 mb-2">
+                  Defect Frequency
+                </div>
                 <div className="flex items-center gap-3">
                   <div className="flex-1 bg-gray-200 rounded-full h-3">
                     <div
                       className="bg-indigo-500 h-3 rounded-full"
-                      style={{ width: `${(module.defectFrequency / 10) * 100}%` }}
+                      style={{
+                        width: `${(module.defectFrequency / 10) * 100}%`,
+                      }}
                     ></div>
                   </div>
                   <span className="text-lg text-gray-900">
@@ -108,12 +112,16 @@ export function ModuleView({ module, onEdit, onBack }: ModuleViewProps) {
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <div className="text-sm text-gray-600 mb-2">Business Impact</div>
+                <div className="text-sm text-gray-600 mb-2">
+                  Business Impact
+                </div>
                 <div className="flex items-center gap-3">
                   <div className="flex-1 bg-gray-200 rounded-full h-3">
                     <div
                       className="bg-purple-500 h-3 rounded-full"
-                      style={{ width: `${(module.businessImpact / 10) * 100}%` }}
+                      style={{
+                        width: `${(module.businessImpact / 10) * 100}%`,
+                      }}
                     ></div>
                   </div>
                   <span className="text-lg text-gray-900">
@@ -128,7 +136,9 @@ export function ModuleView({ module, onEdit, onBack }: ModuleViewProps) {
           </div>
 
           <div>
-            <h3 className="text-lg text-gray-800 mb-4">Assigned Testing Protocol</h3>
+            <h3 className="text-lg text-gray-800 mb-4">
+              Assigned Testing Protocol
+            </h3>
             <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
                 <span
@@ -138,25 +148,27 @@ export function ModuleView({ module, onEdit, onBack }: ModuleViewProps) {
                 >
                   {module.testingProtocol}
                 </span>
-                <span className="text-sm text-gray-600">Auto-assigned based on risk level</span>
+                <span className="text-sm text-gray-600">
+                  Auto-assigned based on risk level
+                </span>
               </div>
               <div className="text-sm text-gray-700">
                 {module.testingProtocol === 'Full Regression' && (
                   <p>
-                    Comprehensive testing required including all regression suites, integration
-                    tests, and end-to-end scenarios.
+                    Comprehensive testing required including all regression
+                    suites, integration tests, and end-to-end scenarios.
                   </p>
                 )}
                 {module.testingProtocol === 'Focused Functional' && (
                   <p>
-                    Targeted testing of core functionality with emphasis on critical user flows
-                    and integration points.
+                    Targeted testing of core functionality with emphasis on
+                    critical user flows and integration points.
                   </p>
                 )}
                 {module.testingProtocol === 'Visual/Smoke Check' && (
                   <p>
-                    Basic visual verification and smoke testing to ensure no obvious regressions
-                    or UI issues.
+                    Basic visual verification and smoke testing to ensure no
+                    obvious regressions or UI issues.
                   </p>
                 )}
               </div>
@@ -164,7 +176,9 @@ export function ModuleView({ module, onEdit, onBack }: ModuleViewProps) {
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-            <h4 className="text-sm text-gray-700 mb-2">Risk Calculation Formula</h4>
+            <h4 className="text-sm text-gray-700 mb-2">
+              Risk Calculation Formula
+            </h4>
             <ul className="text-xs text-gray-600 space-y-1">
               <li>• High Risk: Defect ≥7 OR Impact ≥9</li>
               <li>• Medium Risk: Defect 4-6 OR Impact 5-8</li>

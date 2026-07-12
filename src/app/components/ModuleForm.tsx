@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 type RiskLevel = 'High' | 'Medium' | 'Low';
-type TestingProtocol = 'Full Regression' | 'Focused Functional' | 'Visual/Smoke Check';
+type TestingProtocol =
+  'Full Regression' | 'Focused Functional' | 'Visual/Smoke Check';
 
 interface Module {
   id: string;
@@ -20,7 +21,12 @@ interface ModuleFormProps {
   mode: 'create' | 'edit';
 }
 
-export function ModuleForm({ module, onSave, onCancel, mode }: ModuleFormProps) {
+export function ModuleForm({
+  module,
+  onSave,
+  onCancel,
+  mode,
+}: ModuleFormProps) {
   const calculateRiskLevel = (defect: number, impact: number): RiskLevel => {
     if (defect >= 7 || impact >= 9) return 'High';
     if (defect >= 4 || impact >= 5) return 'Medium';
@@ -127,7 +133,9 @@ export function ModuleForm({ module, onSave, onCancel, mode }: ModuleFormProps) 
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
               placeholder="MOD-001"
             />
-            {errors.id && <p className="text-red-600 text-sm mt-1">{errors.id}</p>}
+            {errors.id && (
+              <p className="text-red-600 text-sm mt-1">{errors.id}</p>
+            )}
           </div>
 
           <div>
@@ -138,11 +146,15 @@ export function ModuleForm({ module, onSave, onCancel, mode }: ModuleFormProps) 
               id="name"
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Payment Gateway"
             />
-            {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
+            {errors.name && (
+              <p className="text-red-600 text-sm mt-1">{errors.name}</p>
+            )}
           </div>
 
           <div>
@@ -152,7 +164,9 @@ export function ModuleForm({ module, onSave, onCancel, mode }: ModuleFormProps) 
             <textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               rows={4}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Describe the module and its functionality..."
@@ -164,7 +178,10 @@ export function ModuleForm({ module, onSave, onCancel, mode }: ModuleFormProps) 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="defectFrequency" className="block text-gray-700 mb-2">
+              <label
+                htmlFor="defectFrequency"
+                className="block text-gray-700 mb-2"
+              >
                 Defect Frequency: {formData.defectFrequency}/10
               </label>
               <input
@@ -182,7 +199,10 @@ export function ModuleForm({ module, onSave, onCancel, mode }: ModuleFormProps) 
             </div>
 
             <div>
-              <label htmlFor="businessImpact" className="block text-gray-700 mb-2">
+              <label
+                htmlFor="businessImpact"
+                className="block text-gray-700 mb-2"
+              >
                 Business Impact: {formData.businessImpact}/10
               </label>
               <input
@@ -210,15 +230,17 @@ export function ModuleForm({ module, onSave, onCancel, mode }: ModuleFormProps) 
                     formData.riskLevel === 'High'
                       ? 'bg-red-100 text-red-800 border-red-200'
                       : formData.riskLevel === 'Medium'
-                      ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
-                      : 'bg-green-100 text-green-800 border-green-200'
+                        ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                        : 'bg-green-100 text-green-800 border-green-200'
                   }`}
                 >
                   {formData.riskLevel}
                 </span>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">Testing Protocol</div>
+                <div className="text-sm text-gray-600 mb-1">
+                  Testing Protocol
+                </div>
                 <span className="inline-flex items-center px-3 py-1 rounded-full bg-purple-100 text-purple-800">
                   {formData.testingProtocol}
                 </span>

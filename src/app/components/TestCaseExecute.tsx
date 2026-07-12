@@ -3,7 +3,8 @@ import { NotificationModal } from './NotificationModal';
 import { getData } from '../utils/supabaseStorage';
 
 type TestStatus = 'Pass' | 'Fail' | 'Blocked' | 'Not Run';
-type TestType = 'Functional' | 'Regression' | 'Integration' | 'Smoke' | 'Performance';
+type TestType =
+  'Functional' | 'Regression' | 'Integration' | 'Smoke' | 'Performance';
 
 interface TestCase {
   id: string;
@@ -35,9 +36,16 @@ interface TestCaseExecuteProps {
   onCreateBug?: (testCase: TestCase, notes: string) => void;
 }
 
-export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: TestCaseExecuteProps) {
+export function TestCaseExecute({
+  testCase,
+  onClose,
+  onComplete,
+  onCreateBug,
+}: TestCaseExecuteProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [completedSteps, setCompletedSteps] = useState<boolean[]>(new Array(testCase.steps.length).fill(false));
+  const [completedSteps, setCompletedSteps] = useState<boolean[]>(
+    new Array(testCase.steps.length).fill(false)
+  );
   const [testResult, setTestResult] = useState<TestStatus>('Not Run');
   const [notes, setNotes] = useState('');
   const [showSummary, setShowSummary] = useState(false);
@@ -45,7 +53,12 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
   const [linkedBugs, setLinkedBugs] = useState<string[]>([]);
   const [existingBugs, setExistingBugs] = useState<Bug[]>([]);
   const [showBugDropdown, setShowBugDropdown] = useState(false);
-  const [notification, setNotification] = useState({ isOpen: false, title: '', message: '', type: 'warning' as const });
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'warning' as const,
+  });
 
   // Load existing bugs
   useEffect(() => {
@@ -66,7 +79,7 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
   };
 
   const handleRemoveBug = (bugId: string) => {
-    setLinkedBugs(linkedBugs.filter(b => b !== bugId));
+    setLinkedBugs(linkedBugs.filter((b) => b !== bugId));
   };
 
   const handleCreateNewBug = () => {
@@ -76,15 +89,28 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
   };
 
   // Filter bugs - show open bugs, prioritize those linked to same story
-  const availableBugs = existingBugs.filter(bug =>
-    !linkedBugs.includes(bug.id) &&
-    (bug.status === 'Open' || bug.status === 'In Progress' || bug.status === 'Reopened')
-  ).sort((a, b) => {
-    // Prioritize bugs linked to the same story
-    if (a.linkedStory === testCase.linkedStory && b.linkedStory !== testCase.linkedStory) return -1;
-    if (b.linkedStory === testCase.linkedStory && a.linkedStory !== testCase.linkedStory) return 1;
-    return 0;
-  });
+  const availableBugs = existingBugs
+    .filter(
+      (bug) =>
+        !linkedBugs.includes(bug.id) &&
+        (bug.status === 'Open' ||
+          bug.status === 'In Progress' ||
+          bug.status === 'Reopened')
+    )
+    .sort((a, b) => {
+      // Prioritize bugs linked to the same story
+      if (
+        a.linkedStory === testCase.linkedStory &&
+        b.linkedStory !== testCase.linkedStory
+      )
+        return -1;
+      if (
+        b.linkedStory === testCase.linkedStory &&
+        a.linkedStory !== testCase.linkedStory
+      )
+        return 1;
+      return 0;
+    });
 
   const handleStepComplete = (index: number) => {
     const newCompleted = [...completedSteps];
@@ -120,7 +146,7 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
     }, 1500);
   };
 
-  const allStepsCompleted = completedSteps.every(step => step);
+  const allStepsCompleted = completedSteps.every((step) => step);
 
   return (
     <>
@@ -141,7 +167,9 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                   Running Test
                 </span>
               </div>
-              <h2 className="text-2xl text-gray-900 dark:text-white">{testCase.title}</h2>
+              <h2 className="text-2xl text-gray-900 dark:text-white">
+                {testCase.title}
+              </h2>
             </div>
             <button
               onClick={onClose}
@@ -155,14 +183,24 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
             {showSuccess ? (
               <div className="text-center py-12">
                 <div className="text-green-500 text-7xl mb-6">✓</div>
-                <h3 className="text-3xl text-gray-900 dark:text-white mb-3">Test Result Submitted!</h3>
+                <h3 className="text-3xl text-gray-900 dark:text-white mb-3">
+                  Test Result Submitted!
+                </h3>
                 <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
-                  Test case <span className="font-medium text-indigo-600 dark:text-indigo-400">{testCase.id}</span> completed with result:{' '}
-                  <span className={`font-medium ${
-                    testResult === 'Pass' ? 'text-green-600' :
-                    testResult === 'Fail' ? 'text-red-600' :
-                    'text-orange-600'
-                  }`}>
+                  Test case{' '}
+                  <span className="font-medium text-indigo-600 dark:text-indigo-400">
+                    {testCase.id}
+                  </span>{' '}
+                  completed with result:{' '}
+                  <span
+                    className={`font-medium ${
+                      testResult === 'Pass'
+                        ? 'text-green-600'
+                        : testResult === 'Fail'
+                          ? 'text-red-600'
+                          : 'text-orange-600'
+                    }`}
+                  >
                     {testResult}
                   </span>
                 </p>
@@ -173,15 +211,22 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
             ) : !showSummary ? (
               <>
                 <div>
-                  <h3 className="text-lg text-gray-800 dark:text-gray-200 mb-2 font-semibold">Description</h3>
-                  <p className="text-gray-700 dark:text-gray-300">{testCase.description}</p>
+                  <h3 className="text-lg text-gray-800 dark:text-gray-200 mb-2 font-semibold">
+                    Description
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {testCase.description}
+                  </p>
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-lg text-gray-800 dark:text-gray-200 font-semibold">Test Steps</h3>
+                    <h3 className="text-lg text-gray-800 dark:text-gray-200 font-semibold">
+                      Test Steps
+                    </h3>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {completedSteps.filter(s => s).length} / {testCase.steps.length} completed
+                      {completedSteps.filter((s) => s).length} /{' '}
+                      {testCase.steps.length} completed
                     </div>
                   </div>
                   <div className="space-y-3">
@@ -192,8 +237,8 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                           index === currentStep
                             ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/20'
                             : completedSteps[index]
-                            ? 'border-green-500 bg-green-50 dark:bg-green-950/20'
-                            : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50'
+                              ? 'border-green-500 bg-green-50 dark:bg-green-950/20'
+                              : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50'
                         }`}
                       >
                         <div className="flex items-start gap-3">
@@ -202,18 +247,24 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                               completedSteps[index]
                                 ? 'bg-green-500 text-white'
                                 : index === currentStep
-                                ? 'bg-indigo-500 text-white'
-                                : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                                  ? 'bg-indigo-500 text-white'
+                                  : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                             }`}
                           >
                             {completedSteps[index] ? '✓' : index + 1}
                           </div>
                           <div className="flex-1">
-                            <p className="text-gray-900 dark:text-white font-medium mb-2">{step}</p>
+                            <p className="text-gray-900 dark:text-white font-medium mb-2">
+                              {step}
+                            </p>
                             {testCase.expectedResults[index] && (
                               <div className="mt-2 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded p-2">
-                                <div className="text-xs text-green-800 dark:text-green-300 font-medium mb-1">Expected Result:</div>
-                                <p className="text-sm text-gray-700 dark:text-gray-300">{testCase.expectedResults[index]}</p>
+                                <div className="text-xs text-green-800 dark:text-green-300 font-medium mb-1">
+                                  Expected Result:
+                                </div>
+                                <p className="text-sm text-gray-700 dark:text-gray-300">
+                                  {testCase.expectedResults[index]}
+                                </p>
                               </div>
                             )}
                           </div>
@@ -235,8 +286,12 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
               <>
                 <div className="text-center py-6">
                   <div className="text-green-500 text-6xl mb-4">✓</div>
-                  <h3 className="text-2xl text-gray-900 dark:text-white mb-2">All Steps Completed</h3>
-                  <p className="text-gray-600 dark:text-gray-400">Please record the test result</p>
+                  <h3 className="text-2xl text-gray-900 dark:text-white mb-2">
+                    All Steps Completed
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Please record the test result
+                  </p>
                 </div>
 
                 <div>
@@ -281,9 +336,12 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                   <div className="bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800/60 rounded-lg p-4">
                     <div className="flex items-start gap-3">
                       <div className="flex-1">
-                        <h4 className="text-sm font-medium text-red-900 dark:text-red-200 mb-1">Test Failed - Create Bug Ticket</h4>
+                        <h4 className="text-sm font-medium text-red-900 dark:text-red-200 mb-1">
+                          Test Failed - Create Bug Ticket
+                        </h4>
                         <p className="text-sm text-red-700 dark:text-red-300">
-                          This test has failed. You can create a bug ticket with pre-filled information from this test case.
+                          This test has failed. You can create a bug ticket with
+                          pre-filled information from this test case.
                         </p>
                       </div>
                       <button
@@ -309,14 +367,21 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                   {/* Linked Bugs Display */}
                   {linkedBugs.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {linkedBugs.map(bugId => {
-                        const bug = existingBugs.find(b => b.id === bugId);
+                      {linkedBugs.map((bugId) => {
+                        const bug = existingBugs.find((b) => b.id === bugId);
                         return (
-                          <div key={bugId} className="flex items-center gap-2 px-3 py-2 bg-red-100 dark:bg-red-950/30 text-red-800 dark:text-red-200 rounded-lg border border-red-200 dark:border-red-900/40">
+                          <div
+                            key={bugId}
+                            className="flex items-center gap-2 px-3 py-2 bg-red-100 dark:bg-red-950/30 text-red-800 dark:text-red-200 rounded-lg border border-red-200 dark:border-red-900/40"
+                          >
                             <div>
-                              <span className="text-sm font-medium">{bugId}</span>
+                              <span className="text-sm font-medium">
+                                {bugId}
+                              </span>
                               {bug && (
-                                <div className="text-xs text-red-700 dark:text-red-300">{bug.title}</div>
+                                <div className="text-xs text-red-700 dark:text-red-300">
+                                  {bug.title}
+                                </div>
                               )}
                             </div>
                             <button
@@ -340,7 +405,9 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                         className="w-full px-4 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:border-indigo-500 transition-colors flex items-center justify-between"
                       >
                         <span>Select Existing Bug</span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">{availableBugs.length} available</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {availableBugs.length} available
+                        </span>
                       </button>
 
                       {/* Dropdown */}
@@ -351,7 +418,7 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                               No available bugs found
                             </div>
                           ) : (
-                            availableBugs.map(bug => (
+                            availableBugs.map((bug) => (
                               <button
                                 key={bug.id}
                                 type="button"
@@ -360,21 +427,31 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                               >
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
-                                    <div className="font-medium text-gray-900 dark:text-white">{bug.id}</div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{bug.title}</div>
-                                    {bug.linkedStory === testCase.linkedStory && (
+                                    <div className="font-medium text-gray-900 dark:text-white">
+                                      {bug.id}
+                                    </div>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                      {bug.title}
+                                    </div>
+                                    {bug.linkedStory ===
+                                      testCase.linkedStory && (
                                       <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
                                         📎 Same story ({bug.linkedStory})
                                       </div>
                                     )}
                                   </div>
                                   <div className="ml-2">
-                                    <span className={`inline-flex px-2 py-1 rounded-full text-xs ${
-                                      bug.severity === 'Critical' ? 'bg-red-100 dark:bg-red-950/45 text-red-800 dark:text-red-200' :
-                                      bug.severity === 'High' ? 'bg-orange-100 dark:bg-orange-950/45 text-orange-800 dark:text-orange-200' :
-                                      bug.severity === 'Medium' ? 'bg-yellow-100 dark:bg-yellow-950/45 text-yellow-800 dark:text-yellow-200' :
-                                      'bg-green-100 dark:bg-green-950/45 text-green-800 dark:text-green-200'
-                                    }`}>
+                                    <span
+                                      className={`inline-flex px-2 py-1 rounded-full text-xs ${
+                                        bug.severity === 'Critical'
+                                          ? 'bg-red-100 dark:bg-red-950/45 text-red-800 dark:text-red-200'
+                                          : bug.severity === 'High'
+                                            ? 'bg-orange-100 dark:bg-orange-950/45 text-orange-800 dark:text-orange-200'
+                                            : bug.severity === 'Medium'
+                                              ? 'bg-yellow-100 dark:bg-yellow-950/45 text-yellow-800 dark:text-yellow-200'
+                                              : 'bg-green-100 dark:bg-green-950/45 text-green-800 dark:text-green-200'
+                                      }`}
+                                    >
                                       {bug.severity}
                                     </span>
                                   </div>
@@ -399,7 +476,8 @@ export function TestCaseExecute({ testCase, onClose, onComplete, onCreateBug }: 
                   </div>
 
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                    Select from {availableBugs.length} existing bugs or create a new one
+                    Select from {availableBugs.length} existing bugs or create a
+                    new one
                   </p>
                 </div>
 
