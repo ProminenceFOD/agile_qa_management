@@ -381,16 +381,12 @@ export function CriteriaValidator({
       (u: any) => u.email === user?.email
     );
 
-    if (user?.role === 'QA Engineer') {
-      if (currentUserData?.canSignOffQA) {
-        return 'You have QA sign-off authority. You can sign off on stories where you are assigned as the QA Reviewer.';
-      }
-      return 'You do not have QA sign-off authority. Contact an administrator to grant permissions.';
-    } else if (user?.role === 'Product Manager') {
-      if (currentUserData?.canSignOffPM) {
-        return 'You have PM approval authority. You can approve stories for development.';
-      }
-      return 'You do not have PM approval authority. Contact an administrator to grant permissions.';
+    if (user?.role === 'Administrator' || (currentUserData?.canSignOffQA && currentUserData?.canSignOffPM)) {
+      return 'You have full QA sign-off and PM approval authority (Head of QA / Administrator).';
+    } else if (user?.role === 'QA Engineer' || currentUserData?.canSignOffQA) {
+      return 'You have QA sign-off authority. You can sign off on stories where you are assigned as the QA Reviewer.';
+    } else if (user?.role === 'Product Manager' || currentUserData?.canSignOffPM) {
+      return 'You have PM approval authority. You can approve stories for development.';
     } else {
       return 'View-only access. Contact QA or PM to update sign-offs.';
     }

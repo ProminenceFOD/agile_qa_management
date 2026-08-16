@@ -675,24 +675,40 @@ export async function initializeDemoData(): Promise<void> {
         const correction = primaryCorrections[user.email];
         if (correction) {
           const needsUpdate =
-            user.name !== correction.name || user.role !== correction.role;
+            user.name !== correction.name ||
+            user.role !== correction.role ||
+            (correction.canSignOffQA !== undefined && user.canSignOffQA !== correction.canSignOffQA) ||
+            (correction.canSignOffPM !== undefined && user.canSignOffPM !== correction.canSignOffPM);
           if (needsUpdate) {
             console.log(
-              `[SupabaseStorage] Correcting user ${user.email}: role ${user.role} -> ${correction.role}`
+              `[SupabaseStorage] Correcting user ${user.email}: QA sign-off authority -> ${correction.canSignOffQA}`
             );
             Object.assign(user, correction);
             correctionsMade = true;
+
+            // Also update current active session if logged in as this user
+            try {
+              const activeSessionStr = localStorage.getItem('aqms_session');
+              if (activeSessionStr) {
+                const session = JSON.parse(activeSessionStr);
+                if (session.user && session.user.email === user.email) {
+                  session.user.canSignOffQA = user.canSignOffQA;
+                  session.user.canSignOffPM = user.canSignOffPM;
+                  session.user.role = user.role;
+                  session.user.title = user.title;
+                  localStorage.setItem('aqms_session', JSON.stringify(session));
+                }
+              }
+            } catch (err) {
+              console.error('[SupabaseStorage] Failed updating active session user:', err);
+            }
           }
         }
       }
 
       if (correctionsMade) {
         await setData('aqms_users', users);
-        // Also clear any stale session so the corrected data is picked up on next login
-        localStorage.removeItem('aqms_session');
-        console.log(
-          '[SupabaseStorage] Primary demo users corrected. Please log in again.'
-        );
+        console.log('[SupabaseStorage] Primary demo users updated with QA sign-off authority.');
       }
 
       // Check if we need to add missing developers/testers
