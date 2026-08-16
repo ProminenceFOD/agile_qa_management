@@ -9,6 +9,7 @@ const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-5a76
 
 // In-memory cache for performance
 const cache = new Map<string, Record<string, unknown> | Record<string, unknown>[]>();
+let isServerUnreachable = false;
 
 // Keys that should NOT be scoped by organization (global data)
 const GLOBAL_KEYS = ['aqms_users'];
@@ -67,7 +68,7 @@ function getDeviceId(): string {
   return deviceId;
 }
 
-export async function getData(key: string, retries = 2): Promise<Record<string, unknown> | Record<string, unknown>[] | null> {
+export async function getData(key: string, retries = 0): Promise<Record<string, unknown> | Record<string, unknown>[] | null> {
   // Scope the key by organization
   const scopedKey = getScopedKey(key);
 
@@ -76,10 +77,14 @@ export async function getData(key: string, retries = 2): Promise<Record<string, 
     return cache.get(scopedKey);
   }
 
+  if (isServerUnreachable) {
+    return null;
+  }
+
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
-      // Increase timeout to 8 seconds for first attempt, 5 seconds for retries
-      const timeoutMs = attempt === 0 ? 8000 : 5000;
+      // 1000ms timeout for network check so page load is instant
+      const timeoutMs = 1000;
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -94,12 +99,7 @@ export async function getData(key: string, retries = 2): Promise<Record<string, 
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        if (attempt === retries) {
-          console.warn(
-            `[SupabaseStorage] Server returned ${response.status} for ${scopedKey}`
-          );
-        }
-        continue; // Retry on error
+        continue;
       }
 
       const result = await response.json();
@@ -110,22 +110,9 @@ export async function getData(key: string, retries = 2): Promise<Record<string, 
 
       return result.data;
     } catch (error) {
-      if (attempt === retries) {
-        // Only log on final attempt
-        if ((error as Error).name === 'AbortError') {
-          console.log(
-            `[SupabaseStorage] Using cached/default data for ${scopedKey}`
-          );
-        } else {
-          console.warn(
-            `[SupabaseStorage] Cannot reach server for ${scopedKey}:`,
-            error
-          );
-        }
-        return null;
-      }
-      // Wait 500ms before retry
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      isServerUnreachable = true;
+      console.log(`[SupabaseStorage] Server unreachable for ${scopedKey}, using local storage`);
+      return null;
     }
   }
 
@@ -135,7 +122,7 @@ export async function getData(key: string, retries = 2): Promise<Record<string, 
 export async function setData(
   key: string,
   data: Record<string, unknown> | Record<string, unknown>[],
-  retries = 2
+  retries = 0
 ): Promise<boolean> {
   // Scope the key by organization
   const scopedKey = getScopedKey(key);
@@ -143,11 +130,14 @@ export async function setData(
   // Update cache immediately for optimistic UI
   cache.set(scopedKey, data);
 
+  if (isServerUnreachable) {
+    return true;
+  }
+
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
-      // Use 8 second timeout for writes
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const timeoutId = setTimeout(() => controller.abort(), 1000);
 
       const response = await fetch(`${API_BASE}/data/${scopedKey}`, {
         method: 'POST',
@@ -162,36 +152,18 @@ export async function setData(
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        if (attempt === retries) {
-          console.warn(
-            `[SupabaseStorage] Server returned ${response.status} for ${scopedKey}`
-          );
-        }
-        continue; // Retry on error
+        continue;
       }
 
       const result = await response.json();
       return result.success === true;
     } catch (error) {
-      if (attempt === retries) {
-        // Only log on final attempt
-        if ((error as Error).name === 'AbortError') {
-          console.log(`[SupabaseStorage] Data cached locally for ${scopedKey}`);
-        } else {
-          console.warn(
-            `[SupabaseStorage] Cannot reach server to save ${scopedKey}, data cached locally:`,
-            error
-          );
-        }
-        // Return true since we cached it - it will persist in memory for this session
-        return true;
-      }
-      // Wait 500ms before retry
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      isServerUnreachable = true;
+      console.log(`[SupabaseStorage] Data cached locally for ${scopedKey}`);
+      return true;
     }
   }
 
-  // Return true since we cached it
   return true;
 }
 
