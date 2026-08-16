@@ -957,35 +957,41 @@ export function UserManagement() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      {user.role === 'QA Engineer' ? (
-                        <button
-                          onClick={() => handleToggleQASignOff(user.id)}
-                          className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                            user.canSignOffQA
-                              ? 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200'
-                              : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200'
-                          }`}
-                        >
-                          {user.canSignOffQA
-                            ? '✓ QA Sign-Off'
-                            : 'No QA Authority'}
-                        </button>
-                      ) : user.role === 'Product Manager' ? (
-                        <button
-                          onClick={() => handleTogglePMSignOff(user.id)}
-                          className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                            user.canSignOffPM
-                              ? 'bg-indigo-100 text-indigo-800 border-indigo-200 hover:bg-indigo-200'
-                              : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200'
-                          }`}
-                        >
-                          {user.canSignOffPM
-                            ? '✓ PM Approval'
-                            : 'No PM Authority'}
-                        </button>
-                      ) : (
-                        <span className="text-xs text-gray-400">N/A</span>
-                      )}
+                      <div className="flex flex-col items-center gap-1">
+                        {(user.role === 'Administrator' || user.role === 'QA Engineer' || user.canSignOffQA) && (
+                          <button
+                            onClick={() => handleToggleQASignOff(user.id)}
+                            className={`px-3 py-1 rounded-full text-xs border transition-colors ${
+                              user.canSignOffQA !== false
+                                ? 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200'
+                                : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200'
+                            }`}
+                            title="Toggle QA Sign-Off Authority"
+                          >
+                            {user.canSignOffQA !== false ? '✓ QA Sign-Off' : 'No QA Authority'}
+                          </button>
+                        )}
+                        {(user.role === 'Administrator' || user.role === 'Product Manager' || user.canSignOffPM) && (
+                          <button
+                            onClick={() => handleTogglePMSignOff(user.id)}
+                            className={`px-3 py-1 rounded-full text-xs border transition-colors ${
+                              user.canSignOffPM !== false
+                                ? 'bg-indigo-100 text-indigo-800 border-indigo-200 hover:bg-indigo-200'
+                                : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200'
+                            }`}
+                            title="Toggle PM Approval Authority"
+                          >
+                            {user.canSignOffPM !== false ? '✓ PM Approval' : 'No PM Authority'}
+                          </button>
+                        )}
+                        {user.role !== 'Administrator' &&
+                          user.role !== 'QA Engineer' &&
+                          user.role !== 'Product Manager' &&
+                          !user.canSignOffQA &&
+                          !user.canSignOffPM && (
+                            <span className="text-xs text-gray-400">Standard Access</span>
+                          )}
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-center">
                       <span
