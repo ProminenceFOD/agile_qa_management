@@ -340,17 +340,19 @@ export async function checkSession(): Promise<Record<string, unknown> | null> {
           // Enforce correct data for known demo accounts before returning cached session
           const demoCorrections: Record<
             string,
-            { name: string; role: string }
+            { name: string; role: string; canSignOffQA?: boolean; canSignOffPM?: boolean }
           > = {
-            'qa@aqms.com': { name: 'Damilola Ogunlade', role: 'Administrator' },
-            'pm@aqms.com': { name: 'Sarah Johnson', role: 'Product Manager' },
+            'qa@aqms.com': { name: 'Damilola Ogunlade', role: 'Administrator', canSignOffQA: true, canSignOffPM: true },
+            'pm@aqms.com': { name: 'Sarah Johnson', role: 'Product Manager', canSignOffPM: true },
             'sm@aqms.com': { name: 'Mike Williams', role: 'Scrum Master' },
           };
           const correction = demoCorrections[sessionData.user?.email];
           if (
             correction &&
             (sessionData.user?.role !== correction.role ||
-              sessionData.user?.name !== correction.name)
+              sessionData.user?.name !== correction.name ||
+              (correction.canSignOffQA !== undefined && sessionData.user?.canSignOffQA !== correction.canSignOffQA) ||
+              (correction.canSignOffPM !== undefined && sessionData.user?.canSignOffPM !== correction.canSignOffPM))
           ) {
             console.log(
               '[SupabaseStorage] Correcting stale session data for',
