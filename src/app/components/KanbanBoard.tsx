@@ -87,6 +87,15 @@ interface DraggableCardProps {
   onTestCaseClick?: (testCaseId: string) => void;
 }
 
+export function isStory(item: Story | Bug): item is Story {
+  return (
+    'acceptanceCriteria' in item ||
+    'criteriaDetails' in item ||
+    (!!item.id && item.id.startsWith('US-')) ||
+    !('severity' in item)
+  );
+}
+
 function DraggableCard({
   item,
   onView,
@@ -112,9 +121,6 @@ function DraggableCard({
     [item]
   );
 
-  const isStory = (item: Story | Bug): item is Story => {
-    return 'storyPoints' in item;
-  };
 
   const story = isStory(item) ? item : null;
   const bug = !isStory(item) ? item : null;
@@ -665,7 +671,7 @@ function DroppableColumn({
               </div>
             ) : (
               items.map((item) => {
-                const isStoryItem = 'storyPoints' in item;
+                const isStoryItem = isStory(item);
                 const linkedTestCases = isStoryItem
                   ? testCasesByStory[item.id] || []
                   : [];
@@ -1095,9 +1101,10 @@ export function KanbanBoard() {
     return match;
   };
 
+
   // Filter to show only approved stories (QA sign-off + PM approval)
   const isApprovedStory = (item: Story | Bug): boolean => {
-    if ('storyPoints' in item) {
+    if (isStory(item)) {
       // This is a story - check approval status
       return item.qaSignOff === true && item.pmApproval === true;
     }
@@ -1193,9 +1200,6 @@ export function KanbanBoard() {
     },
   ];
 
-  const isStory = (item: Story | Bug): item is Story => {
-    return 'storyPoints' in item;
-  };
 
   const handleViewItem = (item: Story | Bug) => {
     setSelectedItem(item);

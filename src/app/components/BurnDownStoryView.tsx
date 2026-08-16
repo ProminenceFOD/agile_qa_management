@@ -32,7 +32,9 @@ export function BurnDownStoryView({
   onBack,
 }: BurnDownStoryViewProps) {
   const { user } = useAuth();
-  const [notes, setNotes] = useState(story.notes || '');
+  const [notes, setNotes] = useState(story?.notes || '');
+
+  if (!story) return null;
 
   const getStateColor = (state: QualityState) => {
     switch (state) {

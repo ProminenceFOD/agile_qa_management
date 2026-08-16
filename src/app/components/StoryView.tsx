@@ -265,6 +265,7 @@ export function StoryView({
                     <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs">
                       {story.assignedQAReviewer
                         .split(' ')
+                        .filter(Boolean)
                         .slice(0, 2)
                         .map((n) => n[0])
                         .join('')}
@@ -288,6 +289,7 @@ export function StoryView({
                       <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-xs">
                         {story.assignedDeveloper
                           .split(' ')
+                          .filter(Boolean)
                           .map((n) => n[0])
                           .join('')}
                       </div>
@@ -364,6 +366,7 @@ export function StoryView({
                       <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs">
                         {story.assignedTester
                           .split(' ')
+                          .filter(Boolean)
                           .map((n) => n[0])
                           .join('')}
                       </div>
@@ -588,18 +591,18 @@ export function StoryView({
                 <div
                   className="text-sm text-gray-900 truncate"
                   title={
-                    modules.find((m) => m.id === story.moduleId)?.name || 'None'
+                    (modules || []).find((m) => m.id === story.moduleId)?.name || 'None'
                   }
                 >
-                  {modules.find((m) => m.id === story.moduleId)
-                    ? `${story.moduleId} - ${modules.find((m) => m.id === story.moduleId)?.name}`
+                  {(modules || []).find((m) => m.id === story.moduleId)
+                    ? `${story.moduleId} - ${(modules || []).find((m) => m.id === story.moduleId)?.name}`
                     : 'None'}
                 </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <div className="text-xs text-gray-600 mb-1">Created</div>
                 <div className="text-sm text-gray-900">
-                  {new Date(story.createdAt).toLocaleDateString()}
+                  {story.createdAt ? new Date(story.createdAt).toLocaleDateString() : 'N/A'}
                 </div>
               </div>
             </div>
@@ -656,14 +659,14 @@ export function StoryView({
                       </button>
                       {showBugLinkDropdown && (
                         <div className="absolute right-0 top-8 z-10 bg-white border border-red-300 rounded-lg shadow-lg max-h-60 overflow-y-auto w-64">
-                          {availableBugs.filter(
+                          {(availableBugs || []).filter(
                             (b) => !story.linkedBugs?.includes(b.id)
                           ).length === 0 ? (
                             <div className="px-3 py-2 text-sm text-gray-500">
                               All bugs are linked
                             </div>
                           ) : (
-                            availableBugs
+                            (availableBugs || [])
                               .filter((b) => !story.linkedBugs?.includes(b.id))
                               .map((bug) => (
                                 <div
@@ -691,7 +694,7 @@ export function StoryView({
                 <div className="space-y-2">
                   {story.linkedBugs && story.linkedBugs.length > 0 ? (
                     story.linkedBugs.map((bugId) => {
-                      const bug = availableBugs.find((b) => b.id === bugId);
+                      const bug = (availableBugs || []).find((b) => b.id === bugId);
                       return (
                         <div
                           key={bugId}

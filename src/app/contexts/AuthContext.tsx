@@ -47,8 +47,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const checkSession = async () => {
       console.log('[AuthContext] Checking for active session...');
 
-      // Initialize demo data if needed
-      await supabaseStorage.initializeDemoData();
+      // Initialize demo data if needed (non-blocking)
+      supabaseStorage.initializeDemoData().catch((err) =>
+        console.warn('[AuthContext] Demo data init warning:', err)
+      );
 
       // Check if there's an active session
       const sessionUser = await supabaseStorage.checkSession();
