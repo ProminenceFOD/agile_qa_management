@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Modal } from './Modal';
 import { useModal } from '../hooks/useModal';
-import { getData, setData } from '../utils/supabaseStorage';
+import { useSupabaseData } from '../hooks/useSupabaseData';
+import { defaultStories, defaultBugs, defaultTestCases } from '../utils/defaultData';
 
 type EntityType = 'stories' | 'bugs' | 'testcases';
 type BulkAction = 'assign' | 'status' | 'priority' | 'sprint' | 'delete';
@@ -13,6 +14,7 @@ interface Story {
   sprint?: string;
   assignedDeveloper?: string;
   assignedTester?: string;
+  status?: string;
 }
 
 interface Bug {
@@ -39,61 +41,20 @@ export function BulkOperations() {
   const [bulkAction, setBulkAction] = useState<BulkAction>('assign');
   const [actionValue, setActionValue] = useState('');
 
-  const [stories, setStories] = useState<Story[]>([]);
-  const [bugs, setBugs] = useState<Bug[]>([]);
-  const [testCases, setTestCases] = useState<TestCase[]>([]);
-
-
-
-  const loadData = async () => {
-    // Load stories from Supabase
-    const storiesData = await getData('aqms_stories');
-    if (storiesData) {
-      setStories(
-        storiesData.map((s: Record<string, unknown>) => ({
-          id: s.id,
-          title: s.title,
-          priority: s.priority,
-          sprint: s.sprint,
-          assignedDeveloper: s.assignedDeveloper,
-          assignedTester: s.assignedTester,
-        }))
-      );
-    }
-
-    // Load bugs from Supabase
-    const bugsData = await getData('aqms_bugs');
-    if (bugsData) {
-      setBugs(
-        bugsData.map((b: Record<string, unknown>) => ({
-          id: b.id,
-          title: b.title,
-          severity: b.severity,
-          status: b.status,
-          assignedTo: b.assignedTo,
-        }))
-      );
-    }
-
-    // Load test cases from Supabase
-    const testCasesData = await getData('aqms_test_cases');
-    if (testCasesData) {
-      setTestCases(
-        testCasesData.map((tc: Record<string, unknown>) => ({
-          id: tc.id,
-          title: tc.title,
-          status: tc.status,
-          priority: tc.priority,
-          assignedTo: tc.assignedTo,
-        }))
-      );
-    }
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    loadData();
-  }, []);
+  // Use Supabase data hook with fallbacks to guarantee data is never empty
+  const { data: stories, setData: setStories } = useSupabaseData<Story[]>(
+    'aqms_stories',
+    defaultStories
+  );
+  const { data: bugs, setData: setBugs } = useSupabaseData<Bug[]>(
+    'aqms_bugs',
+    defaultBugs
+  );
+  const { data: testCases, setData: setTestCases } = useSupabaseData<TestCase[]>(
+    'aqms_test_cases',
+    defaultTestCases
+  );
+  const { data: users } = useSupabaseData<any[]>('aqms_users', []);
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentItems = getCurrentItems();
@@ -117,11 +78,11 @@ export function BulkOperations() {
   const getCurrentItems = () => {
     switch (entityType) {
       case 'stories':
-        return stories;
+        return stories || [];
       case 'bugs':
-        return bugs;
+        return bugs || [];
       case 'testcases':
-        return testCases;
+        return testCases || [];
     }
   };
 
@@ -151,85 +112,69 @@ export function BulkOperations() {
     const selectedIds = Array.from(selectedItems);
 
     if (entityType === 'stories') {
-      const storiesData = (await getData('aqms_stories')) || [];
-      const updated = storiesData.map((story: Record<string, unknown>) => {
-        if (!selectedIds.includes(story.id)) return story;
-
-        switch (bulkAction) {
-          case 'assign':
-            return { ...story, assignedDeveloper: actionValue };
-          case 'status':
-            return { ...story, status: actionValue };
-          case 'priority':
-            return { ...story, priority: actionValue };
-          case 'sprint':
-            return { ...story, sprint: actionValue };
-          default:
-            return story;
-        }
-      });
-
       if (bulkAction === 'delete') {
-        const filtered = storiesData.filter(
-          (story: Record<string, unknown>) => !selectedIds.includes(story.id as string)
-        );
-        await setData('aqms_stories', filtered);
+        const filtered = stories.filter((s) => !selectedIds.includes(s.id));
+        setStories(filtered);
       } else {
-        await setData('aqms_stories', updated);
+        const updated = stories.map((story) => {
+          if (!selectedIds.includes(story.id)) return story;
+          switch (bulkAction) {
+            case 'assign':
+              return { ...story, assignedDeveloper: actionValue };
+            case 'status':
+              return { ...story, status: actionValue };
+            case 'priority':
+              return { ...story, priority: actionValue };
+            case 'sprint':
+              return { ...story, sprint: actionValue };
+            default:
+              return story;
+          }
+        });
+        setStories(updated);
       }
     } else if (entityType === 'bugs') {
-      const bugsData = (await getData('aqms_bugs')) || [];
-      const updated = bugsData.map((bug: Record<string, unknown>) => {
-        if (!selectedIds.includes(bug.id)) return bug;
-
-        switch (bulkAction) {
-          case 'assign':
-            return { ...bug, assignedTo: actionValue };
-          case 'status':
-            return { ...bug, status: actionValue };
-          case 'priority':
-            return { ...bug, severity: actionValue };
-          default:
-            return bug;
-        }
-      });
-
       if (bulkAction === 'delete') {
-        const filtered = bugsData.filter(
-          (bug: Record<string, unknown>) => !selectedIds.includes(bug.id as string)
-        );
-        await setData('aqms_bugs', filtered);
+        const filtered = bugs.filter((b) => !selectedIds.includes(b.id));
+        setBugs(filtered);
       } else {
-        await setData('aqms_bugs', updated);
+        const updated = bugs.map((bug) => {
+          if (!selectedIds.includes(bug.id)) return bug;
+          switch (bulkAction) {
+            case 'assign':
+              return { ...bug, assignedTo: actionValue };
+            case 'status':
+              return { ...bug, status: actionValue };
+            case 'priority':
+              return { ...bug, severity: actionValue };
+            default:
+              return bug;
+          }
+        });
+        setBugs(updated);
       }
     } else if (entityType === 'testcases') {
-      const testCasesData = (await getData('aqms_test_cases')) || [];
-      const updated = testCasesData.map((tc: Record<string, unknown>) => {
-        if (!selectedIds.includes(tc.id)) return tc;
-
-        switch (bulkAction) {
-          case 'assign':
-            return { ...tc, assignedTo: actionValue };
-          case 'status':
-            return { ...tc, status: actionValue };
-          case 'priority':
-            return { ...tc, priority: actionValue };
-          default:
-            return tc;
-        }
-      });
-
       if (bulkAction === 'delete') {
-        const filtered = testCasesData.filter(
-          (tc: Record<string, unknown>) => !selectedIds.includes(tc.id as string)
-        );
-        await setData('aqms_test_cases', filtered);
+        const filtered = testCases.filter((tc) => !selectedIds.includes(tc.id));
+        setTestCases(filtered);
       } else {
-        await setData('aqms_test_cases', updated);
+        const updated = testCases.map((tc) => {
+          if (!selectedIds.includes(tc.id)) return tc;
+          switch (bulkAction) {
+            case 'assign':
+              return { ...tc, assignedTo: actionValue };
+            case 'status':
+              return { ...tc, status: actionValue };
+            case 'priority':
+              return { ...tc, priority: actionValue };
+            default:
+              return tc;
+          }
+        });
+        setTestCases(updated);
       }
     }
 
-    await loadData();
     setSelectedItems(new Set());
     setActionValue('');
     showSuccess(`Bulk action applied to ${selectedIds.length} item(s)`);
@@ -238,6 +183,25 @@ export function BulkOperations() {
   const currentItems = getCurrentItems();
   const allSelected =
     selectedItems.size === currentItems.length && currentItems.length > 0;
+
+  // Derive dynamic user list from aqms_users (or fallback list)
+  const assignees =
+    users && users.length > 0
+      ? users.map((u) => u.name || u.email).filter(Boolean)
+      : [
+          'Damilola Ogunlade',
+          'Sarah Johnson',
+          'Mike Williams',
+          'James Martinez',
+          'Emily Chen',
+          'David Kumar',
+          'Jessica Williams',
+          'Maria Rodriguez',
+          'Robert Taylor',
+          'Linda Thompson',
+          'Michael Brown',
+          'Jennifer Lee',
+        ];
 
   return (
     <div className="w-full max-w-7xl mx-auto p-6">
@@ -298,13 +262,26 @@ export function BulkOperations() {
                   className="input"
                 >
                   <option value="">Select Person...</option>
-                  <option value="James Martinez">James Martinez</option>
-                  <option value="David Martinez">David Martinez</option>
-                  <option value="Emily Chen">Emily Chen</option>
-                  <option value="Maria Rodriguez">Maria Rodriguez</option>
-                  <option value="Robert Taylor">Robert Taylor</option>
-                  <option value="Linda Thompson">Linda Thompson</option>
-                  <option value="Damilola Ogunlade">Damilola Ogunlade</option>
+                  {assignees.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              )}
+              {bulkAction === 'status' && entityType === 'stories' && (
+                <select
+                  value={actionValue}
+                  onChange={(e) => setActionValue(e.target.value)}
+                  className="input"
+                >
+                  <option value="">Select Status...</option>
+                  <option value="Backlog">Backlog</option>
+                  <option value="Ready for Dev">Ready for Dev</option>
+                  <option value="In Development">In Development</option>
+                  <option value="In Testing">In Testing</option>
+                  <option value="Bugs Found">Bugs Found</option>
+                  <option value="Done">Done</option>
                 </select>
               )}
               {bulkAction === 'status' && entityType === 'bugs' && (
