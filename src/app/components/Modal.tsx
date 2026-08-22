@@ -3,7 +3,7 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   message: string;
-  type?: 'alert' | 'confirm' | 'success' | 'error';
+  type?: 'alert' | 'confirm' | 'success' | 'error' | 'danger';
   onConfirm?: () => void;
   confirmText?: string;
   cancelText?: string;
@@ -33,6 +33,7 @@ export function Modal({
       case 'success':
         return <div className="text-green-500 text-5xl mb-4">✓</div>;
       case 'error':
+      case 'danger':
         return <div className="text-red-500 text-5xl mb-4">✕</div>;
       case 'confirm':
         return <div className="text-indigo-500 text-5xl mb-4">?</div>;
@@ -46,17 +47,20 @@ export function Modal({
       case 'success':
         return 'bg-green-500 hover:bg-green-600';
       case 'error':
-        return 'bg-red-500 hover:bg-red-600';
+      case 'danger':
+        return 'bg-red-600 hover:bg-red-700';
       default:
         return 'bg-indigo-500 hover:bg-indigo-600';
     }
   };
 
+  const isConfirmType = type === 'confirm' || type === 'danger' || Boolean(onConfirm);
+
   return (
     <>
       <div
         className="fixed inset-0 bg-black bg-opacity-50 z-50"
-        onClick={type === 'confirm' ? undefined : onClose}
+        onClick={isConfirmType ? undefined : onClose}
       ></div>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
@@ -66,7 +70,7 @@ export function Modal({
             <p className="text-gray-700 mb-6 whitespace-pre-line">{message}</p>
 
             <div className="flex justify-center gap-3">
-              {type === 'confirm' ? (
+              {isConfirmType ? (
                 <>
                   <button
                     onClick={onClose}

@@ -20,7 +20,7 @@ export async function fixServerUsers() {
       organizationId: 'demo-org',
       organizationName: 'AQMS Demo Organization',
       canSignOffQA: true,
-      canSignOffPM: true,
+      canSignOffPM: false,
       id: 'USR-001',
       title: 'Head of QA / Administrator',
       status: 'Active',

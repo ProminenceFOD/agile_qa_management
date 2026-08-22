@@ -86,9 +86,25 @@ export function StoryView({
 }: StoryViewProps) {
   const { user } = useAuth();
   const { data: modules } = useSupabaseData<any[]>('aqms_modules', []);
+  const { data: usersList } = useSupabaseData<any[]>('aqms_users', []);
   const [comments, setComments] = useState<Comment[]>(story.comments || []);
   const [activities, setActivities] = useState<ActivityLogEntry[]>(
     story.activityLog || []
+  );
+
+  const currentUserRecord = (usersList || []).find(
+    (u: any) => u.email === user?.email
+  ) as any;
+
+  const userCanSignOffQA = Boolean(
+    currentUserRecord?.canSignOffQA ||
+    user?.role === 'QA Engineer' ||
+    user?.role === 'Administrator'
+  );
+
+  const userCanSignOffPM = Boolean(
+    currentUserRecord?.canSignOffPM ||
+    user?.role === 'Product Manager'
   );
   const [showDeveloperDropdown, setShowDeveloperDropdown] = useState(false);
   const [showTesterDropdown, setShowTesterDropdown] = useState(false);
@@ -524,7 +540,7 @@ export function StoryView({
                       ○ Pending
                     </span>
                   )}
-                  {user?.role === 'QA Engineer' && onToggleQA && (
+                  {userCanSignOffQA && onToggleQA && (
                     <button
                       onClick={onToggleQA}
                       className="px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 text-sm"
@@ -547,7 +563,7 @@ export function StoryView({
                       ○ Pending
                     </span>
                   )}
-                  {user?.role === 'Product Manager' && onTogglePM && (
+                  {userCanSignOffPM && onTogglePM && (
                     <button
                       onClick={onTogglePM}
                       className="px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 text-sm"

@@ -101,7 +101,21 @@ export function CriteriaValidator({
   } = useSupabaseData<Story[]>('aqms_stories', defaultStories);
   const { data: usersList } = useSupabaseData<Record<string, unknown>[]>('aqms_users', []);
 
-  // Listen for quick create trigger handled via lazy initialization of viewMode
+  // Compute dynamic user permissions
+  const currentUserRecord = (usersList || []).find(
+    (u: any) => u.email === user?.email
+  ) as any;
+
+  const userCanSignOffQA = Boolean(
+    currentUserRecord?.canSignOffQA ||
+    user?.role === 'QA Engineer' ||
+    user?.role === 'Administrator'
+  );
+
+  const userCanSignOffPM = Boolean(
+    currentUserRecord?.canSignOffPM ||
+    user?.role === 'Product Manager'
+  );
 
   // Show loading state immediately if data isn't ready
   if (storiesLoading || !stories) {
@@ -115,24 +129,101 @@ export function CriteriaValidator({
     );
   }
 
+  const toggleAcceptanceCriteria = (id: string) => {
+    const story = stories.find((s) => s.id === id);
+    if (!story) return;
+
+    const newAC = !story.acceptanceCriteria;
+    if (newAC) {
+      const plainText = story.criteriaDetails
+        ? story.criteriaDetails.replace(/<[^>]*>/g, '').trim()
+        : '';
+      if (!plainText || plainText.length < 20) {
+        toast.error(
+          'Cannot mark complete: Acceptance Criteria details must be at least 20 characters'
+        );
+        return;
+      }
+      const lowerCriteria = plainText.toLowerCase();
+      if (
+        lowerCriteria.includes('todo') ||
+        lowerCriteria.includes('tbd') ||
+        lowerCriteria === 'given\nwhen\nthen'
+      ) {
+        toast.error(
+          'Cannot mark complete: Acceptance Criteria contains placeholder text (TODO/TBD/template only)'
+        );
+        return;
+      }
+      if (
+        !lowerCriteria.includes('given') ||
+        !lowerCriteria.includes('when') ||
+        !lowerCriteria.includes('then')
+      ) {
+        toast.error(
+          'Cannot mark complete: Acceptance Criteria must follow Given/When/Then format'
+        );
+        return;
+      }
+    }
+
+    setStories(
+      stories.map((s) => {
+        if (s.id === id) {
+          if (!newAC) {
+            return {
+              ...s,
+              acceptanceCriteria: false,
+              qaSignOff: false,
+              pmApproval: false,
+              assignedDeveloper: '',
+              assignedTester: '',
+            };
+          }
+          return { ...s, acceptanceCriteria: true };
+        }
+        return s;
+      })
+    );
+    if (selectedStory && selectedStory.id === id) {
+      setSelectedStory({
+        ...selectedStory,
+        acceptanceCriteria: newAC,
+        qaSignOff: !newAC ? false : selectedStory.qaSignOff,
+        pmApproval: !newAC ? false : selectedStory.pmApproval,
+        assignedDeveloper: !newAC ? '' : selectedStory.assignedDeveloper,
+        assignedTester: !newAC ? '' : selectedStory.assignedTester,
+      });
+    }
+    toast.success(
+      newAC
+        ? `Acceptance Criteria marked complete for ${id}`
+        : `Acceptance Criteria marked incomplete for ${id}`
+    );
+  };
+
   const toggleQASignOff = (id: string) => {
     console.log('[CriteriaValidator] toggleQASignOff called for:', id);
-    console.trace('[CriteriaValidator] Call stack:'); // This will show us WHO called this function
 
     const story = stories.find((s) => s.id === id);
     if (!story) return;
 
+    if (!userCanSignOffQA) {
+      toast.error('You do not have QA sign-off authority.');
+      return;
+    }
+
     // Don't allow toggle if no QA reviewer is assigned
     if (!story.assignedQAReviewer) {
-      console.log('[CriteriaValidator] No QA reviewer assigned, showing alert');
       toast.error('Please assign a QA Reviewer before attempting to sign off.');
       return;
     }
 
-    // Check if current user is the assigned QA reviewer
+    // Check if current user is the assigned QA reviewer or Administrator
     const isAssignedReviewer =
-      story.assignedQAReviewer &&
-      story.assignedQAReviewer.includes(user?.name || '');
+      user?.role === 'Administrator' ||
+      (story.assignedQAReviewer &&
+        story.assignedQAReviewer.toLowerCase().includes((user?.name || '').toLowerCase()));
 
     if (!isAssignedReviewer) {
       toast.error(
@@ -142,19 +233,15 @@ export function CriteriaValidator({
     }
 
     const newQASignOff = !story.qaSignOff;
-    console.log(
-      `[CriteriaValidator] Toggling QA sign-off for ${id}: ${story.qaSignOff} → ${newQASignOff}`
-    );
 
     // Validate acceptance criteria before allowing sign-off
     if (newQASignOff) {
       if (!story.acceptanceCriteria) {
         toast.error(
-          'Cannot sign off: Acceptance Criteria checkbox must be checked'
+          'Cannot sign off: Acceptance Criteria must be complete'
         );
         return;
       }
-      // Strip HTML tags for validation
       const plainText = story.criteriaDetails
         ? story.criteriaDetails.replace(/<[^>]*>/g, '').trim()
         : '';
@@ -164,7 +251,6 @@ export function CriteriaValidator({
         );
         return;
       }
-      // Check for placeholder text
       const lowerCriteria = plainText.toLowerCase();
       if (
         lowerCriteria.includes('todo') ||
@@ -176,7 +262,6 @@ export function CriteriaValidator({
         );
         return;
       }
-      // Validate Given/When/Then format is actually filled in
       if (
         !lowerCriteria.includes('given') ||
         !lowerCriteria.includes('when') ||
@@ -192,7 +277,6 @@ export function CriteriaValidator({
     setStories(
       stories.map((s) => {
         if (s.id === id) {
-          // If removing QA sign-off, clear assignments (quality gate enforcement)
           if (!newQASignOff) {
             return {
               ...s,
@@ -207,31 +291,18 @@ export function CriteriaValidator({
       })
     );
     if (selectedStory && selectedStory.id === id) {
-      const newQASignOff = !selectedStory.qaSignOff;
+      const newQASignOffVal = !selectedStory.qaSignOff;
       setSelectedStory({
         ...selectedStory,
-        qaSignOff: newQASignOff,
-        assignedDeveloper: !newQASignOff ? '' : selectedStory.assignedDeveloper,
-        assignedTester: !newQASignOff ? '' : selectedStory.assignedTester,
+        qaSignOff: newQASignOffVal,
+        assignedDeveloper: !newQASignOffVal ? '' : selectedStory.assignedDeveloper,
+        assignedTester: !newQASignOffVal ? '' : selectedStory.assignedTester,
       });
     }
   };
 
   const togglePMApproval = (id: string) => {
-    // Check if user has PM sign-off authority
-    const storedUsers = usersList || [];
-    const currentPM = storedUsers.find(
-      (u: Record<string, unknown>) => u.email === user?.email && u.role === 'Product Manager'
-    );
-
-    console.log('[CriteriaValidator] PM Approval attempt:', {
-      userId: user?.email,
-      userRole: user?.role,
-      currentPM: currentPM,
-      hasPermission: currentPM?.canSignOffPM,
-    });
-
-    if (!currentPM || !currentPM.canSignOffPM) {
+    if (!userCanSignOffPM) {
       toast.error(
         'You do not have PM approval authority. Only authorized Product Managers can approve stories.'
       );
@@ -450,8 +521,9 @@ export function CriteriaValidator({
 
   const confirmDeleteStory = () => {
     if (deletingStoryId) {
-      setStories(stories.filter((s) => s.id !== deletingStoryId));
-      toast.success('Story deleted successfully');
+      const targetId = deletingStoryId;
+      setStories((prevStories) => (prevStories || []).filter((s) => s.id !== targetId));
+      toast.success(`Story ${targetId} deleted successfully`);
     }
     setShowDeleteConfirm(false);
     setDeletingStoryId(null);
@@ -905,70 +977,76 @@ export function CriteriaValidator({
                     )}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    {story.acceptanceCriteria ? (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs">
-                        ✓
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full bg-red-100 text-red-800 text-xs">
-                        ✗
-                      </span>
-                    )}
+                    <button
+                      onClick={() => toggleAcceptanceCriteria(story.id)}
+                      title={
+                        story.acceptanceCriteria
+                          ? 'Acceptance criteria complete (click to toggle)'
+                          : 'Acceptance criteria incomplete (click to validate & mark complete)'
+                      }
+                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                        story.acceptanceCriteria
+                          ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                          : 'bg-red-100 text-red-800 hover:bg-red-200'
+                      }`}
+                    >
+                      {story.acceptanceCriteria ? '✓ Complete' : '✗ Incomplete'}
+                    </button>
                   </td>
                   <td className="px-4 py-3 text-center">
                     {(() => {
                       const isAssignedReviewer =
-                        story.assignedQAReviewer &&
-                        story.assignedQAReviewer.includes(user?.name || '');
-                      const canSignOff =
-                        user?.role === 'QA Engineer' && isAssignedReviewer;
+                        user?.role === 'Administrator' ||
+                        (story.assignedQAReviewer &&
+                          story.assignedQAReviewer.toLowerCase().includes((user?.name || '').toLowerCase()));
+                      const canSignOff = userCanSignOffQA && isAssignedReviewer;
 
                       return (
                         <button
                           onClick={() => toggleQASignOff(story.id)}
                           disabled={!canSignOff}
                           title={
-                            !isAssignedReviewer
+                            !userCanSignOffQA
+                              ? 'You do not have QA sign-off authority'
+                              : !isAssignedReviewer
                               ? `Only ${story.assignedQAReviewer || 'assigned QA reviewer'} can sign off`
-                              : ''
+                              : story.qaSignOff
+                              ? 'Click to revoke QA sign-off'
+                              : 'Click to QA sign-off'
                           }
-                          className={`inline-flex items-center px-2 py-1 rounded-full transition-colors text-xs ${
+                          className={`inline-flex items-center px-2.5 py-1 rounded-full transition-colors text-xs font-medium ${
                             story.qaSignOff
                               ? 'bg-green-100 text-green-800 hover:bg-green-200'
                               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                          } ${!canSignOff ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          } ${!canSignOff ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         >
-                          {story.qaSignOff ? '✓' : '○'}
+                          {story.qaSignOff ? '✓ Signed' : '○ Pending'}
                         </button>
                       );
                     })()}
                   </td>
                   <td className="px-4 py-3 text-center">
                     {(() => {
-                      const storedUsers = usersList || [];
-                      const currentPM = storedUsers.find(
-                        (u: any) =>
-                          u.email === user?.email &&
-                          u.role === 'Product Manager'
-                      );
-                      const canApprove = currentPM && currentPM.canSignOffPM;
+                      const canApprove = userCanSignOffPM;
 
                       return (
                         <button
                           onClick={() => togglePMApproval(story.id)}
                           disabled={!canApprove}
                           title={
-                            !canApprove && user?.role === 'Product Manager'
+                            !canApprove
                               ? 'You do not have PM approval authority'
-                              : ''
+                              : story.pmApproval
+                              ? 'Click to revoke PM approval'
+                              : 'Click to approve story'
                           }
-                          className={`inline-flex items-center px-2 py-1 rounded-full transition-colors text-xs ${
+                          className={`inline-flex items-center px-2.5 py-1 rounded-full transition-colors text-xs font-medium ${
                             story.pmApproval
                               ? 'bg-green-100 text-green-800 hover:bg-green-200'
                               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                          } ${!canApprove ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          } ${!canApprove ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         >
-                          {story.pmApproval ? '✓' : '○'}
+                          {story.pmApproval ? '✓ Approved' : '○ Pending'}
                         </button>
                       );
                     })()}

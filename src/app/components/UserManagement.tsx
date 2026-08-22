@@ -150,7 +150,7 @@ export function UserManagement() {
         storiesAssigned: 12,
         bugsAssigned: 8,
         canSignOffQA: true,
-        canSignOffPM: true,
+        canSignOffPM: false,
       },
       {
         id: 'USR-002',

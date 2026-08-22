@@ -172,6 +172,36 @@ export function StoryForm({
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  // Sync formData when story prop changes
+  useEffect(() => {
+    if (story) {
+      setFormData({
+        id: story.id || generateStoryId(),
+        title: story.title || '',
+        description: story.description || '',
+        acceptanceCriteria: Boolean(story.acceptanceCriteria),
+        qaSignOff: Boolean(story.qaSignOff),
+        pmApproval: Boolean(story.pmApproval),
+        criteriaDetails: story.criteriaDetails || '',
+        assignedQAReviewer: story.assignedQAReviewer || '',
+        assignedDeveloper: story.assignedDeveloper || '',
+        assignedTester: story.assignedTester || '',
+        priority: story.priority || 'Medium',
+        storyPoints: story.storyPoints || undefined,
+        sprint: story.sprint || '',
+        dependencies: story.dependencies || [],
+        comments: story.comments || [],
+        activityLog: story.activityLog || [],
+        createdAt: story.createdAt || new Date(),
+        updatedAt: new Date(),
+        tags: story.tags || [],
+        linkedBugs: story.linkedBugs || [],
+        moduleId: story.moduleId || '',
+      });
+      setSelectedTags(story.tags || []);
+    }
+  }, [story]);
+
   useEffect(() => {
     const loadData = async () => {
       // Load tags
